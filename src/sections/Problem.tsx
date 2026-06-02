@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
+import Card from '@/components/Card'
 import SectionHeading from '@/components/SectionHeading'
 import { problemHeading, problems } from '@/data/problems'
 
@@ -36,20 +37,18 @@ export default function Problem() {
           {problems.map((problem) => {
             const Icon = problem.icon
             return (
-              <motion.article
-                key={problem.title}
-                variants={card}
-                className="group flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors duration-300 hover:border-accent/40 sm:p-7"
-              >
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border text-accent transition-colors duration-300 group-hover:border-accent/40">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <h3 className="text-base font-semibold text-foreground sm:text-lg">
-                  {problem.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {problem.text}
-                </p>
+              <motion.article key={problem.title} variants={card} className="h-full">
+                <Card className="flex h-full flex-col gap-4">
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border text-accent transition-colors duration-200 group-hover:border-accent/50">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <h3 className="text-base font-semibold text-foreground sm:text-lg">
+                    {problem.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {problem.text}
+                  </p>
+                </Card>
               </motion.article>
             )
           })}
