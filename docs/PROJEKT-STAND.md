@@ -194,7 +194,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 |---------|----|--------|
 | Grundgerüst (Layout, Theme-Toggle, Navigation, Footer) | ✅ | Fertig |
 | Hero (Claim + Unterzeile + 4 animierte Zähler) | ✅ | Fertig |
-| Problem-Sektion (4 Schmerzpunkte) | ⬜ | Offen |
+| Problem-Sektion (4 Schmerzpunkte) | ✅ | Fertig |
 | Leistungen (4 Karten) | ⬜ | Offen |
 | Über mich | ⬜ | Offen |
 | Prozess (4 Schritte) | ⬜ | Offen |
@@ -235,6 +235,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
+| 02.06.2026 | **Session 3: Problem-Sektion.** Zweite Sektion direkt unter der Hero: Überschrift „Kommt dir das bekannt vor?" + 4 Schmerzpunkt-Karten (Keine/veraltete Webseite · Unsichtbar im Netz · Wirkt unprofessionell · Teure Agenturen), je Titel + ein Satz und dezentes Icon. Wiederverwendbare `SectionHeading`-Komponente angelegt, Content im Data-Layer (`src/data/problems.ts`). Dark + Light, responsive (Mobil 1 Spalte → ab `md` 2 Spalten), Akzent nur über `--accent`, Framer Motion subtil (Fade-up + Stagger beim Scrollen). `npm run build` läuft. |
 | 02.06.2026 | **Session 2: Hero-Sektion.** Erste Sektion der Single-Page gebaut: volle Höhe, Headline „Veränderungen, die spürbar werden." + Unterzeile, 4 Zähler die beim Sichtbarwerden hochzählen (2 Live-Projekte · 3 Tools entwickelt · 100 % individuell programmiert · 1 Person, voller Stack), CTA „Projekt anfragen" → Anker `#kontakt`. Wiederverwendbare `Counter`-Komponente (Framer Motion `useInView`, reduced-motion-sicher), Hero-Content im Data-Layer (`src/data/hero.ts`). Dark + Light, responsive, Akzent nur über `--accent` (inkl. dezentem Glow). `npm run build` läuft. |
 | 02.06.2026 | **Session 1: Grundgerüst.** Vite + React + TS + Tailwind v4 + Framer Motion + react-router-dom aufgesetzt. Ordnerstruktur (components/pages/sections/hooks/lib/data/types). Zentrales CSS-Variablen-Theming (Dark default + Light per Toggle, `--accent` als einzelner Platzhalter für beide Modi). Navbar (Logo „LL", Anker-Nav, Toggle, CTA „Projekt anfragen", responsives Mobil-Menü) + Footer (Impressum/Datenschutz/Instagram). Routen `/` (leere Single-Page-Hülle), `/impressum`, `/datenschutz` (Platzhalter) + 404. `npm run build` läuft sauber durch. |
 | 02.06.2026 | **Session 0: Discovery.** Komplettes Konzept erarbeitet: Positionierung (premium/nahbar, keine Preise, Ziel = Kontakt), Single-Page mit 7 Sektionen, Design (Dark+Light mit Toggle, edel-zurückhaltend, Akzentfarbe offen), Tech-Stack (React/TS/Tailwind/Vite/Framer Motion, Vercel, Formspree, kein Backend), 2 Projekt-Showcases (Blumen Lang, Naillery), Claim „Veränderungen, die spürbar werden.", 4 Hero-Zähler, Prozess-Schritte, Problem-Schmerzpunkte, Kontaktdaten, rechtliche Unterseiten. Systemprompt + Projektdateien erstellt. |
@@ -247,6 +248,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 |---|-------------|--------|
 | 1 | Projekt-Grundgerüst (Vite/React/TS/Tailwind v4/Framer Motion/react-router-dom, Ordnerstruktur, Theme-Toggle, Navbar, Footer, Routen) | ✅ |
 | 2 | Hero-Sektion (volle Höhe, Headline + Unterzeile, 4 hochzählende Zähler, CTA → #kontakt) | ✅ |
+| 3 | Problem-Sektion (Überschrift + 4 Schmerzpunkt-Karten, Fade-up beim Scrollen) | ✅ |
 
 ---
 
@@ -254,9 +256,9 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | # | Aufgabe | Aufwand |
 |---|---------|--------|
-| 1 | Problem-Sektion (4 Schmerzpunkte) | Mittel |
-| 2 | Leistungen (4 Karten) | Mittel |
-| 3 | Über mich | Klein |
+| 1 | Leistungen (4 Karten) | Mittel |
+| 2 | Über mich | Klein |
+| 3 | Prozess (4 Schritte) | Mittel |
 
 ---
 
@@ -272,12 +274,12 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 - **Backend/DB:** keins – reines Frontend, KEIN Supabase, KEINE SQL/RLS. Claude macht Frontend-Code + Design + Content + kurze Claude-Code-Prompts.
 - **Vercel:** Account vorhanden, Auto-Deploy bei Push auf `main`
 - **Formspree:** Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` hinterlegt
-- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero stehen, als Nächstes die Problem-Sektion
+- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero + Problem stehen, als Nächstes die Leistungen
 - **Betriebssystem:** Windows
 - **Projektdateien-Pfad:** C:\Users\l.lang\REPOS\leons-webseite
 - **Projektdateien (Claude AI):** PROJEKT-STAND.md, CURRENT-SCHEMA.md
 - **Repo-Dateien:** CLAUDE.md (Root), docs/PROJEKT-STAND.md, docs/CURRENT-SCHEMA.md, docs/CLAUDE-CODE-TODO.md
-- **Nächste Aufgabe:** Problem-Sektion bauen (4 Schmerzpunkte)
+- **Nächste Aufgabe:** Leistungen-Sektion bauen (4 Karten)
 
 ---
 
