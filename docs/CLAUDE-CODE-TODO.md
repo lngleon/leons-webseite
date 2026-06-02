@@ -7,16 +7,15 @@
 
 ## Aktiv
 
-(noch keine – Leistungen-Sektion kommt als nächster Task)
+- [ ] Leistungen: 4 Karten (Reihenfolge: Webseiten · Web-Apps & Tools · Redesign & Modernisierung · KI-Integration). Wiederverwendbares `Card`-Hover-Muster (`src/components/Card.tsx`) nutzen, `SectionHeading` für die Überschrift, Dark + Light, responsive, Akzent nur über `--accent`.
 
 ## Backlog (Phase 2 – Reihenfolge)
 
-1. Leistungen: 4 Karten
-2. Über mich
-3. Prozess: 4 Schritte
-4. Projekte: 2 Showcases (Blumen Lang, Naillery) + interaktive Detail-Ansicht
-5. Kontakt: Formspree-Formular (VITE_FORMSPREE_ENDPOINT) + direkte Buttons (Mail/WhatsApp/Instagram)
-6. Impressum + Datenschutz: Inhalte einfügen (Platzhalter-Seiten + Footer-Links stehen bereits)
+1. Über mich
+2. Prozess: 4 Schritte
+3. Projekte: 2 Showcases (Blumen Lang, Naillery) + interaktive Detail-Ansicht
+4. Kontakt: Formspree-Formular (VITE_FORMSPREE_ENDPOINT) + direkte Buttons (Mail/WhatsApp/Instagram)
+5. Impressum + Datenschutz: Inhalte einfügen (Platzhalter-Seiten + Footer-Links stehen bereits)
 
 ## Erledigt
 
