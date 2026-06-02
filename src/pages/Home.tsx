@@ -1,5 +1,6 @@
 import Hero from '@/sections/Hero'
 import Problem from '@/sections/Problem'
+import Leistungen from '@/sections/Leistungen'
 
 /**
  * Startseite (Single-Page). Sektionen werden hier nacheinander eingehängt.
@@ -10,6 +11,7 @@ export default function Home() {
     <>
       <Hero />
       <Problem />
+      <Leistungen />
     </>
   )
 }
