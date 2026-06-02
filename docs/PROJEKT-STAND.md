@@ -197,7 +197,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | Problem-Sektion (4 Schmerzpunkte) | ✅ | Fertig |
 | Leistungen (4 Karten) | ✅ | Fertig (Karte 4 KI-Integration als Highlight) |
 | Über mich | ✅ | Fertig (2-spaltig, Porträt-Platzhalter) |
-| Prozess (4 Schritte) | ⬜ | Offen |
+| Prozess (4 Schritte) | ✅ | Fertig (nummerierte Abfolge mit Verbindungslinie) |
 | Projekte (2 Showcases + Detail-Ansicht) | ⬜ | Offen |
 | Kontakt (Formspree-Formular + direkte Buttons) | ⬜ | Offen |
 | Dark/Light-Toggle | ✅ | Fertig (zentrale CSS-Variablen, Dark default) |
@@ -236,6 +236,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
+| 02.06.2026 | **Session 4: „Prozess"-Sektion.** Fünfte Sektion auf `/` (`id="prozess"`): vier nummerierte Schritte als sichtbare Abfolge 1→4 (Kennenlernen & Idee → Konzept & Design → Umsetzung → Launch & Betreuung) als `<ol>`/`<li>`-Stepper, NICHT als loses Card-Grid. Verbindungslinie zwischen den Schritten: Desktop horizontal, Mobil vertikal gestapelt (zwei Connector-Elemente je Schritt, `scaleX`/`scaleY`). Akzent-getönte Nummern-Badges. Animation (reduced-motion-sicher via `useReducedMotion`): Schritte blenden gestaffelt beim Scrollen ein, Linie baut sich progressiv auf. Überschrift „So entsteht dein Projekt." + Unterzeile via `SectionHeading`, Content im Data-Layer (`src/data/process.ts`). Dark + Light, responsive, Akzent nur über `--accent`. `npm run build` läuft. |
 | 02.06.2026 | **Session 3: „Über mich"-Sektion.** Vierte Sektion auf `/` (`id="ueber-mich"`, Ziel für den Navbar-Anker): zweispaltiges Layout – Foto-Platzhalter links, Text rechts; auf Mobil gestapelt mit Foto oben. `SectionHeading` (links ausgerichtet) für Eyebrow „Über mich" + Überschrift „Die Person hinter dem Code.", darunter 3 Absätze. Porträt-Platzhalter als gerahmte Hülle (Rand + Rundung) im Hochformat (4∶5), `bg-muted` (mode-adaptiv), Initialen „LL" + Caption „Porträt folgt" – bereit, das echte Bild in Phase 3 als `object-cover`-`<img>` einzusetzen. Content im Data-Layer (`src/data/about.ts`). Dark + Light, responsive, Akzent nur über `--accent`, Fade-up + Stagger beim Scrollen. `npm run build` läuft. |
 | 02.06.2026 | **Session 2: Leistungen-Sektion.** Dritte Sektion auf `/`: Überschrift „Das baue ich für dich." + Unterzeile, 4 Karten im 2×2-Grid (mobil 1 Spalte), gleicher Spacing-Rhythmus wie die Problem-Sektion. `Card`- und `SectionHeading`-Muster wiederverwendet (Hover nicht neu gebaut). Inhalte: Webseiten · Web-Apps & Tools · Redesign & Modernisierung · KI-Integration. **Karte 4 (KI-Integration) als Highlight:** `Card` um eine dezente `highlight`-Prop erweitert – Akzent dauerhaft aktiv (Akzent-Rand + leiser Glow, kein Badge), Hover bleibt obendrauf. Je Karte ein dezentes Icon (Stil wie Problem-Sektion), Content im Data-Layer (`src/data/services.ts`). Dark + Light, responsive, Akzent nur über `--accent`. `npm run build` läuft. |
 | 02.06.2026 | **Session 1: Phase 1 abgeschlossen + Start Phase 2.** **Phase 1 (Infrastruktur):** Repo `lngleon/leons-webseite` (SSH-Alias `github-lngleon`, Branch `main`), Vercel-Auto-Deploy, Formspree-Endpoint in `.env.local`, lokale Umgebung, CLAUDE.md + docs/ angelegt. **Phase 2 gestartet – drei Sektionen + Karten-Muster:** (1) **Grundgerüst:** Vite + React + TS + Tailwind v4 + Framer Motion + react-router-dom, Ordnerstruktur (components/pages/sections/hooks/lib/data/types), zentrales CSS-Variablen-Theming (Dark default + Light per Toggle, `--accent` als einzelner Platzhalter), Navbar (Logo „LL", Anker-Nav, Toggle, CTA, Mobil-Menü) + Footer (Impressum/Datenschutz/Instagram), Routen `/` `/impressum` `/datenschutz` + 404. (2) **Hero:** volle Höhe, Headline „Veränderungen, die spürbar werden." + Unterzeile, 4 beim Sichtbarwerden hochzählende Zähler (2 · 3 · 100 % · 1), CTA → `#kontakt`, reduced-motion-sichere `Counter`-Komponente. (3) **Problem-Sektion:** Überschrift „Kommt dir das bekannt vor?" + 4 Schmerzpunkt-Karten, `SectionHeading`-Komponente, Fade-up beim Scrollen. (4) **Wiederverwendbares `Card`-Hover-Muster** (`src/components/Card.tsx`): dezentes Anheben + Akzent-Rand + weicher Glow, smooth (~200 ms), touch-sicher (`@media (hover: hover)`) und `motion-safe`. Alles Dark + Light, responsive, Akzent nur über `--accent`; `npm run build` läuft. |
@@ -253,6 +254,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | 4 | Feinschliff: wiederverwendbares `Card`-Hover-Muster (Anheben + Akzent-Rand + Glow, touch-/motion-safe) | ✅ |
 | 5 | Leistungen-Sektion (4 Karten 2×2, Card/SectionHeading wiederverwendet, KI-Karte als dauerhaftes Akzent-Highlight) | ✅ |
 | 6 | „Über mich"-Sektion (2-spaltig, Porträt-Platzhalter Hochformat links / Text rechts, mobil gestapelt) | ✅ |
+| 7 | „Prozess"-Sektion (4 nummerierte Schritte als Abfolge, Verbindungslinie horizontal/vertikal, progressiver Aufbau) | ✅ |
 
 ---
 
@@ -260,9 +262,9 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | # | Aufgabe | Aufwand |
 |---|---------|--------|
-| 1 | Prozess (4 Schritte) | Mittel |
-| 2 | Projekte (2 Showcases + Detail-Ansicht) | Groß |
-| 3 | Kontakt (Formspree-Formular + direkte Buttons) | Mittel |
+| 1 | Projekte (2 Showcases + Detail-Ansicht) | Groß |
+| 2 | Kontakt (Formspree-Formular + direkte Buttons) | Mittel |
+| 3 | Impressum + Datenschutz: Inhalte einfügen | Klein |
 
 ---
 
@@ -279,12 +281,12 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 - **Backend/DB:** keins – reines Frontend, KEIN Supabase, KEINE SQL/RLS. Claude macht Frontend-Code + Design + Content + kurze Claude-Code-Prompts.
 - **Vercel:** Account vorhanden, Auto-Deploy bei Push auf `main`
 - **Formspree:** Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` hinterlegt
-- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero + Problem + Leistungen + Über mich stehen, als Nächstes der Prozess
+- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero + Problem + Leistungen + Über mich + Prozess stehen, als Nächstes die Projekte
 - **Betriebssystem:** Windows
 - **Projektdateien-Pfad:** C:\Users\l.lang\REPOS\leons-webseite
 - **Projektdateien (Claude AI):** PROJEKT-STAND.md, CURRENT-SCHEMA.md
 - **Repo-Dateien:** CLAUDE.md (Root), docs/PROJEKT-STAND.md, docs/CURRENT-SCHEMA.md, docs/CLAUDE-CODE-TODO.md
-- **Nächste Aufgabe:** Prozess-Sektion bauen (4 Schritte)
+- **Nächste Aufgabe:** Projekte-Sektion bauen (2 Showcases + interaktive Detail-Ansicht)
 
 ---
 
