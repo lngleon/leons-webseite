@@ -47,7 +47,7 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 - **Zahlungen:** keine
 - **E-Mail/Formular:** Formspree (extern, nimmt Kontaktformular entgegen und leitet als E-Mail weiter)
 - **Weitere:** –
-- **Repo:** wird beim Infrastruktur-Setup festgelegt | GitHub: main Branch
+- **Repo:** `lngleon/leons-webseite` (GitHub, Branch `main`) – gebunden an SSH-Alias `github-lngleon`
 - **Design-System:** Regeln in dieser Datei (Abschnitt Design-Regeln); separate DESIGN-SYSTEM.md vorerst nicht nötig
 - **Claude Code Config:** CLAUDE.md im Repo-Root
 
@@ -59,7 +59,7 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 |-------|-------------|--------|
 | 0 | Discovery (Interview) | ✅ Abgeschlossen |
 | 1 | Infrastruktur-Setup (GitHub, Vercel, Formspree, lokale Umgebung) | ✅ Abgeschlossen |
-| 2 | Aufbau & Sektionen via Claude Code | 🔄 In Arbeit (Grundgerüst steht) |
+| 2 | Aufbau & Sektionen via Claude Code | 🔄 Aktiv (Grundgerüst, Hero, Problem stehen) |
 | 3 | Content & Feinschliff (Logo, Texte, Recht, Akzentfarbe) | ⬜ Offen |
 | 4 | Testing | ⬜ Offen |
 | 5 | Launch / Domain | ⬜ Offen |
@@ -70,11 +70,11 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 
 | Komponente | Status | Details |
 |------------|--------|---------|
-| GitHub | 🔄 | Account vorhanden, Repo noch anzulegen |
-| Vercel | 🔄 | Account vorhanden, Projekt noch anzulegen |
-| Formspree | ⬜ | Account noch anzulegen, Formular-Endpoint kopieren |
-| Lokale Umgebung | ⬜ | VS Code + Claude Code Extension, Repo clonen |
-| .env (Formspree-Endpoint) | ⬜ | Formspree-Form-ID/Endpoint hinterlegen |
+| GitHub | ✅ | Repo `lngleon/leons-webseite`, Branch `main` (SSH-Alias `github-lngleon`) |
+| Vercel | ✅ | Mit Repo verbunden, Auto-Deploy bei Push auf `main` |
+| Formspree | ✅ | Formular-Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` |
+| Lokale Umgebung | ✅ | VS Code + Claude Code Extension, Repo geklont |
+| .env (Formspree-Endpoint) | ✅ | `.env.local` mit `VITE_FORMSPREE_ENDPOINT` hinterlegt |
 
 ---
 
@@ -236,10 +236,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
-| 02.06.2026 | **Session 4: Feinschliff Problem-Karten.** Wiederverwendbares `Card`-Muster (`src/components/Card.tsx`) mit dezentem Desktop-Hover: leichtes Anheben (6px), betonter Akzent-Rand, weicher Akzent-Glow – smooth (~200 ms, ease-out). Touch-sicher (greift nur unter `@media (hover: hover)`), respektiert `prefers-reduced-motion` (Anheben nur `motion-safe`), Akzent nur über `--accent`. Entrance-Animation bleibt auf dem äußeren Wrapper, der Hover sitzt auf dem inneren `Card` – keine Transform-Kollision. Problem-Karten umgestellt; Leistungen-Karten können `Card` direkt wiederverwenden. `npm run build` läuft. |
-| 02.06.2026 | **Session 3: Problem-Sektion.** Zweite Sektion direkt unter der Hero: Überschrift „Kommt dir das bekannt vor?" + 4 Schmerzpunkt-Karten (Keine/veraltete Webseite · Unsichtbar im Netz · Wirkt unprofessionell · Teure Agenturen), je Titel + ein Satz und dezentes Icon. Wiederverwendbare `SectionHeading`-Komponente angelegt, Content im Data-Layer (`src/data/problems.ts`). Dark + Light, responsive (Mobil 1 Spalte → ab `md` 2 Spalten), Akzent nur über `--accent`, Framer Motion subtil (Fade-up + Stagger beim Scrollen). `npm run build` läuft. |
-| 02.06.2026 | **Session 2: Hero-Sektion.** Erste Sektion der Single-Page gebaut: volle Höhe, Headline „Veränderungen, die spürbar werden." + Unterzeile, 4 Zähler die beim Sichtbarwerden hochzählen (2 Live-Projekte · 3 Tools entwickelt · 100 % individuell programmiert · 1 Person, voller Stack), CTA „Projekt anfragen" → Anker `#kontakt`. Wiederverwendbare `Counter`-Komponente (Framer Motion `useInView`, reduced-motion-sicher), Hero-Content im Data-Layer (`src/data/hero.ts`). Dark + Light, responsive, Akzent nur über `--accent` (inkl. dezentem Glow). `npm run build` läuft. |
-| 02.06.2026 | **Session 1: Grundgerüst.** Vite + React + TS + Tailwind v4 + Framer Motion + react-router-dom aufgesetzt. Ordnerstruktur (components/pages/sections/hooks/lib/data/types). Zentrales CSS-Variablen-Theming (Dark default + Light per Toggle, `--accent` als einzelner Platzhalter für beide Modi). Navbar (Logo „LL", Anker-Nav, Toggle, CTA „Projekt anfragen", responsives Mobil-Menü) + Footer (Impressum/Datenschutz/Instagram). Routen `/` (leere Single-Page-Hülle), `/impressum`, `/datenschutz` (Platzhalter) + 404. `npm run build` läuft sauber durch. |
+| 02.06.2026 | **Session 1: Phase 1 abgeschlossen + Start Phase 2.** **Phase 1 (Infrastruktur):** Repo `lngleon/leons-webseite` (SSH-Alias `github-lngleon`, Branch `main`), Vercel-Auto-Deploy, Formspree-Endpoint in `.env.local`, lokale Umgebung, CLAUDE.md + docs/ angelegt. **Phase 2 gestartet – drei Sektionen + Karten-Muster:** (1) **Grundgerüst:** Vite + React + TS + Tailwind v4 + Framer Motion + react-router-dom, Ordnerstruktur (components/pages/sections/hooks/lib/data/types), zentrales CSS-Variablen-Theming (Dark default + Light per Toggle, `--accent` als einzelner Platzhalter), Navbar (Logo „LL", Anker-Nav, Toggle, CTA, Mobil-Menü) + Footer (Impressum/Datenschutz/Instagram), Routen `/` `/impressum` `/datenschutz` + 404. (2) **Hero:** volle Höhe, Headline „Veränderungen, die spürbar werden." + Unterzeile, 4 beim Sichtbarwerden hochzählende Zähler (2 · 3 · 100 % · 1), CTA → `#kontakt`, reduced-motion-sichere `Counter`-Komponente. (3) **Problem-Sektion:** Überschrift „Kommt dir das bekannt vor?" + 4 Schmerzpunkt-Karten, `SectionHeading`-Komponente, Fade-up beim Scrollen. (4) **Wiederverwendbares `Card`-Hover-Muster** (`src/components/Card.tsx`): dezentes Anheben + Akzent-Rand + weicher Glow, smooth (~200 ms), touch-sicher (`@media (hover: hover)`) und `motion-safe`. Alles Dark + Light, responsive, Akzent nur über `--accent`; `npm run build` läuft. |
 | 02.06.2026 | **Session 0: Discovery.** Komplettes Konzept erarbeitet: Positionierung (premium/nahbar, keine Preise, Ziel = Kontakt), Single-Page mit 7 Sektionen, Design (Dark+Light mit Toggle, edel-zurückhaltend, Akzentfarbe offen), Tech-Stack (React/TS/Tailwind/Vite/Framer Motion, Vercel, Formspree, kein Backend), 2 Projekt-Showcases (Blumen Lang, Naillery), Claim „Veränderungen, die spürbar werden.", 4 Hero-Zähler, Prozess-Schritte, Problem-Schmerzpunkte, Kontaktdaten, rechtliche Unterseiten. Systemprompt + Projektdateien erstellt. |
 
 ---
@@ -251,6 +248,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | 1 | Projekt-Grundgerüst (Vite/React/TS/Tailwind v4/Framer Motion/react-router-dom, Ordnerstruktur, Theme-Toggle, Navbar, Footer, Routen) | ✅ |
 | 2 | Hero-Sektion (volle Höhe, Headline + Unterzeile, 4 hochzählende Zähler, CTA → #kontakt) | ✅ |
 | 3 | Problem-Sektion (Überschrift + 4 Schmerzpunkt-Karten, Fade-up beim Scrollen) | ✅ |
+| 4 | Feinschliff: wiederverwendbares `Card`-Hover-Muster (Anheben + Akzent-Rand + Glow, touch-/motion-safe) | ✅ |
 
 ---
 
@@ -273,6 +271,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 ## Verhaltensregeln für nächsten Chat
 
 - **Repo:** `lngleon/leons-webseite` (GitHub), Branch `main`
+- **Git/SSH:** Remote `origin` = `git@github-lngleon:lngleon/leons-webseite.git`. Das Repo ist an den SSH-Alias `github-lngleon` gebunden – Push läuft darüber. Hintergrund: Auf der Maschine existiert ein zweiter GitHub-Account („Dkllang"), deshalb die SSH-Bindung statt globalem Default. Bei Git-Problemen zuerst den Remote/SSH-Alias prüfen.
 - **Backend/DB:** keins – reines Frontend, KEIN Supabase, KEINE SQL/RLS. Claude macht Frontend-Code + Design + Content + kurze Claude-Code-Prompts.
 - **Vercel:** Account vorhanden, Auto-Deploy bei Push auf `main`
 - **Formspree:** Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` hinterlegt
