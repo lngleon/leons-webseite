@@ -195,7 +195,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | Grundgerüst (Layout, Theme-Toggle, Navigation, Footer) | ✅ | Fertig |
 | Hero (Claim + Unterzeile + 4 animierte Zähler) | ✅ | Fertig |
 | Problem-Sektion (4 Schmerzpunkte) | ✅ | Fertig |
-| Leistungen (4 Karten) | ⬜ | Offen |
+| Leistungen (4 Karten) | ✅ | Fertig (Karte 4 KI-Integration als Highlight) |
 | Über mich | ⬜ | Offen |
 | Prozess (4 Schritte) | ⬜ | Offen |
 | Projekte (2 Showcases + Detail-Ansicht) | ⬜ | Offen |
@@ -236,6 +236,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
+| 02.06.2026 | **Session 2: Leistungen-Sektion.** Dritte Sektion auf `/`: Überschrift „Das baue ich für dich." + Unterzeile, 4 Karten im 2×2-Grid (mobil 1 Spalte), gleicher Spacing-Rhythmus wie die Problem-Sektion. `Card`- und `SectionHeading`-Muster wiederverwendet (Hover nicht neu gebaut). Inhalte: Webseiten · Web-Apps & Tools · Redesign & Modernisierung · KI-Integration. **Karte 4 (KI-Integration) als Highlight:** `Card` um eine dezente `highlight`-Prop erweitert – Akzent dauerhaft aktiv (Akzent-Rand + leiser Glow, kein Badge), Hover bleibt obendrauf. Je Karte ein dezentes Icon (Stil wie Problem-Sektion), Content im Data-Layer (`src/data/services.ts`). Dark + Light, responsive, Akzent nur über `--accent`. `npm run build` läuft. |
 | 02.06.2026 | **Session 1: Phase 1 abgeschlossen + Start Phase 2.** **Phase 1 (Infrastruktur):** Repo `lngleon/leons-webseite` (SSH-Alias `github-lngleon`, Branch `main`), Vercel-Auto-Deploy, Formspree-Endpoint in `.env.local`, lokale Umgebung, CLAUDE.md + docs/ angelegt. **Phase 2 gestartet – drei Sektionen + Karten-Muster:** (1) **Grundgerüst:** Vite + React + TS + Tailwind v4 + Framer Motion + react-router-dom, Ordnerstruktur (components/pages/sections/hooks/lib/data/types), zentrales CSS-Variablen-Theming (Dark default + Light per Toggle, `--accent` als einzelner Platzhalter), Navbar (Logo „LL", Anker-Nav, Toggle, CTA, Mobil-Menü) + Footer (Impressum/Datenschutz/Instagram), Routen `/` `/impressum` `/datenschutz` + 404. (2) **Hero:** volle Höhe, Headline „Veränderungen, die spürbar werden." + Unterzeile, 4 beim Sichtbarwerden hochzählende Zähler (2 · 3 · 100 % · 1), CTA → `#kontakt`, reduced-motion-sichere `Counter`-Komponente. (3) **Problem-Sektion:** Überschrift „Kommt dir das bekannt vor?" + 4 Schmerzpunkt-Karten, `SectionHeading`-Komponente, Fade-up beim Scrollen. (4) **Wiederverwendbares `Card`-Hover-Muster** (`src/components/Card.tsx`): dezentes Anheben + Akzent-Rand + weicher Glow, smooth (~200 ms), touch-sicher (`@media (hover: hover)`) und `motion-safe`. Alles Dark + Light, responsive, Akzent nur über `--accent`; `npm run build` läuft. |
 | 02.06.2026 | **Session 0: Discovery.** Komplettes Konzept erarbeitet: Positionierung (premium/nahbar, keine Preise, Ziel = Kontakt), Single-Page mit 7 Sektionen, Design (Dark+Light mit Toggle, edel-zurückhaltend, Akzentfarbe offen), Tech-Stack (React/TS/Tailwind/Vite/Framer Motion, Vercel, Formspree, kein Backend), 2 Projekt-Showcases (Blumen Lang, Naillery), Claim „Veränderungen, die spürbar werden.", 4 Hero-Zähler, Prozess-Schritte, Problem-Schmerzpunkte, Kontaktdaten, rechtliche Unterseiten. Systemprompt + Projektdateien erstellt. |
 
@@ -249,6 +250,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | 2 | Hero-Sektion (volle Höhe, Headline + Unterzeile, 4 hochzählende Zähler, CTA → #kontakt) | ✅ |
 | 3 | Problem-Sektion (Überschrift + 4 Schmerzpunkt-Karten, Fade-up beim Scrollen) | ✅ |
 | 4 | Feinschliff: wiederverwendbares `Card`-Hover-Muster (Anheben + Akzent-Rand + Glow, touch-/motion-safe) | ✅ |
+| 5 | Leistungen-Sektion (4 Karten 2×2, Card/SectionHeading wiederverwendet, KI-Karte als dauerhaftes Akzent-Highlight) | ✅ |
 
 ---
 
@@ -256,9 +258,9 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | # | Aufgabe | Aufwand |
 |---|---------|--------|
-| 1 | Leistungen (4 Karten) | Mittel |
-| 2 | Über mich | Klein |
-| 3 | Prozess (4 Schritte) | Mittel |
+| 1 | Über mich | Klein |
+| 2 | Prozess (4 Schritte) | Mittel |
+| 3 | Projekte (2 Showcases + Detail-Ansicht) | Groß |
 
 ---
 
@@ -275,12 +277,12 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 - **Backend/DB:** keins – reines Frontend, KEIN Supabase, KEINE SQL/RLS. Claude macht Frontend-Code + Design + Content + kurze Claude-Code-Prompts.
 - **Vercel:** Account vorhanden, Auto-Deploy bei Push auf `main`
 - **Formspree:** Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` hinterlegt
-- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero + Problem stehen, als Nächstes die Leistungen
+- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero + Problem + Leistungen stehen, als Nächstes „Über mich"
 - **Betriebssystem:** Windows
 - **Projektdateien-Pfad:** C:\Users\l.lang\REPOS\leons-webseite
 - **Projektdateien (Claude AI):** PROJEKT-STAND.md, CURRENT-SCHEMA.md
 - **Repo-Dateien:** CLAUDE.md (Root), docs/PROJEKT-STAND.md, docs/CURRENT-SCHEMA.md, docs/CLAUDE-CODE-TODO.md
-- **Nächste Aufgabe:** Leistungen-Sektion bauen (4 Karten)
+- **Nächste Aufgabe:** „Über mich"-Sektion bauen
 
 ---
 
