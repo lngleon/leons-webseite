@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* Dark Mode über die .dark-Klasse am <html> (Toggle), nicht über prefers-color-scheme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Globale Design-Tokens (nicht moduspezifisch). */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+/* Semantische Farb-Tokens → als Tailwind-Utilities nutzbar:
+   bg-background, text-foreground, text-accent, border-border, ring-ring, …
+   "inline" sorgt dafür, dass die Utilities die CSS-Variablen referenzieren
+   und so live auf den Theme-Wechsel (.dark) reagieren. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+}
+
+/* ============================================================
+   LIGHT MODE (Default-Werte) – edel-zurückhaltend, Schwarz/Weiß/Grau
+   ============================================================ */
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --muted: #f4f4f5;
+  --muted-foreground: #52525b;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --border: #e4e4e7;
+  --ring: var(--accent);
+
+  /* ╔══════════════════════════════════════════════════════════╗
+     ║  AKZENTFARBE – PLATZHALTER                                ║
+     ║  Die EINZIGE Stelle, an der die Akzentfarbe gesetzt wird. ║
+     ║  Gilt für Dark + Light. Später hier den finalen Wert      ║
+     ║  eintragen – die ganze Seite zieht automatisch nach.      ║
+     ╚══════════════════════════════════════════════════════════╝ */
+  --accent: #c8a96a;
+  --accent-foreground: #1a1a1a;
+}
+
+/* ============================================================
+   DARK MODE (Default-Theme der Seite) – Überschreibungen
+   ============================================================ */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --card: #111113;
+  --card-foreground: #fafafa;
+  --border: #27272a;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
