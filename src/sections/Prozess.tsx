@@ -1,10 +1,20 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import SectionHeading from '@/components/SectionHeading'
 import { processIntro, processSteps } from '@/data/process'
 
 export default function Prozess() {
   const reduce = useReducedMotion()
+
+  // Bewusst useInView + animate statt whileInView: Die Stagger-/Linien-
+  // Orchestrierung läuft über zwei Verschachtelungsebenen (ol → li → Linien).
+  // Die whileInView-Geste propagiert diesen tiefen Variant-Baum NICHT zuverlässig,
+  // wenn die Sektion beim Laden bereits im Viewport liegt (Reload an dieser
+  // Scroll-Position) – dann blieben Schritte und Linie stehen. Ein per State
+  // gesteuertes `animate` propagiert die Varianten dagegen verlässlich.
+  const stepsRef = useRef<HTMLOListElement>(null)
+  const stepsInView = useInView(stepsRef, { once: true, amount: 0.2 })
 
   // Reduced-motion: keine Bewegung/kein Aufbau – alles direkt im Endzustand.
   const container: Variants = {
@@ -48,10 +58,10 @@ export default function Prozess() {
         </motion.div>
 
         <motion.ol
+          ref={stepsRef}
           variants={container}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
+          animate={stepsInView ? 'show' : 'hidden'}
           className="relative mt-14 flex flex-col md:flex-row"
         >
           {processSteps.map((item, index) => {
