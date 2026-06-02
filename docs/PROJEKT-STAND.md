@@ -58,8 +58,8 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 | Phase | Beschreibung | Status |
 |-------|-------------|--------|
 | 0 | Discovery (Interview) | ✅ Abgeschlossen |
-| 1 | Infrastruktur-Setup (GitHub, Vercel, Formspree, lokale Umgebung) | ⬜ Offen |
-| 2 | Aufbau & Sektionen via Claude Code | ⬜ Offen |
+| 1 | Infrastruktur-Setup (GitHub, Vercel, Formspree, lokale Umgebung) | ✅ Abgeschlossen |
+| 2 | Aufbau & Sektionen via Claude Code | 🔄 In Arbeit (Grundgerüst steht) |
 | 3 | Content & Feinschliff (Logo, Texte, Recht, Akzentfarbe) | ⬜ Offen |
 | 4 | Testing | ⬜ Offen |
 | 5 | Launch / Domain | ⬜ Offen |
@@ -192,7 +192,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Feature | UI | Status |
 |---------|----|--------|
-| Grundgerüst (Layout, Theme-Toggle, Navigation, Footer) | ⬜ | Offen |
+| Grundgerüst (Layout, Theme-Toggle, Navigation, Footer) | ✅ | Fertig |
 | Hero (Claim + Unterzeile + 4 animierte Zähler) | ⬜ | Offen |
 | Problem-Sektion (4 Schmerzpunkte) | ⬜ | Offen |
 | Leistungen (4 Karten) | ⬜ | Offen |
@@ -200,9 +200,9 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | Prozess (4 Schritte) | ⬜ | Offen |
 | Projekte (2 Showcases + Detail-Ansicht) | ⬜ | Offen |
 | Kontakt (Formspree-Formular + direkte Buttons) | ⬜ | Offen |
-| Dark/Light-Toggle | ⬜ | Offen |
-| Responsive Layout | ⬜ | Offen |
-| Impressum + Datenschutz (Platzhalter-Seiten) | ⬜ | Offen |
+| Dark/Light-Toggle | ✅ | Fertig (zentrale CSS-Variablen, Dark default) |
+| Responsive Layout | 🔄 | Grundgerüst responsive; pro Sektion mitprüfen |
+| Impressum + Datenschutz (Platzhalter-Seiten) | ✅ | Platzhalter-Seiten + Footer-Links stehen (Inhalt offen) |
 
 ### Phase-2-Features (nach Launch)
 
@@ -235,6 +235,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
+| 02.06.2026 | **Session 1: Grundgerüst.** Vite + React + TS + Tailwind v4 + Framer Motion + react-router-dom aufgesetzt. Ordnerstruktur (components/pages/sections/hooks/lib/data/types). Zentrales CSS-Variablen-Theming (Dark default + Light per Toggle, `--accent` als einzelner Platzhalter für beide Modi). Navbar (Logo „LL", Anker-Nav, Toggle, CTA „Projekt anfragen", responsives Mobil-Menü) + Footer (Impressum/Datenschutz/Instagram). Routen `/` (leere Single-Page-Hülle), `/impressum`, `/datenschutz` (Platzhalter) + 404. `npm run build` läuft sauber durch. |
 | 02.06.2026 | **Session 0: Discovery.** Komplettes Konzept erarbeitet: Positionierung (premium/nahbar, keine Preise, Ziel = Kontakt), Single-Page mit 7 Sektionen, Design (Dark+Light mit Toggle, edel-zurückhaltend, Akzentfarbe offen), Tech-Stack (React/TS/Tailwind/Vite/Framer Motion, Vercel, Formspree, kein Backend), 2 Projekt-Showcases (Blumen Lang, Naillery), Claim „Veränderungen, die spürbar werden.", 4 Hero-Zähler, Prozess-Schritte, Problem-Schmerzpunkte, Kontaktdaten, rechtliche Unterseiten. Systemprompt + Projektdateien erstellt. |
 
 ---
@@ -243,7 +244,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | # | Beschreibung | Status |
 |---|-------------|--------|
-| – | noch keine | – |
+| 1 | Projekt-Grundgerüst (Vite/React/TS/Tailwind v4/Framer Motion/react-router-dom, Ordnerstruktur, Theme-Toggle, Navbar, Footer, Routen) | ✅ |
 
 ---
 
@@ -251,9 +252,9 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | # | Aufgabe | Aufwand |
 |---|---------|--------|
-| 1 | Infrastruktur aufsetzen (GitHub-Repo, Vercel, Formspree, lokale Umgebung) | Mittel |
-| 2 | Projekt-Grundgerüst via Claude Code (Vite-Setup, Ordnerstruktur, Theme-Toggle, Navigation, Footer) | Mittel |
-| 3 | Hero-Sektion bauen (Claim, Unterzeile, 4 animierte Zähler) | Mittel |
+| 1 | Hero-Sektion bauen (Claim, Unterzeile, 4 animierte Zähler) | Mittel |
+| 2 | Problem-Sektion (4 Schmerzpunkte) | Mittel |
+| 3 | Leistungen (4 Karten) | Mittel |
 
 ---
 
@@ -265,16 +266,16 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 ## Verhaltensregeln für nächsten Chat
 
-- **Repo:** wird beim Infrastruktur-Setup festgelegt
+- **Repo:** `lngleon/leons-webseite` (GitHub), Branch `main`
 - **Backend/DB:** keins – reines Frontend, KEIN Supabase, KEINE SQL/RLS. Claude macht Frontend-Code + Design + Content + kurze Claude-Code-Prompts.
-- **Vercel:** Account vorhanden, Projekt noch anzulegen
-- **Formspree:** Account noch anzulegen, Endpoint danach hinterlegen
-- **Phase:** 1 (Infrastruktur-Setup) als Nächstes
+- **Vercel:** Account vorhanden, Auto-Deploy bei Push auf `main`
+- **Formspree:** Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` hinterlegt
+- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst steht, als Nächstes die Hero-Sektion
 - **Betriebssystem:** Windows
-- **Projektdateien-Pfad:** C:\Users\l.lang\REPOS\Leons Webseite
+- **Projektdateien-Pfad:** C:\Users\l.lang\REPOS\leons-webseite
 - **Projektdateien (Claude AI):** PROJEKT-STAND.md, CURRENT-SCHEMA.md
 - **Repo-Dateien:** CLAUDE.md (Root), docs/PROJEKT-STAND.md, docs/CURRENT-SCHEMA.md, docs/CLAUDE-CODE-TODO.md
-- **Nächste Aufgabe:** „Infrastruktur aufsetzen" → INFRASTRUKTUR-SETUP.md abarbeiten
+- **Nächste Aufgabe:** Hero-Sektion bauen (Claim, Unterzeile, 4 animierte Zähler)
 
 ---
 

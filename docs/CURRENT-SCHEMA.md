@@ -113,7 +113,7 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 |-------|--------|--------|
 | Logo „LL" (hell) | ⬜ noch zu erstellen | `public/` |
 | Logo „LL" (dunkel) | ⬜ noch zu erstellen | `public/` |
-| Favicon | ⬜ noch zu erstellen | `public/` |
+| Favicon | 🔄 Platzhalter vorhanden (`public/favicon.svg`, „LL"-Monogramm) | `public/` |
 | Projekt-Bilder | ⬜ | `public/` |
 | Optionale Bewegtbild-/Glow-Elemente | ⬜ optional | code-basiert bevorzugt |
 
