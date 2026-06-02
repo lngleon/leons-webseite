@@ -193,7 +193,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | Feature | UI | Status |
 |---------|----|--------|
 | Grundgerüst (Layout, Theme-Toggle, Navigation, Footer) | ✅ | Fertig |
-| Hero (Claim + Unterzeile + 4 animierte Zähler) | ⬜ | Offen |
+| Hero (Claim + Unterzeile + 4 animierte Zähler) | ✅ | Fertig |
 | Problem-Sektion (4 Schmerzpunkte) | ⬜ | Offen |
 | Leistungen (4 Karten) | ⬜ | Offen |
 | Über mich | ⬜ | Offen |
@@ -235,6 +235,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
+| 02.06.2026 | **Session 2: Hero-Sektion.** Erste Sektion der Single-Page gebaut: volle Höhe, Headline „Veränderungen, die spürbar werden." + Unterzeile, 4 Zähler die beim Sichtbarwerden hochzählen (2 Live-Projekte · 3 Tools entwickelt · 100 % individuell programmiert · 1 Person, voller Stack), CTA „Projekt anfragen" → Anker `#kontakt`. Wiederverwendbare `Counter`-Komponente (Framer Motion `useInView`, reduced-motion-sicher), Hero-Content im Data-Layer (`src/data/hero.ts`). Dark + Light, responsive, Akzent nur über `--accent` (inkl. dezentem Glow). `npm run build` läuft. |
 | 02.06.2026 | **Session 1: Grundgerüst.** Vite + React + TS + Tailwind v4 + Framer Motion + react-router-dom aufgesetzt. Ordnerstruktur (components/pages/sections/hooks/lib/data/types). Zentrales CSS-Variablen-Theming (Dark default + Light per Toggle, `--accent` als einzelner Platzhalter für beide Modi). Navbar (Logo „LL", Anker-Nav, Toggle, CTA „Projekt anfragen", responsives Mobil-Menü) + Footer (Impressum/Datenschutz/Instagram). Routen `/` (leere Single-Page-Hülle), `/impressum`, `/datenschutz` (Platzhalter) + 404. `npm run build` läuft sauber durch. |
 | 02.06.2026 | **Session 0: Discovery.** Komplettes Konzept erarbeitet: Positionierung (premium/nahbar, keine Preise, Ziel = Kontakt), Single-Page mit 7 Sektionen, Design (Dark+Light mit Toggle, edel-zurückhaltend, Akzentfarbe offen), Tech-Stack (React/TS/Tailwind/Vite/Framer Motion, Vercel, Formspree, kein Backend), 2 Projekt-Showcases (Blumen Lang, Naillery), Claim „Veränderungen, die spürbar werden.", 4 Hero-Zähler, Prozess-Schritte, Problem-Schmerzpunkte, Kontaktdaten, rechtliche Unterseiten. Systemprompt + Projektdateien erstellt. |
 
@@ -245,6 +246,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | # | Beschreibung | Status |
 |---|-------------|--------|
 | 1 | Projekt-Grundgerüst (Vite/React/TS/Tailwind v4/Framer Motion/react-router-dom, Ordnerstruktur, Theme-Toggle, Navbar, Footer, Routen) | ✅ |
+| 2 | Hero-Sektion (volle Höhe, Headline + Unterzeile, 4 hochzählende Zähler, CTA → #kontakt) | ✅ |
 
 ---
 
@@ -252,9 +254,9 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | # | Aufgabe | Aufwand |
 |---|---------|--------|
-| 1 | Hero-Sektion bauen (Claim, Unterzeile, 4 animierte Zähler) | Mittel |
-| 2 | Problem-Sektion (4 Schmerzpunkte) | Mittel |
-| 3 | Leistungen (4 Karten) | Mittel |
+| 1 | Problem-Sektion (4 Schmerzpunkte) | Mittel |
+| 2 | Leistungen (4 Karten) | Mittel |
+| 3 | Über mich | Klein |
 
 ---
 
@@ -270,12 +272,12 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 - **Backend/DB:** keins – reines Frontend, KEIN Supabase, KEINE SQL/RLS. Claude macht Frontend-Code + Design + Content + kurze Claude-Code-Prompts.
 - **Vercel:** Account vorhanden, Auto-Deploy bei Push auf `main`
 - **Formspree:** Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` hinterlegt
-- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst steht, als Nächstes die Hero-Sektion
+- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero stehen, als Nächstes die Problem-Sektion
 - **Betriebssystem:** Windows
 - **Projektdateien-Pfad:** C:\Users\l.lang\REPOS\leons-webseite
 - **Projektdateien (Claude AI):** PROJEKT-STAND.md, CURRENT-SCHEMA.md
 - **Repo-Dateien:** CLAUDE.md (Root), docs/PROJEKT-STAND.md, docs/CURRENT-SCHEMA.md, docs/CLAUDE-CODE-TODO.md
-- **Nächste Aufgabe:** Hero-Sektion bauen (Claim, Unterzeile, 4 animierte Zähler)
+- **Nächste Aufgabe:** Problem-Sektion bauen (4 Schmerzpunkte)
 
 ---
 
