@@ -11,8 +11,7 @@
 
 ## Backlog (Phase 2 – Reihenfolge)
 
-1. Kontakt: Formspree-Formular (VITE_FORMSPREE_ENDPOINT) + direkte Buttons (Mail/WhatsApp/Instagram)
-2. Impressum + Datenschutz: Inhalte einfügen (Platzhalter-Seiten + Footer-Links stehen bereits)
+1. Impressum + Datenschutz: Inhalte einfügen (Platzhalter-Seiten + Footer-Links stehen bereits)
 
 ## Erledigt
 
@@ -24,3 +23,4 @@
 - [x] Leistungen-Sektion: Überschrift „Das baue ich für dich." + Unterzeile, 4 Karten im 2×2-Grid (mobil 1 Spalte), Rhythmus wie Problem-Sektion. `Card` + `SectionHeading` wiederverwendet, je Karte ein dezentes Icon. Karte 4 (KI-Integration) als Highlight via neuer `highlight`-Prop (Akzent dauerhaft aktiv, kein Badge). Dark + Light, responsive, Akzent nur über `--accent`. `npm run build` läuft.
 - [x] „Über mich"-Sektion: zweispaltiges Layout (Foto-Platzhalter links / Text rechts, mobil gestapelt mit Foto oben), `id="ueber-mich"`. Eyebrow + Überschrift via `SectionHeading`, 3 Absätze. Porträt-Platzhalter als gerahmte Hülle im Hochformat (4∶5), Initialen „LL" + „Porträt folgt", bereit für echtes Bild in Phase 3. Dark + Light, responsive, Akzent nur über `--accent`, Fade-up beim Scrollen. `npm run build` läuft.
 - [x] „Prozess"-Sektion: 4 nummerierte Schritte als sichtbare Abfolge 1→4 (`<ol>`/`<li>`-Stepper, kein loses Card-Grid), `id="prozess"`. Verbindungslinie zwischen den Schritten: Desktop horizontal, Mobil vertikal. Akzent-getönte Nummern, Linie baut sich progressiv auf (Stagger), reduced-motion-sicher. Überschrift „So entsteht dein Projekt." + Unterzeile via `SectionHeading`, Content im Data-Layer (`src/data/process.ts`). Dark + Light, responsive, Akzent nur über `--accent`. `npm run build` läuft.
+- [x] „Kontakt"-Sektion: zweispaltig (Formular links / „Lieber direkt?" + 3 Buttons rechts, mobil gestapelt mit Formular oben), `id="kontakt"`. Formspree-Versand (`VITE_FORMSPREE_ENDPOINT`) mit State-Machine idle→sending→success/error, Client-Validierung (Pflichtfelder + E-Mail), Erfolg leert das Formular. Direkte Buttons: Mail/WhatsApp/Instagram (geteilte `BrandIcons`, Footer darauf umgestellt). `--destructive`-Token (beide Modes) für Fehler. a11y-Härtung nach adversariellem Review: Fokus springt zum ersten Fehlerfeld, Fokus ins Erfolgs-Panel, Doppelsende-Guard, Placeholder-Kontrast. Dark + Light, responsive, Akzent nur über `--accent`, Fade-up. `npm run build` läuft.

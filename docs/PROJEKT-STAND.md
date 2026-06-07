@@ -71,7 +71,7 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 | Komponente | Status | Details |
 |------------|--------|---------|
 | GitHub | ✅ | Repo `lngleon/leons-webseite`, Branch `main` (SSH-Alias `github-lngleon`) |
-| Vercel | ✅ | Mit Repo verbunden, Auto-Deploy bei Push auf `main` |
+| Vercel | ⚠️ | Account `lngleon` hat KEIN Projekt → kein Auto-Deploy; Repo verbinden oder anderen Vercel-Login prüfen (07.06.2026 per CLI geprüft) |
 | Formspree | ✅ | Formular-Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` |
 | Lokale Umgebung | ✅ | VS Code + Claude Code Extension, Repo geklont |
 | .env (Formspree-Endpoint) | ✅ | `.env.local` mit `VITE_FORMSPREE_ENDPOINT` hinterlegt |
@@ -199,7 +199,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | Über mich | ✅ | Fertig (2-spaltig, Porträt-Platzhalter) |
 | Prozess (4 Schritte) | ✅ | Fertig (nummerierte Abfolge mit Verbindungslinie) |
 | Projekte (2 Showcases + Detail-Ansicht) | ⬜ | Offen |
-| Kontakt (Formspree-Formular + direkte Buttons) | ⬜ | Offen |
+| Kontakt (Formspree-Formular + direkte Buttons) | ✅ | Fertig (Formular + 3 Direkt-Buttons, a11y-geprüft) |
 | Dark/Light-Toggle | ✅ | Fertig (zentrale CSS-Variablen, Dark default) |
 | Responsive Layout | 🔄 | Grundgerüst responsive; pro Sektion mitprüfen |
 | Impressum + Datenschutz (Platzhalter-Seiten) | ✅ | Platzhalter-Seiten + Footer-Links stehen (Inhalt offen) |
@@ -237,6 +237,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
+| 07.06.2026 | **Session 6: „Kontakt"-Sektion (letzte Sektion).** Zweispaltig (`id="kontakt"`): links Formspree-Formular (`VITE_FORMSPREE_ENDPOINT`, JSON-POST), rechts „Lieber direkt?" mit 3 Buttons (Mail/WhatsApp/Instagram); auf Mobil gestapelt mit Formular oben. State-Machine idle→sending→success/error, Client-Validierung (Pflichtfelder + E-Mail-Format), Erfolg leert das Formular + Erfolgsmeldung, Fehler retrybar. Neues `--destructive`-Theme-Token (beide Modes) für Validierungs-/Fehlerfarben. Geteilte `BrandIcons` (Instagram + WhatsApp) angelegt, Footer darauf umgestellt. **Adversarielles Review-Workflow** über das Formular → 5 bestätigte Findings: a11y-Fixes angewandt (Fokus zum ersten Fehlerfeld bei Validierung [WCAG 3.3.1], Fokus ins Erfolgs-Panel [2.4.3], Doppelsende-Guard via ref, Placeholder-Kontrast `/80`). Offen/Phase 3: Light-Mode-Kontrast der Akzentfarbe als Text + Fokusring (siehe „Bekannte Bugs"). Dark + Light, responsive, Akzent nur über `--accent`, Fade-up. `npm run build` läuft. |
 | 02.06.2026 | **Session 5: Bugfix Prozess-Animation.** Beim Neuladen mit der Sektion im Viewport liefen Schritt-Stagger und Linien-Aufbau nicht (beim Reinscrollen schon), nur bei Prozess. Ursache: `whileInView`-Geste propagiert den tiefen Variant-Baum (`ol → li → Linien`) beim „bereits im Viewport beim Mount"-Fall unzuverlässig. Fix: Orchestrierung auf `useInView` + gesteuertes `animate` umgestellt (statt `whileInView`); reduced-motion-Verhalten unverändert. `npm run build` läuft. Siehe „Bekannte Bugs". |
 | 02.06.2026 | **Session 4: „Prozess"-Sektion.** Fünfte Sektion auf `/` (`id="prozess"`): vier nummerierte Schritte als sichtbare Abfolge 1→4 (Kennenlernen & Idee → Konzept & Design → Umsetzung → Launch & Betreuung) als `<ol>`/`<li>`-Stepper, NICHT als loses Card-Grid. Verbindungslinie zwischen den Schritten: Desktop horizontal, Mobil vertikal gestapelt (zwei Connector-Elemente je Schritt, `scaleX`/`scaleY`). Akzent-getönte Nummern-Badges. Animation (reduced-motion-sicher via `useReducedMotion`): Schritte blenden gestaffelt beim Scrollen ein, Linie baut sich progressiv auf. Überschrift „So entsteht dein Projekt." + Unterzeile via `SectionHeading`, Content im Data-Layer (`src/data/process.ts`). Dark + Light, responsive, Akzent nur über `--accent`. `npm run build` läuft. |
 | 02.06.2026 | **Session 3: „Über mich"-Sektion.** Vierte Sektion auf `/` (`id="ueber-mich"`, Ziel für den Navbar-Anker): zweispaltiges Layout – Foto-Platzhalter links, Text rechts; auf Mobil gestapelt mit Foto oben. `SectionHeading` (links ausgerichtet) für Eyebrow „Über mich" + Überschrift „Die Person hinter dem Code.", darunter 3 Absätze. Porträt-Platzhalter als gerahmte Hülle (Rand + Rundung) im Hochformat (4∶5), `bg-muted` (mode-adaptiv), Initialen „LL" + Caption „Porträt folgt" – bereit, das echte Bild in Phase 3 als `object-cover`-`<img>` einzusetzen. Content im Data-Layer (`src/data/about.ts`). Dark + Light, responsive, Akzent nur über `--accent`, Fade-up + Stagger beim Scrollen. `npm run build` läuft. |
@@ -257,6 +258,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | 5 | Leistungen-Sektion (4 Karten 2×2, Card/SectionHeading wiederverwendet, KI-Karte als dauerhaftes Akzent-Highlight) | ✅ |
 | 6 | „Über mich"-Sektion (2-spaltig, Porträt-Platzhalter Hochformat links / Text rechts, mobil gestapelt) | ✅ |
 | 7 | „Prozess"-Sektion (4 nummerierte Schritte als Abfolge, Verbindungslinie horizontal/vertikal, progressiver Aufbau) | ✅ |
+| 8 | „Kontakt"-Sektion (Formspree-Formular mit State-Machine/Validierung + 3 Direkt-Buttons, adversariell a11y-geprüft) | ✅ |
 
 ---
 
@@ -264,15 +266,16 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | # | Aufgabe | Aufwand |
 |---|---------|--------|
-| 1 | Projekte (2 Showcases + Detail-Ansicht) | Groß |
-| 2 | Kontakt (Formspree-Formular + direkte Buttons) | Mittel |
-| 3 | Impressum + Datenschutz: Inhalte einfügen | Klein |
+| 1 | Projekte (2 Showcases + interaktive Detail-Ansicht) | Groß |
+| 2 | Impressum + Datenschutz: Inhalte einfügen | Klein |
+| 3 | Akzentfarbe finalisieren + AA-Kontrast prüfen (Phase 3) | Mittel |
 
 ---
 
 ## Bekannte Bugs
 
 - ✅ **Behoben – Prozess-Animation lief beim Neuladen nicht.** Lag die Sektion beim Laden bereits im Viewport (Reload an dieser Scroll-Position), liefen weder Schritt-Stagger noch Linien-Aufbau; beim Reinscrollen liefen sie. Betraf NUR Prozess. **Ursache:** Die `whileInView`-Geste propagiert den tief verschachtelten Variant-Baum (`ol → li → Verbindungslinien`, zwei Ebenen) beim „bereits im Viewport beim Mount"-Fall nicht zuverlässig. Die flacheren Sektionen (eine Ebene) waren nicht betroffen. **Fix:** Orchestrierung über `useInView` + gesteuertes `animate={inView ? 'show' : 'hidden'}` statt `whileInView`. Reduced-motion-Verhalten unverändert.
+- ⬜ **Offen (Phase 3) – Light-Mode-Kontrast der Akzentfarbe.** Die Platzhalter-Akzentfarbe `--accent` (#c8a96a) erreicht als TEXT auf hellem Grund nur ~2.25:1 (AA verlangt 4.5:1), und der Fokusring (`--ring: var(--accent)`) liegt unter 3:1 (WCAG 1.4.11). Betrifft nur den Light-Mode (Dark ist ok), u.a. beim „Noch eine Nachricht schreiben"-Button im Kontakt-Formular. Bewusst NICHT jetzt gefixt, da `--accent` ein Platzhalter ist (Festlegung „am lebenden Objekt"). **Beim Setzen der finalen Akzentfarbe:** AA-Kontrast für Akzent-als-Text + Fokusring im Light-Mode sicherstellen, ggf. via separatem dunklerem Token (`--accent-strong`) bzw. per-Mode-Ring. Aufgedeckt durch adversarielles Review der Kontakt-Sektion.
 
 ---
 
@@ -281,9 +284,9 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 - **Repo:** `lngleon/leons-webseite` (GitHub), Branch `main`
 - **Git/SSH:** Remote `origin` = `git@github-lngleon:lngleon/leons-webseite.git`. Das Repo ist an den SSH-Alias `github-lngleon` gebunden – Push läuft darüber. Hintergrund: Auf der Maschine existiert ein zweiter GitHub-Account („Dkllang"), deshalb die SSH-Bindung statt globalem Default. Bei Git-Problemen zuerst den Remote/SSH-Alias prüfen.
 - **Backend/DB:** keins – reines Frontend, KEIN Supabase, KEINE SQL/RLS. Claude macht Frontend-Code + Design + Content + kurze Claude-Code-Prompts.
-- **Vercel:** Account vorhanden, Auto-Deploy bei Push auf `main`
+- **Vercel:** ⚠️ Unter dem eingeloggten Vercel-Account (`lngleon`) existiert KEIN Projekt → Pushes auf `main` lösen aktuell KEINEN Auto-Deploy aus. Entweder Repo in Vercel verbinden oder der Deploy liegt unter einem anderen Vercel-Login (ggf. via `Dkllang`) – zu verifizieren. (07.06.2026 per CLI geprüft.)
 - **Formspree:** Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` hinterlegt
-- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero + Problem + Leistungen + Über mich + Prozess stehen, als Nächstes die Projekte
+- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero + Problem + Leistungen + Über mich + Prozess + Kontakt stehen; es fehlt nur noch die Projekte-Sektion, dann ist Phase 2 inhaltlich komplett.
 - **Betriebssystem:** Windows
 - **Projektdateien-Pfad:** C:\Users\l.lang\REPOS\leons-webseite
 - **Projektdateien (Claude AI):** PROJEKT-STAND.md, CURRENT-SCHEMA.md
