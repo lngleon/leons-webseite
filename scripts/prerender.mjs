@@ -9,7 +9,7 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
-const ROUTES = ['/', '/impressum', '/datenschutz']
+const ROUTES = ['/', '/impressum', '/datenschutz', '/möglichkeiten']
 
 // Pro-Route-Metadaten. Quelle der Wahrheit für Title/Description/OG.
 // og:title/og:description spiegeln Title/Desc; og:type = "website".
@@ -27,6 +27,11 @@ const META = {
   '/datenschutz': {
     title: 'Datenschutz – Leon Lang',
     description: 'Datenschutzerklärung von Leon Lang.',
+  },
+  '/möglichkeiten': {
+    title: 'Möglichkeiten – Leon Lang',
+    description:
+      'Interaktive Demos und Effekte – ein Einblick, was für deine Seite möglich ist.',
   },
 }
 
