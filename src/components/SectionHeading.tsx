@@ -26,7 +26,7 @@ export default function SectionHeading({
       )}
     >
       {eyebrow && (
-        <span className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
+        <span className="accent-gradient-text text-xs font-medium uppercase tracking-[0.2em]">
           {eyebrow}
         </span>
       )}

@@ -15,9 +15,9 @@ Kontaktformular: Formspree (extern). KEIN Supabase, KEINE Datenbank, KEINE SQL/R
 
 ## Regeln
 - Deutsche UI-Texte, durchgehend "Du"-Ansprache
-- Dark + Light Mode bei JEDER UI-Änderung beide mitbauen, Start in Dark
+- Dark-only (kein Light Mode, kein Theme-Toggle) – Near-Black/Weiß/Grau-Basis. (Am 08.06.2026 von Dark+Light auf Dark-only umgestellt.)
 - Responsive: Desktop-first, Mobil voll funktionsfähig
-- Akzentfarbe NUR über eine zentrale CSS-Variable, niemals Farbwerte hardcoden
+- Akzent NUR über zentrale CSS-Variablen, niemals Farbwerte hardcoden: flach `--accent`/`--accent-solid` (Ränder, Icons, kleine UI, Fokusring) + Violett-Gradient `--accent-gradient`/`--accent-gradient-strong` nur auf Showcase-Flächen
 - Keine Preise auf der Seite
 - Animationen (Framer Motion) subtil und edel, nie verspielt
 - Formspree-Endpoint aus .env.local lesen (VITE_FORMSPREE_ENDPOINT), nie hardcoden

@@ -119,10 +119,8 @@ export default function Terminal() {
   }
 
   return (
-    // .dark = eigenständige „dunkle Insel": das Terminal nutzt überall die
-    // Dark-Mode-Werte der Theme-Variablen, egal welcher Seiten-Mode aktiv ist.
-    <div className="dark">
-      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-black/40">
+    // Dark-only: das Terminal nutzt direkt die (einzigen) Theme-Variablen.
+    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-black/40">
         {/* Fensterleiste: dezente Punkte + Tabs (keine Refresh-/Download-Buttons) */}
         <div className="flex items-center gap-3 border-b border-border bg-muted/60 px-4 py-2.5">
           <div className="flex items-center gap-1.5" aria-hidden="true">
@@ -175,6 +173,5 @@ export default function Terminal() {
           <TerminalOutput key={activeKey} lines={tab.lines} reduced={reduced} />
         </div>
       </div>
-    </div>
   )
 }
