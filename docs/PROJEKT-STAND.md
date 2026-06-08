@@ -59,8 +59,8 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 |-------|-------------|--------|
 | 0 | Discovery (Interview) | ✅ Abgeschlossen |
 | 1 | Infrastruktur-Setup (GitHub, Vercel, Formspree, lokale Umgebung) | ✅ Abgeschlossen |
-| 2 | Aufbau & Sektionen via Claude Code | 🔄 Aktiv (Grundgerüst, Hero, Problem stehen) |
-| 3 | Content & Feinschliff (Logo, Texte, Recht, Akzentfarbe) | ⬜ Offen |
+| 2 | Aufbau & Sektionen via Claude Code | 🔄 Aktiv (alle Sektionen stehen außer Projekte) |
+| 3 | Content & Feinschliff (Logo, Texte, Recht, Akzentfarbe) | 🔄 Akzentfarbe ✅ (Violett); Logo/Favicon, Impressum/Datenschutz-Texte offen |
 | 4 | Testing | ⬜ Offen |
 | 5 | Launch / Domain | ⬜ Offen |
 
@@ -86,17 +86,17 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 - Formspree-Account anlegen, Formular erstellen, Endpoint kopieren
 - Lokale Umgebung: VS Code, Claude Code Extension, ggf. `.env`
 - CLAUDE.md + docs/ im Repo anlegen
-- Erster Claude-Code-Prompt: Projekt-Grundgerüst (Vite, Tailwind, Framer Motion, Ordnerstruktur, Dark/Light-Basis)
+- Erster Claude-Code-Prompt: Projekt-Grundgerüst (Vite, Tailwind, Framer Motion, Ordnerstruktur, Dark-Basis)
 - Ablauf folgt INFRASTRUKTUR-SETUP.md, ein Schritt pro Nachricht
 
 ### Phase 2: Aufbau & Sektionen via Claude Code
-- Reihenfolge: Grundgerüst (Layout, Theme-Toggle, Navigation, Footer) → Hero → restliche Sektionen
+- Reihenfolge: Grundgerüst (Layout, Navigation, Footer) → Hero → restliche Sektionen
 - Sektionen: Hero · Problem · Leistungen · Über mich · Prozess · Projekte · Kontakt
-- Dark/Light bei jeder Sektion mitbauen, Responsive prüfen
+- Dark-only; Responsive bei jeder Sektion prüfen
 - Impressum- + Datenschutz-Seiten als Platzhalter anlegen, im Footer verlinken
 
 ### Phase 3: Content & Feinschliff
-- Logo „LL" + Favicon einbinden (hell + dunkel)
+- Logo „LL" + Favicon einbinden (für dunklen Hintergrund – Dark-only)
 - Akzentfarbe festlegen und zentrale CSS-Variable füllen ✅ (08.06.2026: Violett, per-Mode-Tokens)
 - Impressum- + Datenschutz-Texte einfügen (vom User generiert)
 - Projekt-Links auf finale Domains umstellen, sobald verfügbar
@@ -104,7 +104,7 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 
 ### Phase 4: Testing
 - TESTCHECKLISTE.md anlegen (erst jetzt)
-- Pro Sektion: Dark + Light, Desktop + Mobil, Animationen, Formular-Versand
+- Pro Sektion: Desktop + Mobil, Animationen (inkl. reduced-motion), Formular-Versand
 - Bug-Tabelle mit Status
 
 ### Phase 5: Launch / Domain
@@ -197,7 +197,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Feature | UI | Status |
 |---------|----|--------|
-| Grundgerüst (Layout, Theme-Toggle, Navigation, Footer) | ✅ | Fertig |
+| Grundgerüst (Layout, Navigation, Footer) | ✅ | Fertig |
 | Hero (Claim + Unterzeile + 4 animierte Zähler) | ✅ | Fertig – 2-spaltig mit animiertem Hintergrund + Terminal (tippt Build-Output) |
 | Problem-Sektion (4 Schmerzpunkte) | ✅ | Fertig |
 | Leistungen (4 Karten) | ✅ | Fertig – je Karte ein lebendes Schaubild (Browser/App/Redesign/KI-Chat), Karte 4 Highlight |
@@ -205,7 +205,6 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | Prozess (4 Schritte) | ✅ | Fertig (nummerierte Abfolge mit Verbindungslinie) |
 | Projekte (2 Showcases + Detail-Ansicht) | ⬜ | Offen |
 | Kontakt (Formspree-Formular + direkte Buttons) | ✅ | Fertig (Formular + 3 Direkt-Buttons, a11y-geprüft) |
-| Dark/Light-Toggle | — | Entfernt (08.06.2026 → Dark-only) |
 | Responsive Layout | 🔄 | Grundgerüst responsive; pro Sektion mitprüfen |
 | Impressum + Datenschutz (Platzhalter-Seiten) | ✅ | Platzhalter-Seiten + Footer-Links stehen (Inhalt offen) |
 
@@ -213,8 +212,8 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Feature | Beschreibung | Priorität |
 |---------|-------------|-----------|
-| Akzentfarbe setzen | ✅ Violett gesetzt (08.06.2026), per-Mode-Tokens, Light-Mode-AA verifiziert | erledigt |
-| Logo + Favicon einbinden | „LL"-Monogramm, hell + dunkel | Hoch |
+| Akzentfarbe setzen | ✅ Violett (08.06.2026): flach `--accent`/`--accent-solid` + `--accent-gradient(-strong)` (Dark-only) | erledigt |
+| Logo + Favicon einbinden | „LL"-Monogramm (für dunklen Hintergrund, Dark-only) | Hoch |
 | Eigene Domain | statt Vercel-Adresse | Mittel |
 | Professionelle E-Mail | ersetzt Gmail im Formular + Button | Mittel |
 | Resend statt Formspree | optionaler Umstieg, sobald eigene Domain steht | Niedrig |
@@ -243,12 +242,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
-| 08.06.2026 | **Code-Tag-Politur (Stil-Pass).** Neue rein dekorative Inline-Komponente `CodeTag` + Helper `withCodeTags` (Mono, FLACHER Akzent-Hintergrund/-Rahmen, KEIN Gradient, nowrap, vertikal mittig). Sparsam auf echte, bereits vorhandene Begriffe gesetzt: Hero-Unterzeile `Web-Apps`; Leistungen/Web-Apps-Karte `Buchungssystem` + `Dashboards`; Prozess/Konzept & Design `Code`. Keine erfundenen Claims/Zahlen, nichts erzwungen (Absätze ohne passenden Begriff bleiben leer). Headlines/Eyebrows/CTAs/4 Schaubilder/Terminal/Hero-Hintergrund unangetastet; reduced-motion/a11y unverändert (Tags ohne Semantik). `npm run build` läuft. |
-| 08.06.2026 | **Dark-only-Umbau + Violett-Gradient-Akzent (Foundation).** Light Mode + Theme-Toggle entfernt: ein Token-Satz in `:root` (Dark-Werte), `color-scheme: dark`, `html` ohne Klasse; Inline-Theme-Script, `ThemeProvider`/`useTheme`/`ThemeToggle`/`Theme`-Typ und der Terminal-`.dark`-Scope raus (dead Light-Code entfernt). Neuer Akzent-Gradient als Source-of-Truth: `--accent-gradient` (helle→tiefe Violett-Stops, nur Text-Clip auf Near-Black) + `--accent-gradient-strong` (dunklere Hälfte für CTA-Füllung). Gradient NUR auf Showcase: Hero-Akzentwort „spürbar", die 4 Hero-Zahlen, primäre CTAs (Navbar/Hero/Kontakt), Sektions-Eyebrow – Text-Clip mit solidem Fallback (nie unsichtbar). Flaches `--accent`/`--accent-solid` + Fokusring bleiben flach (Ring nie Gradient). Kontrast objektiv verifiziert: CTA-Weiß ≥4.5:1 (min. 5.05:1), Showcase-Text auf Near-Black ≥4.5:1. Nicht kaputtgemacht: Terminal, 4 ServiceDiagramme, Hero-Generativ-Hintergrund, Counter, a11y/Fokusringe, Card/SectionHeading. reduced-motion bleibt. Adversariell reviewt (6 Agenten) → 0 Findings. `npm run build` läuft. Code-Tag-Politur folgt separat. |
-| 08.06.2026 | **Feinschliff Redesign-Schaubild.** Nur das „Redesign & Modernisierung"-Schaubild überarbeitet (andere 3 unangetastet): „Vorher" jetzt glaubwürdig hässlich/veraltet – eigene gedämpft-clashende Alt-Web-**Illustrationsfarben** (bewusst NICHT die Theme-/Akzent-Tokens; opak & dadurch in Dark + Light gleich lesbar), Serif, harte Bevel-Ränder, unterstrichenes Link-Blau, leicht schiefe/enge Anordnung. Ablauf erzählerischer: „Vorher" wird kurz gehalten (`delay 0.95s`), dann langsamer Wisch (`1.5s`) ins cleane, violett-akzentuierte „Nachher". Rahmen/Höhe + Loop-Disziplin unverändert (einmal beim Reinscrollen + Hover-Replay, keine Idle-Schleife); reduced-motion = statisches „Nachher". Marken-Akzent weiterhin nur über Tokens. `npm run build` läuft. |
-| 08.06.2026 | **Leistungen-Upgrade: lebende Schaubilder.** Jede der 4 Karten zeigt statt nur Icon ein kleines, lebendes Schaubild (alle ehrlich, KEINE erfundenen Zahlen/Counter): Webseiten = Mini-Browser, in dem sich ein Layout aufbaut; Web-Apps & Tools = UI das reagiert (Toggle kippt, Häkchen setzt sich, Ladebalken läuft – ohne Zahl); Redesign = Vorher/Nachher-Wisch (grau-eng → clean violett via `clip-path`); KI (Highlight) = Mini-Chat, Antwort streamt in die Bubble. EIN gemeinsamer, ruhiger Rahmen (`src/components/ServiceDiagram.tsx`); Animation läuft beim Reinscrollen GENAU EINMAL (per-Card `useInView`), danach statisches End-Frame – KEINE Dauerschleifen; Hover/Focus spielt erneut ab. reduced-motion = statisches End-Frame. Card/SectionHeading/2×2-Grid + Titel/Texte unverändert (nur `diagram`-Feld in `services.ts` ergänzt). Engine Framer Motion + CSS, kein neues Package; Akzent nur über `--accent`/`--accent-solid`, keine Hex-Werte. Adversariell reviewt (26 Agenten) → 0 bestätigte Findings. `npm run build` läuft. |
-| 08.06.2026 | **Hero-Umbau: generativer Hintergrund + Terminal.** Hero neu als 2-Spalten-Layout (Text/Zähler links, Terminal rechts; auf Mobil gestapelt, Terminal lesbar). Bestehender Inhalt erhalten (Claim, Unterzeile, 4 hochzählende Zähler, CTA → `#kontakt`); Counter-Logik unverändert. **Hintergrund** code-basiert: weiche Violett-Blobs (`color-mix` über `--accent`/`--accent-solid`, pro Mode adaptiv) + feines statisches SVG-Korn (gekacheltes `feTurbulence`), Blob-Drift via CSS-Keyframes (GPU-leicht), kein Neon, keine Bilder. **Terminal** (`src/components/Terminal.tsx`): bleibt in BEIDEN Modes dunkel via `.dark`-Scope-Div (nutzt die Dark-Werte der Theme-Tokens, Akzent `#a78bfa` lesbar), 4 Tabs (install · **build** default · deploy · whoami, kein test-Tab) mit echtem Output, Zeichen-für-Zeichen-Tippen pro Zeile, blinkender Cursor, Pfeiltasten-Tab-Navigation, keine Refresh-/Download-Buttons. **Engine** selbst gebaut (Framer Motion + CSS), kein neues Package. **reduced-motion:** statisches Frame (Blobs/Cursor via CSS-Gate aus, Tippen sofort fertig, Entrance gegated). **Adversarielles Review** (17 Agenten) → 5 Findings gefixt: H1 als Plain-Element (LCP sofort sichtbar), Hero-Entrance reduced-motion-gegated, Tabpanel fokussierbar (`tabIndex=0`), kein Tab-Wechsel-Flash (geketteter `key`-Remount), `will-change` entfernt. Offen/Follow-up: echter LCP-Gewinn bräuchte SSR/Prerender (Site ist reines CSR) – bewusst außerhalb des „nur Hero"-Scopes. `npm run build` läuft. |
-| 08.06.2026 | **Finale Akzentfarbe: Violett.** Platzhalter #c8a96a durch finale Violett-Werte ersetzt – ausschließlich über die zentralen CSS-Variablen, nichts hardcoden. Per-Mode-Tokens: `--accent` (Text/Rand/Icon/Linie/Glow) Dark #a78bfa / Light #6d28d9; neues `--accent-solid` für gefüllte Buttons (weiße Schrift, `--accent-foreground` = #fff) Dark #6d4dff / Light #6d28d9; die 4 CTA-/Submit-Buttons (Navbar ×2, Hero, Kontakt) auf `bg-accent-solid` umgestellt. **Light-Mode-Kontrast-Bug geschlossen:** Light `--accent` #6d28d9 erreicht als Text UND als Fokusring ~7.1:1 (≥ WCAG AA 4.5/3), Solid-Button weiß auf #6d28d9 ~7.1:1, Dark weiß auf #6d4dff ~5.1:1 – per Kontrastberechnung verifiziert. Kein neues Token nötig, da Light-Accent dunkel genug. `npm run build` läuft. Nur Farbe/Tokens, keine neuen Sektionen. |
+| 08.06.2026 | **Session 8: Look & Foundation (Violett · Dark-only · Schaubilder · Terminal · Code-Tags).** Mehrere Schritte dieser Session, zu einem kohärenten Eintrag zusammengeführt: **(1) Finale Akzentfarbe Violett** – Platzhalter #c8a96a ersetzt, ausschließlich über zentrale CSS-Variablen. **(2) Hero-Umbau** – 2-spaltig (Text/Zähler links, Terminal rechts; mobil gestapelt), code-basierter generativer Violett-Hintergrund (`color-mix`-Blobs + statisches SVG-`feTurbulence`-Korn, CSS-Keyframe-Drift, kein Neon/keine Bilder) + „Terminal", das echten Build-Output tippt (4 Tabs install/**build**/deploy/whoami, blinkender Cursor, Pfeiltasten-Tabs, keine Refresh-/Download-Buttons); bestehender Inhalt erhalten (Claim, Unterzeile, 4 hochzählende Zähler, CTA → `#kontakt`), Counter-Logik unverändert. **(3) Leistungen → lebende Schaubilder** – je Karte ein ehrliches Mini-Schaubild (Browser-Build-up · App-Reaktion · **Redesign Vorher/Nachher-Wisch** · KI-Chat-Stream), ein gemeinsamer ruhiger Rahmen (`ServiceDiagram.tsx`), einmal beim Reinscrollen + Hover-Replay, keine Dauerloops; Card/SectionHeading/2×2 + Titel/Texte unverändert. **(4) Dark-only + Violett-Gradient** – Light Mode + Theme-Toggle + dead Light-Code entfernt (ein `:root`-Token-Satz, `color-scheme: dark`, `html` ohne Klasse; ThemeProvider/useTheme/ThemeToggle/Theme-Typ + Terminal-`.dark`-Scope raus); Gradient-Tokens `--accent-gradient` (Showcase-Text-Clip mit solidem Fallback) + `--accent-gradient-strong` (CTA-Füllung, weiße Schrift ≥4.5:1 = min. 5.05:1, objektiv verifiziert); flaches `--accent`/`--accent-solid` + Fokusring bleiben flach (Ring nie Gradient); Gradient nur auf Showcase (Hero-Akzentwort „spürbar", 4 Hero-Zahlen, primäre CTAs, Eyebrow). **(5) Code-Tag-Politur** – dekorative Inline-`CodeTag` (Mono, flacher Akzent, kein Gradient) sparsam auf vorhandene Begriffe (`Web-Apps`, `Buchungssystem`/`Dashboards`, `Code`), keine erfundenen Claims/Zahlen. Durchweg reduced-motion-sicher, a11y/Fokusringe intakt; Terminal/4 Schaubilder/Hero-Hintergrund/Counter nicht kaputtgemacht. Adversariell reviewt (mehrere Workflows → keine offenen Findings). `npm run build` durchweg grün. **Offen/Follow-up:** echter LCP-Gewinn bräuchte Prerender/SSG (Seite ist reines CSR). |
 | 07.06.2026 | **Sektionen-Sprint – Zusammenfassung dieser Session.** Gebaut: **Leistungen**, **„Über mich"**, **Prozess** (inkl. **Reload-Bugfix** der Prozess-Animation) und **Kontakt** (Formspree-Formular + Direkt-Buttons, adversariell a11y-geprüft). Details je Schritt in den Einträgen unten + im Prompt-Protokoll. **Größter Stolperstein – Formspree live:** Das Formular lief lokal sauber (Endpoint in `.env.local`), live auf Vercel aber NICHT – `.env.local` ist per `.gitignore` ausgeschlossen und gelangt daher nie zu Vercel. Symptom: Fehler OHNE Network-Request (`fetch` gegen eine `undefined`-URL). **Fix:** `VITE_FORMSPREE_ENDPOINT` zusätzlich als Vercel-Env-Variable (alle Environments) gesetzt + Redeploy. Jetzt **end-to-end bestätigt** – lokal UND live, Mail kommt an. Außerdem Vercel-Status nach Dashboard-Verifikation wieder auf ✅ korrigiert (war zwischenzeitlich fälschlich als „kein Projekt" notiert). |
 | 07.06.2026 | **Session 7: Doku-Korrektur Vercel-Status.** Die in Session 6 notierte Einschätzung („Account `lngleon` hat kein Projekt → kein Auto-Deploy") war ein Fehlschluss aus einer CLI-Prüfung im falschen Account-Kontext. Im Vercel-Dashboard (Account „leon's projects") verifiziert: Projekt `leons-webseite` ist mit `main` verbunden, alle Commits dieser Session deployen sauber auf Production, oberstes Deployment 19c48be („Kontakt") = Ready. Vercel-Status wieder auf ✅ gesetzt (Infrastruktur-Status + Verhaltensregeln). Lehre: Dashboard ist maßgeblich; bei CLI-Checks den Account-Kontext (`vercel whoami` / Team) prüfen. Nur Doku. |
 | 07.06.2026 | **Session 6: „Kontakt"-Sektion (letzte Sektion).** Zweispaltig (`id="kontakt"`): links Formspree-Formular (`VITE_FORMSPREE_ENDPOINT`, JSON-POST), rechts „Lieber direkt?" mit 3 Buttons (Mail/WhatsApp/Instagram); auf Mobil gestapelt mit Formular oben. State-Machine idle→sending→success/error, Client-Validierung (Pflichtfelder + E-Mail-Format), Erfolg leert das Formular + Erfolgsmeldung, Fehler retrybar. Neues `--destructive`-Theme-Token (beide Modes) für Validierungs-/Fehlerfarben. Geteilte `BrandIcons` (Instagram + WhatsApp) angelegt, Footer darauf umgestellt. **Adversarielles Review-Workflow** über das Formular → 5 bestätigte Findings: a11y-Fixes angewandt (Fokus zum ersten Fehlerfeld bei Validierung [WCAG 3.3.1], Fokus ins Erfolgs-Panel [2.4.3], Doppelsende-Guard via ref, Placeholder-Kontrast `/80`). Offen/Phase 3: Light-Mode-Kontrast der Akzentfarbe als Text + Fokusring (siehe „Bekannte Bugs"). Dark + Light, responsive, Akzent nur über `--accent`, Fade-up. `npm run build` läuft. |
@@ -284,9 +278,10 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | # | Aufgabe | Aufwand |
 |---|---------|--------|
-| 1 | Projekte (2 Showcases + interaktive Detail-Ansicht) | Groß |
-| 2 | Impressum + Datenschutz: Inhalte einfügen | Klein |
-| 3 | Logo „LL" + Favicon (hell/dunkel) einbinden (Phase 3) | Mittel |
+| 1 | Projekte-Sektion (2 Showcases + interaktive Detail-Ansicht) | Groß |
+| 2 | Impressum + Datenschutz: Texte einfügen | Klein |
+| 3 | Logo „LL" + Favicon (für dunklen Hintergrund) einbinden | Mittel |
+| 4 | Follow-up: CSR → Prerender/SSG für echten LCP-Gewinn (Mobil) | Mittel |
 
 ---
 
@@ -304,7 +299,8 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 - **Backend/DB:** keins – reines Frontend, KEIN Supabase, KEINE SQL/RLS. Claude macht Frontend-Code + Design + Content + kurze Claude-Code-Prompts.
 - **Vercel:** ✅ Mit Repo verbunden, Auto-Deploy bei Push auf `main`. Das Projekt `leons-webseite` liegt im Vercel-Account „leon's projects" – das **Dashboard ist maßgeblich**; die CLI kann im falschen Account-Kontext stehen (daher zeigte `vercel projects ls` als `lngleon` fälschlich „keine Projekte"). Verifiziert 07.06.2026 im Dashboard: oberstes Deployment 19c48be („Kontakt") = Ready/Production.
 - **Formspree:** Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` hinterlegt
-- **Phase:** 2 (Aufbau & Sektionen) – Grundgerüst + Hero + Problem + Leistungen + Über mich + Prozess + Kontakt stehen; es fehlt nur noch die Projekte-Sektion, dann ist Phase 2 inhaltlich komplett.
+- **Design/Theming:** **Dark-only** (kein Light Mode, kein Theme-Toggle). Akzent **Violett**: flach `--accent`/`--accent-solid` (Ränder/Icons/kleine UI/Fokusring) + Violett-Gradient `--accent-gradient`/`--accent-gradient-strong` NUR auf Showcase-Flächen (Headline-Akzentwort, Hero-Zahlen, primäre CTAs, Eyebrow). Light-Mode-Themen (Toggle, per-Mode-Tokens, Light-Kontrast) sind gegenstandslos. Akzent nie hardcoden; Code-Tags via `CodeTag` (flach, kein Gradient).
+- **Phase:** 2 fast komplett (alle Sektionen außer **Projekte** stehen), Phase 3 angefangen (**Akzentfarbe ✅ Violett**). Offen: Projekte-Sektion, Impressum/Datenschutz-Texte, Logo/Favicon (dunkler Hintergrund), Follow-up CSR→Prerender/SSG (LCP).
 - **Betriebssystem:** Windows
 - **Projektdateien-Pfad:** C:\Users\l.lang\REPOS\leons-webseite
 - **Projektdateien (Claude AI):** PROJEKT-STAND.md, CURRENT-SCHEMA.md
