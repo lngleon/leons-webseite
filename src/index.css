@@ -157,21 +157,30 @@
 }
 
 /* ── Aurora-Text: EIN fließendes Headline-Akzentwort ─────────────
-   Wie .accent-gradient-text (identischer Violett-Gradient, solider
-   Fallback via @supports), aber der Verlauf wandert langsam: reine
-   CSS-@keyframes schieben die background-position über einen verbreiterten
-   Gradient (background-size > 100 %). KEIN Framer Motion → SSR-/hydration-
-   sicher, Wort durchgehend sichtbar (LCP). Sanftes Hin-und-Her (alternate,
-   ease-in-out) → nahtlos und edel, kein schnelles Flackern, kein Seam.
-   Ausschließlich Violett (--accent-gradient verbatim). Bewusst NUR am
-   Hero-Akzentwort – Eyebrow/Zähler bleiben statisch via .accent-gradient-text. */
-@keyframes aurora-flow {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
+   Spiegelt EXAKT die bewährte .accent-gradient-text-Clip-Technik (gleicher
+   @supports-Block, identische Clip-/Fill-Reihenfolge, nur --accent-gradient /
+   --accent), nur wandert der Verlauf langsam.
+
+   WICHTIG (Bugfix): Eine DIREKT animierte `background-position` auf einem
+   `background-clip:text`-Element lässt Chromium die geclippte Glyphen-Maske
+   (zeitweise) fallen → bei transparentem Text-Fill wird das Wort UNSICHTBAR
+   (statische Verläufe wie .accent-gradient-text sind nicht betroffen). Fix:
+   den Flow NICHT über background-position selbst animieren, sondern über eine
+   REGISTRIERTE Custom-Property `--aurora-pos` (@property, typisiert als
+   <percentage> → interpolierbar). Deren Animation erzwingt pro Frame eine
+   saubere Style-/Paint-Neuberechnung der Text-Clip-Maske. Zusätzlich gibt
+   `display:inline-block` der Inline-<span> eine stabile Paint-Box.
+
+   Reine CSS-@keyframes → SSR-/hydration-sicher, Wort durchgehend sichtbar
+   (LCP). Sanftes Hin-und-Her (alternate, ease-in-out, 8 s) → edel, kein
+   Flackern, kein Seam. Graceful degradation: ohne @property-Support bleibt der
+   Verlauf statisch (sichtbar), ohne background-clip:text die solide Akzentfarbe.
+   Bewusst NUR am Hero-Akzentwort – Eyebrow/Zähler bleiben statisch via
+   .accent-gradient-text. */
+@property --aurora-pos {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
 }
 
 .aurora-text {
@@ -179,9 +188,10 @@
 }
 @supports (-webkit-background-clip: text) or (background-clip: text) {
   .aurora-text {
+    display: inline-block; /* stabile Paint-Box für die Inline-Clip-Maske */
     background-image: var(--accent-gradient);
     background-size: 200% 100%; /* verbreitert → Spielraum zum Fließen */
-    background-position: 0% 50%;
+    background-position: var(--aurora-pos) 50%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -189,12 +199,23 @@
     animation: aurora-flow 8s ease-in-out infinite alternate;
   }
 }
-/* reduced-motion → exakt der jetzige statische Gradient (kein Drift). */
+
+/* Animiert NUR die registrierte Custom-Property (nicht background-position
+   direkt) → Text-Clip-Maske bleibt pro Frame erhalten. */
+@keyframes aurora-flow {
+  0% {
+    --aurora-pos: 0%;
+  }
+  100% {
+    --aurora-pos: 100%;
+  }
+}
+
+/* reduced-motion → statischer, weiterhin geclippter & sichtbarer Verlauf. */
 @media (prefers-reduced-motion: reduce) {
   .aurora-text {
     animation: none;
-    background-size: auto;
-    background-position: 0 0;
+    background-position: 0% 50%;
   }
 }
 
