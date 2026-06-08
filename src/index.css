@@ -226,3 +226,35 @@
   background-image: var(--accent-gradient-strong);
   color: var(--accent-foreground);
 }
+
+/* ── Marquee (Showcase /möglichkeiten) ───────────────────────────
+   Tailwind-v4-Animations-Utilities `animate-marquee` / `animate-marquee-vertical`
+   (in der Magic-UI-Marquee-Vorlage NICHT enthalten → hier ergänzt). Erzeugt aus
+   dem `--animate-*`-Namespace die Utility-Klassen; `--duration`/`--gap` kommen vom
+   Marquee-Wrapper. Tokens-frei (nur Bewegung). reduced-motion friert statisch ein. */
+@theme {
+  --animate-marquee: marquee var(--duration, 40s) linear infinite;
+  --animate-marquee-vertical: marquee-vertical var(--duration, 40s) linear infinite;
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap, 1rem)));
+  }
+}
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap, 1rem)));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-vertical {
+    animation: none;
+  }
+}
