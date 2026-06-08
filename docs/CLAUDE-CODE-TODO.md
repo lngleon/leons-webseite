@@ -15,6 +15,7 @@
 
 ## Follow-ups: /möglichkeiten (stille Showcase-Seite)
 
+- [ ] **`/möglichkeiten` im Browser VISUELL prüfen** (lokal `npm run preview` + live nach Deploy): Tilt-Neigung subtil/edel, CoolMode-Partikel + sauberer Abbau beim Wegnavigieren (kein Leak), Marquee-Lauf + pauseOnHover, `prefers-reduced-motion` (Tilt aus, Partikel aus, Marquee statisch), keine Hydration-Warnungen. (Build-grün ≠ Browser-korrekt.)
 - [ ] „Diese Seite selbst"-Bento-Zelle: echte Performance-Zahl(en) messen und den Platzhalter („—" / „Messwerte folgen") ersetzen (z.B. Lighthouse-Score + Ladezeit).
 - [ ] Tilt-Karte: den neutralen Platzhalter durch ein echtes Projekt-Bild/-Screenshot ersetzen (sobald ein Projekt zeigbar ist).
 - [ ] Optional weitere echte Demos in den Bento aufnehmen, sobald vorhanden (keine erfundenen Daten).
