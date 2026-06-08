@@ -156,6 +156,48 @@
   }
 }
 
+/* ── Aurora-Text: EIN fließendes Headline-Akzentwort ─────────────
+   Wie .accent-gradient-text (identischer Violett-Gradient, solider
+   Fallback via @supports), aber der Verlauf wandert langsam: reine
+   CSS-@keyframes schieben die background-position über einen verbreiterten
+   Gradient (background-size > 100 %). KEIN Framer Motion → SSR-/hydration-
+   sicher, Wort durchgehend sichtbar (LCP). Sanftes Hin-und-Her (alternate,
+   ease-in-out) → nahtlos und edel, kein schnelles Flackern, kein Seam.
+   Ausschließlich Violett (--accent-gradient verbatim). Bewusst NUR am
+   Hero-Akzentwort – Eyebrow/Zähler bleiben statisch via .accent-gradient-text. */
+@keyframes aurora-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.aurora-text {
+  color: var(--accent); /* solider Fallback – nie unsichtbar */
+}
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .aurora-text {
+    background-image: var(--accent-gradient);
+    background-size: 200% 100%; /* verbreitert → Spielraum zum Fließen */
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: aurora-flow 8s ease-in-out infinite alternate;
+  }
+}
+/* reduced-motion → exakt der jetzige statische Gradient (kein Drift). */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-text {
+    animation: none;
+    background-size: auto;
+    background-position: 0 0;
+  }
+}
+
 /* Gefüllte CTA: dunklere Violett-Hälfte (weiße Schrift ≥4.5:1 über den
    ganzen Verlauf). Solider Fallback, falls Gradient nicht unterstützt. */
 .cta-gradient {

@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
-import { useReducedMotion } from 'framer-motion'
 import { clsx } from 'clsx'
+import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
 import { defaultTerminalTab, terminalTabs } from '@/data/hero'
 import type { TerminalLine } from '@/data/hero'
 
@@ -98,7 +98,7 @@ function TerminalOutput({ lines, reduced }: { lines: TerminalLine[]; reduced: bo
 }
 
 export default function Terminal() {
-  const reduced = useReducedMotion() ?? false
+  const reduced = useReducedMotionSafe()
   const [activeKey, setActiveKey] = useState(defaultTerminalTab)
   const activeIndex = Math.max(
     0,

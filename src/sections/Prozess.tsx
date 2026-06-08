@@ -1,12 +1,13 @@
 import { useRef } from 'react'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import type { Variants } from 'framer-motion'
+import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
 import SectionHeading from '@/components/SectionHeading'
 import { withCodeTags } from '@/components/CodeTag'
 import { processIntro, processSteps } from '@/data/process'
 
 export default function Prozess() {
-  const reduce = useReducedMotion()
+  const reduce = useReducedMotionSafe()
 
   // Bewusst useInView + animate statt whileInView: Die Stagger-/Linien-
   // Orchestrierung läuft über zwei Verschachtelungsebenen (ol → li → Linien).
@@ -23,20 +24,29 @@ export default function Prozess() {
     show: { transition: { staggerChildren: reduce ? 0 : 0.18 } },
   }
   const step: Variants = reduce
-    ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
+    ? {
+        hidden: { opacity: 1, y: 0, transition: { duration: 0 } },
+        show: { opacity: 1, y: 0, transition: { duration: 0 } },
+      }
     : {
         hidden: { opacity: 0, y: 20 },
         show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
       }
   // Verbindungslinie baut sich auf: vertikal (mobil) bzw. horizontal (Desktop).
   const lineVertical: Variants = reduce
-    ? { hidden: { scaleY: 1 }, show: { scaleY: 1 } }
+    ? {
+        hidden: { scaleY: 1, transition: { duration: 0 } },
+        show: { scaleY: 1, transition: { duration: 0 } },
+      }
     : {
         hidden: { scaleY: 0 },
         show: { scaleY: 1, transition: { duration: 0.4, ease: 'easeOut', delay: 0.15 } },
       }
   const lineHorizontal: Variants = reduce
-    ? { hidden: { scaleX: 1 }, show: { scaleX: 1 } }
+    ? {
+        hidden: { scaleX: 1, transition: { duration: 0 } },
+        show: { scaleX: 1, transition: { duration: 0 } },
+      }
     : {
         hidden: { scaleX: 0 },
         show: { scaleX: 1, transition: { duration: 0.4, ease: 'easeOut', delay: 0.15 } },

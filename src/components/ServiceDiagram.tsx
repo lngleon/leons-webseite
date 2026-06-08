@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ComponentType } from 'react'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import type { Variants } from 'framer-motion'
+import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
 import type { DiagramKind } from '@/data/services'
 
 /* Lebende Schaubilder für die Leistungen-Karten.
@@ -225,7 +226,7 @@ type ServiceDiagramProps = {
 }
 
 export default function ServiceDiagram({ kind, icon: Icon }: ServiceDiagramProps) {
-  const reduced = useReducedMotion() ?? false
+  const reduced = useReducedMotionSafe()
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.5 })
   const [runId, setRunId] = useState(0)
@@ -264,7 +265,9 @@ export default function ServiceDiagram({ kind, icon: Icon }: ServiceDiagramProps
       </div>
       {/* Schaubild-Körper – einheitliche Höhe für alle Karten */}
       <div className="h-32 p-3 sm:h-36">
-        <Diagram key={runId} play={play} reduced={reduced} />
+        {/* reduced im key: flippt reduced nach dem Mount, remountet das Schaubild
+            → es startet direkt im End-Frame (kein nachträgliches Abspielen). */}
+        <Diagram key={`${runId}:${reduced ? 'r' : 'm'}`} play={play} reduced={reduced} />
       </div>
     </div>
   )
