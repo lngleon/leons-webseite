@@ -1,8 +1,10 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import Counter from '@/components/Counter'
 import Terminal from '@/components/Terminal'
 import { withCodeTags } from '@/components/CodeTag'
+import AuroraText from '@/components/AuroraText'
+import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
 import { hero, heroStats } from '@/data/hero'
 import { ctaItem } from '@/data/navigation'
 
@@ -62,7 +64,7 @@ function HeroBackground() {
 }
 
 export default function Hero() {
-  const reduce = useReducedMotion()
+  const reduce = useReducedMotionSafe()
 
   // Entrance gated auf reduced-motion: dann „statisches Frame" (kein Versatz/Fade).
   const container: Variants = {
@@ -75,7 +77,7 @@ export default function Hero() {
     },
   }
   const item: Variants = reduce
-    ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
+    ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0, transition: { duration: 0 } } }
     : {
         hidden: { opacity: 0, y: 16 },
         show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
@@ -92,10 +94,11 @@ export default function Hero() {
         {/* Text + Zähler */}
         <motion.div variants={container} initial="hidden" animate="show" className="max-w-xl">
           {/* H1 bewusst ohne Entrance-Opacity: LCP-Element sofort sichtbar (Mobil).
-              Nur das Akzentwort bekommt den Gradient (Text-Clip mit solidem Fallback). */}
+              Nur das Akzentwort bekommt den Gradient – als fließender AuroraText
+              (reine CSS-@keyframes, solider Fallback, reduced-motion = statisch). */}
           <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {hero.headline.split(hero.accentWord)[0]}
-            <span className="accent-gradient-text">{hero.accentWord}</span>
+            <AuroraText>{hero.accentWord}</AuroraText>
             {hero.headline.split(hero.accentWord)[1] ?? ''}
           </h1>
 
