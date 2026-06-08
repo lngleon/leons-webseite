@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import Counter from '@/components/Counter'
 import Terminal from '@/components/Terminal'
+import { withCodeTags } from '@/components/CodeTag'
 import { hero, heroStats } from '@/data/hero'
 import { ctaItem } from '@/data/navigation'
 
@@ -102,7 +103,7 @@ export default function Hero() {
             variants={item}
             className="mt-6 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
           >
-            {hero.subline}
+            {withCodeTags(hero.subline, ['Web-Apps'])}
           </motion.p>
 
           <motion.div variants={item} className="mt-8">

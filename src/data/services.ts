@@ -12,6 +12,8 @@ export type Service = {
   diagram: DiagramKind
   /** Highlight-Leistung – Akzent dauerhaft aktiv (KI-Integration). */
   highlight?: boolean
+  /** Begriffe im `text`, die als dezentes Code-Tag markiert werden (rein dekorativ). */
+  tags?: string[]
 }
 
 export const servicesHeading = {
@@ -33,6 +35,7 @@ export const services: Service[] = [
     title: 'Web-Apps & Tools',
     text: 'Maßgeschneiderte Anwendungen, die dir Arbeit abnehmen: vom Buchungssystem über Dashboards bis zum internen Tool, genau auf deinen Ablauf zugeschnitten.',
     diagram: 'app',
+    tags: ['Buchungssystem', 'Dashboards'],
   },
   {
     icon: Paintbrush,

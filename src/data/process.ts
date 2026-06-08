@@ -8,6 +8,8 @@ export const processIntro = {
 export type ProcessStep = {
   title: string
   text: string
+  /** Begriffe im `text`, die als dezentes Code-Tag markiert werden (rein dekorativ). */
+  tags?: string[]
 }
 
 export const processSteps: ProcessStep[] = [
@@ -18,6 +20,7 @@ export const processSteps: ProcessStep[] = [
   {
     title: 'Konzept & Design',
     text: 'Ich entwickle Struktur und Design, abgestimmt auf dich. Du siehst, wie deine Seite aussehen wird, bevor die erste Zeile Code steht.',
+    tags: ['Code'],
   },
   {
     title: 'Umsetzung',
