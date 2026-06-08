@@ -95,3 +95,59 @@
     text-rendering: optimizeLegibility;
   }
 }
+
+/* ── Hero: generativer Hintergrund + Terminal-Cursor ─────────────
+   Reine Transform-/Opacity-Animationen (GPU-leicht). Bei
+   prefers-reduced-motion komplett aus → statisches Frame. */
+@keyframes hero-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, -4%, 0) scale(1.08);
+  }
+}
+
+@keyframes hero-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-5%, 5%, 0) scale(1.1);
+  }
+}
+
+@keyframes terminal-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Bewusst KEIN dauerhaftes will-change: die infinite transform-Animation
+   promotet den Layer ohnehin; so bleibt unter reduced-motion (animation:none)
+   kein GPU-Layer für statische Elemente reserviert. */
+.hero-blob-a {
+  animation: hero-drift-a 22s ease-in-out infinite;
+}
+
+.hero-blob-b {
+  animation: hero-drift-b 28s ease-in-out infinite;
+}
+
+.terminal-cursor {
+  animation: terminal-blink 1.05s steps(1, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob-a,
+  .hero-blob-b,
+  .terminal-cursor {
+    animation: none;
+  }
+}
