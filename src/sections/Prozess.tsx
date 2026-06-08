@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import SectionHeading from '@/components/SectionHeading'
+import { withCodeTags } from '@/components/CodeTag'
 import { processIntro, processSteps } from '@/data/process'
 
 export default function Prozess() {
@@ -106,7 +107,7 @@ export default function Prozess() {
                     {item.title}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {item.text}
+                    {withCodeTags(item.text, item.tags ?? [])}
                   </p>
                 </div>
               </motion.li>

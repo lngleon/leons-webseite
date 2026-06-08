@@ -3,6 +3,7 @@ import type { Variants } from 'framer-motion'
 import Card from '@/components/Card'
 import SectionHeading from '@/components/SectionHeading'
 import ServiceDiagram from '@/components/ServiceDiagram'
+import { withCodeTags } from '@/components/CodeTag'
 import { services, servicesHeading } from '@/data/services'
 
 const container: Variants = {
@@ -47,7 +48,7 @@ export default function Leistungen() {
                   {service.title}
                 </h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  {service.text}
+                  {withCodeTags(service.text, service.tags ?? [])}
                 </p>
               </Card>
             </motion.article>
