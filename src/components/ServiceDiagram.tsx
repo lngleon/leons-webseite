@@ -95,27 +95,55 @@ function AppDiagram({ play, reduced }: DiagramProps) {
   )
 }
 
-/* ── 3) Redesign: Vorher/Nachher-Wisch (grau-eng → clean violett) ── */
+/* ── 3) Redesign: Vorher/Nachher-Wisch (hässlich-veraltet → clean violett) ──
+   Erzählend: „Vorher" wird kurz gehalten (als hässlich registrierbar), dann
+   wischt langsam das cleane „Nachher" herein.
+   Hinweis: Der „Vorher"-Layer nutzt BEWUSST eigene, gedämpft-clashende
+   Alt-Web-Illustrationsfarben (nicht die Theme-/Akzent-Palette) – er ist
+   opak/selbsttragend und damit in Dark UND Light gleich lesbar. Der Marken-
+   Akzent kommt weiterhin ausschließlich über Tokens (nur im „Nachher"). */
 function RedesignDiagram({ play, reduced }: DiagramProps) {
   const { initial, animate } = useStates(play, reduced)
   return (
     <div className="relative h-full overflow-hidden rounded">
-      {/* ALT: grau, eng, gedrängt, kein Akzent */}
-      <div className="absolute inset-0 flex flex-col justify-center gap-1.5 bg-foreground/5 px-1">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <span key={i} className="h-1.5 rounded-sm bg-foreground/25" style={{ width: `${90 - i * 6}%` }} />
-        ))}
+      {/* VORHER – glaubwürdig altes, hässliches Web (Illustration, keine Tokens) */}
+      <div className="absolute inset-0 bg-[#d8d1ba] font-serif text-[#322c1c]">
+        <div className="flex items-center justify-between border-b-2 border-[#6f6442] bg-[#356a6a] px-1.5 py-0.5">
+          <span className="text-[9px] font-bold italic tracking-tight text-[#f2ead0]">
+            Müller &amp; Söhne
+          </span>
+          <span className="text-[8px] text-[#cfe2d4]">★ Startseite ★</span>
+        </div>
+        <div className="-rotate-1 space-y-1 px-1.5 pt-2">
+          <span className="block h-1.5 w-[85%] bg-[#7c6f4c]" />
+          <span className="block h-1.5 w-[68%] bg-[#7c6f4c]" />
+          <span className="block text-[9px] leading-none text-[#1a13c8] underline underline-offset-2">
+            hier klicken!!
+          </span>
+          <span className="ml-2 inline-block rotate-2 border-2 border-[#4a4326] border-b-[#221d0e] border-r-[#221d0e] bg-[#b9ad86] px-1.5 py-px text-[8px] font-bold">
+            ABSENDEN
+          </span>
+        </div>
       </div>
-      {/* NEU: luftig, clean, Akzent – wischt von links herein */}
+
+      {/* NACHHER – luftig, clean, violett-akzentuiert (Theme-Tokens + Akzent);
+          hält „Vorher" kurz (delay) und wischt dann langsam herein. */}
       <motion.div
-        variants={{ rest: { clipPath: 'inset(0 100% 0 0)' }, show: { clipPath: 'inset(0 0% 0 0)', transition: { duration: 0.8, ease } } }}
+        variants={{
+          rest: { clipPath: 'inset(0% 100% 0% 0%)' },
+          show: {
+            clipPath: 'inset(0% 0% 0% 0%)',
+            transition: { duration: 1.5, delay: 0.95, ease },
+          },
+        }}
         initial={initial}
         animate={animate}
-        className="absolute inset-0 flex flex-col justify-center gap-2.5 bg-card px-1"
+        className="absolute inset-0 flex flex-col justify-center gap-2.5 bg-card px-2"
       >
         <span className="h-3 w-1/2 rounded bg-foreground/80" />
         <span className="h-1.5 w-3/4 rounded bg-foreground/15" />
-        <span className="h-2.5 w-12 rounded-full bg-accent-solid" />
+        <span className="h-1.5 w-2/3 rounded bg-foreground/15" />
+        <span className="mt-0.5 h-2.5 w-14 rounded-full bg-accent-solid" />
       </motion.div>
     </div>
   )
