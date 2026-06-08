@@ -45,7 +45,7 @@ export default function Navbar() {
           <ThemeToggle />
           <a
             href={ctaItem.href}
-            className="hidden rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 sm:inline-flex"
+            className="hidden rounded-full bg-accent-solid px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 sm:inline-flex"
           >
             {ctaItem.label}
           </a>
@@ -87,7 +87,7 @@ export default function Navbar() {
                 <a
                   href={ctaItem.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-full bg-accent px-4 py-2 text-center text-sm font-medium text-accent-foreground"
+                  className="block rounded-full bg-accent-solid px-4 py-2 text-center text-sm font-medium text-accent-foreground"
                 >
                   {ctaItem.label}
                 </a>
