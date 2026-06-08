@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-/* Dark Mode über die .dark-Klasse am <html> (Toggle), nicht über prefers-color-scheme. */
-@custom-variant dark (&:where(.dark, .dark *));
-
 /* Globale Design-Tokens (nicht moduspezifisch). */
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
@@ -11,8 +8,8 @@
 
 /* Semantische Farb-Tokens → als Tailwind-Utilities nutzbar:
    bg-background, text-foreground, text-accent, border-border, ring-ring, …
-   "inline" sorgt dafür, dass die Utilities die CSS-Variablen referenzieren
-   und so live auf den Theme-Wechsel (.dark) reagieren. */
+   "inline" sorgt dafür, dass die Utilities die CSS-Variablen referenzieren.
+   Dark-only: es gibt nur EINEN Token-Satz (siehe :root). */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -29,37 +26,12 @@
 }
 
 /* ============================================================
-   LIGHT MODE (Default-Werte) – edel-zurückhaltend, Schwarz/Weiß/Grau
+   DARK-ONLY (einziger Token-Satz). Edel-zurückhaltend: Near-Black /
+   Weiß / Grau + Violett-Akzent. Kein Light Mode, kein Toggle.
    ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --muted: #f4f4f5;
-  --muted-foreground: #52525b;
-  --card: #ffffff;
-  --card-foreground: #0a0a0a;
-  --border: #e4e4e7;
-  --ring: var(--accent);
-  /* Fehler-/Validierungsfarbe (semantisch, nicht der Marken-Akzent) */
-  --destructive: #dc2626;
+  color-scheme: dark;
 
-  /* ╔══════════════════════════════════════════════════════════╗
-     ║  AKZENTFARBE – Violett (final). Zentrale Stelle, pro Mode. ║
-     ║  --accent        = Akzent als Text/Rand/Icon/Linie/Glow.  ║
-     ║  --accent-solid  = Hintergrund gefüllter Buttons (weiße   ║
-     ║                    Schrift via --accent-foreground).      ║
-     ║  Light-Werte sind dunkel genug für WCAG AA als Text (auf  ║
-     ║  Weiß ~7:1) und als Fokusring (~7:1). Dark-Override unten. ║
-     ╚══════════════════════════════════════════════════════════╝ */
-  --accent: #6d28d9;
-  --accent-solid: #6d28d9;
-  --accent-foreground: #ffffff;
-}
-
-/* ============================================================
-   DARK MODE (Default-Theme der Seite) – Überschreibungen
-   ============================================================ */
-.dark {
   --background: #0a0a0a;
   --foreground: #fafafa;
   --muted: #18181b;
@@ -67,11 +39,26 @@
   --card: #111113;
   --card-foreground: #fafafa;
   --border: #27272a;
+  --ring: var(--accent);
   --destructive: #f87171;
-  /* Akzent im Dark Mode: hellere Variante für Lesbarkeit auf dunklem Grund;
-     gefüllte Buttons etwas kräftiger (weiße Schrift bleibt). */
+
+  /* Flacher Akzent – für Ränder, Icons, kleine UI und den Fokusring (NICHT Gradient). */
   --accent: #a78bfa;
   --accent-solid: #6d4dff;
+  --accent-foreground: #ffffff;
+
+  /* ╔══════════════════════════════════════════════════════════╗
+     ║  AKZENT-GRADIENT (Violett) – Source-of-Truth.             ║
+     ║  --accent-gradient: helle→tiefe Stops, NUR für Text-Clip  ║
+     ║    (Headline-Akzentwörter, Hero-Zahlen, Eyebrow) auf      ║
+     ║    Near-Black. Innerhalb Violett frei nachjustierbar      ║
+     ║    (Mittelstop darf leicht ins Pink-Violett).             ║
+     ║  --accent-gradient-strong: dunklere Violett-Hälfte für    ║
+     ║    Button-/CTA-Füllungen – trägt weiße Schrift ≥4.5:1     ║
+     ║    über den GANZEN Verlauf (objektiv verifiziert).        ║
+     ╚══════════════════════════════════════════════════════════╝ */
+  --accent-gradient: linear-gradient(135deg, #c4b5fd, #a78bfa, #7c5cff);
+  --accent-gradient-strong: linear-gradient(135deg, #6d4dff, #6d28d9);
 }
 
 @layer base {
@@ -150,4 +137,29 @@
   .terminal-cursor {
     animation: none;
   }
+}
+
+/* ── Akzent-Gradient: Showcase-Flächen ───────────────────────────
+   Text-Gradient mit SOLIDEM Fallback: Standard ist die flache
+   Akzentfarbe (immer sichtbar); nur wo background-clip:text
+   unterstützt wird, wird der Verlauf eingeclippt. Nie unsichtbar. */
+.accent-gradient-text {
+  color: var(--accent);
+}
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .accent-gradient-text {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+/* Gefüllte CTA: dunklere Violett-Hälfte (weiße Schrift ≥4.5:1 über den
+   ganzen Verlauf). Solider Fallback, falls Gradient nicht unterstützt. */
+.cta-gradient {
+  background-color: var(--accent-solid);
+  background-image: var(--accent-gradient-strong);
+  color: var(--accent-foreground);
 }

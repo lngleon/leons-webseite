@@ -4,7 +4,6 @@ import { Menu, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ctaItem, navItems } from '@/data/navigation'
 import { site } from '@/data/site'
-import ThemeToggle from './ThemeToggle'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -40,12 +39,11 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Aktionen: Toggle + CTA + Mobile-Menü-Button */}
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
+        {/* Aktionen: CTA + Mobile-Menü-Button (kein Theme-Toggle mehr – Dark-only) */}
+        <div className="flex items-center gap-3">
           <a
             href={ctaItem.href}
-            className="hidden rounded-full bg-accent-solid px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 sm:inline-flex"
+            className="hidden rounded-full cta-gradient px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex"
           >
             {ctaItem.label}
           </a>
@@ -54,7 +52,7 @@ export default function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? 'Menü schließen' : 'Menü öffnen'}
             aria-expanded={open}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-muted md:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -87,7 +85,7 @@ export default function Navbar() {
                 <a
                   href={ctaItem.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-full bg-accent-solid px-4 py-2 text-center text-sm font-medium text-accent-foreground"
+                  className="block rounded-full cta-gradient px-4 py-2 text-center text-sm font-medium"
                 >
                   {ctaItem.label}
                 </a>

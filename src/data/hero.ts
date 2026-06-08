@@ -2,6 +2,8 @@ import { site } from './site'
 
 export const hero = {
   headline: site.tagline,
+  /** Wort der Headline, das den Akzent-Gradient bekommt (nicht die ganze Headline). */
+  accentWord: 'spürbar',
   subline:
     'Moderne Webseiten, Web-Apps und KI-Integration – individuell für dich programmiert, von der Idee bis zum Launch. Alles aus einer Hand.',
 } as const

@@ -119,14 +119,15 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 
 ---
 
-## Theming (Dark/Light + Akzentfarbe)
+## Theming (Dark-only + Violett-Gradient-Akzent)
 
-- **Modi:** Dark (Default) + Light, per Toggle umschaltbar.
-- **Akzentfarbe:** Violett (final). Zentral über CSS-Variablen in `src/index.css`, per Mode gesetzt – NIEMALS Farbwerte hardcoden:
-  - `--accent` (Akzent als Text/Rand/Icon/Linie/Glow + Fokusring via `--ring`): Dark `#a78bfa` / Light `#6d28d9`
-  - `--accent-solid` (Hintergrund gefüllter Buttons): Dark `#6d4dff` / Light `#6d28d9`
-  - `--accent-foreground` (Schrift auf gefüllten Buttons): `#ffffff` (beide Modes)
-- **Basis-Palette:** edel-zurückhaltend (Schwarz/Weiß/Grau-Töne), getrennt für Dark und Light.
+- **Modus:** Dark-only (kein Light Mode, kein Theme-Toggle; 08.06.2026 umgestellt). EIN Token-Satz in `:root`, `color-scheme: dark`, `<html>` ohne Klasse. NIEMALS Farbwerte hardcoden.
+- **Basis-Palette:** edel-zurückhaltend, Near-Black/Weiß/Grau (`--background` #0a0a0a, `--card` #111113, `--foreground` #fafafa, `--muted-foreground` #a1a1aa, `--border` #27272a).
+- **Flacher Akzent** (Ränder, Icons, kleine UI, Fokusring via `--ring` – nie Gradient): `--accent` `#a78bfa`, `--accent-solid` `#6d4dff`, `--accent-foreground` `#ffffff`.
+- **Violett-Gradient** (Source-of-Truth, NUR auf Showcase-Flächen):
+  - `--accent-gradient` `linear-gradient(135deg,#c4b5fd,#a78bfa,#7c5cff)` – Text-Clip (Headline-Akzentwörter, 4 Hero-Zahlen, Sektions-Eyebrow) auf Near-Black, mit solidem Fallback (`var(--accent)`, nie unsichtbar).
+  - `--accent-gradient-strong` `linear-gradient(135deg,#6d4dff,#6d28d9)` – Füllung primärer CTAs; weiße Schrift ≥4.5:1 über den ganzen Verlauf (verifiziert min. 5.05:1).
+- Helper-Klassen in `src/index.css`: `.accent-gradient-text` (Text-Clip + `@supports`-Fallback), `.cta-gradient` (CTA-Füllung). Body-Text/normale Headlines bleiben flach.
 
 ---
 

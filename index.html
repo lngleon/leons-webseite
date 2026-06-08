@@ -1,31 +1,15 @@
 <!doctype html>
-<html lang="de" class="dark">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
     <meta
       name="description"
       content="Leon Lang – Premium-Webseiten, Web-Apps und KI-Integration. Veränderungen, die spürbar werden."
     />
     <title>Leon Lang – Veränderungen, die spürbar werden.</title>
-    <!--
-      Theme vor dem ersten Paint setzen (verhindert Flackern).
-      Dark ist Default; ein gespeicherter Wert hat Vorrang.
-    -->
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem('theme')
-          var theme = stored === 'light' || stored === 'dark' ? stored : 'dark'
-          var root = document.documentElement
-          root.classList.remove('light', 'dark')
-          root.classList.add(theme)
-        } catch (e) {
-          /* localStorage nicht verfügbar – bleibt im Dark-Default */
-        }
-      })()
-    </script>
   </head>
   <body>
     <div id="root"></div>

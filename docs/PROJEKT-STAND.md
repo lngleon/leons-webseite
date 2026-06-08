@@ -11,7 +11,7 @@
 Markenname: Leon Lang
 Tagline: „Veränderungen, die spürbar werden."
 Logo: „LL"-Monogramm – noch zu erstellen (via ChatGPT-Bildgenerator), inkl. Favicon, in heller + dunkler Variante
-Design-System: edel-zurückhaltend (Schwarz/Weiß/Grau), Dark + Light Mode, Akzentfarbe **Violett (final)** – `--accent` Dark #a78bfa / Light #6d28d9, gefüllte Buttons (weiße Schrift) `--accent-solid` Dark #6d4dff / Light #6d28d9; zentral als CSS-Variablen, siehe Design-Regeln
+Design-System: edel-zurückhaltend (Near-Black/Weiß/Grau), **Dark-only** (kein Light/Toggle), Akzent **Violett** – flach via `--accent`/`--accent-solid` + **Violett-Gradient** (`--accent-gradient`/`--accent-gradient-strong`) auf Showcase-Flächen; zentral als CSS-Variablen, siehe Design-Regeln
 
 ---
 
@@ -141,7 +141,7 @@ Klick auf einen der zwei Showcase-Projekte → interaktive Detail-Ansicht öffne
 
 Single-Page mit Anker-Navigation + Smooth Scroll.
 
-- **Header/Navbar:** Logo „LL" (links) · Nav-Punkte: Leistungen · Über mich · Prozess · Projekte · Kontakt · Dark/Light-Toggle · CTA-Button (z.B. „Projekt anfragen", scrollt zu Kontakt)
+- **Header/Navbar:** Logo „LL" (links) · Nav-Punkte: Leistungen · Über mich · Prozess · Projekte · Kontakt · CTA-Button „Projekt anfragen" (Gradient-Füllung, scrollt zu Kontakt). Kein Theme-Toggle (Dark-only).
 - **Footer:** Name/Kurzinfo · Links zu Impressum + Datenschutz · ggf. Social (Instagram)
 - **Unterseiten:** Impressum, Datenschutz (eigene Routen)
 
@@ -150,8 +150,12 @@ Single-Page mit Anker-Navigation + Smooth Scroll.
 ## Design-Regeln
 
 - **Stil:** futuristisch, clean, edel, premium. Referenzen: adrianziegler.de (Dark) + farisschmidt.de (Light)
-- **Dark + Light Mode:** immer beide, Start in Dark
-- **Farbschema:** edel-zurückhaltend (Schwarz/Weiß/Grau-Töne). **Akzentfarbe: Violett (final, 08.06.2026).** Zentral über CSS-Variablen, NIEMALS Farbwerte hardcoden: `--accent` (Text/Rand/Icon/Linie/Glow) Dark #a78bfa / Light #6d28d9; `--accent-solid` (Hintergrund gefüllter Buttons, weiße Schrift) Dark #6d4dff / Light #6d28d9. Light-Werte erfüllen WCAG AA als Text (~7:1) und als Fokusring (~7:1).
+- **Dark-only:** kein Light Mode, kein Theme-Toggle (08.06.2026 umgestellt). EIN Token-Satz in `:root` (Near-Black/Weiß/Grau), `color-scheme: dark`, `html` ohne Klasse.
+- **Farbschema:** edel-zurückhaltend (Near-Black/Weiß/Grau) + EIN Violett-Akzent, zentral über CSS-Variablen, NIEMALS Farbwerte hardcoden:
+  - `--accent` #a78bfa / `--accent-solid` #6d4dff – FLACH, für Ränder, Icons, kleine UI und den **Fokusring** (Ring nie Gradient).
+  - `--accent-gradient` `linear-gradient(135deg,#c4b5fd,#a78bfa,#7c5cff)` (Source-of-Truth) – NUR Text-Clip auf Near-Black: Headline-Akzentwörter (nicht ganze Headlines), die 4 Hero-Zahlen, Sektions-Eyebrow. Mittelstop darf leicht ins Pink-Violett; frei innerhalb Violett nachjustierbar.
+  - `--accent-gradient-strong` `linear-gradient(135deg,#6d4dff,#6d28d9)` – Füllung **primärer CTAs**; trägt weiße Schrift ≥4.5:1 über den GANZEN Verlauf (verifiziert min. 5.05:1). Die hellen Stops NICHT für CTAs.
+  - Text-Gradient via `background-clip:text` MIT solidem Fallback (`var(--accent)`, nie unsichtbar). Gradient nur auf Showcase-Flächen, Body-Text bleibt flach.
 - **UI-Sprache:** Deutsch, „Du"-Ansprache
 - **Ton:** premium, aber nahbar – nie abgehoben, nie billig
 - **Responsive:** Desktop-first, Mobil voll funktionsfähig
@@ -200,7 +204,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | Prozess (4 Schritte) | ✅ | Fertig (nummerierte Abfolge mit Verbindungslinie) |
 | Projekte (2 Showcases + Detail-Ansicht) | ⬜ | Offen |
 | Kontakt (Formspree-Formular + direkte Buttons) | ✅ | Fertig (Formular + 3 Direkt-Buttons, a11y-geprüft) |
-| Dark/Light-Toggle | ✅ | Fertig (zentrale CSS-Variablen, Dark default) |
+| Dark/Light-Toggle | — | Entfernt (08.06.2026 → Dark-only) |
 | Responsive Layout | 🔄 | Grundgerüst responsive; pro Sektion mitprüfen |
 | Impressum + Datenschutz (Platzhalter-Seiten) | ✅ | Platzhalter-Seiten + Footer-Links stehen (Inhalt offen) |
 
@@ -225,7 +229,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 - Positionierung „premium, aber nahbar": Premium-Optik + „Du"-Ansprache + keine Preise. Weder Enterprise-abgehoben noch billig.
 - Struktur folgt dem verkaufspsychologischen Aufbau der Vorbilder (Hero → Problem → Lösung/Leistungen → Vertrauen → Prozess → Beweise → CTA).
 - Social Proof (viele Kunden/Logos/Testimonials) fehlt noch → bewusst durch persönliche Geschichte + 2 starke Showcases ersetzt. Keine hohlen Versprechen oder erfundenen Zahlen.
-- Akzentfarbe final: **Violett** (08.06.2026). Per-Mode-Tokens `--accent` (Dark #a78bfa / Light #6d28d9) + `--accent-solid` für gefüllte Buttons (Dark #6d4dff / Light #6d28d9, weiße Schrift). Light-Werte bewusst dunkel genug → WCAG AA als Text und Fokusring (~7:1). Zentral in `src/index.css`, nirgends hardcoden.
+- Akzent final: **Violett**, seit 08.06.2026 **Dark-only** (ein Token-Satz, kein Toggle). Flach `--accent` #a78bfa / `--accent-solid` #6d4dff (Ränder, Icons, kleine UI, Fokusring – nie Gradient) + Violett-Gradient `--accent-gradient` (Text-Clip auf Near-Black, mit solidem Fallback) und `--accent-gradient-strong` (CTA-Füllung, weiße Schrift ≥4.5:1 = min. 5.05:1) nur auf Showcase-Flächen. Das frühere Light-Mode-Kontrast-Thema ist damit gegenstandslos.
 - Bei nur 2 Projekten keine Kategorie-Tabs (würden leer wirken) → zwei große Showcases mit Detail-Ansicht. Tabs nachrüstbar, wenn mehr Projekte da sind.
 - Reines Frontend, kein Backend/DB – Formular läuft über Formspree.
 - Karten nutzen das zentrale `Card`-Muster (`src/components/Card.tsx`): einheitlicher, dezenter Hover (Anheben + Akzent-Rand + weicher Glow), touch-sicher und reduced-motion-freundlich. Neue Karten-Sektionen (z.B. Leistungen) dieses Muster wiederverwenden, statt den Hover neu zu bauen. Entrance-Animation gehört auf ein umschließendes motion-Element, nicht in die Card.
@@ -238,6 +242,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
+| 08.06.2026 | **Dark-only-Umbau + Violett-Gradient-Akzent (Foundation).** Light Mode + Theme-Toggle entfernt: ein Token-Satz in `:root` (Dark-Werte), `color-scheme: dark`, `html` ohne Klasse; Inline-Theme-Script, `ThemeProvider`/`useTheme`/`ThemeToggle`/`Theme`-Typ und der Terminal-`.dark`-Scope raus (dead Light-Code entfernt). Neuer Akzent-Gradient als Source-of-Truth: `--accent-gradient` (helle→tiefe Violett-Stops, nur Text-Clip auf Near-Black) + `--accent-gradient-strong` (dunklere Hälfte für CTA-Füllung). Gradient NUR auf Showcase: Hero-Akzentwort „spürbar", die 4 Hero-Zahlen, primäre CTAs (Navbar/Hero/Kontakt), Sektions-Eyebrow – Text-Clip mit solidem Fallback (nie unsichtbar). Flaches `--accent`/`--accent-solid` + Fokusring bleiben flach (Ring nie Gradient). Kontrast objektiv verifiziert: CTA-Weiß ≥4.5:1 (min. 5.05:1), Showcase-Text auf Near-Black ≥4.5:1. Nicht kaputtgemacht: Terminal, 4 ServiceDiagramme, Hero-Generativ-Hintergrund, Counter, a11y/Fokusringe, Card/SectionHeading. reduced-motion bleibt. Adversariell reviewt (6 Agenten) → 0 Findings. `npm run build` läuft. Code-Tag-Politur folgt separat. |
 | 08.06.2026 | **Feinschliff Redesign-Schaubild.** Nur das „Redesign & Modernisierung"-Schaubild überarbeitet (andere 3 unangetastet): „Vorher" jetzt glaubwürdig hässlich/veraltet – eigene gedämpft-clashende Alt-Web-**Illustrationsfarben** (bewusst NICHT die Theme-/Akzent-Tokens; opak & dadurch in Dark + Light gleich lesbar), Serif, harte Bevel-Ränder, unterstrichenes Link-Blau, leicht schiefe/enge Anordnung. Ablauf erzählerischer: „Vorher" wird kurz gehalten (`delay 0.95s`), dann langsamer Wisch (`1.5s`) ins cleane, violett-akzentuierte „Nachher". Rahmen/Höhe + Loop-Disziplin unverändert (einmal beim Reinscrollen + Hover-Replay, keine Idle-Schleife); reduced-motion = statisches „Nachher". Marken-Akzent weiterhin nur über Tokens. `npm run build` läuft. |
 | 08.06.2026 | **Leistungen-Upgrade: lebende Schaubilder.** Jede der 4 Karten zeigt statt nur Icon ein kleines, lebendes Schaubild (alle ehrlich, KEINE erfundenen Zahlen/Counter): Webseiten = Mini-Browser, in dem sich ein Layout aufbaut; Web-Apps & Tools = UI das reagiert (Toggle kippt, Häkchen setzt sich, Ladebalken läuft – ohne Zahl); Redesign = Vorher/Nachher-Wisch (grau-eng → clean violett via `clip-path`); KI (Highlight) = Mini-Chat, Antwort streamt in die Bubble. EIN gemeinsamer, ruhiger Rahmen (`src/components/ServiceDiagram.tsx`); Animation läuft beim Reinscrollen GENAU EINMAL (per-Card `useInView`), danach statisches End-Frame – KEINE Dauerschleifen; Hover/Focus spielt erneut ab. reduced-motion = statisches End-Frame. Card/SectionHeading/2×2-Grid + Titel/Texte unverändert (nur `diagram`-Feld in `services.ts` ergänzt). Engine Framer Motion + CSS, kein neues Package; Akzent nur über `--accent`/`--accent-solid`, keine Hex-Werte. Adversariell reviewt (26 Agenten) → 0 bestätigte Findings. `npm run build` läuft. |
 | 08.06.2026 | **Hero-Umbau: generativer Hintergrund + Terminal.** Hero neu als 2-Spalten-Layout (Text/Zähler links, Terminal rechts; auf Mobil gestapelt, Terminal lesbar). Bestehender Inhalt erhalten (Claim, Unterzeile, 4 hochzählende Zähler, CTA → `#kontakt`); Counter-Logik unverändert. **Hintergrund** code-basiert: weiche Violett-Blobs (`color-mix` über `--accent`/`--accent-solid`, pro Mode adaptiv) + feines statisches SVG-Korn (gekacheltes `feTurbulence`), Blob-Drift via CSS-Keyframes (GPU-leicht), kein Neon, keine Bilder. **Terminal** (`src/components/Terminal.tsx`): bleibt in BEIDEN Modes dunkel via `.dark`-Scope-Div (nutzt die Dark-Werte der Theme-Tokens, Akzent `#a78bfa` lesbar), 4 Tabs (install · **build** default · deploy · whoami, kein test-Tab) mit echtem Output, Zeichen-für-Zeichen-Tippen pro Zeile, blinkender Cursor, Pfeiltasten-Tab-Navigation, keine Refresh-/Download-Buttons. **Engine** selbst gebaut (Framer Motion + CSS), kein neues Package. **reduced-motion:** statisches Frame (Blobs/Cursor via CSS-Gate aus, Tippen sofort fertig, Entrance gegated). **Adversarielles Review** (17 Agenten) → 5 Findings gefixt: H1 als Plain-Element (LCP sofort sichtbar), Hero-Entrance reduced-motion-gegated, Tabpanel fokussierbar (`tabIndex=0`), kein Tab-Wechsel-Flash (geketteter `key`-Remount), `will-change` entfernt. Offen/Follow-up: echter LCP-Gewinn bräuchte SSR/Prerender (Site ist reines CSR) – bewusst außerhalb des „nur Hero"-Scopes. `npm run build` läuft. |
@@ -268,6 +273,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | 8 | „Kontakt"-Sektion (Formspree-Formular mit State-Machine/Validierung + 3 Direkt-Buttons, adversariell a11y-geprüft) | ✅ |
 | 9 | Hero-Umbau (generativer Violett-Hintergrund + Terminal das Build-Output tippt, 4 Tabs, reduced-motion-sicher) | ✅ |
 | 10 | Leistungen-Upgrade: 4 lebende Schaubilder (Browser-Build-up, App-Reaktion, Redesign-Wisch, KI-Chat-Stream), einmal beim Scrollen + Hover, reduced-motion-sicher | ✅ |
+| 11 | Dark-only-Umbau + Violett-Gradient-Akzent (Toggle/Light-Code raus, `--accent-gradient`/`-strong`, Showcase-Text-Clip + CTA-Füllung, Kontrast verifiziert) | ✅ |
 
 ---
 
@@ -284,7 +290,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 ## Bekannte Bugs
 
 - ✅ **Behoben – Prozess-Animation lief beim Neuladen nicht.** Lag die Sektion beim Laden bereits im Viewport (Reload an dieser Scroll-Position), liefen weder Schritt-Stagger noch Linien-Aufbau; beim Reinscrollen liefen sie. Betraf NUR Prozess. **Ursache:** Die `whileInView`-Geste propagiert den tief verschachtelten Variant-Baum (`ol → li → Verbindungslinien`, zwei Ebenen) beim „bereits im Viewport beim Mount"-Fall nicht zuverlässig. Die flacheren Sektionen (eine Ebene) waren nicht betroffen. **Fix:** Orchestrierung über `useInView` + gesteuertes `animate={inView ? 'show' : 'hidden'}` statt `whileInView`. Reduced-motion-Verhalten unverändert.
-- ✅ **Behoben (08.06.2026) – Light-Mode-Kontrast der Akzentfarbe.** Mit der Platzhalter-Akzentfarbe #c8a96a lag Akzent-als-Text auf hellem Grund bei nur ~2.25:1 und der Fokusring unter 3:1 (WCAG 1.4.3 / 1.4.11), u.a. beim „Noch eine Nachricht schreiben"-Button im Kontakt-Formular. **Fix:** finale Akzentfarbe Violett mit per-Mode-Tokens – Light `--accent` = #6d28d9 ist dunkel genug, sodass Akzent-als-Text UND Fokusring auf Weiß ~7.1:1 erreichen (≥ AA 4.5/3). Per Kontrastberechnung verifiziert; kein separates `--accent-strong` nötig. Aufgedeckt durch adversarielles Review der Kontakt-Sektion.
+- ✅ **Behoben (08.06.2026) – Light-Mode-Kontrast der Akzentfarbe.** Mit der Platzhalter-Akzentfarbe #c8a96a lag Akzent-als-Text auf hellem Grund bei nur ~2.25:1 und der Fokusring unter 3:1 (WCAG 1.4.3 / 1.4.11), u.a. beim „Noch eine Nachricht schreiben"-Button im Kontakt-Formular. **Fix:** finale Akzentfarbe Violett mit per-Mode-Tokens – Light `--accent` = #6d28d9 ist dunkel genug, sodass Akzent-als-Text UND Fokusring auf Weiß ~7.1:1 erreichen (≥ AA 4.5/3). Per Kontrastberechnung verifiziert; kein separates `--accent-strong` nötig. Aufgedeckt durch adversarielles Review der Kontakt-Sektion. **Update 08.06.2026:** seit der Dark-only-Umstellung ohnehin gegenstandslos (kein Light Mode mehr).
 
 ---
 

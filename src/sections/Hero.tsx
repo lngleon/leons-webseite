@@ -90,9 +90,12 @@ export default function Hero() {
       <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
         {/* Text + Zähler */}
         <motion.div variants={container} initial="hidden" animate="show" className="max-w-xl">
-          {/* H1 bewusst ohne Entrance-Opacity: LCP-Element sofort sichtbar (Mobil). */}
+          {/* H1 bewusst ohne Entrance-Opacity: LCP-Element sofort sichtbar (Mobil).
+              Nur das Akzentwort bekommt den Gradient (Text-Clip mit solidem Fallback). */}
           <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            {hero.headline}
+            {hero.headline.split(hero.accentWord)[0]}
+            <span className="accent-gradient-text">{hero.accentWord}</span>
+            {hero.headline.split(hero.accentWord)[1] ?? ''}
           </h1>
 
           <motion.p
@@ -105,7 +108,7 @@ export default function Hero() {
           <motion.div variants={item} className="mt-8">
             <a
               href={ctaItem.href}
-              className="inline-flex items-center justify-center rounded-full bg-accent-solid px-7 py-3 text-sm font-medium text-accent-foreground shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="cta-gradient inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {ctaItem.label}
             </a>
@@ -126,7 +129,7 @@ export default function Hero() {
                 <span aria-hidden="true" className="mb-2 h-px w-8 bg-accent" />
                 <span
                   aria-hidden="true"
-                  className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
+                  className="accent-gradient-text text-3xl font-semibold tracking-tight sm:text-4xl"
                 >
                   <Counter value={stat.value} suffix={stat.suffix} />
                 </span>
