@@ -1,6 +1,6 @@
 # CURRENT-SCHEMA.md – Architektur & Datenfluss
 
-> Letzte Aktualisierung: 02.06.2026
+> Letzte Aktualisierung: 08.06.2026
 > **Kein Backend, keine Datenbank.** Dieses Projekt ist eine reine Frontend-Website.
 > Diese Datei dokumentiert daher KEIN DB-Schema, sondern die Architektur, die externen Dienste und den Datenfluss.
 >
@@ -122,7 +122,10 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 ## Theming (Dark/Light + Akzentfarbe)
 
 - **Modi:** Dark (Default) + Light, per Toggle umschaltbar.
-- **Akzentfarbe:** noch offen. MUSS als EINE zentrale CSS-Variable angelegt werden (z.B. `--accent`), damit sie später an genau einer Stelle gesetzt wird und sich durch die ganze Seite zieht. NIEMALS Farbwerte hardcoden.
+- **Akzentfarbe:** Violett (final). Zentral über CSS-Variablen in `src/index.css`, per Mode gesetzt – NIEMALS Farbwerte hardcoden:
+  - `--accent` (Akzent als Text/Rand/Icon/Linie/Glow + Fokusring via `--ring`): Dark `#a78bfa` / Light `#6d28d9`
+  - `--accent-solid` (Hintergrund gefüllter Buttons): Dark `#6d4dff` / Light `#6d28d9`
+  - `--accent-foreground` (Schrift auf gefüllten Buttons): `#ffffff` (beide Modes)
 - **Basis-Palette:** edel-zurückhaltend (Schwarz/Weiß/Grau-Töne), getrennt für Dark und Light.
 
 ---
