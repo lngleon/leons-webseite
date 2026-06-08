@@ -54,7 +54,7 @@ export default function Hero() {
         <motion.div variants={item} className="mt-10">
           <a
             href={ctaItem.href}
-            className="inline-flex items-center justify-center rounded-full bg-accent px-7 py-3 text-sm font-medium text-accent-foreground shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center justify-center rounded-full bg-accent-solid px-7 py-3 text-sm font-medium text-accent-foreground shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {ctaItem.label}
           </a>

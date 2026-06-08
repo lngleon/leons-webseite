@@ -11,7 +11,7 @@
 Markenname: Leon Lang
 Tagline: „Veränderungen, die spürbar werden."
 Logo: „LL"-Monogramm – noch zu erstellen (via ChatGPT-Bildgenerator), inkl. Favicon, in heller + dunkler Variante
-Design-System: edel-zurückhaltend (Schwarz/Weiß/Grau), Dark + Light Mode, Akzentfarbe noch offen → siehe Design-Regeln
+Design-System: edel-zurückhaltend (Schwarz/Weiß/Grau), Dark + Light Mode, Akzentfarbe **Violett (final)** – `--accent` Dark #a78bfa / Light #6d28d9, gefüllte Buttons (weiße Schrift) `--accent-solid` Dark #6d4dff / Light #6d28d9; zentral als CSS-Variablen, siehe Design-Regeln
 
 ---
 
@@ -97,7 +97,7 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 
 ### Phase 3: Content & Feinschliff
 - Logo „LL" + Favicon einbinden (hell + dunkel)
-- Akzentfarbe festlegen und zentrale CSS-Variable füllen
+- Akzentfarbe festlegen und zentrale CSS-Variable füllen ✅ (08.06.2026: Violett, per-Mode-Tokens)
 - Impressum- + Datenschutz-Texte einfügen (vom User generiert)
 - Projekt-Links auf finale Domains umstellen, sobald verfügbar
 - Optional: stimmungsvolle Bewegtbild-/Glow-Elemente
@@ -151,7 +151,7 @@ Single-Page mit Anker-Navigation + Smooth Scroll.
 
 - **Stil:** futuristisch, clean, edel, premium. Referenzen: adrianziegler.de (Dark) + farisschmidt.de (Light)
 - **Dark + Light Mode:** immer beide, Start in Dark
-- **Farbschema:** edel-zurückhaltend (Schwarz/Weiß/Grau-Töne). Akzentfarbe noch offen → als EINE zentrale CSS-Variable anlegen, damit sie später an einer Stelle gesetzt werden kann. NIEMALS Farbwerte hardcoden.
+- **Farbschema:** edel-zurückhaltend (Schwarz/Weiß/Grau-Töne). **Akzentfarbe: Violett (final, 08.06.2026).** Zentral über CSS-Variablen, NIEMALS Farbwerte hardcoden: `--accent` (Text/Rand/Icon/Linie/Glow) Dark #a78bfa / Light #6d28d9; `--accent-solid` (Hintergrund gefüllter Buttons, weiße Schrift) Dark #6d4dff / Light #6d28d9. Light-Werte erfüllen WCAG AA als Text (~7:1) und als Fokusring (~7:1).
 - **UI-Sprache:** Deutsch, „Du"-Ansprache
 - **Ton:** premium, aber nahbar – nie abgehoben, nie billig
 - **Responsive:** Desktop-first, Mobil voll funktionsfähig
@@ -208,7 +208,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Feature | Beschreibung | Priorität |
 |---------|-------------|-----------|
-| Akzentfarbe setzen | zentrale CSS-Variable füllen, sobald entschieden | Hoch |
+| Akzentfarbe setzen | ✅ Violett gesetzt (08.06.2026), per-Mode-Tokens, Light-Mode-AA verifiziert | erledigt |
 | Logo + Favicon einbinden | „LL"-Monogramm, hell + dunkel | Hoch |
 | Eigene Domain | statt Vercel-Adresse | Mittel |
 | Professionelle E-Mail | ersetzt Gmail im Formular + Button | Mittel |
@@ -225,7 +225,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 - Positionierung „premium, aber nahbar": Premium-Optik + „Du"-Ansprache + keine Preise. Weder Enterprise-abgehoben noch billig.
 - Struktur folgt dem verkaufspsychologischen Aufbau der Vorbilder (Hero → Problem → Lösung/Leistungen → Vertrauen → Prozess → Beweise → CTA).
 - Social Proof (viele Kunden/Logos/Testimonials) fehlt noch → bewusst durch persönliche Geschichte + 2 starke Showcases ersetzt. Keine hohlen Versprechen oder erfundenen Zahlen.
-- Akzentfarbe bewusst offengelassen → als zentrale Variable, Entscheidung später am lebenden Objekt.
+- Akzentfarbe final: **Violett** (08.06.2026). Per-Mode-Tokens `--accent` (Dark #a78bfa / Light #6d28d9) + `--accent-solid` für gefüllte Buttons (Dark #6d4dff / Light #6d28d9, weiße Schrift). Light-Werte bewusst dunkel genug → WCAG AA als Text und Fokusring (~7:1). Zentral in `src/index.css`, nirgends hardcoden.
 - Bei nur 2 Projekten keine Kategorie-Tabs (würden leer wirken) → zwei große Showcases mit Detail-Ansicht. Tabs nachrüstbar, wenn mehr Projekte da sind.
 - Reines Frontend, kein Backend/DB – Formular läuft über Formspree.
 - Karten nutzen das zentrale `Card`-Muster (`src/components/Card.tsx`): einheitlicher, dezenter Hover (Anheben + Akzent-Rand + weicher Glow), touch-sicher und reduced-motion-freundlich. Neue Karten-Sektionen (z.B. Leistungen) dieses Muster wiederverwenden, statt den Hover neu zu bauen. Entrance-Animation gehört auf ein umschließendes motion-Element, nicht in die Card.
@@ -238,6 +238,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | Datum | Zusammenfassung |
 |-------|----------------|
+| 08.06.2026 | **Finale Akzentfarbe: Violett.** Platzhalter #c8a96a durch finale Violett-Werte ersetzt – ausschließlich über die zentralen CSS-Variablen, nichts hardcoden. Per-Mode-Tokens: `--accent` (Text/Rand/Icon/Linie/Glow) Dark #a78bfa / Light #6d28d9; neues `--accent-solid` für gefüllte Buttons (weiße Schrift, `--accent-foreground` = #fff) Dark #6d4dff / Light #6d28d9; die 4 CTA-/Submit-Buttons (Navbar ×2, Hero, Kontakt) auf `bg-accent-solid` umgestellt. **Light-Mode-Kontrast-Bug geschlossen:** Light `--accent` #6d28d9 erreicht als Text UND als Fokusring ~7.1:1 (≥ WCAG AA 4.5/3), Solid-Button weiß auf #6d28d9 ~7.1:1, Dark weiß auf #6d4dff ~5.1:1 – per Kontrastberechnung verifiziert. Kein neues Token nötig, da Light-Accent dunkel genug. `npm run build` läuft. Nur Farbe/Tokens, keine neuen Sektionen. |
 | 07.06.2026 | **Sektionen-Sprint – Zusammenfassung dieser Session.** Gebaut: **Leistungen**, **„Über mich"**, **Prozess** (inkl. **Reload-Bugfix** der Prozess-Animation) und **Kontakt** (Formspree-Formular + Direkt-Buttons, adversariell a11y-geprüft). Details je Schritt in den Einträgen unten + im Prompt-Protokoll. **Größter Stolperstein – Formspree live:** Das Formular lief lokal sauber (Endpoint in `.env.local`), live auf Vercel aber NICHT – `.env.local` ist per `.gitignore` ausgeschlossen und gelangt daher nie zu Vercel. Symptom: Fehler OHNE Network-Request (`fetch` gegen eine `undefined`-URL). **Fix:** `VITE_FORMSPREE_ENDPOINT` zusätzlich als Vercel-Env-Variable (alle Environments) gesetzt + Redeploy. Jetzt **end-to-end bestätigt** – lokal UND live, Mail kommt an. Außerdem Vercel-Status nach Dashboard-Verifikation wieder auf ✅ korrigiert (war zwischenzeitlich fälschlich als „kein Projekt" notiert). |
 | 07.06.2026 | **Session 7: Doku-Korrektur Vercel-Status.** Die in Session 6 notierte Einschätzung („Account `lngleon` hat kein Projekt → kein Auto-Deploy") war ein Fehlschluss aus einer CLI-Prüfung im falschen Account-Kontext. Im Vercel-Dashboard (Account „leon's projects") verifiziert: Projekt `leons-webseite` ist mit `main` verbunden, alle Commits dieser Session deployen sauber auf Production, oberstes Deployment 19c48be („Kontakt") = Ready. Vercel-Status wieder auf ✅ gesetzt (Infrastruktur-Status + Verhaltensregeln). Lehre: Dashboard ist maßgeblich; bei CLI-Checks den Account-Kontext (`vercel whoami` / Team) prüfen. Nur Doku. |
 | 07.06.2026 | **Session 6: „Kontakt"-Sektion (letzte Sektion).** Zweispaltig (`id="kontakt"`): links Formspree-Formular (`VITE_FORMSPREE_ENDPOINT`, JSON-POST), rechts „Lieber direkt?" mit 3 Buttons (Mail/WhatsApp/Instagram); auf Mobil gestapelt mit Formular oben. State-Machine idle→sending→success/error, Client-Validierung (Pflichtfelder + E-Mail-Format), Erfolg leert das Formular + Erfolgsmeldung, Fehler retrybar. Neues `--destructive`-Theme-Token (beide Modes) für Validierungs-/Fehlerfarben. Geteilte `BrandIcons` (Instagram + WhatsApp) angelegt, Footer darauf umgestellt. **Adversarielles Review-Workflow** über das Formular → 5 bestätigte Findings: a11y-Fixes angewandt (Fokus zum ersten Fehlerfeld bei Validierung [WCAG 3.3.1], Fokus ins Erfolgs-Panel [2.4.3], Doppelsende-Guard via ref, Placeholder-Kontrast `/80`). Offen/Phase 3: Light-Mode-Kontrast der Akzentfarbe als Text + Fokusring (siehe „Bekannte Bugs"). Dark + Light, responsive, Akzent nur über `--accent`, Fade-up. `npm run build` läuft. |
@@ -271,14 +272,14 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 |---|---------|--------|
 | 1 | Projekte (2 Showcases + interaktive Detail-Ansicht) | Groß |
 | 2 | Impressum + Datenschutz: Inhalte einfügen | Klein |
-| 3 | Akzentfarbe finalisieren + AA-Kontrast prüfen (Phase 3) | Mittel |
+| 3 | Logo „LL" + Favicon (hell/dunkel) einbinden (Phase 3) | Mittel |
 
 ---
 
 ## Bekannte Bugs
 
 - ✅ **Behoben – Prozess-Animation lief beim Neuladen nicht.** Lag die Sektion beim Laden bereits im Viewport (Reload an dieser Scroll-Position), liefen weder Schritt-Stagger noch Linien-Aufbau; beim Reinscrollen liefen sie. Betraf NUR Prozess. **Ursache:** Die `whileInView`-Geste propagiert den tief verschachtelten Variant-Baum (`ol → li → Verbindungslinien`, zwei Ebenen) beim „bereits im Viewport beim Mount"-Fall nicht zuverlässig. Die flacheren Sektionen (eine Ebene) waren nicht betroffen. **Fix:** Orchestrierung über `useInView` + gesteuertes `animate={inView ? 'show' : 'hidden'}` statt `whileInView`. Reduced-motion-Verhalten unverändert.
-- ⬜ **Offen (Phase 3) – Light-Mode-Kontrast der Akzentfarbe.** Die Platzhalter-Akzentfarbe `--accent` (#c8a96a) erreicht als TEXT auf hellem Grund nur ~2.25:1 (AA verlangt 4.5:1), und der Fokusring (`--ring: var(--accent)`) liegt unter 3:1 (WCAG 1.4.11). Betrifft nur den Light-Mode (Dark ist ok), u.a. beim „Noch eine Nachricht schreiben"-Button im Kontakt-Formular. Bewusst NICHT jetzt gefixt, da `--accent` ein Platzhalter ist (Festlegung „am lebenden Objekt"). **Beim Setzen der finalen Akzentfarbe:** AA-Kontrast für Akzent-als-Text + Fokusring im Light-Mode sicherstellen, ggf. via separatem dunklerem Token (`--accent-strong`) bzw. per-Mode-Ring. Aufgedeckt durch adversarielles Review der Kontakt-Sektion.
+- ✅ **Behoben (08.06.2026) – Light-Mode-Kontrast der Akzentfarbe.** Mit der Platzhalter-Akzentfarbe #c8a96a lag Akzent-als-Text auf hellem Grund bei nur ~2.25:1 und der Fokusring unter 3:1 (WCAG 1.4.3 / 1.4.11), u.a. beim „Noch eine Nachricht schreiben"-Button im Kontakt-Formular. **Fix:** finale Akzentfarbe Violett mit per-Mode-Tokens – Light `--accent` = #6d28d9 ist dunkel genug, sodass Akzent-als-Text UND Fokusring auf Weiß ~7.1:1 erreichen (≥ AA 4.5/3). Per Kontrastberechnung verifiziert; kein separates `--accent-strong` nötig. Aufgedeckt durch adversarielles Review der Kontakt-Sektion.
 
 ---
 

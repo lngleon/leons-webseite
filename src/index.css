@@ -22,6 +22,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-accent-solid: var(--accent-solid);
   --color-accent-foreground: var(--accent-foreground);
   --color-ring: var(--ring);
   --color-destructive: var(--destructive);
@@ -43,13 +44,16 @@
   --destructive: #dc2626;
 
   /* ╔══════════════════════════════════════════════════════════╗
-     ║  AKZENTFARBE – PLATZHALTER                                ║
-     ║  Die EINZIGE Stelle, an der die Akzentfarbe gesetzt wird. ║
-     ║  Gilt für Dark + Light. Später hier den finalen Wert      ║
-     ║  eintragen – die ganze Seite zieht automatisch nach.      ║
+     ║  AKZENTFARBE – Violett (final). Zentrale Stelle, pro Mode. ║
+     ║  --accent        = Akzent als Text/Rand/Icon/Linie/Glow.  ║
+     ║  --accent-solid  = Hintergrund gefüllter Buttons (weiße   ║
+     ║                    Schrift via --accent-foreground).      ║
+     ║  Light-Werte sind dunkel genug für WCAG AA als Text (auf  ║
+     ║  Weiß ~7:1) und als Fokusring (~7:1). Dark-Override unten. ║
      ╚══════════════════════════════════════════════════════════╝ */
-  --accent: #c8a96a;
-  --accent-foreground: #1a1a1a;
+  --accent: #6d28d9;
+  --accent-solid: #6d28d9;
+  --accent-foreground: #ffffff;
 }
 
 /* ============================================================
@@ -64,6 +68,10 @@
   --card-foreground: #fafafa;
   --border: #27272a;
   --destructive: #f87171;
+  /* Akzent im Dark Mode: hellere Variante für Lesbarkeit auf dunklem Grund;
+     gefüllte Buttons etwas kräftiger (weiße Schrift bleibt). */
+  --accent: #a78bfa;
+  --accent-solid: #6d4dff;
 }
 
 @layer base {
