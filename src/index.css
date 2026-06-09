@@ -219,6 +219,20 @@
   }
 }
 
+/* Registrierte Custom-Property für die fließende CTA-Füllung – speist
+   `background-position`. Bewusst der bewährte AuroraText-Weg: die typisierte
+   `@property` (<percentage>) animieren statt `background-position` direkt –
+   saubere Interpolation, sauberer Repaint pro Frame.
+   HINWEIS: Hier ist die direkte Animation eigentlich UNKRITISCH (der Clip-Drop-
+   Bug betrifft nur `background-clip:text`, der Button hat das nicht / volle
+   Füllung) – derselbe Weg wird aus Konsistenz mit AuroraText + sauberer
+   Interpolation trotzdem gewählt, nicht aus Zwang. */
+@property --cta-pos {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 /* Gefüllte CTA: dunklere Violett-Hälfte (weiße Schrift ≥4.5:1 über den
    ganzen Verlauf). Solider Fallback, falls Gradient nicht unterstützt.
 
@@ -231,16 +245,31 @@
    Der box-shadow bindet die Tailwind-Ring-Variablen mit ein, damit der Fokusring
    (`focus-visible:ring-*`, eine layered Utility) sichtbar BLEIBT – diese Regel ist
    unlayered und würde sonst die box-shadow des Rings überschreiben. So komponieren
-   Glow + Fokusring statt sich gegenseitig auszuschalten. */
+   Glow + Fokusring statt sich gegenseitig auszuschalten.
+
+   Langsam FLIESSENDE Füllung (gefüllter Look bleibt, nur der Verlauf wandert):
+   verbreiterter Verlauf (`background-size:200%`) + `background-position` aus der
+   registrierten `@property --cta-pos` (NICHT direkt animiert → kein Verlauf-Drop,
+   analog AuroraText). Bewusst NUR `--accent-gradient-strong` (dunkle Stops) – die
+   weiße Schrift bleibt über den GANZEN Fluss ≥4.5:1; die hellen Stops NICHT
+   einziehen. reduced-motion → statisch (s.u.). */
 .cta-gradient {
   background-color: var(--accent-solid);
   background-image: var(--accent-gradient-strong);
+  background-size: 200% 100%;
+  background-position: var(--cta-pos) 50%;
   color: var(--accent-foreground);
   box-shadow:
     var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000),
     0 4px 22px -6px color-mix(in oklab, var(--accent) 18%, transparent);
-  transition: box-shadow 200ms ease-out, opacity 200ms ease-out;
+  /* MUSS unlayered bleiben: überschreibt bewusst die layered Tailwind-Utility
+     `transition-opacity` an den Buttons und deckt zusätzlich `transform` (Lift)
+     + `box-shadow` (Glow) ab. Wird diese Regel je in einen @layer verschoben
+     ODER `transition-opacity` aus dem Markup als „redundant" entfernt, ohne das
+     hier zu spiegeln, „snappt" der Lift statt weich zu animieren. */
+  transition: box-shadow 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
+  animation: cta-flow 9s ease-in-out infinite alternate;
 }
 @media (hover: hover) {
   .cta-gradient:hover {
@@ -255,6 +284,44 @@
     var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000),
     0 4px 24px -4px color-mix(in oklab, var(--accent) 52%, transparent);
+}
+
+/* Animiert NUR die registrierte Custom-Property (nicht background-position
+   direkt) → sauberer Repaint pro Frame, kein Verlauf-Drop (analog AuroraText). */
+@keyframes cta-flow {
+  0% {
+    --cta-pos: 0%;
+  }
+  100% {
+    --cta-pos: 100%;
+  }
+}
+
+/* Dezenter Lift NUR auf den großen Content-CTAs (Hero, Kontakt-Submit,
+   /möglichkeiten = allesamt in <main>); die Navbar-CTAs (in <header>) bleiben
+   bewusst ruhig, sonst wirkt die Sticky-Leiste unruhig. Hover hebt leicht an
+   (touch-sicher via @media hover), beim Klick „drückt" es sich auf die
+   Grundlinie zurück (:active, bewusst ungated → reagiert auch auf Touch).
+   Das `transform` wird über die `.cta-gradient`-Transition weich animiert. */
+@media (hover: hover) {
+  main .cta-gradient:hover {
+    transform: translateY(-2px);
+  }
+}
+main .cta-gradient:active {
+  transform: translateY(0);
+}
+
+/* reduced-motion: Füllung statisch (kein Fluss) UND kein Lift. */
+@media (prefers-reduced-motion: reduce) {
+  .cta-gradient {
+    animation: none;
+    background-position: 0% 50%;
+  }
+  main .cta-gradient:hover,
+  main .cta-gradient:active {
+    transform: none;
+  }
 }
 
 /* ── Marquee (Showcase /möglichkeiten) ───────────────────────────
