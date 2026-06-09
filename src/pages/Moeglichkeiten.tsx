@@ -7,14 +7,18 @@ import SectionHeading from '@/components/SectionHeading'
 import ServiceDiagram from '@/components/ServiceDiagram'
 import { cn } from '@/lib/utils'
 import { CoolMode } from '@/components/ui/CoolMode'
+import Earth from '@/components/ui/Earth'
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton'
 import { Marquee } from '@/components/ui/Marquee'
+import SparklesCanvas from '@/components/ui/Sparkles'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/Tilt'
 import { moeglichkeitenIntro, techStack } from '@/data/moeglichkeiten'
 
 /* Stille Showcase-Seite „Was möglich ist" (Route /möglichkeiten, NICHT in der
-   Navbar verlinkt). Reihenfolge: Kopf → Bento → verspielt/seriös → Tilt → Marquee.
-   Alles SSR-/prerender-sicher; reduced-motion respektiert (Tilt/Partikel/Marquee). */
+   Navbar verlinkt). Reihenfolge: Kopf → Bento → verspielt/seriös → Tilt →
+   Live-Visual (Globe + Funken) → Marquee.
+   Alles SSR-/prerender-sicher; reduced-motion respektiert (Tilt/Partikel/Globe/
+   Sparkles/Marquee). */
 
 // Subtile Entrance-Animation für die Abschnitte unter dem Kopf (wie auf der
 // Startseite). Der Kopf selbst bleibt ungeanimiert → ohne JS sofort sichtbar.
@@ -216,7 +220,29 @@ export default function Moeglichkeiten() {
         </div>
       </Reveal>
 
-      {/* (5) Marquee – Leons echter Tech-Stack */}
+      {/* (5) Live-Visual: Dot-Globe (WebGL via cobe) + aufsteigende Funken (Canvas).
+         Reine Können-Demo – beides läuft live im Browser, nur Violett aus den
+         Tokens, SSR-/reduced-motion-sicher. Keine „global"-/Reichweiten-Aussage. */}
+      <Reveal className="mt-24 sm:mt-32">
+        <div className="flex flex-col items-center gap-8 text-center">
+          <div className="flex flex-col items-center gap-3">
+            <h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              Live im Browser gerechnet
+            </h3>
+            <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
+              Ein interaktiver Punkte-Globus und aufsteigende Funken – in Echtzeit gezeichnet
+              (WebGL und Canvas), kein Video. Zieh am Globus.
+            </p>
+          </div>
+
+          <div className="relative w-full max-w-[34rem]">
+            <SparklesCanvas className="pointer-events-none absolute inset-0" density={70} />
+            <Earth className="relative z-10 mx-auto aspect-square w-full max-w-[26rem]" />
+          </div>
+        </div>
+      </Reveal>
+
+      {/* (6) Marquee – Leons echter Tech-Stack */}
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-6">
           <h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
