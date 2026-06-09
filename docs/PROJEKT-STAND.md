@@ -205,7 +205,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | Leistungen (4 Karten) | ✅ | Fertig – je Karte ein lebendes Schaubild (Browser/App/Redesign/KI-Chat), Karte 4 Highlight |
 | Über mich | ✅ | Fertig (2-spaltig, echtes Porträt als optimiertes WebP, `object-cover`) |
 | Prozess (4 Schritte) | ✅ | Fertig (nummerierte Abfolge mit Verbindungslinie) |
-| Projekte (2 Showcases + Detail-Ansicht) | ⬜ | Offen |
+| Projekte (2 Showcases) | ✅ | Fertig – zwei große Karten (Blumen Lang / Naillery) mit Vorschaubild + Typzeile + Link „zur Website" (Live-URLs im Data-Layer). Detail-Ansicht/Overlay bewusst geparkt (keine Tabs) |
 | Statement (Scroll-Reveal vor Kontakt) | ✅ | Fertig – zwei nacheinander einblendende Zeilen („Nicht noch eine Seite von der Stange." / „Sondern deine."), „deine" im Akzent-Gradient; via wiederverwendbarer `TextAnimation` (blur+fade+y), SSR-/reduced-motion-sicher |
 | Kontakt (Formspree-Formular + direkte Buttons) | ✅ | Fertig (Formular + 3 Direkt-Buttons, a11y-geprüft) |
 | Responsive Layout | 🔄 | Grundgerüst responsive; pro Sektion mitprüfen |
@@ -299,6 +299,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | 21 | Fließende CTA-Füllung (alle 5 `.cta-gradient`): registrierte `@property --cta-pos` + `background-size:200%` + `@keyframes cta-flow` (AuroraText-Weg, nie `background-position` direkt), nur `--accent-gradient-strong` (weiße Schrift ≥4.5:1 über den ganzen Fluss), Glow unverändert. Selektiver Lift nur auf großen Content-CTAs via `main .cta-gradient` (Hover `translateY(-2px)`, `:active` zurück; Navbar ohne Lift). reduced-motion: statisch + kein Lift. Rein CSS/SSR-sicher, nur `index.css`, kein Button-Markup. Adversariell reviewt (4 bestätigt: 2 Kommentar-Härtungen; mobile-CTA-Fokusring als separater a11y-Follow-up). `npm run build` grün, im `dist`-CSS verifiziert | ✅ |
 | 22 | CTA-Hover-Lift spürbarer: Hover `translateY(-4px)` (statt 2px) + zusätzlicher weicher Akzent-Lift-Schatten als additiver box-shadow-Layer `var(--cta-lift-shadow)` (`color-mix(--accent 30%)` + Token-Fallback, im Ruhezustand `0 0 #0000`); `:active` drückt zurück + Schatten weg. Nur `main .cta-gradient` (Navbar ruhig), Glow/Füllung/weiße Schrift unverändert, animiert (kein Snap), reduced-motion → kein Lift. Nur Akzent-Tokens (kein graues Hex), nur `index.css`. Adversariell reviewt (3 bestätigt, alle „verified correct"/keine Änderung). `npm run build` grün, im `dist`-CSS verifiziert | ✅ |
 | 23 | a11y: Fokusring am mobilen Navbar-CTA ergänzt (war als einziger der 5 Primär-CTAs ohne sichtbaren Tastatur-Fokus). Dieselben `focus-visible:ring`-Klassen wie die anderen CTAs (Tokens `--ring`/`--background`, kein Hex, Dark-only, SSR-safe); WCAG 2.4.7. Nur dieser Button. `npm run build` grün | ✅ |
+| 24 | Projekte-Sektion (`id="projekte"`, in `Home` zwischen Prozess und Statement): zwei große Showcase-Karten (Blumen Lang / Naillery), mobil gestapelt, KEINE Tabs/Detail-Ansicht (geparkt). Pro Karte: statisches Vorschaubild (voll-bleed oben, `object-cover`, `aspect-[21/10]`, `width`/`height`) + Name + Typzeile + externer Link „zur Website" (`target=_blank` `rel=noopener noreferrer`, distinkte `aria-label`). `Card`/`SectionHeading` wiederverwendet, Live-URLs als änderbare Felder im Data-Layer (`src/data/projects.ts`). Dark-only, nur Tokens, keine erfundenen Zahlen, SSR-/reduced-motion-sicher (`useReducedMotionSafe`-Reveal). Adversariell reviewt (1 bestätigt: `width`/`height` ergänzt). `npm run build` grün; im `dist/index.html` verifiziert | ✅ |
 
 ---
 
@@ -306,9 +307,9 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 
 | # | Aufgabe | Aufwand |
 |---|---------|--------|
-| 1 | Projekte-Sektion (2 Showcases + interaktive Detail-Ansicht) | Groß |
-| 2 | Impressum + Datenschutz: Texte einfügen | Klein |
-| 3 | Logo „LL" + Favicon (für dunklen Hintergrund) einbinden | Mittel |
+| 1 | Impressum + Datenschutz: Texte einfügen | Klein |
+| 2 | Logo „LL" + Favicon (für dunklen Hintergrund) einbinden | Mittel |
+| ✅ | ~~Projekte-Sektion (2 Showcases + Detail-Ansicht)~~ → erledigt 09.06.2026 (zwei große Karten Blumen Lang / Naillery mit Vorschaubild + Link „zur Website", Live-URLs im Data-Layer; interaktive Detail-Ansicht bewusst geparkt) | – |
 | ✅ | ~~Follow-up: CSR → Prerender/SSG für echten LCP-Gewinn (Mobil)~~ → erledigt 08.06.2026 (Session 10: `renderToString` + `StaticRouter` Prerender, 3 Routen statisch) | – |
 
 ---
