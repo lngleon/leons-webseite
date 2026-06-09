@@ -220,11 +220,41 @@
 }
 
 /* Gefüllte CTA: dunklere Violett-Hälfte (weiße Schrift ≥4.5:1 über den
-   ganzen Verlauf). Solider Fallback, falls Gradient nicht unterstützt. */
+   ganzen Verlauf). Solider Fallback, falls Gradient nicht unterstützt.
+
+   Dezenter Violett-Glow – BEWUSST dieselbe Sprache wie der Card-Hover-Glow:
+   ein weicher, akzent-getönter Schatten über `--accent` (color-mix wie Tailwinds
+   `shadow-accent/x`), kein neuer Effekt, kein Hex hardcodiert. Ruhezustand leicht,
+   bei Hover kräftiger, beim Klick (`:active`) am kräftigsten – KEIN Dauer-/Puls-
+   Effekt. Hover ist touch-sicher (nur bei echtem Zeiger via @media hover).
+
+   Der box-shadow bindet die Tailwind-Ring-Variablen mit ein, damit der Fokusring
+   (`focus-visible:ring-*`, eine layered Utility) sichtbar BLEIBT – diese Regel ist
+   unlayered und würde sonst die box-shadow des Rings überschreiben. So komponieren
+   Glow + Fokusring statt sich gegenseitig auszuschalten. */
 .cta-gradient {
   background-color: var(--accent-solid);
   background-image: var(--accent-gradient-strong);
   color: var(--accent-foreground);
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000),
+    0 4px 22px -6px color-mix(in oklab, var(--accent) 18%, transparent);
+  transition: box-shadow 200ms ease-out, opacity 200ms ease-out;
+}
+@media (hover: hover) {
+  .cta-gradient:hover {
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000),
+      var(--tw-ring-shadow, 0 0 #0000),
+      0 6px 30px -6px color-mix(in oklab, var(--accent) 36%, transparent);
+  }
+}
+.cta-gradient:active {
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000),
+    0 4px 24px -4px color-mix(in oklab, var(--accent) 52%, transparent);
 }
 
 /* ── Marquee (Showcase /möglichkeiten) ───────────────────────────
