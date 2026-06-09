@@ -13,30 +13,13 @@
 
 1. Impressum + Datenschutz: Inhalte einfügen (Platzhalter-Seiten + Footer-Links stehen bereits)
 
-## Follow-ups: Statement-Sektion (Scroll-Reveal)
+## Browser-Verifikation & offene Follow-ups
 
-- [ ] **Statement im Browser VISUELL prüfen** (lokal `npm run preview` + live nach Deploy) – im grünen Build NICHT sichtbar: (1) Reveal beim Reinscrollen (zwei Zeilen nacheinander, blur+fade+y, edel/nicht verspielt); (2) `prefers-reduced-motion` → sofort voll sichtbar, KEIN Blur/Stagger; (3) keine Hydration-Warnung in der Konsole (Reload mit der Sektion im Viewport testen); (4) **Akzentwort „deine"**: während der Blur-Phase und im Endzustand sichtbar/korrekt geclippt (der Eltern-`filter:blur` darf den `background-clip:text` des Kind-Spans nicht killen – der AuroraText-Clip-Bug betraf nur animierte `background-position`, hier statisch, aber im echten Chromium gegenchecken; Fallback `var(--accent)` greift sonst). (Build-grün ≠ Browser-korrekt.)
-
-## Follow-ups: Fließende CTA-Füllung + selektiver Lift
-
-- [ ] **Im Browser VISUELL prüfen** (lokal `npm run preview` + live) – im grünen Build NICHT sichtbar: (1) **Fluss**: langsam/edel, nicht grell/flackernd; gefüllter Look bleibt; auf allen 5 CTAs. (2) **Lesbarkeit**: weiße Schrift über den GANZEN fließenden Verlauf gut lesbar (≥4.5:1) – kein Moment, in dem die Füllung zu hell wird. (3) **Lift (09.06.2026 spürbarer)**: nur die großen CTAs (Hero, Kontakt-Submit, /möglichkeiten) heben bei Hover deutlich an (~4px) + bekommen einen weichen **violetten** Lift-Schatten (NICHT grau) und „drücken" sich beim Klick zurück (Schatten weg); spürbar, aber edel/nicht zu viel. **Die Navbar-CTAs (Desktop + Mobil) bleiben ruhig** (Sticky-Leiste nicht unruhig). (4) **Touch**: kein Hover-Hängenbleiben; Tap löst sauber aus. (5) **`prefers-reduced-motion`**: Füllung statisch (kein Fluss), kein Lift; Buttons normal sichtbar/klickbar. (6) **Keine Hydration-Warnung**. (Build-grün ≠ Browser-korrekt.)
-
-## Follow-ups: CTA-Glow + Scroll-Fortschrittsbalken
-
-- [ ] **Im Browser VISUELL prüfen** (lokal `npm run preview` + live) – im grünen Build NICHT sichtbar: (1) **CTA-Glow**: dezenter Violett-Glow im Ruhezustand, kräftiger bei Hover, am kräftigsten beim Klick (`:active`); konsistent mit dem `Card`-Glow, nicht zu grell; Intensitäten ggf. in `.cta-gradient` (`src/index.css`, 18/36/52 %) feinjustieren. (2) **Fokusring bleibt sichtbar**: mit Tab auf einen CTA – der `focus-visible`-Ring MUSS trotz Glow sichtbar sein (a11y). (3) **Touch**: kein Hover-Hängenbleiben auf Touch (Hover via `@media hover`). (4) **Scroll-Balken**: läuft links→rechts mit der Scroll-Tiefe, sanftes Nachfedern; oben am Rand, verdeckt die Navbar nicht; `prefers-reduced-motion` → folgt direkt ohne Federung, bleibt sichtbar. (5) **Keine Hydration-Warnung** in der Konsole (Reload an verschiedenen Scroll-Positionen). (Build-grün ≠ Browser-korrekt.)
-
-## Follow-ups: Live-Visual (Dot-Globe + Sparkles) auf /möglichkeiten
-
-- [ ] **Globe + Sparkles im Browser VISUELL prüfen** (lokal `npm run preview` + live nach Deploy) – im grünen Build NICHT sichtbar: (1) **WebGL**: Globus rendert (violette Punkte/Glow aus den Tokens, kein Blau), Auto-Spin sanft/edel, **Drag** rotiert; (2) **Sparkles**: aufsteigende violette Funken, Dichte angenehm niedrig; (3) **Perf**: kein Ruckeln/Hitze, eine rAF-Schleife (Globe) + eine (Sparkles), beim Tab-/Route-Wechsel sauber gestoppt (kein Leak – nach dem Verlassen keine laufenden rAFs/Listener, cobe-`<style>` aus dem `<head>` entfernt); (4) **`prefers-reduced-motion`**: Globus statisch (kein Spin), Sparkles ganz aus; (5) **keine Hydration-Warnung** in der Konsole; (6) Globe-Look ggf. feinjustieren (`mapBrightness`/`diffuse`/`opacity` in `Earth.tsx`). (Build-grün ≠ Browser-korrekt.)
-- [ ] `cobe` ist als Dependency in `package.json`/Lockfile committet → auf einer frischen Maschine `npm install` ausführen (zieht cobe automatisch). Vercel installiert es beim Build selbst.
-
-## Follow-ups: /möglichkeiten (stille Showcase-Seite)
-
-- [ ] **`/möglichkeiten` im Browser VISUELL prüfen** (lokal `npm run preview` + live nach Deploy): Tilt-Neigung subtil/edel, CoolMode-Partikel + sauberer Abbau beim Wegnavigieren (kein Leak), Marquee-Lauf + pauseOnHover, `prefers-reduced-motion` (Tilt aus, Partikel aus, Marquee statisch), keine Hydration-Warnungen. (Build-grün ≠ Browser-korrekt.)
-- [ ] „Diese Seite selbst"-Bento-Zelle: echte Performance-Zahl(en) messen und den Platzhalter („—" / „Messwerte folgen") ersetzen (z.B. Lighthouse-Score + Ladezeit).
-- [ ] Tilt-Karte: den neutralen Platzhalter durch ein echtes Projekt-Bild/-Screenshot ersetzen (sobald ein Projekt zeigbar ist).
-- [ ] Optional weitere echte Demos in den Bento aufnehmen, sobald vorhanden (keine erfundenen Daten).
-- [ ] Navbar-Link zu `/möglichkeiten` setzen, SOBALD die Seite „fertig"/zeigbar ist (aktuell bewusst still: Route in `App.tsx` + `prerender.mjs`, NICHT in `navItems`).
+- [x] **Live im Browser bestätigt (User, 09.06.2026):** Statement-Sektion (Reveal + reduced-motion), `/möglichkeiten` (Globus inkl. Drag, Tilt, CoolMode-Partikel, Marquee), „Über mich"-Foto, Scroll-Fortschrittsbalken, CTA-Glow, fließende CTA-Füllung.
+- [ ] **Browser-Check noch offen (nur build-grün + gepusht – letzte 2 Commits):** stärkerer `-4px`-Hover-Lift der großen CTAs (Hero / Kontakt-Submit / möglichkeiten) – Lift spürbar aber edel, Lift-Schatten **violett** (nicht grau), **Navbar bleibt ruhig**, `prefers-reduced-motion` → kein Lift, keine Hydration-Warnung. (Build-grün ≠ Browser-korrekt.)
+- [ ] **Browser-Check noch offen:** a11y-Fokusring am **mobilen** Navbar-CTA – Mobil-Menü öffnen, mit **Tab** auf den CTA navigieren → violetter Fokusring sichtbar (`:focus-visible`, nur bei Tastatur, nicht bei Maus-Klick).
+- [ ] **Lighthouse-Zahl(en)** messen und den Platzhalter („—" / „Messwerte folgen") in der „Diese Seite selbst"-Bento-Zelle auf `/möglichkeiten` ersetzen.
+- [ ] **Navbar-Link zu `/möglichkeiten`** setzen, sobald die Seite „fertig"/zeigbar ist (dazu vorher: Tilt-Platzhalter durch ein echtes Projekt-Bild ersetzen, ggf. weitere echte Demos im Bento). Aktuell bewusst still: Route in `App.tsx` + `scripts/prerender.mjs`, NICHT in `navItems`.
 
 ## Erledigt
 
