@@ -85,7 +85,7 @@ export default function Navbar() {
                 <a
                   href={ctaItem.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-full cta-gradient px-4 py-2 text-center text-sm font-medium"
+                  className="block rounded-full cta-gradient px-4 py-2 text-center text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {ctaItem.label}
                 </a>
