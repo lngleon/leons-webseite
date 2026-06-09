@@ -259,10 +259,15 @@
   background-size: 200% 100%;
   background-position: var(--cta-pos) 50%;
   color: var(--accent-foreground);
+  /* Zusätzlicher Lift-Schatten als eigener box-shadow-Layer „oben drauf" – im
+     Ruhezustand unsichtbar (0 0 #0000), sodass der Glow UNVERÄNDERT bleibt. NUR
+     die großen CTAs setzen ihn auf Hover (s.u.); über Akzent-Tokens, kein Hex. */
+  --cta-lift-shadow: 0 0 #0000;
   box-shadow:
     var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000),
-    0 4px 22px -6px color-mix(in oklab, var(--accent) 18%, transparent);
+    0 4px 22px -6px color-mix(in oklab, var(--accent) 18%, transparent),
+    var(--cta-lift-shadow);
   /* MUSS unlayered bleiben: überschreibt bewusst die layered Tailwind-Utility
      `transition-opacity` an den Buttons und deckt zusätzlich `transform` (Lift)
      + `box-shadow` (Glow) ab. Wird diese Regel je in einen @layer verschoben
@@ -276,14 +281,16 @@
     box-shadow:
       var(--tw-ring-offset-shadow, 0 0 #0000),
       var(--tw-ring-shadow, 0 0 #0000),
-      0 6px 30px -6px color-mix(in oklab, var(--accent) 36%, transparent);
+      0 6px 30px -6px color-mix(in oklab, var(--accent) 36%, transparent),
+      var(--cta-lift-shadow);
   }
 }
 .cta-gradient:active {
   box-shadow:
     var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000),
-    0 4px 24px -4px color-mix(in oklab, var(--accent) 52%, transparent);
+    0 4px 24px -4px color-mix(in oklab, var(--accent) 52%, transparent),
+    var(--cta-lift-shadow);
 }
 
 /* Animiert NUR die registrierte Custom-Property (nicht background-position
@@ -297,22 +304,29 @@
   }
 }
 
-/* Dezenter Lift NUR auf den großen Content-CTAs (Hero, Kontakt-Submit,
+/* Spürbarer Lift NUR auf den großen Content-CTAs (Hero, Kontakt-Submit,
    /möglichkeiten = allesamt in <main>); die Navbar-CTAs (in <header>) bleiben
-   bewusst ruhig, sonst wirkt die Sticky-Leiste unruhig. Hover hebt leicht an
-   (touch-sicher via @media hover), beim Klick „drückt" es sich auf die
-   Grundlinie zurück (:active, bewusst ungated → reagiert auch auf Touch).
-   Das `transform` wird über die `.cta-gradient`-Transition weich animiert. */
+   bewusst ruhig, sonst wirkt die Sticky-Leiste unruhig. Vorbild:
+   `hover:-translate-y-1` + `hover:shadow-md` – NUR Bewegung + Schatten
+   übernommen, der Schatten über die Akzent-Tokens (color-mix, KEIN graues/
+   neutrales Hex). Hover hebt ~4px an UND legt den weichen Akzent-Lift-Schatten
+   „oben drauf" (touch-sicher via @media hover); beim Klick „drückt" es sich auf
+   die Grundlinie zurück und der Lift-Schatten verschwindet (:active, bewusst
+   ungated → reagiert auch auf Touch). transform + box-shadow laufen über die
+   `.cta-gradient`-Transition weich; Glow + Füllung bleiben unverändert. */
 @media (hover: hover) {
   main .cta-gradient:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    --cta-lift-shadow: 0 12px 24px -8px color-mix(in oklab, var(--accent) 30%, transparent);
   }
 }
 main .cta-gradient:active {
   transform: translateY(0);
+  --cta-lift-shadow: 0 0 #0000;
 }
 
-/* reduced-motion: Füllung statisch (kein Fluss) UND kein Lift. */
+/* reduced-motion: Füllung statisch (kein Fluss) UND kein Lift (weder Bewegung
+   noch Lift-Schatten). Der Glow (box-shadow) bleibt wie gehabt. */
 @media (prefers-reduced-motion: reduce) {
   .cta-gradient {
     animation: none;
@@ -321,6 +335,7 @@ main .cta-gradient:active {
   main .cta-gradient:hover,
   main .cta-gradient:active {
     transform: none;
+    --cta-lift-shadow: 0 0 #0000;
   }
 }
 
