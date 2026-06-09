@@ -13,20 +13,22 @@ const item: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
 }
 
-/** Porträt-Platzhalter: gerahmte Hülle im Hochformat (4∶5), bereit für das echte
- *  Bild in Phase 3. Dann einfach den Inhalt durch ein
- *  <img className="absolute inset-0 h-full w-full object-cover" … /> ersetzen. */
-function PortraitPlaceholder() {
+/** Porträt: gerahmte Hülle im Hochformat (4∶5), gefüllt mit dem echten Foto als
+ *  object-cover-<img>. Die 4∶5-Box bleibt erhalten (kein Layout-Shift), `bg-muted`
+ *  dient als ruhiger Platzhalter, bis das (lazy geladene) Bild da ist. Statisches
+ *  <img> aus public/ → prerender-/SSR-sicher. Optimiert als WebP (~20 KB). */
+function Portrait() {
   return (
     <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-2xl border border-border bg-muted">
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-        <span className="text-5xl font-semibold tracking-tight text-muted-foreground">
-          LL
-        </span>
-        <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground/70">
-          Porträt folgt
-        </span>
-      </div>
+      <img
+        src="/leon-portrait.webp"
+        alt="Porträtfoto von Leon Lang"
+        width={768}
+        height={960}
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
     </div>
   )
 }
@@ -42,9 +44,9 @@ export default function UeberMich() {
           viewport={{ once: true, amount: 0.3 }}
           className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center lg:gap-16"
         >
-          {/* Foto-Platzhalter – links auf Desktop, auf Mobil oben (DOM-Reihenfolge) */}
+          {/* Foto – links auf Desktop, auf Mobil oben (DOM-Reihenfolge) */}
           <motion.div variants={item}>
-            <PortraitPlaceholder />
+            <Portrait />
           </motion.div>
 
           {/* Text – rechts auf Desktop */}
