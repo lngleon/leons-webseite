@@ -25,8 +25,10 @@ export const heroStats: HeroStat[] = [
 ]
 
 /* ── Terminal-Hero ──────────────────────────────────────────────
-   Vier Tabs mit ECHTEM Output (kein Fake): der reale Stack, der reale
-   Vite-Build, der echte Deploy-Weg (Push → Vercel) und „whoami". */
+   Vier Tabs: realer Stack, realer Vite-Build, der Deploy-Weg (Push → Vercel)
+   und „whoami". Konto-/Projekt-/Deploy-Identifier sind bewusst anonymisiert
+   (Dummy statt echtem GitHub-Handle/Repo/Deploy-URL) – im öffentlichen Hero
+   stehen keine echten Infra-Identifier. */
 
 export type TerminalLineKind = 'cmd' | 'out' | 'ok'
 
@@ -46,7 +48,7 @@ export const terminalTabs: TerminalTab[] = [
     key: 'install',
     label: 'install',
     lines: [
-      { kind: 'cmd', text: 'npm create vite@latest leons-webseite -- --template react-ts' },
+      { kind: 'cmd', text: 'npm create vite@latest dein-projekt -- --template react-ts' },
       { kind: 'out', text: '✓ Projekt erstellt' },
       { kind: 'cmd', text: 'npm install react react-dom react-router-dom framer-motion' },
       { kind: 'cmd', text: 'npm install -D tailwindcss @tailwindcss/vite typescript' },
@@ -71,9 +73,9 @@ export const terminalTabs: TerminalTab[] = [
     label: 'deploy',
     lines: [
       { kind: 'cmd', text: 'git push origin main' },
-      { kind: 'out', text: '→ GitHub: lngleon/leons-webseite (main)' },
+      { kind: 'out', text: '→ GitHub: dein-projekt (main)' },
       { kind: 'out', text: 'Vercel: Auto-Deploy läuft …' },
-      { kind: 'ok', text: '✓ Production: https://leons-webseite.vercel.app' },
+      { kind: 'ok', text: '✓ Production: https://deine-seite.de' },
       { kind: 'ok', text: '✓ Deployment ready' },
     ],
   },
