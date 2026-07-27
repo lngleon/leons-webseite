@@ -15,12 +15,15 @@ export default function Navbar() {
       transition={{ duration: 0.4, ease: 'easeOut' }}
       className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md"
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav
+        aria-label="Hauptnavigation"
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8"
+      >
         {/* Logo-Platzhalter "LL" */}
         <Link
           to="/"
           aria-label={`${site.name} – Startseite`}
-          className="inline-flex items-center rounded-md border border-border px-2.5 py-1 text-lg font-semibold tracking-tight text-foreground transition-colors hover:border-accent"
+          className="inline-flex items-center rounded-md border border-border px-2.5 py-1 text-lg font-semibold tracking-tight text-foreground transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {site.logoText}
         </Link>
@@ -31,7 +34,7 @@ export default function Navbar() {
             <li key={item.href}>
               <a
                 href={item.href}
-                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                className="rounded-sm text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {item.label}
               </a>
@@ -75,7 +78,7 @@ export default function Navbar() {
                   <a
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     {item.label}
                   </a>

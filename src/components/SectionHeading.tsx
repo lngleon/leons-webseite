@@ -6,6 +6,9 @@ type SectionHeadingProps = {
   title: string
   description?: string
   align?: 'center' | 'left'
+  /** Überschrift-Ebene. Default `h2` (Sektion einer Seite mit eigenem h1);
+   *  `h1` für Seiten, deren Kern-Überschrift dieser Kopf selbst IST (z.B. /möglichkeiten). */
+  as?: 'h1' | 'h2'
   className?: string
 }
 
@@ -15,6 +18,7 @@ export default function SectionHeading({
   title,
   description,
   align = 'center',
+  as: Heading = 'h2',
   className,
 }: SectionHeadingProps) {
   return (
@@ -30,9 +34,9 @@ export default function SectionHeading({
           {eyebrow}
         </span>
       )}
-      <h2 className="mt-3 max-w-2xl text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+      <Heading className="mt-3 max-w-2xl text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
         {title}
-      </h2>
+      </Heading>
       {description && (
         <p className="mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
           {description}

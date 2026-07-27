@@ -3,8 +3,6 @@ export const site = {
   name: 'Leon Lang',
   logoText: 'LL',
   tagline: 'Veränderungen, die spürbar werden.',
-  description:
-    'Premium-Webseiten, Web-Apps und KI-Integration – individuell programmiert.',
   contact: {
     email: 'leonlang95@gmail.com',
     whatsapp: 'https://wa.me/4917648072158',

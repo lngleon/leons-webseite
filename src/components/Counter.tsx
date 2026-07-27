@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { animate, useInView, useMotionValue, useReducedMotion } from 'framer-motion'
+import { animate, useInView, useMotionValue } from 'framer-motion'
+import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
 
 type CounterProps = {
   /** Zielwert, auf den hochgezählt wird. */
@@ -17,7 +18,7 @@ type CounterProps = {
 export default function Counter({ value, suffix = '', duration = 1.6 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.4 })
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = useReducedMotionSafe()
   const count = useMotionValue(0)
   const [display, setDisplay] = useState(0)
 

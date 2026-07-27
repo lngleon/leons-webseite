@@ -61,7 +61,7 @@ function BentoCard({
       <div className="mt-4 flex items-start gap-3">
         <Icon className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
         <div>
-          <h3 className="text-sm font-semibold text-foreground sm:text-base">{title}</h3>
+          <h2 className="text-sm font-semibold text-foreground sm:text-base">{title}</h2>
           <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
         </div>
       </div>
@@ -112,6 +112,7 @@ export default function Moeglichkeiten() {
     <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
       {/* (1) Kopf + ein Satz Intro (ohne Entrance → ohne JS sichtbar) */}
       <SectionHeading
+        as="h1"
         eyebrow={moeglichkeitenIntro.eyebrow}
         title={moeglichkeitenIntro.title}
         description={moeglichkeitenIntro.subline}
@@ -163,9 +164,9 @@ export default function Moeglichkeiten() {
       {/* (3) Verspielt vs. seriös – zwei Knöpfe */}
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-5 text-center">
-          <h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Verspielt oder seriös?
-          </h3>
+          </h2>
           <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
             Mikro-Interaktionen dürfen verspielt sein – oder ganz ruhig. Beides geht, je nachdem,
             was zu dir passt. Probier die zwei Knöpfe aus.
@@ -188,9 +189,9 @@ export default function Moeglichkeiten() {
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-8 text-center">
           <div className="flex flex-col items-center gap-3">
-            <h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Tiefe auf Hover
-            </h3>
+            </h2>
             <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
               Eine Karte, die sich subtil zur Maus neigt. Inhalt hier als Platzhalter – später ein
               echtes Projekt.
@@ -205,7 +206,7 @@ export default function Moeglichkeiten() {
                 </span>
               </CardItem>
               <CardItem translateZ={45} className="mt-2">
-                <h4 className="text-lg font-semibold text-foreground">Webseiten</h4>
+                <h3 className="text-lg font-semibold text-foreground">Webseiten</h3>
               </CardItem>
               <CardItem translateZ={60} className="mt-4 w-full">
                 <ServiceDiagram kind="browser" icon={Monitor} />
@@ -226,9 +227,9 @@ export default function Moeglichkeiten() {
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-8 text-center">
           <div className="flex flex-col items-center gap-3">
-            <h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Live im Browser gerechnet
-            </h3>
+            </h2>
             <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
               Ein interaktiver Punkte-Globus und aufsteigende Funken – in Echtzeit gezeichnet
               (WebGL und Canvas), kein Video. Zieh am Globus.
@@ -245,9 +246,9 @@ export default function Moeglichkeiten() {
       {/* (6) Marquee – Leons echter Tech-Stack */}
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-6">
-          <h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Mein Werkzeugkasten
-          </h3>
+          </h2>
           <div className="relative w-full">
             <Marquee pauseOnHover className="[--duration:28s]">
               {techStack.map((tool) => (
