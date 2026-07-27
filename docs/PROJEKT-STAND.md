@@ -10,7 +10,7 @@
 
 Markenname: Leon Lang
 Tagline: „Veränderungen, die spürbar werden."
-Logo: „LL"-Monogramm – noch zu erstellen (via ChatGPT-Bildgenerator), inkl. Favicon, in heller + dunkler Variante
+Logo: „LL"-Monogramm – noch zu erstellen (via ChatGPT-Bildgenerator), in heller + dunkler Variante. **Favicon ✅** (27.07.2026): kompletter Satz für dunklen Hintergrund (`favicon.svg` primär + `favicon.ico` Fallback + PNG 16/32 + `apple-touch-icon.png`) in `public/`, im `<head>` aller Routen verlinkt, dazu `theme-color #0a0a0a`.
 Design-System: edel-zurückhaltend (Near-Black/Weiß/Grau), **Dark-only** (kein Light/Toggle), Akzent **Violett** – flach via `--accent`/`--accent-solid` + **Violett-Gradient** (`--accent-gradient`/`--accent-gradient-strong`) auf Showcase-Flächen; zentral als CSS-Variablen, siehe Design-Regeln
 
 ---
@@ -62,7 +62,7 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 | 0 | Discovery (Interview) | ✅ Abgeschlossen |
 | 1 | Infrastruktur-Setup (GitHub, Vercel, Formspree, lokale Umgebung) | ✅ Abgeschlossen |
 | 2 | Aufbau & Sektionen via Claude Code | 🔄 Aktiv (alle Sektionen stehen außer Projekte) |
-| 3 | Content & Feinschliff (Logo, Texte, Recht, Akzentfarbe) | 🔄 Akzentfarbe ✅ (Violett); Logo/Favicon, Impressum/Datenschutz-Texte offen |
+| 3 | Content & Feinschliff (Logo, Texte, Recht, Akzentfarbe) | 🔄 Akzentfarbe ✅ (Violett), Favicon ✅; Logo („LL"-Monogramm) + Impressum/Datenschutz-Texte offen |
 | 4 | Testing | ⬜ Offen |
 | 5 | Launch / Domain | ⬜ Offen |
 
@@ -98,7 +98,8 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 - Impressum- + Datenschutz-Seiten als Platzhalter anlegen, im Footer verlinken
 
 ### Phase 3: Content & Feinschliff
-- Logo „LL" + Favicon einbinden (für dunklen Hintergrund – Dark-only)
+- Favicon-Satz einbinden ✅ (27.07.2026: `favicon.svg` primär + `.ico` Fallback + PNG 16/32 + `apple-touch-icon`, `theme-color #0a0a0a`, im `<head>` aller Routen)
+- Logo „LL" einbinden (für dunklen Hintergrund – Dark-only; Navbar zeigt noch den „LL"-Text)
 - Akzentfarbe festlegen und zentrale CSS-Variable füllen ✅ (08.06.2026: Violett, per-Mode-Tokens)
 - Impressum- + Datenschutz-Texte einfügen (vom User generiert)
 - Projekt-Links auf finale Domains umstellen, sobald verfügbar
@@ -216,7 +217,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | Feature | Beschreibung | Priorität |
 |---------|-------------|-----------|
 | Akzentfarbe setzen | ✅ Violett (08.06.2026): flach `--accent`/`--accent-solid` + `--accent-gradient(-strong)` (Dark-only) | erledigt |
-| Logo + Favicon einbinden | „LL"-Monogramm (für dunklen Hintergrund, Dark-only) | Hoch |
+| Logo einbinden | „LL"-Monogramm (für dunklen Hintergrund, Dark-only); **Favicon ✅ 27.07.2026** (Satz im `<head>` verlinkt) | Hoch |
 | Eigene Domain | statt Vercel-Adresse | Mittel |
 | Professionelle E-Mail | ersetzt Gmail im Formular + Button | Mittel |
 | Resend statt Formspree | optionaler Umstieg, sobald eigene Domain steht | Niedrig |
@@ -303,6 +304,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | 24 | Projekte-Sektion (`id="projekte"`, in `Home` zwischen Prozess und Statement): zwei große Showcase-Karten (Blumen Lang / Naillery), mobil gestapelt, KEINE Tabs/Detail-Ansicht (geparkt). Pro Karte: statisches Vorschaubild (voll-bleed oben, `object-cover`, `aspect-[21/10]`, `width`/`height`) + Name + Typzeile + externer Link „zur Website" (`target=_blank` `rel=noopener noreferrer`, distinkte `aria-label`). `Card`/`SectionHeading` wiederverwendet, Live-URLs als änderbare Felder im Data-Layer (`src/data/projects.ts`). Dark-only, nur Tokens, keine erfundenen Zahlen, SSR-/reduced-motion-sicher (`useReducedMotionSafe`-Reveal). Adversariell reviewt (1 bestätigt: `width`/`height` ergänzt). `npm run build` grün; im `dist/index.html` verifiziert | ✅ |
 | 25 | Hero-Terminal anonymisiert: alle echten Konto-/Projekt-/Deploy-Identifier durch Dummies ersetzt (nur Textdaten in `src/data/hero.ts`, keine neue Komponente). **install:** `npm create vite@latest dein-projekt …` (Repo-Name `leons-webseite` → `dein-projekt`). **deploy:** `→ GitHub: dein-projekt (main)` (statt `lngleon/leons-webseite`) + `✓ Production: https://deine-seite.de` (statt `leons-webseite.vercel.app`). **build/whoami:** keine echten Identifier (build = generische `dist/`-Pfade; whoami = bereits generische Marken-Copy „Leon Lang" + Rolle, kein echter Handle/E-Mail) → unverändert; Vorname/Marke „Leon Lang" bleibt bewusst. Look/Tabs/Tipp-Animation, Zähler, Tokens, Dark-only, SSR, reduced-motion unangetastet. Daten-Kommentar entschärft (behauptet keine echten Infra-Identifier mehr). `npm run build` grün; `dist` enthält keinen Alt-Identifier mehr (Terminal tippt client-seitig). Browser-Check: lokal `npm run preview` | ✅ |
 | 26 | Audit-Feinschliff (6 kleine Pre-Launch-Findings umgesetzt). **(1)** `/möglichkeiten` bekommt ein echtes `<h1>`: `SectionHeading` um optionale `as?: 'h1'\|'h2'`-Prop erweitert (Default `h2`, dynamischer `<Heading>`-Tag) – nur die Showcase-Seite nutzt `as="h1"`, andere Routen unverändert (je genau 1 `<h1>`). **Review-Folge-Fix:** das bloße Höherstufen erzeugte einen `h1→h3`-Level-Skip (keine `h2` auf der Seite) → die 4 Bento-Titel + 4 Abschnitts-Überschriften auf `h2`, die Tilt-Demo-Überschrift auf `h3` gezogen (rein semantisch – alle Größen kommen aus Klassen, Tailwind-Preflight neutralisiert Default-Heading-Größen → 0 visuelle Änderung); Outline jetzt `h1→h2→h3`. **(2)** Header-`<nav>` `aria-label="Hauptnavigation"`, Footer-`<nav>` `aria-label="Rechtliches"`. **(3)** `Counter` von framers `useReducedMotion` auf `useReducedMotionSafe` (Projektregel; Wert nur im `useEffect` gelesen → Verhalten identisch/hydration-safe). **(4)** Fokus vereinheitlicht: Desktop-/Mobil-Nav-Links, Logo, Footer-Links (Impressum/Datenschutz/Instagram) + die drei „Zurück zur Startseite"-Links tragen denselben `focus-visible:ring`-Satz wie die CTAs (+ `rounded-sm`), nur Tokens/kein Hex. **(5)** Totes `site.description` entfernt. **(6)** `rel` externer Links → `noopener noreferrer` (Footer/Kontakt; Projekte-Links hatten es schon). Non-Goals bewusst nicht angefasst (og:image/Favicon, No-JS-Zähler, Vercel-404, ServiceDiagram-„Vorher"-Hex, Earth/Sparkles-Token-Fallbacks). Adversariell reviewt (Multi-Agent-Workflow, 4 Lenses → 2 Findings: 1 bestätigt [`h1→h3`-Skip] gefixt, 1 verworfen [`inline-block`-No-op an NotFound]). `npm run build` grün; im `dist` verifiziert: `/möglichkeiten`-Outline `h1→h2→h3` ohne Skip, alle 4 Routen je 1 `<h1>`, beide `aria-label`, kein blankes `rel="noreferrer"` mehr. Browser-Check: lokal `npm run preview` | ✅ |
+| 27 | Favicon-Satz eingebunden: 5 Dateien in `public/` (`favicon.svg` ersetzt Platzhalter + neu `favicon.ico`, `apple-touch-icon.png`, `favicon-32.png`, `favicon-16.png`) im `<head>` ALLER Routen verlinkt (SVG primär, `.ico` Fallback via `sizes="any"`, PNG-Sizes 16/32, `apple-touch-icon`) + `<meta name="theme-color" content="#0a0a0a">`. Links im **Template `index.html`** gesetzt (nicht in `prerender.mjs`) → landen in Dev UND allen 4 prerenderten dist-Heads, nichts doppelt (Prerender strippt nur Title + Description-Meta, Rest des Heads bleibt). **Stolperstein/Erkenntnis:** der erklärende HTML-Kommentar enthielt zunächst den Literal-Text `<title>` → die Title-Strip-Regex `/<title>[\s\S]*?<\/title>/` in `prerender.mjs` fraß vom Kommentar-`<title>` bis zum echten `</title>` und löschte die Favicon-`<link>`s aus dem Build → **Kommentare im Template-Head müssen tag-literal-frei sein** (kein `<title>`/`<meta name="description">` als Fließtext). `og:image`/`og:url` weiter NICHT gesetzt (wartet auf finale Domain). Navbar-Logo („LL"-Text) unangetastet (Non-Goal). `npm run build` grün; Icon-Links + `theme-color` in allen 4 dist-Heads verifiziert (je 7 Head-Zeilen), Assets in `dist/` kopiert. Browser-Check: Tab-Icon prüfen (harter Reload wegen Favicon-Cache). | ✅ |
 
 ---
 
@@ -311,7 +313,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 | # | Aufgabe | Aufwand |
 |---|---------|--------|
 | 1 | Impressum + Datenschutz: Texte einfügen | Klein |
-| 2 | Logo „LL" + Favicon (für dunklen Hintergrund) einbinden | Mittel |
+| 2 | Logo „LL" einbinden (für dunklen Hintergrund) – Favicon-Teil ✅ erledigt 27.07.2026 | Mittel |
 | ✅ | ~~Projekte-Sektion (2 Showcases + Detail-Ansicht)~~ → erledigt 09.06.2026 (zwei große Karten Blumen Lang / Naillery mit Vorschaubild + Link „zur Website", Live-URLs im Data-Layer; interaktive Detail-Ansicht bewusst geparkt) | – |
 | ✅ | ~~Follow-up: CSR → Prerender/SSG für echten LCP-Gewinn (Mobil)~~ → erledigt 08.06.2026 (Session 10: `renderToString` + `StaticRouter` Prerender, 3 Routen statisch) | – |
 
@@ -332,7 +334,7 @@ Entfällt (kein Backend). Bilder, Logo, Favicon und optionale Videos liegen als 
 - **Vercel:** ✅ Mit Repo verbunden, Auto-Deploy bei Push auf `main`. Das Projekt `leons-webseite` liegt im Vercel-Account „leon's projects" – das **Dashboard ist maßgeblich**; die CLI kann im falschen Account-Kontext stehen (daher zeigte `vercel projects ls` als `lngleon` fälschlich „keine Projekte"). Verifiziert 07.06.2026 im Dashboard: oberstes Deployment 19c48be („Kontakt") = Ready/Production.
 - **Formspree:** Endpoint in `.env.local` als `VITE_FORMSPREE_ENDPOINT` hinterlegt
 - **Design/Theming:** **Dark-only** (kein Light Mode, kein Theme-Toggle). Akzent **Violett**: flach `--accent`/`--accent-solid` (Ränder/Icons/kleine UI/Fokusring) + Violett-Gradient `--accent-gradient`/`--accent-gradient-strong` NUR auf Showcase-Flächen (Headline-Akzentwort, Hero-Zahlen, primäre CTAs, Eyebrow). Light-Mode-Themen (Toggle, per-Mode-Tokens, Light-Kontrast) sind gegenstandslos. Akzent nie hardcoden; Code-Tags via `CodeTag` (flach, kein Gradient).
-- **Phase:** 2 fast komplett (alle Sektionen außer **Projekte** stehen), Phase 3 angefangen (**Akzentfarbe ✅ Violett**). Offen: Projekte-Sektion, Impressum/Datenschutz-Texte, Logo/Favicon (dunkler Hintergrund). **CSR→Prerender/SSG ✅ erledigt** (Session 10): Build prerendert alle 3 Routen zu statischem HTML, im Browser Hydration – beim Bauen nicht kaputtmachen (Hydration-Regel: Server-Frame = erstes Client-Frame, `useReducedMotionSafe` benutzen, kein `window`/Zufall im Render).
+- **Phase:** 2 fast komplett (alle Sektionen außer **Projekte** stehen), Phase 3 angefangen (**Akzentfarbe ✅ Violett**). Offen: Projekte-Sektion, Impressum/Datenschutz-Texte, Logo („LL"-Monogramm, dunkler Hintergrund; Favicon ✅ 27.07.2026). **CSR→Prerender/SSG ✅ erledigt** (Session 10): Build prerendert alle 3 Routen zu statischem HTML, im Browser Hydration – beim Bauen nicht kaputtmachen (Hydration-Regel: Server-Frame = erstes Client-Frame, `useReducedMotionSafe` benutzen, kein `window`/Zufall im Render).
 - **Betriebssystem:** Windows
 - **Projektdateien-Pfad:** C:\Users\l.lang\REPOS\leons-webseite
 - **Projektdateien (Claude AI):** PROJEKT-STAND.md, CURRENT-SCHEMA.md
