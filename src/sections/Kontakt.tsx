@@ -40,7 +40,7 @@ function DirectContact() {
               <a
                 href={channel.href}
                 {...(channel.external
-                  ? { target: '_blank', rel: 'noreferrer' }
+                  ? { target: '_blank', rel: 'noopener noreferrer' }
                   : {})}
                 className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-colors duration-200 hover:border-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >

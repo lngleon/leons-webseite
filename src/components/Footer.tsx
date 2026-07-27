@@ -11,19 +11,28 @@ export default function Footer() {
           <p className="mt-1 text-sm text-muted-foreground">{site.tagline}</p>
         </div>
 
-        <nav className="flex items-center gap-6 text-sm text-muted-foreground">
-          <Link to="/impressum" className="transition-colors hover:text-foreground">
+        <nav
+          aria-label="Rechtliches"
+          className="flex items-center gap-6 text-sm text-muted-foreground"
+        >
+          <Link
+            to="/impressum"
+            className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
             Impressum
           </Link>
-          <Link to="/datenschutz" className="transition-colors hover:text-foreground">
+          <Link
+            to="/datenschutz"
+            className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
             Datenschutz
           </Link>
           <a
             href={site.contact.instagram}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             aria-label="Instagram"
-            className="transition-colors hover:text-foreground"
+            className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <InstagramIcon className="h-4 w-4" />
           </a>
