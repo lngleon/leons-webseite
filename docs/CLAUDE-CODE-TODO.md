@@ -8,7 +8,7 @@
 ## Aktiv
 
 - [ ] Impressum + Datenschutz: Inhalte einfügen (Platzhalter-Seiten + Footer-Links stehen bereits).
-- [ ] Aufräumen: verwaiste `public/favicon (1).svg` (Download-Artefakt, NICHT verlinkt) entfernen – landet sonst ungenutzt in `dist/`.
+- [x] Aufräumen (28.07.2026): `public/favicon (1).svg` war das FINALE Favicon-Design (zwei L's + Cursor-Block auf der Grundlinie); Inhalt nach `public/favicon.svg` übernommen (alte Text-Version „LL" ersetzt), Duplikat gelöscht.
 
 ## Backlog (Phase 2 – Reihenfolge)
 
