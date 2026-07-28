@@ -1,6 +1,6 @@
 # CURRENT-SCHEMA.md – Architektur & Datenfluss
 
-> Letzte Aktualisierung: 08.06.2026
+> Letzte Aktualisierung: 28.07.2026
 > **Kein Backend, keine Datenbank.** Dieses Projekt ist eine reine Frontend-Website.
 > Diese Datei dokumentiert daher KEIN DB-Schema, sondern die Architektur, die externen Dienste und den Datenfluss.
 >
@@ -19,6 +19,8 @@ React-Single-Page (gehostet auf Vercel)
       │
       ├─ statische Inhalte (im Code / public/)
       │
+      ├─ Web Analytics ──▶ Vercel Web Analytics (cookielos, /_vercel/insights)
+      │
       └─ Kontaktformular ──HTTP POST──▶ Formspree (extern)
                                             │
                                             ▼
@@ -28,7 +30,7 @@ React-Single-Page (gehostet auf Vercel)
 - **Typ:** Reine Frontend-Anwendung (Static Site / SPA), keine serverseitige Logik.
 - **Hosting:** Vercel, Auto-Deploy bei Push auf `main`.
 - **Kein Supabase, keine Datenbank, keine RLS, keine Migrations, keine Edge Functions, keine pg_cron Jobs.**
-- **Einziger externer Dienst:** Formspree (nimmt das Kontaktformular entgegen).
+- **Externe Dienste:** Formspree (Kontaktformular → E-Mail) + Vercel Web Analytics (cookielose Besuchsstatistik).
 
 ---
 
@@ -42,6 +44,15 @@ React-Single-Page (gehostet auf Vercel)
 - **Tarif:** kostenloser Free-Tier (ausreichend für erwartetes Anfragevolumen)
 - **Sichtbar für Besucher?** Nein – Formspree taucht im UI nicht auf, das Formular gehört optisch komplett der Seite.
 - **Späterer Wechsel:** optionaler Umstieg auf Resend + Vercel Serverless Function, sobald eigene Domain steht (für Absender über eigene Domain). Aktuell nicht umgesetzt.
+
+### Vercel Web Analytics
+- **Zweck:** Cookielose Besuchsstatistik (Seitenaufrufe, Referrer, Länder, Geräte) im Vercel-Dashboard – zeigt, ob/wie die Seite besucht wird.
+- **Umsetzung:** `@vercel/analytics` (v2, keine Runtime-Dependencies); `<Analytics />` aus `@vercel/analytics/react` EINMAL zentral im `Layout` gemountet → erfasst alle Routen. Die Komponente rendert `null` und injiziert das Insights-Script (`/_vercel/insights/script.js`) erst nach Mount im Browser → **SSR-/prerender-sicher** (kein Markup im statischen HTML, kein `window` im Render).
+- **SPA-Tracking:** Routenwechsel (react-router / History-API) zählen automatisch als Pageviews (Auto-Track aktiv, kein manuelles Routing nötig).
+- **Datenschutz:** **cookielos**, kein Cross-Site-Tracking, keine personenbezogene Profilbildung → KEIN Cookie-Banner nötig (in der Datenschutzerklärung dennoch zu erwähnen).
+- **Aktivierung:** im Vercel-Dashboard (Project → Analytics) einschalten; Daten erst nach Deploy + ersten echten Besuchen. Lokal (`npm run preview`) lädt das Script nicht real (404 auf `/_vercel/insights`) – erwartet.
+- **Sichtbar für Besucher?** Nein – kein UI, nur ein defer-geladenes Script im Browser.
+- **Non-Goals (bewusst nicht):** kein Speed Insights (`@vercel/speed-insights`), keine Custom Events (`track()`), kein Cookie-Banner.
 
 ---
 
