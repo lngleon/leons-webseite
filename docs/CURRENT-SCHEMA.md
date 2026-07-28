@@ -124,7 +124,7 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 |-------|--------|--------|
 | Logo „LL" (hell) | ⬜ noch zu erstellen | `public/` |
 | Logo „LL" (dunkel) | ⬜ noch zu erstellen | `public/` |
-| Favicon | 🔄 Platzhalter vorhanden (`public/favicon.svg`, „LL"-Monogramm) | `public/` |
+| Favicon | ✅ (27.–28.07.2026) Satz: `favicon.svg` („LL" + Cursor-Block) + `favicon.ico` + `favicon-16/32.png` + `apple-touch-icon.png`; im `<head>` aller Routen verlinkt, dazu `theme-color #0a0a0a` | `public/` |
 | Projekt-Bilder | ⬜ | `public/` |
 | Optionale Bewegtbild-/Glow-Elemente | ⬜ optional | code-basiert bevorzugt |
 
@@ -146,9 +146,10 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 
 | Route | Inhalt |
 |-------|--------|
-| `/` | Single-Page (alle 7 Sektionen) |
+| `/` | Single-Page (alle Sektionen: Hero → Problem → Leistungen → Über mich → Prozess → Projekte → Statement → Kontakt) |
 | `/impressum` | Impressum (Platzhalter, Inhalt vom User) |
 | `/datenschutz` | Datenschutzerklärung (Platzhalter, Inhalt vom User) |
+| `/möglichkeiten` | Stille Showcase-Seite „Was möglich ist" (prerendert, bewusst NICHT in der Navbar verlinkt) |
 
 ---
 
