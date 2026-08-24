@@ -2,7 +2,7 @@
 
 > Dieses Dokument ist die zentrale Wissensdatei des Projekts.
 > 🔒 = Feststehend | 🔄 = Kann sich ändern
-> Letzte Aktualisierung: 09.06.2026
+> Letzte Aktualisierung: 24.08.2026
 
 ---
 
@@ -39,17 +39,20 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 
 ## 🔒 Tech Stack
 
-- **Frontend:** React + TypeScript + Tailwind + Vite + Framer Motion
-- **Rendering:** SSG/Prerendering beim Build (`renderToString` + `StaticRouter` + `scripts/prerender.mjs`) → statisches HTML je Route (`/`, `/impressum`, `/datenschutz`), im Browser Hydration (`hydrateRoot`). KEIN SSR-Server zur Laufzeit – Vercel liefert nur statische Dateien. react-router-dom bleibt im **Library**-Mode (kein Framework-Mode).
-- **Meta/SEO (Head):** Pro-Route-`<head>` (`<title>` + `<meta name="description">` + Basis-OpenGraph `og:title`/`og:description`/`og:type`) wird beim Build aus der **`META`-Map in `scripts/prerender.mjs`** in den statischen `<head>` jeder Datei injiziert (Single Source of Truth, dependency-frei, jeder Wert genau einmal). Neue Route/Texte ändern → in der `META`-Map (Default-Head für Dev/Fallback in `index.html`). `og:image`/`og:url` noch nicht gesetzt (kein Logo, keine finale Domain).
+- **Frontend:** **Next.js (App Router)** + React + TypeScript + Tailwind v4 + Framer Motion. **Seit 24.08.2026 – vorher Vite + react-router-dom** (beides entfernt).
+- **Rendering:** statisches Rendering von Next selbst – `next build` gibt alle vier Routen als `○ (Static)` aus (`/`, `/impressum`, `/datenschutz`, `/möglichkeiten`, dazu `_not-found`). KEIN SSR zur Laufzeit, kein ISR/Revalidate, keine Route Handlers, keine Server Actions, keine Middleware. Der selbstgebaute Prerender (`renderToString` + `StaticRouter` + `scripts/prerender.mjs`) ist ersatzlos entfallen. Interaktive Teile sind Client-Komponenten (`'use client'`), werden aber trotzdem beim Build zu HTML gerendert und im Browser nur hydriert.
+- **Meta/SEO (Head):** über die **Metadata API**. Single Source of Truth ist **`src/data/meta.ts`** (`routeMeta` + Helper `pageMetadata`) – Nachfolgerin der `META`-Map aus `scripts/prerender.mjs`, Werte inhaltlich unverändert. Jede `page.tsx` exportiert `export const metadata = pageMetadata(routeMeta.<route>)`; das Root-Layout (`src/app/layout.tsx`) hält Defaults, den Favicon-Satz (`metadata.icons`) und den `viewport`-Export (`themeColor` + `colorScheme`). Neue Route/Texte ändern → in `src/data/meta.ts`. `og:image`/`og:url` weiterhin nicht gesetzt (kein Logo, keine finale Domain).
+- **sitemap.xml + robots.txt (neu, 24.08.2026):** über die Next-Dateikonventionen `src/app/sitemap.ts` / `src/app/robots.ts`, beim Build erzeugt. Routenliste = `routes` in `src/data/site.ts`. Die absolute Basis-URL kommt aus `siteUrl` (ebenfalls `src/data/site.ts`): `NEXT_PUBLIC_SITE_URL` → Vercels `VERCEL_PROJECT_PRODUCTION_URL` → `http://localhost:3000`. Keine Domain hardcodiert.
+- **Bilder:** `next/image` für die drei statischen Bilder aus `public/` (Porträt via `fill`, die zwei Projekt-Previews mit intrinsischer `width`/`height` + `sizes`). Auslieferung über Vercel Image Optimization (`/_next/image`).
 - **Backend/DB:** keins – reines Frontend, KEIN Supabase, KEINE Datenbank, KEINE SQL/RLS/Migrations/Edge Functions
 - **Auth:** keins
-- **Hosting:** Vercel (Auto-Deploy bei Push)
-- **Analytics:** Vercel Web Analytics (`@vercel/analytics` v2, keine Runtime-Deps) – `<Analytics />` einmal zentral im `Layout` gemountet, erfasst alle Routen inkl. SPA-Routenwechsel (Auto-Track/History-API). **Cookielos** (kein Cookie-Banner). SSR-/prerender-sicher: rendert `null`, injiziert das Insights-Script erst nach Mount im Browser (kein Markup im statischen HTML). Muss im Vercel-Dashboard aktiviert sein; Daten erst nach Deploy. Non-Goals: kein Speed Insights, keine Custom Events.
+- **Hosting:** Vercel (Auto-Deploy bei Push), Framework-Preset **Next.js**
+- **Analytics:** Vercel Web Analytics (`@vercel/analytics` v2, keine Runtime-Deps) – `<Analytics />` aus **`@vercel/analytics/next`** (App-Router-Variante, seit 24.08.2026; vorher `/react`) einmal zentral im Root-Layout gemountet, erfasst alle Routen inkl. Client-Navigation (Auto-Track). **Cookielos** (kein Cookie-Banner). SSG-sicher: kein Markup im statischen HTML, Insights-Script erst im Browser. Muss im Vercel-Dashboard aktiviert sein; Daten erst nach Deploy. Non-Goals: kein Speed Insights, keine Custom Events.
 - **AI-Provider:** keiner zur Laufzeit der Seite (KI ist eine angebotene Leistung, kein Feature der Website)
 - **Zahlungen:** keine
-- **E-Mail/Formular:** Formspree (extern, nimmt Kontaktformular entgegen und leitet als E-Mail weiter)
-- **Weitere:** `cobe` (winzige WebGL-Dot-Globe-Lib, ^2.0.1) – erste Feature-Dependency außerhalb des Kerns, NUR auf `/möglichkeiten`, dynamisch importiert (eigener Code-Split-Chunk, nicht im Haupt-Bundle, nie im Prerender ausgeführt). Sonst weiterhin code-basierte Effekte ohne Paket bevorzugen.
+- **E-Mail/Formular:** Formspree (extern, nimmt Kontaktformular entgegen und leitet als E-Mail weiter). Endpoint aus der Env-Variable **`NEXT_PUBLIC_FORMSPREE_ENDPOINT`** (seit 24.08.2026; vorher `VITE_FORMSPREE_ENDPOINT`) – nie hardcoden.
+- **Build/Tooling:** `npm run build` = **`next build`** (Turbopack) – macht Typecheck, Bundling und statisches Rendern in EINEM Schritt (die alte vierstufige Kette `tsc -b && vite build && vite build --ssr … && node scripts/prerender.mjs` ist weg). Tailwind v4 über `@tailwindcss/postcss` (`postcss.config.mjs`) statt `@tailwindcss/vite`. Globales CSS: `src/app/globals.css` (vorher `src/index.css`). Lokal ansehen: `npm run build && npm run start` (vorher `npm run preview`).
+- **Weitere:** `cobe` (winzige WebGL-Dot-Globe-Lib, ^2.0.1) – erste Feature-Dependency außerhalb des Kerns, NUR auf `/möglichkeiten`, dynamisch importiert (eigener Code-Split-Chunk, nicht im Haupt-Bundle, nie beim statischen Rendern ausgeführt). Sonst weiterhin code-basierte Effekte ohne Paket bevorzugen.
 - **Repo:** `lngleon/leons-webseite` (GitHub, Branch `main`) – gebunden an SSH-Alias `github-lngleon`
 - **Design-System:** Regeln in dieser Datei (Abschnitt Design-Regeln); separate DESIGN-SYSTEM.md vorerst nicht nötig
 - **Claude Code Config:** CLAUDE.md im Repo-Root
