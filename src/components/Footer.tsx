@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { InstagramIcon } from '@/components/BrandIcons'
 import { site } from '@/data/site'
 
@@ -16,13 +16,13 @@ export default function Footer() {
           className="flex items-center gap-6 text-sm text-muted-foreground"
         >
           <Link
-            to="/impressum"
+            href="/impressum"
             className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             Impressum
           </Link>
           <Link
-            to="/datenschutz"
+            href="/datenschutz"
             className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             Datenschutz

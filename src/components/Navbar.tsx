@@ -1,5 +1,7 @@
+'use client'
+
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ctaItem, navItems } from '@/data/navigation'
@@ -21,7 +23,7 @@ export default function Navbar() {
       >
         {/* Logo-Platzhalter "LL" */}
         <Link
-          to="/"
+          href="/"
           aria-label={`${site.name} – Startseite`}
           className="inline-flex items-center rounded-md border border-border px-2.5 py-1 text-lg font-semibold tracking-tight text-foreground transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >

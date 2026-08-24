@@ -1,5 +1,8 @@
+'use client'
+
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
+import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
 import Card from '@/components/Card'
 import SectionHeading from '@/components/SectionHeading'
@@ -12,7 +15,8 @@ import { projects, projectsIntro } from '@/data/projects'
  * statisches Vorschaubild (oben, voll-bleed + abgerundet via Card-Clip) + Name
  * + Typzeile + Link „zur Website". Card/SectionHeading wiederverwendet.
  *
- * SSR-/reduced-motion-sicher: statische `<img>` (im prerenderten HTML), Reveal
+ * SSR-/reduced-motion-sicher: statische Bilder via next/image (im statisch
+ * gerenderten HTML, intrinsische width/height → kein CLS), Reveal
  * über `useReducedMotionSafe`-gegatete Varianten (reduced → sofort sichtbar,
  * kein y/Stagger). Server-Frame = erstes Client-Frame.
  */
@@ -63,13 +67,12 @@ export default function Projekte() {
                     Card-Padding auf), an den abgerundeten Card-Ecken geclippt
                     (overflow-hidden der Card). aspect-Box → kein Layout-Shift. */}
                 <div className="-mx-6 -mt-6 mb-6 aspect-[21/10] overflow-hidden bg-muted sm:-mx-7 sm:-mt-7">
-                  <img
+                  <Image
                     src={project.image}
                     alt={`Vorschau von ${project.name}`}
                     width={project.width}
                     height={project.height}
-                    loading="lazy"
-                    decoding="async"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="h-full w-full object-cover"
                   />
                 </div>

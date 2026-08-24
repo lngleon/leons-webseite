@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef } from 'react'
 import type { Globe } from 'cobe'
 import { cn } from '@/lib/utils'

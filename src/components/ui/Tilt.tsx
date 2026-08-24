@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import type { MouseEvent, ReactNode } from 'react'
 import { cn } from '@/lib/utils'

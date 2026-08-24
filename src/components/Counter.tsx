@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { animate, useInView, useMotionValue } from 'framer-motion'
 import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'

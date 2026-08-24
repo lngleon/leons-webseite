@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useId, useRef, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { CircleAlert, CircleCheck, Loader2, Send } from 'lucide-react'
@@ -83,7 +85,7 @@ export default function ContactForm() {
       return
     }
 
-    const endpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT
+    const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT
     if (!endpoint) {
       setStatus('error')
       return

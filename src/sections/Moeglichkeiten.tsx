@@ -1,3 +1,5 @@
+'use client'
+
 import { motion } from 'framer-motion'
 import { LayoutDashboard, Monitor, Paintbrush, Sparkles } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'

@@ -1,5 +1,8 @@
+'use client'
+
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
+import Image from 'next/image'
 import SectionHeading from '@/components/SectionHeading'
 import { about } from '@/data/about'
 
@@ -16,18 +19,18 @@ const item: Variants = {
 /** Porträt: gerahmte Hülle im Hochformat (4∶5), gefüllt mit dem echten Foto als
  *  object-cover-<img>. Die 4∶5-Box bleibt erhalten (kein Layout-Shift), `bg-muted`
  *  dient als ruhiger Platzhalter, bis das (lazy geladene) Bild da ist. Statisches
- *  <img> aus public/ → prerender-/SSR-sicher. Optimiert als WebP (~20 KB). */
+ *  Bild aus public/ über next/image (`fill` + object-cover in der relativen 4∶5-Box,
+ *  responsives srcset via `sizes`) → statisch gerendert, SSR-sicher. Quelle ist
+ *  bereits als WebP optimiert (~20 KB). */
 function Portrait() {
   return (
     <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-2xl border border-border bg-muted">
-      <img
+      <Image
         src="/leon-portrait.webp"
         alt="Porträtfoto von Leon Lang"
-        width={768}
-        height={960}
-        loading="lazy"
-        decoding="async"
-        className="absolute inset-0 h-full w-full object-cover"
+        fill
+        sizes="(max-width: 640px) 100vw, 384px"
+        className="object-cover"
       />
     </div>
   )
