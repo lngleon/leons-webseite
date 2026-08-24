@@ -174,7 +174,7 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 | `/` | Single-Page (alle Sektionen: Hero → Problem → Leistungen → Über mich → Prozess → Projekte → Statement → Kontakt) |
 | `/impressum` | Impressum (Platzhalter, Inhalt vom User) |
 | `/datenschutz` | Datenschutzerklärung (Platzhalter, Inhalt vom User) |
-| `/möglichkeiten` | Stille Showcase-Seite „Was möglich ist" (statisch gerendert, bewusst NICHT in der Navbar verlinkt). Ordner `src/app/möglichkeiten/` trägt den Umlaut; die Seite ist auch unter `/m%C3%B6glichkeiten` erreichbar |
+| `/möglichkeiten` | Stille Showcase-Seite „Was möglich ist" (statisch gerendert, bewusst NICHT in der Navbar verlinkt). **Ordner heißt `src/app/m%C3%B6glichkeiten/` – percent-encodet, NICHT `möglichkeiten`** (siehe Kasten unten). In der Adresszeile steht für den Nutzer weiterhin „möglichkeiten" |
 | _(alles andere)_ | 404 über `src/app/not-found.tsx` – seit der Next-Migration ein **echter HTTP-404** (vorher lieferte Vercel für unbekannte Pfade seine eigene 404-Seite aus; die React-`NotFound`-Route griff nur bei Client-Navigation) |
 
 Dazu zwei generierte Dateien (Next-Dateikonventionen, kein manuelles Pflegen):
@@ -185,6 +185,23 @@ Dazu zwei generierte Dateien (Next-Dateikonventionen, kein manuelles Pflegen):
 | `/robots.txt` | `src/app/robots.ts` | alles erlaubt (`Allow: /`) + Verweis auf die Sitemap |
 
 Beide brauchen eine **absolute** Basis-URL. Die steht bewusst nicht im Code, sondern kommt aus `siteUrl` (`src/data/site.ts`) in dieser Reihenfolge: `NEXT_PUBLIC_SITE_URL` → von Vercel gesetzte `VERCEL_PROJECT_PRODUCTION_URL` → `http://localhost:3000`. **Sobald die eigene Domain steht: `NEXT_PUBLIC_SITE_URL` im Vercel-Dashboard setzen.**
+
+> ### ⚠️ Umlaut-Route: Ordnername MUSS percent-encodet sein
+>
+> `src/app/m%C3%B6glichkeiten/` ist **Absicht – nicht „aufräumen"**.
+>
+> Next übernimmt statische Ordnernamen 1:1 in die Route-Regex des Build-Manifests.
+> Ein Ordner `möglichkeiten` erzeugt `^/möglichkeiten$` – Browser senden im
+> Request-Pathname aber IMMER die encodete Form `/m%C3%B6glichkeiten`. Die beiden
+> matchen nicht: die Route lief trotz grünem Build und trotz erzeugtem
+> `.next/server/app/möglichkeiten.html` in einen **404** (reproduziert mit
+> `next start` UND `next dev`, 24.08.2026). Mit dem encodeten Ordnernamen lautet
+> die Regex `^/m%C3%B6glichkeiten$` und trifft den echten Request (verifiziert:
+> 200 + korrekter Inhalt). Für den Nutzer ändert sich nichts – der Browser encodet
+> nur beim Senden. Die Sitemap gibt die URL ohnehin encodet aus (`encodeURI`).
+>
+> Gegenprobe bei jeder künftigen Umlaut-/Sonderzeichen-Route: `npm run build && npm run start`,
+> dann `curl -o /dev/null -w "%{http_code}" http://localhost:3000/<encodete-url>`.
 
 ### Meta/SEO je Route
 
