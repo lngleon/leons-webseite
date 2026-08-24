@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { siteUrl } from '@/data/site'
+import { siteUrl } from '@/data/site-url'
 
 /**
  * robots.txt über die Next-Dateikonvention. Die Seite ist komplett öffentlich –

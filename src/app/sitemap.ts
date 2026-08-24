@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { routes, siteUrl } from '@/data/site'
+import { routes, siteUrl } from '@/data/site-url'
 
 /**
  * sitemap.xml über die Next-Dateikonvention (ersetzt nichts – gab es vorher nicht).

@@ -7,6 +7,12 @@ import type { Metadata } from 'next'
  *
  * og:title/og:description spiegeln Title/Description, og:type = "website".
  * og:image/og:url bewusst NICHT gesetzt (kein Logo, keine finale Domain).
+ *
+ * Hinweis: Next leitet aus dem openGraph-Block zusaetzlich automatisch
+ * twitter:card/twitter:title/twitter:description ab. Die gab der alte Prerender
+ * nicht aus; sie spiegeln aber nur dieselben Werte und lassen sich ueber die
+ * Metadata API nicht abschalten (auch `twitter: null` greift nicht - geprueft).
+ * Ohne og:image bleibt es eine bildlose summary-Card, also inhaltlich neutral.
  */
 export type RouteMeta = { title: string; description: string }
 

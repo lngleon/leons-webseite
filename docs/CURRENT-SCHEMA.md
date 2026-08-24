@@ -174,34 +174,55 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 | `/` | Single-Page (alle Sektionen: Hero → Problem → Leistungen → Über mich → Prozess → Projekte → Statement → Kontakt) |
 | `/impressum` | Impressum (Platzhalter, Inhalt vom User) |
 | `/datenschutz` | Datenschutzerklärung (Platzhalter, Inhalt vom User) |
-| `/möglichkeiten` | Stille Showcase-Seite „Was möglich ist" (statisch gerendert, bewusst NICHT in der Navbar verlinkt). **Ordner heißt `src/app/m%C3%B6glichkeiten/` – percent-encodet, NICHT `möglichkeiten`** (siehe Kasten unten). In der Adresszeile steht für den Nutzer weiterhin „möglichkeiten" |
+| `/möglichkeiten` | Stille Showcase-Seite „Was möglich ist" (statisch gerendert, bewusst NICHT in der Navbar verlinkt). **Liegt als ZWEI Routen-Einträge vor** – `src/app/m%C3%B6glichkeiten/` (kanonisch) und `src/app/möglichkeiten/` (Re-Export, 1 Zeile). Siehe Kasten unten. Für den Besucher ist und bleibt es EINE URL |
 | _(alles andere)_ | 404 über `src/app/not-found.tsx` – seit der Next-Migration ein **echter HTTP-404** (vorher lieferte Vercel für unbekannte Pfade seine eigene 404-Seite aus; die React-`NotFound`-Route griff nur bei Client-Navigation) |
 
 Dazu zwei generierte Dateien (Next-Dateikonventionen, kein manuelles Pflegen):
 
 | Datei | Quelle | Inhalt |
 |-------|--------|--------|
-| `/sitemap.xml` | `src/app/sitemap.ts` | die vier Routen oben, Umlaut percent-encodet. Routenliste kommt aus `routes` in `src/data/site.ts` |
+| `/sitemap.xml` | `src/app/sitemap.ts` | die vier Routen oben, Umlaut percent-encodet. Routenliste kommt aus `routes` in `src/data/site-url.ts` |
 | `/robots.txt` | `src/app/robots.ts` | alles erlaubt (`Allow: /`) + Verweis auf die Sitemap |
 
-Beide brauchen eine **absolute** Basis-URL. Die steht bewusst nicht im Code, sondern kommt aus `siteUrl` (`src/data/site.ts`) in dieser Reihenfolge: `NEXT_PUBLIC_SITE_URL` → von Vercel gesetzte `VERCEL_PROJECT_PRODUCTION_URL` → `http://localhost:3000`. **Sobald die eigene Domain steht: `NEXT_PUBLIC_SITE_URL` im Vercel-Dashboard setzen.**
+Beide brauchen eine **absolute** Basis-URL. Die steht bewusst nicht im Code, sondern kommt aus `siteUrl` (`src/data/site-url.ts` – bewusst NICHT in `site.ts`, das Client-Komponenten importieren) in dieser Reihenfolge: `NEXT_PUBLIC_SITE_URL` → von Vercel gesetzte `VERCEL_PROJECT_PRODUCTION_URL` → `http://localhost:3000`. **Sobald die eigene Domain steht: `NEXT_PUBLIC_SITE_URL` im Vercel-Dashboard setzen.**
 
-> ### ⚠️ Umlaut-Route: Ordnername MUSS percent-encodet sein
+> ### ⚠️ Umlaut-Route liegt bewusst DOPPELT – nicht „aufräumen"
 >
-> `src/app/m%C3%B6glichkeiten/` ist **Absicht – nicht „aufräumen"**.
+> Es gibt zwei Ordner für dieselbe öffentliche URL `/möglichkeiten`:
 >
-> Next übernimmt statische Ordnernamen 1:1 in die Route-Regex des Build-Manifests.
-> Ein Ordner `möglichkeiten` erzeugt `^/möglichkeiten$` – Browser senden im
-> Request-Pathname aber IMMER die encodete Form `/m%C3%B6glichkeiten`. Die beiden
-> matchen nicht: die Route lief trotz grünem Build und trotz erzeugtem
-> `.next/server/app/möglichkeiten.html` in einen **404** (reproduziert mit
-> `next start` UND `next dev`, 24.08.2026). Mit dem encodeten Ordnernamen lautet
-> die Regex `^/m%C3%B6glichkeiten$` und trifft den echten Request (verifiziert:
-> 200 + korrekter Inhalt). Für den Nutzer ändert sich nichts – der Browser encodet
-> nur beim Senden. Die Sitemap gibt die URL ohnehin encodet aus (`encodeURI`).
+> | Ordner | Rolle |
+> |--------|-------|
+> | `src/app/m%C3%B6glichkeiten/` | **kanonisch** – enthält `page.tsx` mit Metadata; das ist die Form, die Browser senden, und die Form in der Sitemap |
+> | `src/app/möglichkeiten/` | **Sicherheitsnetz** – eine Zeile `export { default, metadata } from '../m%C3%B6glichkeiten/page'`, KEIN zweiter Inhalt |
 >
-> Gegenprobe bei jeder künftigen Umlaut-/Sonderzeichen-Route: `npm run build && npm run start`,
-> dann `curl -o /dev/null -w "%{http_code}" http://localhost:3000/<encodete-url>`.
+> **Warum überhaupt encodet?** Next übernimmt statische Ordnernamen 1:1 in die
+> Route-Regex des Build-Manifests. Ein Ordner `möglichkeiten` erzeugt
+> `^/möglichkeiten$` – Browser senden im Request-Pathname aber IMMER
+> `/m%C3%B6glichkeiten`. Die beiden matchen nicht: die Route lief trotz grünem
+> Build, trotz `○ Static` im Build-Output und trotz erzeugter HTML-Datei in einen
+> **404** (reproduziert mit `next start` UND `next dev`, 24.08.2026).
+>
+> **Warum dann trotzdem beide?** Ob der Next-Router den Pfad encodet oder
+> dekodiert zu sehen bekommt, hängt von der Schicht davor ab. Lokal unter
+> `next start` ist es der encodete. Auf Vercels Routing-Layer ist es **nicht
+> verifiziert** – und es gibt ein Gegenindiz: der alte statische Vite-Build lief
+> dort mit einem RAW-Umlaut-Verzeichnis (`dist/möglichkeiten/index.html`, ohne
+> `vercel.json`) und war live bestätigt; dafür muss Vercel irgendwo dekodiert
+> haben. Das war allerdings Vercels **statisches Datei-Handling**, nicht Next'
+> Router – die zwei Mechanismen sagen nichts übereinander. Mit beiden Einträgen
+> trifft **jede** Variante die richtige Seite, egal wie normalisiert wird. Kosten:
+> eine Zeile Code und eine zusätzliche prerenderte HTML-Datei; die gerenderte
+> Ausgabe beider ist identisch (nur der interne RSC-Segmentname unterscheidet sich).
+>
+> Ein `rewrite` in `next.config.ts` wurde geprüft und wieder verworfen: die
+> erzeugte Regex trägt den Umlaut roh (`^/möglichkeiten(?:/)?$`) und trifft
+> denselben Fall nicht – der zweite Routen-Eintrag ist der wirksame Weg.
+>
+> **Nach dem nächsten Deploy zu prüfen** (2 Minuten): `/möglichkeiten` im Browser
+> aufrufen → muss 200 und die Showcase-Seite liefern, nicht die 404-Seite.
+> Gegenprobe bei jeder künftigen Umlaut-/Sonderzeichen-Route:
+> `npm run build && npm run start`, dann
+> `curl -o /dev/null -w "%{http_code}" http://localhost:3000/<encodete-url>`.
 
 ### Meta/SEO je Route
 
