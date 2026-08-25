@@ -31,7 +31,7 @@ function Reveal({ children, className }: { children: ReactNode; className?: stri
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={className}
+      className={cn('entrance-anim', className)}
     >
       {children}
     </motion.section>

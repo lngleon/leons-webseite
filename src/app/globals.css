@@ -139,6 +139,43 @@
   }
 }
 
+/* ── Entrance-Animationen: reduced-motion-Gate ───────────────────
+   Schließt eine Lücke, die sich mit `useReducedMotionSafe` NICHT schließen
+   lässt (25.08.2026).
+
+   Das Problem: Der Hook liefert im ERSTEN Render bewusst `false` – das ist die
+   Hydration-Regel „Server-Frame = erstes Client-Frame" und muss so bleiben.
+   Framer Motion dispatcht eine Mount-Animation (`initial` → `animate`) aber
+   genau in diesem ersten Render. Wenn der echte reduced-Wert einen Tick später
+   ankommt, läuft die Animation längst; ein geänderter `transition`-Wert bricht
+   sie nicht mehr ab. Ergebnis: Nutzer mit `prefers-reduced-motion: reduce`
+   sahen Navbar und Hero trotzdem einfahren.
+
+   Die Lösung liegt deshalb in CSS statt in JS: Framer schreibt seine Werte als
+   INLINE-Style (`style="opacity:0;transform:translateY(-24px)"` – steht so auch
+   im statisch gerenderten HTML). Eine Author-Regel mit `!important` sticht einen
+   Inline-Style ohne `!important` – und zwar ab dem allerersten Paint. Reduced-
+   Nutzer sehen den Endzustand also sofort, ohne Flash und ohne Sprung.
+
+   Wichtig: Die Regel steht KOMPLETT in der Media Query. Für alle anderen Nutzer
+   ändert sich exakt nichts – gleiche Animation, gleiches Timing. Framer animiert
+   im reduced-Fall im Hintergrund weiter, nur malt der Browser das Endbild; das
+   ist gewollt (kein Eingriff in die Motion-Logik, kein Hook-Umbau).
+
+   Die Klasse gehört an das Element, das die Opacity/den Transform TRÄGT – nicht
+   an einen Stagger-Container, dessen `hidden`-Variante leer ist (der bekommt
+   gar keinen Inline-Style). Bewusst KEIN Nachfahren-Selektor (`.entrance-anim *`):
+   der würde auch legitime Transforms treffen (Terminal-Cursor, CTA-Lift). */
+@media (prefers-reduced-motion: reduce) {
+  .entrance-anim {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
 /* ── Akzent-Gradient: Showcase-Flächen ───────────────────────────
    Text-Gradient mit SOLIDEM Fallback: Standard ist die flache
    Akzentfarbe (immer sichtbar); nur wo background-clip:text

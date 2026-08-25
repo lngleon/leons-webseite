@@ -15,7 +15,7 @@ export default function Navbar() {
       initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md"
+      className="entrance-anim sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md"
     >
       <nav
         aria-label="Hauptnavigation"

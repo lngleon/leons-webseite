@@ -21,6 +21,7 @@ export default function Problem() {
     <section id="problem" className="py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
+          className="entrance-anim"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -39,7 +40,7 @@ export default function Problem() {
           {problems.map((problem) => {
             const Icon = problem.icon
             return (
-              <motion.article key={problem.title} variants={card} className="h-full">
+              <motion.article key={problem.title} variants={card} className="entrance-anim h-full">
                 <Card className="flex h-full flex-col gap-4">
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border text-accent transition-colors duration-200 group-hover:border-accent/50">
                     <Icon className="h-5 w-5" aria-hidden="true" />

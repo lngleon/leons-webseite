@@ -48,12 +48,12 @@ export default function UeberMich() {
           className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center lg:gap-16"
         >
           {/* Foto – links auf Desktop, auf Mobil oben (DOM-Reihenfolge) */}
-          <motion.div variants={item}>
+          <motion.div variants={item} className="entrance-anim">
             <Portrait />
           </motion.div>
 
           {/* Text – rechts auf Desktop */}
-          <motion.div variants={item}>
+          <motion.div variants={item} className="entrance-anim">
             <SectionHeading
               align="left"
               eyebrow={about.eyebrow}

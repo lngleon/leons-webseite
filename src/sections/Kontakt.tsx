@@ -75,6 +75,7 @@ export default function Kontakt() {
     <section id="kontakt" className="py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
+          className="entrance-anim"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -95,12 +96,12 @@ export default function Kontakt() {
           className="mt-14 grid grid-cols-1 gap-10 md:grid-cols-2 lg:gap-16"
         >
           {/* Formular – links auf Desktop, auf Mobil oben */}
-          <motion.div variants={item}>
+          <motion.div variants={item} className="entrance-anim">
             <ContactForm />
           </motion.div>
 
           {/* Direkte Wege – rechts auf Desktop */}
-          <motion.div variants={item}>
+          <motion.div variants={item} className="entrance-anim">
             <DirectContact />
           </motion.div>
         </motion.div>

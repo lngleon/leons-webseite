@@ -23,6 +23,7 @@ export default function Leistungen() {
     <section id="leistungen" className="py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
+          className="entrance-anim"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -43,7 +44,7 @@ export default function Leistungen() {
           className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2"
         >
           {services.map((service) => (
-            <motion.article key={service.title} variants={card} className="h-full">
+            <motion.article key={service.title} variants={card} className="entrance-anim h-full">
               <Card highlight={service.highlight} className="flex h-full flex-col gap-4">
                 <ServiceDiagram kind={service.diagram} icon={service.icon} />
                 <h3 className="text-base font-semibold text-foreground sm:text-lg">

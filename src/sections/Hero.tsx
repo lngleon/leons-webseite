@@ -106,12 +106,12 @@ export default function Hero() {
 
           <motion.p
             variants={item}
-            className="mt-6 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
+            className="entrance-anim mt-6 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
           >
             {withCodeTags(hero.subline, ['Web-Apps'])}
           </motion.p>
 
-          <motion.div variants={item} className="mt-8">
+          <motion.div variants={item} className="entrance-anim mt-8">
             <a
               href={ctaItem.href}
               className="cta-gradient inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -123,7 +123,7 @@ export default function Hero() {
           <motion.div
             variants={item}
             role="list"
-            className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8"
+            className="entrance-anim mt-12 grid grid-cols-2 gap-x-6 gap-y-8"
           >
             {heroStats.map((stat) => (
               <div
@@ -155,6 +155,7 @@ export default function Hero() {
           initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.15, ease: 'easeOut' }}
+          className="entrance-anim"
         >
           <Terminal />
         </motion.div>
