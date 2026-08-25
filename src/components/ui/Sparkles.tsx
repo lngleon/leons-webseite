@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 /**
  * Sparkles – aufsteigende Funken auf einem 2D-Canvas, hand-gebaut (KEIN Paket,
  * wie der generative Hero-BG / CoolMode). Reine Können-Demo („ich baue
- * Canvas-Visuals"), nur auf /möglichkeiten.
+ * Canvas-Visuals"), nur auf /moeglichkeiten.
  *
  * NUR Violett: die Farbe wird zur Laufzeit aus `--accent` gelesen (kein
  * hardcodiertes Hex). Dark-only.

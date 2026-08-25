@@ -25,4 +25,4 @@ export const siteUrl = (
 ).replace(/\/$/, '')
 
 /** Alle öffentlichen, indexierbaren Routen (Quelle für die sitemap.xml). */
-export const routes = ['/', '/impressum', '/datenschutz', '/möglichkeiten'] as const
+export const routes = ['/', '/impressum', '/datenschutz', '/moeglichkeiten'] as const

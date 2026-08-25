@@ -7,7 +7,7 @@ type SectionHeadingProps = {
   description?: string
   align?: 'center' | 'left'
   /** Überschrift-Ebene. Default `h2` (Sektion einer Seite mit eigenem h1);
-   *  `h1` für Seiten, deren Kern-Überschrift dieser Kopf selbst IST (z.B. /möglichkeiten). */
+   *  `h1` für Seiten, deren Kern-Überschrift dieser Kopf selbst IST (z.B. /moeglichkeiten). */
   as?: 'h1' | 'h2'
   className?: string
 }

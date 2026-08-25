@@ -25,10 +25,19 @@ export const heroStats: HeroStat[] = [
 ]
 
 /* ── Terminal-Hero ──────────────────────────────────────────────
-   Vier Tabs: realer Stack, realer Vite-Build, der Deploy-Weg (Push → Vercel)
-   und „whoami". Konto-/Projekt-/Deploy-Identifier sind bewusst anonymisiert
-   (Dummy statt echtem GitHub-Handle/Repo/Deploy-URL) – im öffentlichen Hero
-   stehen keine echten Infra-Identifier. */
+   Vier Tabs: der reale Stack, der reale Next-Build, der Deploy-Weg
+   (Push → Vercel) und „whoami".
+
+   ANONYMISIERUNG (gilt unverändert weiter): im öffentlich sichtbaren Output
+   stehen KEINE echten Konto-/Repo-/Deploy-Identifier – stattdessen sprechende
+   Dummies (`dein-projekt`, `https://deine-seite.de`). Auch die gezeigten
+   Routen sind generische Beispiele und bewusst NICHT die echten Routen dieser
+   Seite – die stille Route soll hier nicht auftauchen.
+
+   KEINE erfundenen Messwerte: der Build-Tab zeigt die Form der Next-Ausgabe
+   (`○` = statisch vorgerendert), aber keine ausgedachten Bundle-Größen oder
+   Sekundenzahlen. Zeilenzahl je Tab bewusst wie gehabt (build = 7 Zeilen, das
+   ist der Default-Tab und bestimmt die Panel-Höhe). */
 
 export type TerminalLineKind = 'cmd' | 'out' | 'ok'
 
@@ -48,11 +57,11 @@ export const terminalTabs: TerminalTab[] = [
     key: 'install',
     label: 'install',
     lines: [
-      { kind: 'cmd', text: 'npm create vite@latest dein-projekt -- --template react-ts' },
+      { kind: 'cmd', text: 'npx create-next-app@latest dein-projekt --ts --tailwind --app' },
       { kind: 'out', text: '✓ Projekt erstellt' },
-      { kind: 'cmd', text: 'npm install react react-dom react-router-dom framer-motion' },
-      { kind: 'cmd', text: 'npm install -D tailwindcss @tailwindcss/vite typescript' },
-      { kind: 'ok', text: '✓ Stack bereit: Vite · React · TypeScript · Tailwind · Framer Motion' },
+      { kind: 'cmd', text: 'npm install framer-motion lucide-react' },
+      { kind: 'out', text: '✓ Abhängigkeiten installiert' },
+      { kind: 'ok', text: '✓ Stack bereit: Next.js · React · TypeScript · Tailwind · Framer Motion' },
     ],
   },
   {
@@ -60,12 +69,12 @@ export const terminalTabs: TerminalTab[] = [
     label: 'build',
     lines: [
       { kind: 'cmd', text: 'npm run build' },
-      { kind: 'out', text: 'vite v8 building for production…' },
-      { kind: 'out', text: '✓ 2181 modules transformed.' },
-      { kind: 'out', text: 'dist/index.html             1.25 kB' },
-      { kind: 'out', text: 'dist/assets/index.css      ~27 kB │ gzip:   5.6 kB' },
-      { kind: 'out', text: 'dist/assets/index.js      ~428 kB │ gzip: 137.2 kB' },
-      { kind: 'ok', text: '✓ built in 1.8s' },
+      { kind: 'out', text: '▲ Next.js – Production Build' },
+      { kind: 'out', text: '✓ Compiled successfully' },
+      { kind: 'out', text: 'Route (app)' },
+      { kind: 'out', text: '○ /                      prerendered' },
+      { kind: 'out', text: '○ /kontakt               prerendered' },
+      { kind: 'ok', text: '✓ Alle Seiten statisch – kein Server nötig' },
     ],
   },
   {

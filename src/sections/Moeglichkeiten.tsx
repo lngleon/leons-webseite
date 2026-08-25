@@ -16,7 +16,7 @@ import SparklesCanvas from '@/components/ui/Sparkles'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/Tilt'
 import { moeglichkeitenIntro, techStack } from '@/data/moeglichkeiten'
 
-/* Stille Showcase-Seite „Was möglich ist" (Route /möglichkeiten, NICHT in der
+/* Stille Showcase-Seite „Was möglich ist" (Route /moeglichkeiten, NICHT in der
    Navbar verlinkt). Reihenfolge: Kopf → Bento → verspielt/seriös → Tilt →
    Live-Visual (Globe + Funken) → Marquee.
    Alles SSR-/prerender-sicher; reduced-motion respektiert (Tilt/Partikel/Globe/

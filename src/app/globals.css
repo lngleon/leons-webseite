@@ -305,7 +305,7 @@
 }
 
 /* Spürbarer Lift NUR auf den großen Content-CTAs (Hero, Kontakt-Submit,
-   /möglichkeiten = allesamt in <main>); die Navbar-CTAs (in <header>) bleiben
+   /moeglichkeiten = allesamt in <main>); die Navbar-CTAs (in <header>) bleiben
    bewusst ruhig, sonst wirkt die Sticky-Leiste unruhig. Vorbild:
    `hover:-translate-y-1` + `hover:shadow-md` – NUR Bewegung + Schatten
    übernommen, der Schatten über die Akzent-Tokens (color-mix, KEIN graues/
@@ -339,7 +339,7 @@ main .cta-gradient:active {
   }
 }
 
-/* ── Marquee (Showcase /möglichkeiten) ───────────────────────────
+/* ── Marquee (Showcase /moeglichkeiten) ───────────────────────────
    Tailwind-v4-Animations-Utilities `animate-marquee` / `animate-marquee-vertical`
    (in der Magic-UI-Marquee-Vorlage NICHT enthalten → hier ergänzt). Erzeugt aus
    dem `--animate-*`-Namespace die Utility-Klassen; `--duration`/`--gap` kommen vom

@@ -1,4 +1,4 @@
-/** Inhalte der stillen Showcase-Seite /möglichkeiten ("Was möglich ist").
+/** Inhalte der stillen Showcase-Seite /moeglichkeiten ("Was möglich ist").
  *  Keine erfundenen Daten/Zahlen/Testimonials – nur echte Effekte + echter Stack. */
 
 export const moeglichkeitenIntro = {

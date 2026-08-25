@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 /**
  * Earth – interaktiver Dot-Globe (cobe, WebGL) als reine Können-Demo
- * („ich baue WebGL-Visuals"). Auf /möglichkeiten, NICHT auf der Startseite.
+ * („ich baue WebGL-Visuals"). Auf /moeglichkeiten, NICHT auf der Startseite.
  *
  * NUR Violett: Punkte (baseColor) und Glow lesen `--accent` / `--accent-solid`
  * zur Laufzeit aus den zentralen Tokens und füttern cobe als [r,g,b] – KEIN
