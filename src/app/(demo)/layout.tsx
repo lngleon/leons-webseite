@@ -20,6 +20,40 @@ import './demo.css'
  */
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
+
+  /**
+   * `icons: null` löscht den LL-Satz des Root-Layouts NUR für diese Gruppe –
+   * und ist die Bedingung dafür, dass `icon.svg` daneben überhaupt greift.
+   *
+   * Grund steht in Next selbst (`lib/metadata/resolve-metadata.js`): die aus
+   * Dateien gesammelten Icons werden ganz am Ende nur dann übernommen, wenn
+   * `resolvedMetadata.icons` FALSY ist –
+   *
+   *     if (leafSegmentStaticIcons.icon.length > 0 || …) {
+   *       if (!resolvedMetadata.icons) { … unshift(…leafSegmentStaticIcons) }
+   *     }
+   *
+   * Ein `metadata.icons` IRGENDWO in der Kette (hier: im Root-Layout) macht
+   * den Wert truthy, und `icon.svg` wird still verworfen – die Datei wird zwar
+   * als Route gebaut, taucht aber in KEINEM `<head>` auf. Die Doku-Aussage
+   * „file-based metadata has the higher priority" gilt für Icons in dieser
+   * Version also NICHT. `icons: null` ist typisiert erlaubt
+   * (`icons?: null | IconURL | Array<Icon> | Icons`), setzt den Wert zurück und
+   * öffnet damit den Weg für die Datei. Im gebauten HTML verifiziert.
+   *
+   * Nebenwirkung, bewusst in Kauf genommen: Es gibt keinen `apple-icon` – die
+   * Bild-Konvention kennt dafür nur JPG/PNG, und ein PNG-Satz war
+   * ausgeschlossen. Die Demo-Seiten tragen deshalb GAR kein
+   * `apple-touch-icon`-Tag mehr (vorher: Leons LL als explizites Tag).
+   *
+   * Was iOS beim „Zum Home-Bildschirm" dann nimmt, ist von uns NICHT
+   * kontrolliert und hier auch nicht nachprüfbar: Safari kann auf die alte
+   * Wurzel-Konvention `/apple-touch-icon.png` zurückfallen – das wäre wieder
+   * Leons LL – oder das deklarierte `rel="icon"` heranziehen. Der Tab, um den
+   * es hier geht, ist eindeutig gelöst; der Homescreen bliebe offen und
+   * bräuchte ein PNG. Nicht behaupten, was nicht gemessen ist.
+   */
+  icons: null,
 }
 
 export const viewport: Viewport = {
