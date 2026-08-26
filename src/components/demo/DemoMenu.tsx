@@ -1,5 +1,6 @@
 import type { GastroBusiness, MenuItem } from '@/data/demo/types'
 import DemoSection from './DemoSection'
+import DemoCategoryRail from './DemoCategoryRail'
 
 /**
  * Preis in Euro → „3,80 €".
@@ -12,13 +13,22 @@ export function formatEuro(value: number): string {
   return `${value.toFixed(2).replace('.', ',')} €`
 }
 
-function MenuRow({ item }: { item: MenuItem }) {
+/**
+ * Eine Zeile der Preisliste: Gericht links, gepunktete Führungslinie, Preis
+ * rechts in Tabellenziffern.
+ *
+ * `compact` lässt Beschreibung und Allergen-Kürzel weg – gedacht für den
+ * Karten-Auszug auf der Startseite, wo die Allergen-Legende NICHT steht. Kürzel
+ * ohne die zugehörige Legende wären dort nur unerklärte Buchstaben; die volle
+ * Zeile inklusive Legende gibt es auf der Kartenseite.
+ */
+export function MenuRow({ item, compact = false }: { item: MenuItem; compact?: boolean }) {
   return (
     <li className="py-3">
       <div className="demo-leader">
         <span className="font-medium text-foreground">
           {item.name}
-          {item.allergens?.length ? (
+          {!compact && item.allergens?.length ? (
             <span className="ml-1.5 align-super text-[0.62rem] font-normal tracking-wider text-muted-foreground">
               {item.allergens.join(',')}
             </span>
@@ -29,7 +39,7 @@ function MenuRow({ item }: { item: MenuItem }) {
           {formatEuro(item.price)}
         </span>
       </div>
-      {item.description ? (
+      {!compact && item.description ? (
         <p className="mt-1 pr-16 text-[0.85rem] leading-snug text-muted-foreground">
           {item.description}
         </p>
@@ -39,19 +49,23 @@ function MenuRow({ item }: { item: MenuItem }) {
 }
 
 /**
- * Speisekarte – gesetzt wie eine gedruckte Preisliste: Gericht links, gepunktete
- * Führungslinie, Preis rechts in Tabellenziffern. Allergene als kleine Kürzel
- * hinter dem Namen, Legende am Ende.
+ * Die volle Speisekarte – gesetzt wie eine gedruckte Preisliste. Allergene als
+ * kleine Kürzel hinter dem Namen, Legende am Ende.
+ *
+ * Seit der Aufteilung auf drei Routen ist das der Inhalt der eigenen Seite
+ * `/karte`; darüber klebt die Kategorie-Leiste als Sprungmarken-Rail.
  */
 export default function DemoMenu({ business }: { business: GastroBusiness }) {
   return (
     <DemoSection id="karte" title={business.menu.title} note={business.menu.note}>
+      <DemoCategoryRail categories={business.menu.categories} />
+
       <div className="mt-8 space-y-10">
         {business.menu.categories.map((category) => (
           <section key={category.id} aria-labelledby={`kat-${category.id}`}>
             <h3
               id={`kat-${category.id}`}
-              className="demo-display text-foreground"
+              className="demo-anchor demo-display text-foreground"
               style={{ fontSize: 'clamp(1.5rem, 7vw, 2.1rem)' }}
             >
               {category.title}

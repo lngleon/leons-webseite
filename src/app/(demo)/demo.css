@@ -42,6 +42,11 @@ html:has(.demo-scope),
      einem exotischen Schriftschnitt. */
   --demo-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype",
     Palatino, "Times New Roman", serif;
+
+  /* Hoehe des klebenden Navigationsbands. Zwei Dinge haengen daran: die
+     Kategorie-Leiste auf /karte klebt genau darunter, und Anker-Sprünge halten
+     darüber Abstand (.demo-anchor). Deshalb EIN Wert statt drei Schaetzungen. */
+  --demo-nav-h: 4.25rem;
 }
 
 .demo-scope {
@@ -126,4 +131,162 @@ html:has(.demo-scope),
   letter-spacing: 0.16em;
   font-weight: 600;
   white-space: nowrap;
+}
+
+/* ── Navigation ──────────────────────────────────────────────────────────────
+   Eine Pille mit drei Links, oben klebend.
+
+   Das Band ist OPAK, nicht transparent. Die Vorlage lässt ihre Pille über dem
+   Inhalt schweben; hier sieht das falsch aus, weil links und rechts neben der
+   schmalen Pille die grossen Versalien-Überschriften durchlaufen und wie ein
+   Fehler wirken. Ein Demo-Stück muss auf den ersten Blick sauber sein.
+
+   KEIN Burger: der bräuchte State und damit JavaScript. Bei drei Zielen scrollt
+   die Pille auf schmalen Geräten stattdessen horizontal – das kostet nichts und
+   bleibt ohne JS bedienbar. */
+.demo-nav-band {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  min-height: var(--demo-nav-h);
+  background-color: var(--background);
+}
+
+.demo-nav-pill {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--card);
+  overflow-x: auto;
+  /* Auf dem Handy scrollt die Pille; die Leiste selbst soll dabei unsichtbar
+     bleiben, die abgeschnittene Pille zeigt schon, dass es weitergeht. */
+  scrollbar-width: none;
+}
+
+.demo-nav-pill::-webkit-scrollbar {
+  display: none;
+}
+
+.demo-nav-link {
+  display: flex;
+  align-items: center;
+  /* 44 px: die Navigation ist die primaere Aktion der Seite und soll sich mit
+     dem Daumen sicher treffen lassen. */
+  min-height: 2.75rem;
+  padding-inline: 1rem;
+  border-radius: 999px;
+  font-family: var(--demo-display);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+
+.demo-nav-link:hover {
+  color: var(--foreground);
+}
+
+.demo-nav-link--active,
+.demo-nav-link--active:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.demo-nav-link:focus-visible,
+.demo-rail-link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--card),
+    0 0 0 4px var(--ring);
+}
+
+/* ── Kategorie-Leiste auf /karte ─────────────────────────────────────────────
+   Sprungmarken als zweite klebende Reihe, exakt unter dem Navigationsband.
+   Reine Anker-Links – der Browser springt selbst, kein JavaScript. */
+.demo-rail {
+  position: sticky;
+  top: var(--demo-nav-h);
+  z-index: 20;
+  /* Opak, damit die Karte nicht sichtbar darunter durchläuft. */
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+  padding-block: 0.5rem;
+}
+
+.demo-rail-list {
+  display: flex;
+  gap: 0.375rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.demo-rail-list::-webkit-scrollbar {
+  display: none;
+}
+
+.demo-rail-link {
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  padding-inline: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.demo-rail-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Sprungziele dürfen nicht unter den zwei klebenden Reihen landen. */
+.demo-anchor {
+  scroll-margin-top: calc(var(--demo-nav-h) + 3.5rem);
+}
+
+/* ── Flächiger Textlink („Route öffnen", „Karte") ────────────────────────────
+   Lag vorher als lange Utility-Kette an einem einzigen Button. Seit es zwei
+   Stellen gibt, steht die Optik hier – so bleiben beide gleich. */
+.demo-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding-inline: 1.5rem;
+  border: 1px solid var(--accent);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.demo-cta:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.demo-cta:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--ring);
 }

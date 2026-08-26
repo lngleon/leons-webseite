@@ -76,6 +76,22 @@ export type GastroBusiness = {
   tagline: string
   intro: string
 
+  /**
+   * Beschriftung der drei Seiten in der Navigation.
+   *
+   * Bewusst hier und nicht in der Komponente: ein anderer Betrieb darf seine
+   * Seiten anders nennen. Kurz halten – die Pille ist auf einem 320-px-Handy
+   * schmal und scrollt sonst.
+   */
+  nav: {
+    /** Startseite. */
+    start: string
+    /** Speisekarte (`/karte`). */
+    menu: string
+    /** Adresse, Zeiten, Kontakt (`/kontakt`). */
+    contact: string
+  }
+
   hero: { photo: Photo }
   /** Zeilen des Laufbands (werden in Versalien gesetzt). */
   marquee: string[]

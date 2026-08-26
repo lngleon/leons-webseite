@@ -22,6 +22,12 @@ export const cafeKlee: GastroBusiness = {
   intro:
     'Wir backen jeden Morgen selbst und rösten unseren Kaffee eine Straße weiter. Kein Schnickschnack – nur Dinge, die wir selbst gern essen.',
 
+  nav: {
+    start: 'Start',
+    menu: 'Karte',
+    contact: 'Kontakt',
+  },
+
   hero: {
     photo: {
       ratio: '4 / 5',

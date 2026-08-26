@@ -1,6 +1,5 @@
 import type { GastroBusiness } from '@/data/demo/types'
 import DemoSection from './DemoSection'
-import DemoPhoto from './DemoPhoto'
 
 /** Vollständige Adresse als eine Zeile – für Anzeige und Routen-Link. */
 export function fullAddress(business: GastroBusiness): string {
@@ -8,18 +7,26 @@ export function fullAddress(business: GastroBusiness): string {
   return `${street}, ${postalCode} ${city}, ${countryName}`
 }
 
+/** Link auf den Karten-Dienst mit der Adresse als Ziel. */
+export function directionsUrl(business: GastroBusiness): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+    fullAddress(business),
+  )}`
+}
+
 /**
- * Adresse + Routen-Link + die kleine Bildreihe.
+ * Adresse + Routen-Link.
  *
  * Der Routen-Link ist bewusst ein normaler `<a>` auf einen Karten-Dienst und
  * KEIN eingebettetes Kartenmodul: die Seite lädt dadurch nichts von Dritten
  * (Non-Goal), erst ein Antippen verlässt die Seite.
+ *
+ * Die Bildreihe, die hier früher darunter stand, liegt seit der Aufteilung auf
+ * drei Routen als `DemoGallery` auf der Startseite – die Kontaktseite soll
+ * „wo, wann, wie erreiche ich euch" beantworten, ohne Bildstrecke dazwischen.
  */
 export default function DemoLocation({ business }: { business: GastroBusiness }) {
   const { location } = business
-  const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-    fullAddress(business),
-  )}`
 
   return (
     <DemoSection id="anfahrt" title={location.title}>
@@ -45,30 +52,14 @@ export default function DemoLocation({ business }: { business: GastroBusiness })
       ) : null}
 
       <a
-        href={directions}
+        href={directionsUrl(business)}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-7 inline-flex min-h-12 items-center gap-2 border border-accent px-6 text-[0.82rem] font-medium uppercase tracking-[0.16em] text-accent transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="demo-cta mt-7"
       >
         {location.directionsLabel}
         <span aria-hidden="true">↗</span>
       </a>
-
-      <div className="mt-10 grid grid-cols-2 gap-2 sm:gap-3">
-        {business.gallery.map((photo, index) => {
-          // Ungerade Anzahl: das letzte Bild bekommt die volle Breite.
-          const wide =
-            business.gallery.length % 2 === 1 && index === business.gallery.length - 1
-          return (
-            <DemoPhoto
-              key={photo.placeholderLabel}
-              photo={photo}
-              sizes={wide ? '(min-width: 640px) 768px, 100vw' : '(min-width: 640px) 378px, 50vw'}
-              className={wide ? 'col-span-2 rounded-sm' : 'rounded-sm'}
-            />
-          )
-        })}
-      </div>
     </DemoSection>
   )
 }

@@ -1,15 +1,21 @@
 import type { Metadata } from 'next'
-import GastroDemo from '@/components/demo/GastroDemo'
+import DemoShell from '@/components/demo/DemoShell'
+import DemoHero from '@/components/demo/DemoHero'
+import DemoMarquee from '@/components/demo/DemoMarquee'
+import DemoGallery from '@/components/demo/DemoGallery'
+import DemoMenuTeaser from '@/components/demo/DemoMenuTeaser'
+import DemoJsonLd from '@/components/demo/DemoJsonLd'
+import { buildRestaurantSchema } from '@/components/demo/schema'
 import { cafeKlee } from '@/data/demo/cafe-klee'
 
 /**
- * Stille Demo-Route `/demo/cafe` – ein erfundener Gastro-Betrieb als
- * Anschauungsstück. Nicht verlinkt, nicht in der Sitemap, `noindex`
+ * Startseite der stillen Demo `/demo/cafe` – Kopf, Laufband, Bildreihe und ein
+ * Auszug aus der Karte. Nicht verlinkt, nicht in der Sitemap, `noindex`
  * (letzteres kommt aus dem Layout der Demo-Gruppe).
  *
  * Die ganze Seite hängt an EINER Datendatei (`src/data/demo/cafe-klee.ts`).
- * Ein zweiter Betrieb = zweite Datendatei + Kopie dieser Datei mit anderem
- * Import; an den Komponenten ändert sich nichts.
+ * Ein zweiter Betrieb = zweite Datendatei + Kopie dieses Ordners (drei kleine
+ * `page.tsx`) mit anderem Import; an den Komponenten ändert sich nichts.
  */
 export const metadata: Metadata = {
   title: `${cafeKlee.name} – ${cafeKlee.kind}`,
@@ -17,5 +23,13 @@ export const metadata: Metadata = {
 }
 
 export default function CafeDemoPage() {
-  return <GastroDemo business={cafeKlee} />
+  return (
+    <DemoShell business={cafeKlee} current="start">
+      <DemoJsonLd schema={buildRestaurantSchema(cafeKlee)} />
+      <DemoHero business={cafeKlee} />
+      <DemoMarquee business={cafeKlee} />
+      <DemoGallery business={cafeKlee} />
+      <DemoMenuTeaser business={cafeKlee} />
+    </DemoShell>
+  )
 }
