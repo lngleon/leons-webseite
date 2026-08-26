@@ -26,6 +26,7 @@ export const cafeKlee: GastroBusiness = {
     start: 'Start',
     menu: 'Karte',
     contact: 'Kontakt',
+    about: 'Über uns',
   },
 
   hero: {
@@ -158,6 +159,50 @@ export const cafeKlee: GastroBusiness = {
     },
   },
 
+  about: {
+    title: 'Über uns',
+    lead: 'Café Klee gibt es, weil in dieser Straße etwas gefehlt hat: ein Ort, an dem man eine Stunde sitzen kann, ohne etwas nachbestellen zu müssen.',
+    blocks: [
+      {
+        id: 'ecke',
+        title: 'Die Ecke',
+        text: 'Angefangen hat es mit einem leeren Ladenlokal und drei Monaten Eigenleistung. Wände raus, Fenster auf, den alten Dielenboden abgeschliffen statt ersetzt. Vieles hier ist gebraucht gekauft und weiterbenutzt – die Stühle stammen aus einer aufgelösten Schulaula, die Theke ist aus dem Holz der alten Zwischendecke gebaut. Das war keine Design-Entscheidung, sondern eine Budget-Entscheidung. Geblieben ist es trotzdem.',
+        photo: {
+          ratio: '3 / 2',
+          src: '/demo/cafe-aussenansicht.webp',
+          alt: 'Strassenseite des Cafés: helle Markise über dem Fenster zum Tresen, davor zwei Holzstühle zwischen Olivenbäumen in Terrakottatöpfen',
+          placeholderLabel: 'Aussenansicht',
+        },
+      },
+      {
+        id: 'becher',
+        title: 'Was im Becher landet',
+        text: 'Der Kaffee kommt von einer kleinen Rösterei, zwei Sorten im Wechsel, dazu eine Filterkanne für alle, die es milder mögen. Die Mühle wird jeden Morgen neu eingestellt, weil sich Bohne, Luftfeuchtigkeit und Tagesform nun einmal ändern. Gebacken wird ab halb sechs in der Küche nebenan. Was am Abend übrig ist, geht in der letzten Stunde zum halben Preis raus.',
+        photo: {
+          ratio: '4 / 5',
+          src: '/demo/cafe-handwerk.webp',
+          alt: 'Hände setzen den Siebträger in die Espressomaschine ein, davor eine Keramiktasse auf der Holztheke',
+          placeholderLabel: 'Handwerk',
+        },
+      },
+      {
+        id: 'team',
+        title: 'Wer hier steht',
+        text: 'Wir sind zu fünft, drei davon in Teilzeit. Alle wechseln zwischen Maschine, Service und Küche – deshalb kann jede und jeder am Tresen sagen, was heute im Kuchen ist. Wenn es voll wird, dauert es manchmal ein paar Minuten länger. Wir nehmen uns die Zeit lieber für den Espresso als für die Warteschlange.',
+        photo: {
+          ratio: '3 / 2',
+          src: '/demo/cafe-team.webp',
+          alt: 'Zwei Personen von hinten hinter der Theke, vor ihnen ein Holzbrett mit Gebäck, dahinter ein Regal mit Keramikgeschirr',
+          placeholderLabel: 'Team',
+        },
+      },
+    ],
+    outro: {
+      menuLabel: 'Zur Karte',
+      contactLabel: 'Kontakt',
+    },
+  },
+
   legal: {
     title: 'Impressum',
     lines: [
@@ -169,6 +214,45 @@ export const cafeKlee: GastroBusiness = {
       'Umsatzsteuer-ID: DE000000000',
     ],
     note: 'Platzhalter – dieser Betrieb ist frei erfunden. Für eine echte Seite kommen hier die Angaben nach § 5 DDG hin.',
+  },
+
+  privacy: {
+    title: 'Datenschutz',
+    note: 'Mustertext einer Demo-Seite. „Café Klee" ist ein erfundener Betrieb – es gibt keinen Verantwortlichen, an den sich eine Anfrage richten könnte. Der Text beschreibt, was diese Seite technisch tatsächlich tut, und ist ausdrücklich keine Rechtsberatung. Eine echte Seite braucht eine auf den Betrieb zugeschnittene Erklärung.',
+    sections: [
+      {
+        id: 'nichts',
+        title: 'Was diese Seite nicht tut',
+        body: [
+          'Diese Seite setzt keine Cookies und speichert nichts in deinem Browser. Es gibt keine Reichweitenmessung, keine Analyse-Software und kein Profiling – auch keine anonyme Statistik.',
+          'Es gibt kein Formular. Es werden keine Daten erhoben, die über den reinen Abruf der Seite hinausgehen. Deshalb steht hier auch kein Cookie-Banner: Es gibt nichts, wozu du einwilligen müsstest.',
+        ],
+      },
+      {
+        id: 'fremde-server',
+        title: 'Keine fremden Server',
+        body: [
+          'Alles, was die Seite braucht, liegt auf demselben Server wie die Seite selbst: Schriften, Bilder, Stile. Es werden keine Webfonts von einem fremden Dienst nachgeladen, keine Karte eingebettet, kein Video von einer Videoplattform. Dein Browser nimmt beim Aufruf also zu keinem dritten Anbieter Verbindung auf.',
+          'Der Link zur Route ist ein gewöhnlicher Link auf einen Kartendienst. Erst wenn du ihn antippst, verlässt du diese Seite – und erst dann gelten die Bedingungen des Anbieters. Dasselbe gilt für die Telefonnummer und die E-Mail-Adresse: beide öffnen nur ein Programm auf deinem Gerät.',
+        ],
+      },
+      {
+        id: 'hosting',
+        title: 'Hosting',
+        body: [
+          'Die Seite wird als fertiges HTML ausgeliefert und liegt bei Vercel Inc. Wie jeder Webserver verarbeitet der Hoster dabei die technisch notwendigen Verbindungsdaten – etwa IP-Adresse, Zeitpunkt und die abgerufene Datei. Ohne diese Angaben lässt sich eine Seite technisch nicht ausliefern.',
+          'Bei einem echten Betrieb gehören an diese Stelle der Name des Hosters, der Zweck und die Rechtsgrundlage der Verarbeitung sowie die Speicherdauer – abgestimmt mit dem Anbieter.',
+        ],
+      },
+      {
+        id: 'rechte',
+        title: 'Deine Rechte',
+        body: [
+          'Gegenüber einem Verantwortlichen bestehen nach der DSGVO unter anderem Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch sowie ein Beschwerderecht bei einer Aufsichtsbehörde.',
+          'Weil dieser Betrieb erfunden ist, gibt es hier niemanden, an den sich das richten könnte. Auf einer echten Seite stehen an dieser Stelle die Kontaktdaten des Verantwortlichen.',
+        ],
+      },
+    ],
   },
 
   seo: {

@@ -77,7 +77,7 @@ export type GastroBusiness = {
   intro: string
 
   /**
-   * Beschriftung der drei Seiten in der Navigation.
+   * Beschriftung der vier Seiten in der Navigations-Pille.
    *
    * Bewusst hier und nicht in der Komponente: ein anderer Betrieb darf seine
    * Seiten anders nennen. Kurz halten – die Pille ist auf einem 320-px-Handy
@@ -90,6 +90,8 @@ export type GastroBusiness = {
     menu: string
     /** Adresse, Zeiten, Kontakt (`/kontakt`). */
     contact: string
+    /** Über uns (`/ueber-uns`). */
+    about: string
   }
 
   hero: { photo: Photo }
@@ -142,10 +144,54 @@ export type GastroBusiness = {
     }
   }
 
+  /**
+   * „Über uns" – Lead plus Blöcke im Bild-Text-Wechsel.
+   *
+   * Die Blöcke wechseln die Seite automatisch (gerade/ungerade); die Anzahl ist
+   * nicht festgelegt, drei sind der Normalfall.
+   */
+  about: {
+    title: string
+    lead: string
+    blocks: {
+      id: string
+      title: string
+      text: string
+      photo: Photo
+    }[]
+    /** Abbinder: ein gefüllter und ein Ghost-Link auf Karte bzw. Kontakt. */
+    outro: {
+      menuLabel: string
+      contactLabel: string
+    }
+  }
+
   legal: {
     title: string
     lines: string[]
+    /** Sichtbarer Musterhinweis – der Betrieb ist erfunden. */
     note: string
+  }
+
+  /**
+   * Datenschutz-Seite.
+   *
+   * Beschreibt bewusst den TATSÄCHLICHEN Zustand dieser Seite (keine Cookies,
+   * kein Tracking, keine Fremd-Requests, Hosting) statt Standardbausteine zu
+   * behaupten, die hier gar nicht zutreffen. Bei einem echten Betrieb gehört
+   * hier eine auf ihn zugeschnittene Erklärung hin – das sagt `note` auch.
+   */
+  privacy: {
+    title: string
+    /** Sichtbarer Muster-/Demo-Hinweis, steht ganz oben. */
+    note: string
+    sections: {
+      /** Kurzes ASCII-Kuerzel fuer die id im Markup (aria-labelledby). */
+      id: string
+      title: string
+      /** Ein Absatz je Eintrag. */
+      body: string[]
+    }[]
   }
 
   /** schema.org-Zusatzangaben. */

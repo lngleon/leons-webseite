@@ -55,7 +55,7 @@ npm run build   →   next build (Turbopack)
 - **Ein einziger Befehl.** Die frühere vierstufige Kette (`tsc -b && vite build && vite build --ssr … && node scripts/prerender.mjs`) ist ersatzlos entfallen; `next build` macht Typecheck, Bundling und Prerendering in einem Schritt.
 - **Entfallen (24.08.2026):** `index.html` (Head-Template), `vite.config.ts`, `src/main.tsx` (`hydrateRoot`/`createRoot`), `src/entry-server.tsx` (`renderToString`), `scripts/prerender.mjs` (inkl. `ROUTES`/`META`-Map), `src/App.tsx` (react-router `<Routes>`), `src/pages/`, `tsconfig.app.json` + `tsconfig.node.json`, `src/vite-env.d.ts`, die Ordner `dist/` + `dist-ssr/`.
 - **Build-Artefakte:** `.next/` (gitignored). Kein `dist/` mehr. Lokal ansehen: `npm run build && npm run start` (statt `npm run preview`).
-- **Verifikation nach jedem Build:** `.next/server/app/index.html`, `impressum.html`, `datenschutz.html`, `moeglichkeiten.html`, `demo/cafe.html`, `demo/cafe/karte.html`, `demo/cafe/kontakt.html` (die Route-Gruppen `(site)`/`(demo)` tauchen im Dateinamen NICHT auf – Next benennt die Datei nach dem URL-Pfad) – dort müssen H1 + Sektions-Text und der Pro-Route-`<head>` drinstehen.
+- **Verifikation nach jedem Build:** `.next/server/app/index.html`, `impressum.html`, `datenschutz.html`, `moeglichkeiten.html`, `demo/cafe.html` und die fünf Unterseiten unter `demo/cafe/` (die Route-Gruppen `(site)`/`(demo)` tauchen im Dateinamen NICHT auf – Next benennt die Datei nach dem URL-Pfad) – dort müssen H1 + Sektions-Text und der Pro-Route-`<head>` drinstehen.
 - **Tailwind v4** läuft nicht mehr über `@tailwindcss/vite`, sondern über `@tailwindcss/postcss` (`postcss.config.mjs`). Globales CSS: `src/app/globals.css` (früher `src/index.css`), im Root-Layout importiert.
 
 ---
@@ -152,7 +152,7 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 | Logo „LL" (dunkel) | ⬜ noch zu erstellen | `public/` |
 | Favicon | ✅ (27.–28.07.2026) Satz: `favicon.svg` („LL" + Cursor-Block) + `favicon.ico` + `favicon-16/32.png` + `apple-touch-icon.png`; seit 24.08.2026 über `metadata.icons` im Root-Layout verlinkt (statt Head-Template), `theme-color #0a0a0a` + `color-scheme: dark` über den `viewport`-Export | `public/` |
 | Projekt-Bilder | ✅ `blumen-lang-preview.webp`, `naillery-preview.webp`, dazu `leon-portrait.webp`; alle drei laufen seit 24.08.2026 über `next/image` (responsives `srcset` via `sizes`, Auslieferung über `/_next/image`) | `public/` |
-| Demo-Fotos (`/demo/cafe`) | ✅ (26.08.2026) `cafe-gastraum.webp` 1120×1400 (4∶5, 73 KB, Hero), `cafe-zimtschnecken.webp` 800×800 (166 KB), `cafe-cappuccino.webp` 800×800 (37 KB), `cafe-fensterplatz.webp` 1410×940 (3∶2, 71 KB). Alle über `next/image` mit `fill` + `sizes` in `src/components/demo/DemoPhoto.tsx`; die Box reserviert das Seitenverhältnis per `aspect-ratio` → kein CLS. Fehlt in den Daten ein `src`, rendert dieselbe Box einen gestalteten Platzhalter statt eines Bildes | `public/demo/` |
+| Demo-Fotos (`/demo/cafe`) | ✅ (26.08.2026) `cafe-gastraum.webp` 1120×1400 (4∶5, 73 KB, Hero), `cafe-zimtschnecken.webp` 800×800 (166 KB), `cafe-cappuccino.webp` 800×800 (37 KB), `cafe-fensterplatz.webp` 1410×940 (3∶2, 71 KB). Alle über `next/image` mit `fill` + `sizes` in `src/components/demo/DemoPhoto.tsx`; die Box reserviert das Seitenverhältnis per `aspect-ratio` → kein CLS. Fehlt in den Daten ein `src`, rendert dieselbe Box einen gestalteten Platzhalter statt eines Bildes Dazu die drei Fotos der Über-uns-Seite: `cafe-aussenansicht.webp` 1080×720 (3∶2, 100 KB), `cafe-handwerk.webp` 1080×1350 (4∶5, 86 KB), `cafe-team.webp` 1080×720 (3∶2, 52 KB) – alle drei aus Quellen heruntergerechnet, nie hochgerechnet | `public/demo/` |
 | Optionale Bewegtbild-/Glow-Elemente | ⬜ optional | code-basiert bevorzugt |
 
 ---
@@ -177,7 +177,7 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 | `/impressum` | Impressum (Platzhalter, Inhalt vom User) |
 | `/datenschutz` | Datenschutzerklärung (Platzhalter, Inhalt vom User) |
 | `/moeglichkeiten` | Stille Showcase-Seite „Was möglich ist" (statisch gerendert, bewusst NICHT in der Navbar verlinkt). **Seit 25.08.2026 ASCII** – vorher `/möglichkeiten`, was einen percent-encodeten Ordner plus einen zweiten Re-Export-Ordner brauchte; jetzt ein Ordner `src/app/moeglichkeiten/`, keine Encoding-Fallstricke. **Kein Redirect** von der alten URL (die Seite war nie verlinkt). Titel/Description weiterhin mit Umlaut („Möglichkeiten – Leon Lang") |
-| `/demo/cafe`<br>`/demo/cafe/karte`<br>`/demo/cafe/kontakt` | Stille **Demo-Seiten** eines erfundenen Gastro-Betriebs („Café Klee"), seit 26.08.2026 dreiseitig: Start (Kopf, Laufband, Bildreihe, Karten-Auszug) · Karte (volle Speisekarte mit Kategorie-Leiste) · Kontakt (Adresse mit Routen-Link, Öffnungszeiten, Telefon, Reservierungs-Mail). Segmente rein ASCII. Alle drei: `noindex`, NICHT in der Sitemap, NICHT verlinkt. Eigene Layout-Gruppe `(demo)` → **keine** Navbar/Footer/ScrollProgress/Analytics, eigene helle Design-Tokens. Navigation und Impressum-Fuß liefert `DemoShell`. Siehe „Layout-Gruppen" unten |
+| `/demo/cafe`<br>`/demo/cafe/karte`<br>`/demo/cafe/ueber-uns`<br>`/demo/cafe/kontakt`<br>`/demo/cafe/impressum`<br>`/demo/cafe/datenschutz` | Stille **Demo-Seiten** eines erfundenen Gastro-Betriebs („Café Klee"), seit 26.08.2026 sechsseitig: Start (Kopf, Laufband, Bildreihe, Karten-Auszug) · Karte (volle Speisekarte mit Kategorie-Leiste) · Über uns (Lead + drei Blöcke im Bild-Text-Wechsel) · Kontakt (Adresse mit Routen-Link, Öffnungszeiten, Telefon, Reservierungs-Mail) · Impressum · Datenschutz. Die ersten vier stehen in der Navigations-Pille, die zwei Rechtsseiten nur im Fuß. Segmente rein ASCII. Alle sechs: `noindex`, NICHT in der Sitemap, NICHT verlinkt. Eigene Layout-Gruppe `(demo)` → **keine** Navbar/Footer/ScrollProgress/Analytics, eigene helle Design-Tokens. Navigation und Impressum-Fuß liefert `DemoShell`. Siehe „Layout-Gruppen" unten |
 | _(alles andere)_ | 404 über `src/app/not-found.tsx` – seit der Next-Migration ein **echter HTTP-404** (vorher lieferte Vercel für unbekannte Pfade seine eigene 404-Seite aus; die React-`NotFound`-Route griff nur bei Client-Navigation) |
 
 Dazu zwei generierte Dateien (Next-Dateikonventionen, kein manuelles Pflegen):
@@ -201,13 +201,16 @@ src/app/
   (demo)/             ← stille Demo-Seiten
     layout.tsx        ←   nur noindex + heller viewport, KEINE Hülle
     demo.css          ←   eigene Tokens, auf .demo-scope gescopt
-    demo/cafe/          ←   drei Seiten, je eine winzige page.tsx:
-      page.tsx          ←     Start: Kopf, Laufband, Bildreihe, Karten-Auszug
-      karte/page.tsx    ←     volle Karte + Kategorie-Leiste
-      kontakt/page.tsx  ←     Adresse, Zeiten, Telefon, Reservierung
+    demo/cafe/          ←   sechs Seiten, je eine winzige page.tsx:
+      page.tsx             ←  Start: Kopf, Laufband, Bildreihe, Karten-Auszug
+      karte/page.tsx       ←  volle Karte + Kategorie-Leiste
+      ueber-uns/page.tsx   ←  Lead + drei Blöcke im Bild-Text-Wechsel
+      kontakt/page.tsx     ←  Adresse, Zeiten, Telefon, Reservierung
+      impressum/page.tsx   ←  nur im Fuß verlinkt
+      datenschutz/page.tsx ←  nur im Fuß verlinkt
 ```
 
-**Wo die Demo-Inhalte liegen:** nicht in `src/app/`. Die Daten je Betrieb stehen in EINER typisierten Datei (`src/data/demo/cafe-klee.ts`, Typen in `src/data/demo/types.ts`), die Bausteine in `src/components/demo/` (Hülle, Navigation, Hero, Karte, Kategorie-Leiste, Karten-Auszug, Öffnungszeiten, Adresse, Kontakt, Bildreihe, Impressum, Laufband, Foto-Box, JSON-LD) sind rein datengetrieben. Ein zweiter Betrieb = zweite Datendatei + Kopie des Ordners `demo/cafe/` (drei winzige `page.tsx`) mit anderem Import; an den Komponenten ändert sich nichts.
+**Wo die Demo-Inhalte liegen:** nicht in `src/app/`. Die Daten je Betrieb stehen in EINER typisierten Datei (`src/data/demo/cafe-klee.ts`, Typen in `src/data/demo/types.ts`), die Bausteine in `src/components/demo/` (Hülle, Navigation, Hero, Karte, Kategorie-Leiste, Karten-Auszug, Über uns, Öffnungszeiten, Adresse, Kontakt, Bildreihe, Rechtsseiten-Rahmen, Seitenfuß, Laufband, Foto-Box, JSON-LD) sind rein datengetrieben. Ein zweiter Betrieb = zweite Datendatei + Kopie des Ordners `demo/cafe/` (drei winzige `page.tsx`) mit anderem Import; an den Komponenten ändert sich nichts.
 
 **Warum die Hülle in einer Komponente steckt und nicht in einem `layout.tsx`:** die Navigation muss den aktiven Punkt markieren. Ein Layout kennt den Pfad nicht, und `usePathname()` wäre ein Client-Hook – das würde die Zusicherung brechen, dass die Demo ohne JavaScript vollständig bedienbar ist. Jede Seite reicht ihr `current` deshalb selbst an `DemoShell`. Aus demselben Grund sind die Seitenwechsel normale `<a href>` (`next/link` ist in Next 16 eine Client-Komponente) und die Navigation eine horizontal scrollbare Pille statt eines Burger-Menüs. Pfade kommen aus `src/components/demo/routes.ts`, damit Navigation, Metadaten und JSON-LD dieselbe Quelle nutzen.
 
