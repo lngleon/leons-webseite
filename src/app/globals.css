@@ -72,6 +72,27 @@
     scroll-behavior: smooth;
   }
 
+  /* Anker-Sprünge (`/#kontakt`, `/#projekte`, „nach oben") sollen bei
+     `prefers-reduced-motion: reduce` HART springen statt zu scrollen – ein
+     langer, selbstlaufender Scroll über die halbe Seite ist genau die Art
+     Bewegung, die die Präferenz meint. `auto` ist der Initialwert, wir setzen
+     ihn also nur zurück.
+
+     Bewusst als Rücknahme im selben `@layer base` und NICHT als
+     `@media (prefers-reduced-motion: no-preference) { … smooth }`: so bleibt
+     das Standardverhalten auch in Browsern erhalten, die die Media-Query gar
+     nicht kennen, und die Datei behält die Reihenfolge „normal definieren,
+     danach für reduce zurücknehmen" wie bei `.entrance-anim`, `.cta-gradient`
+     und dem Marquee. Gleiche Spezifität, spätere Regel gewinnt.
+
+     Gilt auch für programmatisches `scrollIntoView()` – dort greift
+     `scroll-behavior` des Scroll-Containers ebenso. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     margin: 0;
     min-height: 100dvh;

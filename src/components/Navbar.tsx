@@ -6,9 +6,36 @@ import { Menu, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ctaItem, navItems } from '@/data/navigation'
 import { site } from '@/data/site'
+import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  /**
+   * reduced-motion für das Aufklappen des Mobil-Menüs.
+   *
+   * Hier ist der HOOK richtig und das CSS-Gate `.entrance-anim` falsch – aus
+   * zwei Gründen:
+   *
+   * 1. Zeitpunkt. `.entrance-anim` gibt es nur, weil `useReducedMotionSafe` im
+   *    ERSTEN Render bewusst `false` liefert (Hydration-Regel) und Framer
+   *    Mount-Animationen genau dann dispatcht – der echte Wert kommt einen Tick
+   *    zu spät. Dieses Menü animiert aber erst auf Klick, also viele Frames
+   *    nach dem Mount. Da steht der echte Wert längst bereit.
+   *
+   * 2. Endzustand. `.entrance-anim` erzwingt `transform: none; opacity: 1` –
+   *    das ist der Endzustand einer Entrance-Animation. Der Endzustand hier ist
+   *    `height: auto`, ein berechneter Layout-Wert. Ein `height: auto !important`
+   *    würde das Zuklappen mit zerstören (Framer schreibt beim Schließen inline
+   *    `height: 0px`), und `transition: none` griffe ohnehin ins Leere, weil
+   *    Framer nicht über CSS-Transitions animiert, sondern den Inline-Style pro
+   *    Frame neu schreibt.
+   *
+   * Deshalb bleibt die Animation strukturell wie sie ist (0 → auto, damit
+   * Auf-/Zuklappen und `AnimatePresence`-Unmount weiter funktionieren) und nur
+   * die DAUER fällt auf 0: das Menü erscheint und verschwindet schlagartig,
+   * ohne Bewegung.
+   */
+  const reduceMotion = useReducedMotionSafe()
 
   return (
     <motion.header
@@ -71,7 +98,7 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.25, ease: 'easeOut' }}
             className="overflow-hidden border-t border-border md:hidden"
           >
             <ul className="space-y-1 px-4 py-4">
