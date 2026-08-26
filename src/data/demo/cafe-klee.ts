@@ -99,6 +99,11 @@ export const cafeKlee: GastroBusiness = {
       {
         id: 'backstube',
         title: 'Aus der Backstube',
+        // Steht wortgleich auch im „Über uns"-Block „Was im Becher landet".
+        // Bewusst als Kategorie-`note` statt als zweiter Prosa-Absatz in einer
+        // Komponente: so trägt die Karte die Aussage selbst (und schema.org
+        // gibt sie als `MenuSection.description` mit aus).
+        note: 'Was am Abend übrig ist, geht in der letzten Stunde zum halben Preis raus.',
         items: [
           { name: 'Zimtschnecke', price: 3.8, allergens: ['A', 'C', 'G'] },
           { name: 'Butterhörnchen', price: 2.6, allergens: ['A', 'G'] },
@@ -143,7 +148,7 @@ export const cafeKlee: GastroBusiness = {
     city: 'Berlin',
     country: 'DE',
     countryName: 'Deutschland',
-    note: 'Zweiter Hinterhof, ebenerdig. Kinderwagen und Rollstuhl kommen ohne Stufe herein.',
+    note: 'Ebenerdig direkt an der Straße, unter der hellen Markise – Kinderwagen und Rollstuhl kommen ohne Stufe herein. Bei gutem Wetter stehen ein paar Stühle draußen.',
     directionsLabel: 'Route öffnen',
   },
 
@@ -177,7 +182,7 @@ export const cafeKlee: GastroBusiness = {
       {
         id: 'becher',
         title: 'Was im Becher landet',
-        text: 'Der Kaffee kommt von einer kleinen Rösterei, zwei Sorten im Wechsel, dazu eine Filterkanne für alle, die es milder mögen. Die Mühle wird jeden Morgen neu eingestellt, weil sich Bohne, Luftfeuchtigkeit und Tagesform nun einmal ändern. Gebacken wird ab halb sechs in der Küche nebenan. Was am Abend übrig ist, geht in der letzten Stunde zum halben Preis raus.',
+        text: 'Geröstet wird eine Straße weiter, zwei Sorten im Wechsel, dazu eine Filterkanne für alle, die es milder mögen. Die Mühle wird jeden Morgen neu eingestellt, weil sich Bohne, Luftfeuchtigkeit und Tagesform nun einmal ändern. Gebacken wird ab halb sechs in der Küche nebenan. Was am Abend übrig ist, geht in der letzten Stunde zum halben Preis raus.',
         photo: {
           ratio: '4 / 5',
           src: '/demo/cafe-handwerk.webp',
