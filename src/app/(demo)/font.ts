@@ -23,6 +23,26 @@ import localFont from 'next/font/local'
  * Die Lizenz erlaubt Einbettung und Weitergabe ausdrücklich, verlangt aber, dass
  * jede Kopie sie mitführt – deshalb liegt `./fonts/OFL-Fraunces.txt` daneben.
  * Die Datei NICHT löschen, auch wenn sie im Build nicht gebraucht wird.
+ *
+ * **Reserved Font Name: KEINER – geprüft am 26.08.2026.** Die OFL definiert den
+ * Begriff als „any names specified as such after the copyright statement(s)".
+ * Die Copyright-Zeile von Fraunces lautet vollständig
+ *
+ *     Copyright 2018 The Fraunces Project Authors (https://github.com/undercasetype/Fraunces)
+ *
+ * und danach folgt nur der Standard-Lizenztext – kein `with Reserved Font Name
+ * "…"`; die Zeichenkette kommt in der ganzen Datei null Mal vor.
+ *
+ * Das ist relevant, weil unsere Datei durch das Latin-Subsetting eine „Modified
+ * Version" im Sinne der Lizenz ist („any derivative made by adding to, deleting,
+ * or substituting … any of the components of the Original Version"). Klausel 3
+ * verbietet Modified Versions das Führen der Reserved Font Names – gäbe es hier
+ * welche, hätten wir umbenennen müssen. Da es keine gibt, greift die Klausel
+ * nicht und der Name darf bleiben. Unabhängig davon heisst die Familie im
+ * ausgelieferten CSS ohnehin `demoDisplay` (von `next/font` vergeben), der
+ * Originalname wird den Nutzern also gar nicht präsentiert – und genau darauf
+ * schränkt Klausel 3 sich ein („only applies to the primary font name as
+ * presented to the users").
  */
 export const demoDisplay = localFont({
   src: './fonts/Fraunces72pt-SemiBold-latin.woff2',

@@ -40,8 +40,33 @@ export default function Counter({ value, suffix = '', duration = 1.6 }: CounterP
   }, [inView, value, duration, reduceMotion, count])
 
   return (
-    <span ref={ref}>
-      {display}
+    /**
+     * `tabular-nums` schaltet auf Tabellenziffern – dieselbe Technik wie in der
+     * Preisspalte der Demo (`.demo-price`). Sie ist hier aber nur die halbe
+     * Miete, und das ist gemessen, nicht vermutet:
+     *
+     * Der Zähler „100%" verschiebt beim Hochzählen das `%`, weil die ZIFFERN-
+     * ANZAHL wächst (0 → 37 → 100). Tabellenziffern vereinheitlichen nur die
+     * Breite EINER Ziffer, nicht die Länge der Zahl. Mit `tabular-nums` allein
+     * blieb der Layout-Shift deshalb praktisch unverändert (0,00036 gegen
+     * 0,00031 vorher, im Browser gegengemessen).
+     *
+     * Was ihn schliesst, ist die feste Breite: Die Ziffern laufen in einer
+     * `inline-block`-Box, die von Anfang an so breit ist wie der Endwert –
+     * `1ch` ist die Vorschubbreite der „0", und mit Tabellenziffern hat JEDE
+     * Ziffer exakt diese Breite (im Browser nachgemessen: 19,094 px für „0",
+     * für jede weitere Ziffer und für das FIGURE SPACE). `String(value).length`
+     * Zeichen reichen also exakt. Das `%` steht damit vom ersten Frame an an
+     * seiner Endposition und wandert nicht mehr.
+     *
+     * Genau dafür braucht es die Tabellenziffern: ohne sie wäre `ch` die Breite
+     * der „0", die anderen Ziffern wären schmaler, und die Reservierung würde
+     * zu gross ausfallen.
+     */
+    <span ref={ref} className="tabular-nums">
+      <span className="inline-block" style={{ minWidth: `${String(value).length}ch` }}>
+        {display}
+      </span>
       {suffix}
     </span>
   )

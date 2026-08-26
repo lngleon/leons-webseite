@@ -84,7 +84,9 @@ export default function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? 'Menü schließen' : 'Menü öffnen'}
             aria-expanded={open}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
+            /* h-11 w-11 = 44x44 px – Mindestgröße für eine Tap-Fläche. Vorher
+               h-9 w-9 (36 px). Passt weiterhin in die 64 px hohe Leiste. */
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -107,7 +109,11 @@ export default function Navbar() {
                   <a
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    /* py-3 statt py-2: 12 + 20 (text-sm) + 12 = 44 px Tap-Fläche.
+                       Vorher 36 px – über dem WCAG-2.2-AA-Minimum von 24 px,
+                       aber unter den 44 px, die die Demo-Seiten erreichen. Diese
+                       Seite ist das Portfolio-Stück und darf nicht schlechter sein. */
+                    className="block rounded-md px-3 py-3 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     {item.label}
                   </a>
@@ -117,7 +123,8 @@ export default function Navbar() {
                 <a
                   href={ctaItem.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-full cta-gradient px-4 py-2 text-center text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  /* py-3 wie die Links darüber → 44 px. */
+                  className="block rounded-full cta-gradient px-4 py-3 text-center text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {ctaItem.label}
                 </a>
