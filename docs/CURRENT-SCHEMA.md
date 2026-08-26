@@ -175,6 +175,7 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 | `/impressum` | Impressum (Platzhalter, Inhalt vom User) |
 | `/datenschutz` | Datenschutzerklärung (Platzhalter, Inhalt vom User) |
 | `/moeglichkeiten` | Stille Showcase-Seite „Was möglich ist" (statisch gerendert, bewusst NICHT in der Navbar verlinkt). **Seit 25.08.2026 ASCII** – vorher `/möglichkeiten`, was einen percent-encodeten Ordner plus einen zweiten Re-Export-Ordner brauchte; jetzt ein Ordner `src/app/moeglichkeiten/`, keine Encoding-Fallstricke. **Kein Redirect** von der alten URL (die Seite war nie verlinkt). Titel/Description weiterhin mit Umlaut („Möglichkeiten – Leon Lang") |
+| `/demo/cafe` | Stille **Demo-Seite** eines erfundenen Gastro-Betriebs („Café Klee"). `noindex`, NICHT in der Sitemap, NICHT verlinkt. Eigene Layout-Gruppe `(demo)` → **keine** Navbar/Footer/ScrollProgress/Analytics, eigene helle Design-Tokens. Siehe „Layout-Gruppen" unten |
 | _(alles andere)_ | 404 über `src/app/not-found.tsx` – seit der Next-Migration ein **echter HTTP-404** (vorher lieferte Vercel für unbekannte Pfade seine eigene 404-Seite aus; die React-`NotFound`-Route griff nur bei Client-Navigation) |
 
 Dazu zwei generierte Dateien (Next-Dateikonventionen, kein manuelles Pflegen):
@@ -185,6 +186,25 @@ Dazu zwei generierte Dateien (Next-Dateikonventionen, kein manuelles Pflegen):
 | `/robots.txt` | `src/app/robots.ts` | alles erlaubt (`Allow: /`) + Verweis auf die Sitemap |
 
 Beide brauchen eine **absolute** Basis-URL. Die steht bewusst nicht im Code, sondern kommt aus `siteUrl` (`src/data/site-url.ts` – bewusst NICHT in `site.ts`, das Client-Komponenten importieren) in dieser Reihenfolge: `NEXT_PUBLIC_SITE_URL` → von Vercel gesetzte `VERCEL_PROJECT_PRODUCTION_URL` → `http://localhost:3000`. **Sobald die eigene Domain steht: `NEXT_PUBLIC_SITE_URL` im Vercel-Dashboard setzen.**
+
+### Layout-Gruppen (seit 25.08.2026)
+
+```
+src/app/
+  layout.tsx          ← Root: NUR <html>, <body>, Head. Gilt für ALLE Routen.
+  not-found.tsx       ← globaler 404, rendert SiteChrome selbst
+  (site)/             ← die eigentliche Website
+    layout.tsx        ←   SiteChrome: ScrollProgress, Navbar, <main>, Footer, Analytics
+    page.tsx, impressum/, datenschutz/, moeglichkeiten/
+  (demo)/             ← stille Demo-Seiten
+    layout.tsx        ←   nur noindex + heller viewport, KEINE Hülle
+    demo.css          ←   eigene Tokens, auf .demo-scope gescopt
+    demo/cafe/
+```
+
+**Warum die Aufteilung:** Ein Eltern-Layout lässt sich in Next von unten nicht abwählen. Solange Navbar/Footer/ScrollProgress im Root-Layout lagen, hätte JEDE Route sie geerbt – auch die Demo-Seiten, die bewusst wie eigenständige Kundenseiten wirken sollen. Die Hülle ist deshalb eine Ebene tiefer gewandert (`src/components/SiteChrome.tsx`, genutzt von `(site)/layout.tsx` und `not-found.tsx`). **Für die Hauptseite ändert sich nichts:** das gerenderte Markup ist identisch (Zeichen für Zeichen verglichen; abweichend nur ein interner `useId`-Präfix und die Position eines leeren Suspense-Kommentars). Kosten: die zusätzliche Layout-Ebene bläht die RSC-Payload auf, gzip-komprimiert sind das **+157 bis +182 Byte pro Seite**.
+
+**Design-Tokens der Demo:** `(demo)/demo.css` wird NUR vom Demo-Layout importiert (eigener CSS-Chunk – verifiziert, dass die Hauptseite ihn nicht lädt) und belegt DIESELBEN Variablennamen (`--background`, `--foreground`, `--accent` …) auf `html:has(.demo-scope)` bzw. `.demo-scope` neu. Dadurch lösen alle bestehenden Tailwind-Utilities dort automatisch auf warme Werte auf, ohne dass eine einzige globale `:root`-Variable angefasst wird.
 
 ### Meta/SEO je Route
 

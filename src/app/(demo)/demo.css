@@ -1,0 +1,129 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Design-Tokens & Helfer der stillen Demo-Seiten (/demo/*).
+
+   WICHTIG: Diese Datei wird NUR vom Demo-Layout importiert und fasst die
+   globalen `:root`-Tokens aus `globals.css` NICHT an. Stattdessen werden
+   DIESELBEN Variablennamen (`--background`, `--foreground`, `--accent`, …) im
+   Demo-Scope neu belegt. Dadurch lösen alle bestehenden Tailwind-Utilities
+   (`bg-background`, `text-foreground`, `border-border`, `ring-ring` …) hier
+   automatisch auf die warmen Demo-Werte auf – ohne eine einzige neue Utility
+   und ohne Auswirkung auf die Hauptseite.
+
+   Zwei Selektoren, ein Block:
+   - `html:has(.demo-scope)` – damit auch `<body>` (dessen Regel in globals.css
+     `var(--background)` liest) und die Scrollbar warm werden, inkl. Overscroll.
+   - `.demo-scope` – der Fallback, falls `:has()` fehlt: dann ist wenigstens der
+     Seiteninhalt korrekt eingefärbt.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html:has(.demo-scope),
+.demo-scope {
+  color-scheme: light;
+
+  /* Warmes Papier statt Near-Black – bewusst das Gegenteil der Hauptseite. */
+  --background: #f6f1e7;
+  --foreground: #241c15;
+  --muted: #ece4d6;
+  --muted-foreground: #6b5d4c;
+  --card: #fffcf6;
+  --card-foreground: #241c15;
+  --border: #dbcfba;
+
+  /* EIN Akzent: gebranntes Orange/Terrakotta. Kein Violett, kein Gradient. */
+  --accent: #b4441e;
+  --accent-solid: #8f3417;
+  --accent-foreground: #fff8ef;
+  --ring: var(--accent);
+  --destructive: #9a2b1e;
+
+  /* Display-Schrift: bewusst eine SERIFE aus dem System-Stack.
+     Non-Goal „keine Third-Party-Ressourcen" schliesst Webfonts vom CDN aus –
+     der Charakter kommt deshalb aus Grösse, Versalien und Laufweite, nicht aus
+     einem exotischen Schriftschnitt. */
+  --demo-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype",
+    Palatino, "Times New Roman", serif;
+}
+
+.demo-scope {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* ── Typografie ──────────────────────────────────────────────────────────── */
+
+/* Grosse Versalien-Zeile. Enge Zeilen, leicht geöffnete Laufweite – liest
+   auf dem Handy als Plakat, nicht als Fliesstext. */
+.demo-display {
+  font-family: var(--demo-display);
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+  /* Deutsche Komposita werden in Versalien schnell laenger als ein Handy breit
+     ist ("OEFFNUNGSZEITEN"). Beides zusammen verhindert zuverlaessig, dass eine
+     Ueberschrift die Seite horizontal aufzieht: bevorzugt an der Trennstelle
+     (html traegt lang="de"), notfalls hart im Wort. */
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+/* Kleines Label über einem Abschnitt. */
+.demo-eyebrow {
+  font-family: var(--demo-display);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ── Preisliste: gepunktete Führungslinie zwischen Gericht und Preis ─────── */
+.demo-leader {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.demo-leader__fill {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  align-self: center;
+  border-bottom: 1px dotted var(--border);
+  transform: translateY(0.15em);
+}
+
+/* Tabellenziffern: die Preisspalte steht dadurch exakt untereinander. */
+.demo-price {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ── Papier-Textur ───────────────────────────────────────────────────────────
+   Feines, statisches Korn über dem ganzen Scope. Prozedurales SVG (gekacheltes
+   feTurbulence, fester Seed) statt Bilddatei → deterministisch, keine externe
+   Ressource, kein Hydration-Risiko. */
+.demo-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.055;
+  mix-blend-mode: multiply;
+}
+
+/* ── Laufband ────────────────────────────────────────────────────────────────
+   Nutzt die bestehenden `animate-marquee`-Utilities aus globals.css – inklusive
+   des dortigen reduced-motion-Gates (`animation: none`). Hier nur die Optik. */
+.demo-marquee-band {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.demo-marquee-item {
+  font-family: var(--demo-display);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  white-space: nowrap;
+}

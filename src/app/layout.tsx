@@ -1,21 +1,22 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
-import { Analytics } from '@vercel/analytics/next'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import ScrollProgress from '@/components/ScrollProgress'
 import { routeMeta } from '@/data/meta'
 import './globals.css'
 
 /**
- * Root-Layout – ersetzt das frühere `index.html`-Template UND `components/Layout.tsx`.
+ * Root-Layout – bewusst minimal: nur `<html>`, `<body>` und der Head.
  *
- * Head: komplett über die Metadata API (kein handgeschriebener <head> mehr).
- * `charSet` und der Viewport-Tag kommen von Next selbst; Favicon-Satz, Titel und
- * Description stehen hier als Default (jede Route überschreibt Title/Description/OG).
+ * Die sichtbare Hülle der Hauptseite (Navbar/Footer/ScrollProgress/Analytics)
+ * liegt seit 25.08.2026 eine Ebene tiefer in `src/app/(site)/layout.tsx`
+ * (Komponente `SiteChrome`). Grund: Das Root-Layout umschließt ALLE Routen –
+ * auch die stillen Demo-Seiten unter `/demo/*`, die eine komplett eigene
+ * Gestaltung haben und die Hülle NICHT erben sollen. Ein Eltern-Layout lässt
+ * sich von unten nicht abwählen, also gehört hier nur hinein, was wirklich für
+ * jede Route gilt.
  *
- * Kein Scroll-nach-oben-Effekt mehr nötig: der App Router scrollt bei echtem
- * Seitenwechsel selbst an den Seitenanfang.
+ * Head: komplett über die Metadata API. `charSet` und der Viewport-Tag kommen
+ * von Next selbst; Favicon-Satz, Titel und Description stehen hier als Default
+ * (jede Route überschreibt Title/Description/OG).
  */
 export const metadata: Metadata = {
   // Default-Head (Fallback). Jede Route exportiert ihre eigene Metadata.
@@ -36,6 +37,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   // theme-color = --background (#0a0a0a); Meta-Tags können kein var() nutzen → Literal.
+  // Die Demo-Gruppe überschreibt beides in ihrem eigenen viewport-Export.
   themeColor: '#0a0a0a',
   colorScheme: 'dark',
 }
@@ -43,20 +45,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="de">
-      <body>
-        <div className="flex min-h-dvh flex-col bg-background text-foreground">
-          <ScrollProgress />
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          {/* Vercel Web Analytics (cookielos). SSR-/SSG-sicher: rendert im
-              statischen HTML kein Markup, das Insights-Script wird erst im
-              Browser nachgeladen. Einmal hier im Root-Layout → gilt für alle
-              Routen; Routenwechsel werden automatisch als Pageviews erfasst.
-              Daten erst nach Deploy + echten Besuchen. */}
-          <Analytics />
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
