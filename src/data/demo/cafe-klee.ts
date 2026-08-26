@@ -25,7 +25,8 @@ export const cafeKlee: GastroBusiness = {
   hero: {
     photo: {
       ratio: '4 / 5',
-      alt: 'Blick in den Gastraum des Café Klee am Morgen',
+      src: '/demo/cafe-gastraum.webp',
+      alt: 'Blick durch die offene Glastür in den Gastraum: Holztische entlang der Fensterfront, dahinter eine terrakottafarbene Wand',
       placeholderLabel: 'Gastraum',
     },
   },
@@ -38,9 +39,24 @@ export const cafeKlee: GastroBusiness = {
   ],
 
   gallery: [
-    { ratio: '1 / 1', alt: 'Zimtschnecken auf einem Blech', placeholderLabel: 'Backstube' },
-    { ratio: '1 / 1', alt: 'Cappuccino auf dem Tresen', placeholderLabel: 'Tresen' },
-    { ratio: '3 / 2', alt: 'Tisch am Fenster mit Morgensonne', placeholderLabel: 'Fensterplatz' },
+    {
+      ratio: '1 / 1',
+      src: '/demo/cafe-zimtschnecken.webp',
+      alt: 'Neun frisch gebackene Zimtschnecken von oben in einer dunklen Backform',
+      placeholderLabel: 'Backstube',
+    },
+    {
+      ratio: '1 / 1',
+      src: '/demo/cafe-cappuccino.webp',
+      alt: 'Cappuccino mit Kakaohaube in einer hellen Keramiktasse auf einem Holztisch',
+      placeholderLabel: 'Tresen',
+    },
+    {
+      ratio: '3 / 2',
+      src: '/demo/cafe-fensterplatz.webp',
+      alt: 'Tisch am Fenster in der Morgensonne, darauf eine Vase mit Trockenblumen und eine kleine Tasse',
+      placeholderLabel: 'Fensterplatz',
+    },
   ],
 
   menu: {

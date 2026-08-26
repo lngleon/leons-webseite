@@ -38,7 +38,7 @@ export default function DemoHero({ business }: { business: GastroBusiness }) {
         <DemoPhoto
           photo={business.hero.photo}
           priority
-          sizes="(min-width: 640px) 640px, 100vw"
+          sizes="(min-width: 640px) 768px, 100vw"
           className="mt-8 rounded-sm"
         />
       </div>

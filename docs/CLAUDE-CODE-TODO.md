@@ -7,8 +7,7 @@
 
 ## Aktiv
 
-- [ ] **🔴 Vercel-Einstellungen nach der Next-Migration nachziehen** (sonst bricht das Live-Deployment bzw. das Formular):
-  - **Env-Variable umbenennen:** `VITE_FORMSPREE_ENDPOINT` → **`NEXT_PUBLIC_FORMSPREE_ENDPOINT`** (gleicher Wert), in ALLEN Environments (Production/Preview/Development). Die alte Variable kann danach weg. **Symptom, wenn vergessen:** Formular schlägt fehl OHNE Network-Request.
+- [ ] **Vercel-Einstellungen nach der Next-Migration** – der blockierende Teil (Env-Rename auf `NEXT_PUBLIC_FORMSPREE_ENDPOINT`) ist **erledigt** (User, 26.08.2026). Offen bleiben zwei Kontrollpunkte:
   - **Framework-Preset prüfen:** Project → Settings → Build & Deployment muss **Next.js** sein. Der frühere manuell gesetzte Build-Command `npm run build` (für den alten Prerender) darf **kein Override mehr sein** – auf „Override" verzichten, damit Vercel den Next-Build fährt. Output Directory ebenfalls kein Override (kein `dist` mehr).
   - **Optional, aber empfohlen:** `NEXT_PUBLIC_SITE_URL` setzen (z.B. die aktuelle Vercel-Domain, später die eigene) → `sitemap.xml`/`robots.txt` schreiben dann die richtige absolute URL statt der automatisch erkannten.
 - [ ] **Browser-Check nach der Next-Migration** (Liste im Abschluss-Report der Session; lokal `npm run build && npm run start`, dann live nach Deploy). Schwerpunkt: keine Hydration-Warnung in der Konsole, **`/moeglichkeiten`** erreichbar (ASCII, seit 25.08.2026), Hero-Terminal zeigt den Next-Build, Bilder via next/image scharf/ohne CLS, reduced-motion.
@@ -22,7 +21,7 @@
 
 ## Demo-Seiten (`/demo/*`)
 
-- [ ] **3–4 echte Handyfotos für `/demo/cafe`** aufnehmen und einsetzen. Ablage in `public/`, dann nur `src` in `src/data/demo/cafe-klee.ts` ergänzen – die Boxen reservieren den Platz bereits im richtigen Seitenverhältnis (Hero 4∶5, zwei Kacheln 1∶1, ein Querformat 3∶2), es springt also nichts. Bis dahin zeigen gestaltete Platzhalter „Foto folgt".
+- [x] **Echte Fotos für `/demo/cafe` eingesetzt** (26.08.2026). Vier Bilder aus `Downloads` zugeordnet, beschnitten, skaliert und als WebP q80 nach `public/demo/`: `cafe-gastraum.webp` (1120×1400, 4∶5, 73 KB) → `hero.photo`; `cafe-zimtschnecken.webp` (800×800, 165 KB) → `gallery[0]`; `cafe-cappuccino.webp` (800×800, 37 KB) → `gallery[1]`; `cafe-fensterplatz.webp` (1410×940, 3∶2, 71 KB) → `gallery[2]`. `alt` je Bild an das tatsächliche Motiv angepasst. **Zwei Bilder liegen unter der Wunschgröße, weil die Quelle nicht mehr hergab und NICHT hochgerechnet werden sollte:** Hero 1120 statt 1600 px (Quelle war 1122 px breit), Fensterplatz 1410 statt 1600 px (Quelle 1672×941 im 16∶9, der Schnitt auf 3∶2 kostet Breite). Auf dem Handy unkritisch (3,2× bzw. 4,0×), auf einem großen Retina-Desktop knapp unter 2×. Ersatz nur nötig, falls die Demo je am großen Bildschirm gezeigt wird. Dabei die zu niedrigen `sizes` korrigiert (Hero 640→768, Querformat 660→768, Quadrate 330→378). Verifiziert: CLS 0, kein horizontaler Überlauf, alle vier Bilder laden, keine Fremd-Requests, kein sichtbarer Text auf den Motiven. Originale in `Downloads` unangetastet.
 - [ ] **Vor einem echten Kundeneinsatz die Demo-Daten ersetzen:** Name, Adresse, Telefonnummer und E-Mail in `cafe-klee.ts` sind erfunden (Telefon aus dem für Film/TV reservierten Berliner Block `030 23125 xxx`, E-Mail auf der reservierten Test-Domain `.example`). Ein zweiter Betrieb = Kopie der Datendatei + Kopie der `page.tsx` mit anderem Import; an den Komponenten ändert sich nichts.
 - [ ] Optional: zweite Demo für eine andere Branche (Friseur, Handwerk) – testet, ob der datengetriebene Aufbau wirklich trägt.
 

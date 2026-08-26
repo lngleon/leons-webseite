@@ -63,7 +63,7 @@ export default function DemoLocation({ business }: { business: GastroBusiness })
             <DemoPhoto
               key={photo.placeholderLabel}
               photo={photo}
-              sizes={wide ? '(min-width: 640px) 660px, 100vw' : '(min-width: 640px) 330px, 50vw'}
+              sizes={wide ? '(min-width: 640px) 768px, 100vw' : '(min-width: 640px) 378px, 50vw'}
               className={wide ? 'col-span-2 rounded-sm' : 'rounded-sm'}
             />
           )
