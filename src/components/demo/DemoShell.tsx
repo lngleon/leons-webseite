@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { demoDisplay } from '@/app/(demo)/font'
 import type { GastroBusiness } from '@/data/demo/types'
 import DemoGrain from './DemoGrain'
 import DemoNav from './DemoNav'
@@ -28,7 +29,12 @@ export default function DemoShell({
   children: ReactNode
 }) {
   return (
-    <div className="demo-scope relative flex min-h-dvh flex-col">
+    // `demoDisplay.variable` setzt `--font-demo-display` – bewusst HIER auf dem
+    // bestehenden `.demo-scope`-Element und nicht in `(demo)/layout.tsx`: das
+    // Layout gibt `children` unverändert zurück und hat gar kein eigenes Element,
+    // ein Wrapper nur für die Klasse wäre ein zusätzlicher DOM-Knoten. So kostet
+    // die Schrift kein Markup. `demo.css` liest die Variable in `--demo-display`.
+    <div className={`${demoDisplay.variable} demo-scope relative flex min-h-dvh flex-col`}>
       <DemoGrain />
 
       <div className="relative z-10 flex flex-1 flex-col">

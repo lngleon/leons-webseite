@@ -36,12 +36,21 @@ html:has(.demo-scope),
   --ring: var(--accent);
   --destructive: #9a2b1e;
 
-  /* Display-Schrift: bewusst eine SERIFE aus dem System-Stack.
-     Non-Goal „keine Third-Party-Ressourcen" schliesst Webfonts vom CDN aus –
-     der Charakter kommt deshalb aus Grösse, Versalien und Laufweite, nicht aus
-     einem exotischen Schriftschnitt. */
-  --demo-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype",
-    Palatino, "Times New Roman", serif;
+  /* Display-Schrift: seit 26.08.2026 die LOKAL gehostete Fraunces 72pt SemiBold
+     statt des System-Stacks (Auswahl und Begründung in `(demo)/font.ts`).
+
+     Das Non-Goal „keine Third-Party-Ressourcen" gilt unverändert – die Datei
+     liegt im Repo und wird von `next/font/local` nach `/_next/static/media/`
+     ausgeliefert, also von derselben Herkunft wie die Seite. Kein CDN, kein
+     Google-Request.
+
+     `--font-demo-display` kommt von `next/font/local` und enthält bereits ZWEI
+     Familien: die echte Schrift und die metrisch angeglichene Ersatzschrift, die
+     Next daraus berechnet (deshalb kein Layout-Sprung beim Nachladen). Die Liste
+     dahinter greift nur, falls die Variable fehlt – dann steht wieder genau der
+     System-Stack von vorher da. */
+  --demo-display: var(--font-demo-display), ui-serif, Georgia,
+    "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
 
   /* Hoehe des klebenden Navigationsbands. Zwei Dinge haengen daran: die
      Kategorie-Leiste auf /karte klebt genau darunter, und Anker-Sprünge halten

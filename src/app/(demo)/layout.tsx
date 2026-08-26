@@ -41,17 +41,13 @@ export const metadata: Metadata = {
    * (`icons?: null | IconURL | Array<Icon> | Icons`), setzt den Wert zurück und
    * öffnet damit den Weg für die Datei. Im gebauten HTML verifiziert.
    *
-   * Nebenwirkung, bewusst in Kauf genommen: Es gibt keinen `apple-icon` – die
-   * Bild-Konvention kennt dafür nur JPG/PNG, und ein PNG-Satz war
-   * ausgeschlossen. Die Demo-Seiten tragen deshalb GAR kein
-   * `apple-touch-icon`-Tag mehr (vorher: Leons LL als explizites Tag).
-   *
-   * Was iOS beim „Zum Home-Bildschirm" dann nimmt, ist von uns NICHT
-   * kontrolliert und hier auch nicht nachprüfbar: Safari kann auf die alte
-   * Wurzel-Konvention `/apple-touch-icon.png` zurückfallen – das wäre wieder
-   * Leons LL – oder das deklarierte `rel="icon"` heranziehen. Der Tab, um den
-   * es hier geht, ist eindeutig gelöst; der Homescreen bliebe offen und
-   * bräuchte ein PNG. Nicht behaupten, was nicht gemessen ist.
+   * Zwei Dateien liegen daneben und werden beide von dieser Rücksetzung
+   * freigeschaltet: `icon.svg` (Browser-Tab) und `apple-icon.png`
+   * (iOS-Homescreen, 180×180). Das PNG kam am 26.08.2026 dazu – vorher trugen
+   * die Demo-Seiten gar kein `apple-touch-icon`-Tag, und Safari wäre beim
+   * „Zum Home-Bildschirm" womöglich auf die Wurzel-Konvention
+   * `/apple-touch-icon.png` zurückgefallen: Leons LL über einer Café-Seite.
+   * Genau das ist jetzt geschlossen.
    */
   icons: null,
 }
