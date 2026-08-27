@@ -39,9 +39,11 @@ import type { GastroBusiness } from './types'
  * Telefon und Mail. Weil `booking` fehlt, entfällt die Attrappe von selbst –
  * ohne dass `DemoContact` wüsste, dass hier ein Friseur rendert.
  *
- * **Fotos:** bewusst noch keine. Jedes `Photo` trägt sein `ratio`, der
- * Platzhalter belegt exakt dieselbe Fläche wie das spätere Bild – beim
- * Nachreichen kommt nur `src` dazu, es springt nichts.
+ * **Fotos:** seit 27.08.2026 sieben echte Bilder aus `public/demo/`
+ * (`friseur-*.webp`) für Hero, Bildreihe und die drei Über-uns-Blöcke. Die drei
+ * Team-Porträts bleiben Platzhalter – dafür lagen keine Quellen vor. Weil jedes
+ * `Photo` sein `ratio` schon vorher trug, ist nur `src` dazugekommen; es hat
+ * sich nichts verschoben.
  */
 export const friseurWirbel: GastroBusiness = {
   slug: 'friseur',
@@ -63,7 +65,8 @@ export const friseurWirbel: GastroBusiness = {
   hero: {
     photo: {
       ratio: '4 / 5',
-      alt: 'Blick in den Salon: drei Stühle vor einer Spiegelwand aus altem Holz, davor Fensterlicht',
+      src: '/demo/friseur-salon.webp',
+      alt: 'Drei Frisierstühle vor einer langen Holzablage mit drei hohen Spiegeln, links fällt Tageslicht durch die Vorhänge',
       placeholderLabel: 'Salon',
     },
   },
@@ -78,17 +81,20 @@ export const friseurWirbel: GastroBusiness = {
   gallery: [
     {
       ratio: '1 / 1',
-      alt: 'Scheren und Kämme auf einem Leinentuch, daneben ein Rasiermesser',
+      src: '/demo/friseur-werkzeug.webp',
+      alt: 'Schere, Kamm und zwei Haarklammern auf einer hellen Holzablage, daneben ein gefaltetes graues Handtuch',
       placeholderLabel: 'Werkzeug',
     },
     {
       ratio: '1 / 1',
-      alt: 'Waschbecken aus Stein vor einer gefliesten Wand, darüber eine Lampe',
+      src: '/demo/friseur-waschplatz.webp',
+      alt: 'Waschbecken des Rückwärtswaschplatzes mit Chromarmatur, über den Rand hängt ein graues Handtuch',
       placeholderLabel: 'Waschplatz',
     },
     {
       ratio: '3 / 2',
-      alt: 'Der Salon von der Tür aus: Spiegelwand links, Wartebank rechts, Pflanzen am Fenster',
+      src: '/demo/friseur-wartebank.webp',
+      alt: 'Wartebank aus Holz mit hellen Auflagen an einer grauen Wand, davor ein runder Beistelltisch und ein großer Zimmerbaum',
       placeholderLabel: 'Der Raum',
     },
   ],
@@ -270,7 +276,8 @@ export const friseurWirbel: GastroBusiness = {
         text: 'Jeder Termin fängt im Trockenen an. Wir sehen uns an, wie dein Haar wächst, wo es sich dreht und was der letzte Schnitt daraus gemacht hat – erst danach steht fest, was geht. Manchmal ist das Ergebnis, dass wir weniger machen als geplant, und ab und zu, dass wir gar nichts machen und dich in acht Wochen wiedersehen. Der Preis steht vor dem ersten Schnitt fest, nicht an der Kasse.',
         photo: {
           ratio: '3 / 2',
-          alt: 'Zwei Personen im Gespräch vor dem Spiegel, das Haar noch trocken und offen',
+          src: '/demo/friseur-beratung.webp',
+          alt: 'Eine Friseurin steht hinter einer sitzenden Kundin und nimmt ihr das trockene, offene Haar in die Hand, davor der Spiegel',
           placeholderLabel: 'Beratung',
         },
       },
@@ -280,7 +287,8 @@ export const friseurWirbel: GastroBusiness = {
         text: 'Wir haben drei Stühle und legen keine Termine übereinander. Das heißt: keine Farbe, die im Nebenraum einwirkt, während hier jemand wartet. Eine Blondierung bekommt bei uns vier Stunden und eine Haarprobe vorher – und wenn die Probe schlecht ausfällt, sagen wir ab, statt es trotzdem zu versuchen. Das kostet uns Termine und dir erspart es abgebrochenes Haar.',
         photo: {
           ratio: '4 / 5',
-          alt: 'Hände beim Auftragen von Farbe mit dem Pinsel, eine Strähne über Folie gelegt',
+          src: '/demo/friseur-schnitt.webp',
+          alt: 'Hände schneiden eine abgeteilte Strähne nassen Haars mit der Schere, zwischen den Fingern liegt der Kamm',
           placeholderLabel: 'Farbe',
         },
       },
@@ -290,7 +298,8 @@ export const friseurWirbel: GastroBusiness = {
         text: 'Eine alte Ladenwohnung mit hohen Fenstern nach Norden – das gleichmäßigste Licht, das man für Farbe bekommen kann, und der Grund, warum wir hier eingezogen sind. Kein Fernseher, kein Radio auf Zimmerlautstärke, Musik nur so laut, dass man sich normal unterhalten kann. Sonntag und Montag ist zu: an einem der beiden Tage machen wir die Bücher, am anderen gar nichts.',
         photo: {
           ratio: '3 / 2',
-          alt: 'Hohe Sprossenfenster, davor die Wartebank und ein niedriger Tisch mit Zeitschriften',
+          src: '/demo/friseur-spiegelwand.webp',
+          alt: 'Zwei Mitarbeiterinnen richten die Arbeitsplätze her: runde Spiegel über der langen Ablage, Bürsten und Flaschen im Tablett, links das Fenster zur Straße',
           placeholderLabel: 'Fensterseite',
         },
       },

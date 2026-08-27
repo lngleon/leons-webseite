@@ -27,9 +27,10 @@ import type { GastroBusiness } from './types'
  *
  * `cafe-klee.ts` blieb dafür Zeichen für Zeichen unverändert.
  *
- * **Fotos:** bewusst noch keine. Jedes `Photo` trägt sein `ratio`, der
- * Platzhalter belegt exakt dieselbe Fläche wie das spätere Bild – beim
- * Nachreichen kommt nur `src` dazu, es springt nichts.
+ * **Fotos:** seit 27.08.2026 sieben echte Bilder aus `public/demo/`
+ * (`restaurant-*.webp`). Weil jedes `Photo` sein `ratio` schon vorher trug und
+ * der Platzhalter exakt dieselbe Fläche belegte, ist beim Nachreichen nur `src`
+ * dazugekommen – es hat sich nichts verschoben.
  */
 export const restaurantGlut: GastroBusiness = {
   slug: 'restaurant',
@@ -50,7 +51,8 @@ export const restaurantGlut: GastroBusiness = {
   hero: {
     photo: {
       ratio: '4 / 5',
-      alt: 'Blick in den Gastraum am Abend: dunkle Holztische, im Hintergrund die offene Feuerstelle hinter einer niedrigen Mauer',
+      src: '/demo/restaurant-gastraum.webp',
+      alt: 'Langer Holztisch mit Gläsern und Gedecken im dunklen Gastraum, dahinter die offene Feuerstelle mit brennenden Scheiten',
       placeholderLabel: 'Gastraum',
     },
   },
@@ -65,17 +67,20 @@ export const restaurantGlut: GastroBusiness = {
   gallery: [
     {
       ratio: '1 / 1',
-      alt: 'Glühende Holzkohle unter einem Rost, darauf ein halbierter Spitzkohl',
+      src: '/demo/restaurant-feuerstelle.webp',
+      alt: 'Glühende Holzkohle und Flammen unter einem schweren Rost, dahinter greift ein Koch mit der Zange ins Feuer',
       placeholderLabel: 'Feuerstelle',
     },
     {
       ratio: '1 / 1',
-      alt: 'Gedeck auf dunklem Holz: Leinenserviette, schweres Besteck, ein Glas Weißwein',
+      src: '/demo/restaurant-teller.webp',
+      alt: 'Teller mit gegrilltem Radicchio, Zucchini und geröstetem Brot auf dunklem Holz, links glimmt die Glut',
       placeholderLabel: 'Gedeck',
     },
     {
       ratio: '3 / 2',
-      alt: 'Der Gastraum von der Tür aus, warmes Licht über den Tischen, rechts die lange Bank an der Wand',
+      src: '/demo/restaurant-mittagslicht.webp',
+      alt: 'Gedeckte Tische am Mittag: Tageslicht durch das hohe Fenster, rechts die offene Feuerstelle und daneben der Holzstapel',
       placeholderLabel: 'Abendlicht',
     },
   ],
@@ -414,7 +419,8 @@ export const restaurantGlut: GastroBusiness = {
         text: 'Um halb zehn wird angezündet, gegen elf ist die Glut so weit – deshalb geht mittags überhaupt schon etwas vom Feuer. Von da an läuft alles über dieselbe Stelle: mittags, was schnell geht, abends das, was Zeit braucht. Das heißt auch, dass wir nicht beliebig nachlegen können – wenn die Lammschulter drin ist, ist sie drin. Deshalb dauert manches länger, als du es gewohnt bist, und deshalb sagen wir es vorher.',
         photo: {
           ratio: '3 / 2',
-          alt: 'Die offene Feuerstelle von der Seite: Holzscheite in der Brennkammer, darüber ein höhenverstellbarer Rost',
+          src: '/demo/restaurant-holzofen.webp',
+          alt: 'Ein Koch schiebt gespaltene Scheite in die glühende Brennkammer, darüber sprühen Funken; davor stapelt sich das Brennholz',
           placeholderLabel: 'Feuer',
         },
       },
@@ -424,7 +430,8 @@ export const restaurantGlut: GastroBusiness = {
         text: 'Das Gemüse kommt von einem Hof am Stadtrand, zweimal die Woche, und wir nehmen ab, was gerade da ist – nicht, was auf einer Bestellliste steht. Fisch nur, wenn er frisch ist, und dann im Ganzen. Fleisch selten, dafür vom ganzen Tier: was diese Woche die Schulter war, ist nächste Woche etwas anderes. Die Karte ist kurz, weil sie ehrlich sein soll.',
         photo: {
           ratio: '4 / 5',
-          alt: 'Kisten mit Wurzelgemüse und Kohl auf dem Küchentresen, daneben eine Waage',
+          src: '/demo/restaurant-fleisch.webp',
+          alt: 'Hände tranchieren ein über dem Feuer gegartes Stück Fleisch auf einem Holzbrett, daneben grobes Salz; im Hintergrund brennt das Feuer',
           placeholderLabel: 'Anlieferung',
         },
       },
@@ -434,7 +441,8 @@ export const restaurantGlut: GastroBusiness = {
         text: 'Ein langer Raum mit einer Bank an der Wand und der Feuerstelle offen im Blick. Es wird laut, wenn es voll ist – wir haben nichts weggedämmt, der Schallschutz sind die Vorhänge. Sonntag und Montag bleibt geschlossen: an einem der beiden Tage ruht das Feuer, am anderen wir.',
         photo: {
           ratio: '3 / 2',
-          alt: 'Die lange Wandbank mit Kissen, davor gedeckte Tische, links Vorhänge bis zum Boden',
+          src: '/demo/restaurant-kueche.webp',
+          alt: 'Zwei Köche von hinten an der Anrichte, vor ihnen angerichtete Teller, dahinter die offene Feuerstelle',
           placeholderLabel: 'Der Raum',
         },
       },
