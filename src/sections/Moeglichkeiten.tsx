@@ -17,8 +17,8 @@ import { CardBody, CardContainer, CardItem } from '@/components/ui/Tilt'
 import { moeglichkeitenIntro, techStack } from '@/data/moeglichkeiten'
 
 /* Stille Showcase-Seite „Was möglich ist" (Route /moeglichkeiten, NICHT in der
-   Navbar verlinkt). Reihenfolge: Kopf → Bento → verspielt/seriös → Tilt →
-   Live-Visual (Globe + Funken) → Marquee.
+   Navbar verlinkt). Reihenfolge: Kopf → Musterseiten → Bento → verspielt/seriös
+   → Tilt → Live-Visual (Globe + Funken) → Marquee.
    Alles SSR-/prerender-sicher; reduced-motion respektiert (Tilt/Partikel/Globe/
    Sparkles/Marquee). */
 
@@ -109,7 +109,14 @@ function ThisSiteGraphic() {
   )
 }
 
-export default function Moeglichkeiten() {
+/**
+ * `demos` ist der Musterseiten-Block und kommt von AUSSEN herein, statt hier
+ * importiert zu werden: diese Datei ist eine Client-Komponente, und der Block
+ * liest die drei vollständigen Betriebs-Objekte. Ein Import hier zöge Karten,
+ * Öffnungszeiten und Rechtstexte aller drei Demos ins Browser-Bundle. Die
+ * Server-Seite (`page.tsx`) reicht ihn deshalb als fertigen Knoten durch.
+ */
+export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
       {/* (1) Kopf + ein Satz Intro (ohne Entrance → ohne JS sichtbar) */}
@@ -121,8 +128,14 @@ export default function Moeglichkeiten() {
         className="mx-auto"
       />
 
-      {/* (2) Bento-Grid (das Herz) */}
-      <Reveal className="mt-14 sm:mt-16">
+      {/* (2) Die drei Musterseiten – der stärkste Beleg der Seite und deshalb
+         GANZ OBEN, direkt unter dem Intro. Alles darunter zeigt Effekte; das
+         hier zeigt fertige Seiten. Der Knoten kommt aus `page.tsx`, siehe
+         Kommentar an der Signatur. */}
+      {demos ? <Reveal className="mt-14 sm:mt-16">{demos}</Reveal> : null}
+
+      {/* (3) Bento-Grid (das Herz) */}
+      <Reveal className="mt-24 sm:mt-32">
         <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-3">
           <BentoCard
             highlight
@@ -163,7 +176,7 @@ export default function Moeglichkeiten() {
         </div>
       </Reveal>
 
-      {/* (3) Verspielt vs. seriös – zwei Knöpfe */}
+      {/* (4) Verspielt vs. seriös – zwei Knöpfe */}
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-5 text-center">
           <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
@@ -187,7 +200,7 @@ export default function Moeglichkeiten() {
         </div>
       </Reveal>
 
-      {/* (4) Tilt-Karte (Platzhalter für ein echtes Projekt) */}
+      {/* (5) Tilt-Karte (Platzhalter für ein echtes Projekt) */}
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-8 text-center">
           <div className="flex flex-col items-center gap-3">
@@ -223,7 +236,7 @@ export default function Moeglichkeiten() {
         </div>
       </Reveal>
 
-      {/* (5) Live-Visual: Dot-Globe (WebGL via cobe) + aufsteigende Funken (Canvas).
+      {/* (6) Live-Visual: Dot-Globe (WebGL via cobe) + aufsteigende Funken (Canvas).
          Reine Können-Demo – beides läuft live im Browser, nur Violett aus den
          Tokens, SSR-/reduced-motion-sicher. Keine „global"-/Reichweiten-Aussage. */}
       <Reveal className="mt-24 sm:mt-32">
@@ -245,7 +258,7 @@ export default function Moeglichkeiten() {
         </div>
       </Reveal>
 
-      {/* (6) Marquee – Leons echter Tech-Stack */}
+      {/* (7) Marquee – Leons echter Tech-Stack */}
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-6">
           <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
