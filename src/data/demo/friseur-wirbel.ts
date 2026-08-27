@@ -247,7 +247,7 @@ export const friseurWirbel: GastroBusiness = {
         photo: {
           ratio: '1 / 1',
           src: '/demo/friseur-team-mira.webp',
-          alt: 'Von hinten aufgenommen: eine Person in Schürze legt am Fenster mehrere Kämme auf der hellen Holzablage zurecht',
+          alt: 'Von hinten aufgenommen: eine Person mit sehr kurzem dunklem Haar in hellgrauem Kittel hält Kamm und Schere, dahinter die helle Holzablage am Fenster',
           placeholderLabel: 'Mira',
         },
       },
@@ -259,7 +259,7 @@ export const friseurWirbel: GastroBusiness = {
         photo: {
           ratio: '1 / 1',
           src: '/demo/friseur-team-jonte.webp',
-          alt: 'Von hinten aufgenommen: eine Person in Schürze hält Schere und Kamm, vor ihr der hohe Spiegel, links die Fensterfront',
+          alt: 'Von hinten aufgenommen: ein Mann mit rasiertem Kopf in dunklem Shirt und Jeansschürze legt am Waschtisch einen Rasierpinsel neben ein gefaltetes Handtuch',
           placeholderLabel: 'Jonte',
         },
       },
@@ -271,7 +271,7 @@ export const friseurWirbel: GastroBusiness = {
         photo: {
           ratio: '1 / 1',
           src: '/demo/friseur-team-aylin.webp',
-          alt: 'Von hinten aufgenommen: eine Person in Schürze faltet am Vorhang ein Handtuch, rechts der gerahmte Spiegel und ein Frisierstuhl',
+          alt: 'Von hinten aufgenommen: eine Person mit hochgestecktem langem Haar, in Schwarz und mit Einweghandschuh, rührt auf dem Rollwagen Farbe in einer weißen Schale an',
           placeholderLabel: 'Aylin',
         },
       },
