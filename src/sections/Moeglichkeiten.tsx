@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { LayoutDashboard, Monitor, Paintbrush, Sparkles } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -14,7 +15,7 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton'
 import { Marquee } from '@/components/ui/Marquee'
 import SparklesCanvas from '@/components/ui/Sparkles'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/Tilt'
-import { moeglichkeitenIntro, techStack } from '@/data/moeglichkeiten'
+import { lighthouse, moeglichkeitenIntro, techStack } from '@/data/moeglichkeiten'
 
 /* Stille Showcase-Seite „Was möglich ist" (Route /moeglichkeiten, NICHT in der
    Navbar verlinkt). Reihenfolge: Kopf → Musterseiten → Bento → verspielt/seriös
@@ -72,8 +73,12 @@ function BentoCard({
 }
 
 /* Große Zelle „Diese Seite selbst": handgebaute, STATISCHE Mono-Grafik
-   (Dark-System) – ein abstraktes Mini-Abbild dieser Seite. Performance-Zahl
-   bewusst NICHT erfunden: sichtbarer Platzhalter („—", Messwerte folgen). */
+   (Dark-System) – ein abstraktes Mini-Abbild dieser Seite.
+   Seit 27.08.2026 stehen darunter ECHTE Lighthouse-Zahlen statt des
+   Platzhalters „—". Alle vier Kategorien, auch die schwächste: Performance 80.
+   Sie wegzulassen oder den besten von drei Läufen zu nehmen wäre genau die
+   Sorte Zahl gewesen, für die vorher lieber ein Strich dort stand. Werte,
+   Messbedingungen und die Begründung der 80 stehen in data/moeglichkeiten.ts. */
 function ThisSiteGraphic() {
   return (
     <div className="flex h-full flex-col gap-3">
@@ -93,18 +98,20 @@ function ThisSiteGraphic() {
         </div>
       </div>
 
-      {/* Performance: bewusst OHNE Zahl – sichtbarer Platzhalter */}
+      {/* Lighthouse: gemessen, nicht behauptet. Die vier Kategorien stehen
+          gleichrangig nebeneinander – die 80 bekommt keine Sonderbehandlung
+          und wird nicht versteckt. */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-lg border border-dashed border-border p-3">
-          <p className="text-xs text-muted-foreground">Lighthouse</p>
-          <p className="text-2xl font-semibold text-muted-foreground/40">—</p>
-        </div>
-        <div className="rounded-lg border border-dashed border-border p-3">
-          <p className="text-xs text-muted-foreground">Ladezeit</p>
-          <p className="text-2xl font-semibold text-muted-foreground/40">—</p>
-        </div>
+        {lighthouse.kategorien.map((k) => (
+          <div key={k.label} className="rounded-lg border border-border p-3">
+            <p className="text-xs text-muted-foreground">{k.label}</p>
+            <p className="text-2xl font-semibold text-foreground">{k.wert}</p>
+          </div>
+        ))}
       </div>
-      <p className="text-xs text-muted-foreground/70">Messwerte folgen.</p>
+      <p className="text-xs leading-relaxed text-muted-foreground/70">
+        {lighthouse.metriken} · {lighthouse.bedingungen}
+      </p>
     </div>
   )
 }
@@ -200,7 +207,13 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
         </div>
       </Reveal>
 
-      {/* (5) Tilt-Karte (Platzhalter für ein echtes Projekt) */}
+      {/* (5) Tilt-Karte – seit 27.08.2026 mit echtem Inhalt statt Platzhalter.
+         Bewusst NICHT einer der drei Demo-Screenshots aus Block (2): dasselbe
+         Bild zweimal auf einer Seite entwertet beide. Stattdessen ein Blick
+         INS Innere einer Demo – die Reservierungs-Attrappe von Restaurant
+         Glut, aufgenommen auf Schritt 3 von 5, damit man dem Bild ansieht,
+         dass es eine Strecke ist und nicht ein Formular.
+         Der Text bleibt ehrlich: der Ablauf steht, gebucht wird nichts. */}
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-8 text-center">
           <div className="flex flex-col items-center gap-3">
@@ -208,8 +221,8 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
               Tiefe auf Hover
             </h2>
             <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
-              Eine Karte, die sich subtil zur Maus neigt. Inhalt hier als Platzhalter – später ein
-              echtes Projekt.
+              Eine Karte, die sich subtil zur Maus neigt – hier mit einem Blick in die
+              Reservierungs-Strecke von Restaurant Glut.
             </p>
           </div>
 
@@ -217,18 +230,34 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
             <CardBody className="w-[19rem] rounded-2xl border border-border bg-card p-6 text-left transition-shadow duration-200 hover:shadow-2xl hover:shadow-accent/10 sm:w-[24rem]">
               <CardItem translateZ={30}>
                 <span className="accent-gradient-text text-xs font-medium uppercase tracking-[0.2em]">
-                  Beispiel-Leistung · Platzhalter
+                  Aus der Demo · Restaurant Glut
                 </span>
               </CardItem>
               <CardItem translateZ={45} className="mt-2">
-                <h3 className="text-lg font-semibold text-foreground">Webseiten</h3>
+                <h3 className="text-lg font-semibold text-foreground">
+                  Reservierung, Schritt 3 von 5
+                </h3>
               </CardItem>
               <CardItem translateZ={60} className="mt-4 w-full">
-                <ServiceDiagram kind="browser" icon={Monitor} />
+                {/* aspect-Box → kein Layout-Shift, gleiches 8∶5 wie die drei
+                    Vorschauen in Block (2). Im Browser gemessene Slot-Breite:
+                    332 px ab `sm`, 252 px darunter (Karte 24 bzw. 19 rem, minus
+                    p-6 beidseitig und minus Rahmen). */}
+                <div className="aspect-[8/5] overflow-hidden rounded-lg border border-border bg-muted">
+                  <Image
+                    src="/demo-reservierung-preview.webp"
+                    alt="Schritt 3 von 5 der Reservierungs-Vorschau von Restaurant Glut: eine Uhrzeit wählen, belegte Zeiten sind ausgegraut"
+                    width={1120}
+                    height={700}
+                    sizes="(min-width: 640px) 332px, 252px"
+                    className="h-full w-full object-cover object-top"
+                  />
+                </div>
               </CardItem>
               <CardItem translateZ={20} className="mt-4">
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  Hier kommt später ein echtes Projekt-Bild.
+                  Fünf Schritte, gerechnet aus den Öffnungszeiten des Betriebs – der Ablauf steht
+                  komplett. Gebucht wird nichts: kein Tisch, keine Mail, kein Kalender.
                 </p>
               </CardItem>
             </CardBody>
