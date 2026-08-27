@@ -39,11 +39,20 @@ import type { GastroBusiness } from './types'
  * Telefon und Mail. Weil `booking` fehlt, entfällt die Attrappe von selbst –
  * ohne dass `DemoContact` wüsste, dass hier ein Friseur rendert.
  *
- * **Fotos:** seit 27.08.2026 sieben echte Bilder aus `public/demo/`
- * (`friseur-*.webp`) für Hero, Bildreihe und die drei Über-uns-Blöcke. Die drei
- * Team-Porträts bleiben Platzhalter – dafür lagen keine Quellen vor. Weil jedes
- * `Photo` sein `ratio` schon vorher trug, ist nur `src` dazugekommen; es hat
- * sich nichts verschoben.
+ * **Fotos:** seit 27.08.2026 vollständig bebildert – zehn Bilder aus
+ * `public/demo/` (`friseur-*.webp`) für Hero, Bildreihe, die drei
+ * Über-uns-Blöcke und die drei Team-Plätze. Kein Platzhalter mehr übrig.
+ * Zwei davon sind Zweitfassungen: der Hero (`friseur-platz.webp`) und die
+ * Spiegelreihe (`friseur-spiegelreihe.webp`) haben ihre Vorgänger abgelöst,
+ * die Vorgängerdateien sind gelöscht. Weil jedes `Photo` sein `ratio` schon
+ * vorher trug, kam beim Nachreichen nur `src` dazu; es hat sich nichts
+ * verschoben.
+ *
+ * **Offen und bewusst so gelassen:** die drei Team-Fotos zeigen alle eine
+ * abgewandte Person mit schulterlangem Haar in Schürze – sie lesen sich als
+ * dieselbe Person und belegen weder Jontes Barbier- noch Aylins
+ * Coloristen-Rolle. `role` und `text` der drei stehen unverändert; wer die
+ * Bilder ersetzt, sollte beides zusammen prüfen.
  */
 export const friseurWirbel: GastroBusiness = {
   slug: 'friseur',
@@ -65,8 +74,8 @@ export const friseurWirbel: GastroBusiness = {
   hero: {
     photo: {
       ratio: '4 / 5',
-      src: '/demo/friseur-salon.webp',
-      alt: 'Drei Frisierstühle vor einer langen Holzablage mit drei hohen Spiegeln, links fällt Tageslicht durch die Vorhänge',
+      src: '/demo/friseur-platz.webp',
+      alt: 'Ein Frisierstuhl vor einer hellen Holzablage, darüber ein hoher rechteckiger Spiegel; links fällt Tageslicht durch den Vorhang der bodentiefen Fensterfront',
       placeholderLabel: 'Salon',
     },
   },
@@ -237,7 +246,8 @@ export const friseurWirbel: GastroBusiness = {
         text: 'Hat den Laden 2014 aufgemacht, nachdem sie zwölf Jahre in fremden Salons gearbeitet hatte. Schneidet am liebsten kurz und geht trocken so lange nach, bis es wirklich sitzt. Bei ihr dauert die Beratung am längsten und der Schnitt am kürzesten.',
         photo: {
           ratio: '1 / 1',
-          alt: 'Porträt einer Frau mit kurzen grauen Haaren, Schere in der Hand, im Hintergrund die Spiegelwand',
+          src: '/demo/friseur-team-mira.webp',
+          alt: 'Von hinten aufgenommen: eine Person in Schürze legt am Fenster mehrere Kämme auf der hellen Holzablage zurecht',
           placeholderLabel: 'Mira',
         },
       },
@@ -248,7 +258,8 @@ export const friseurWirbel: GastroBusiness = {
         text: 'Kommt aus der Barbier-Ecke und hat das Messer nie wieder weggelegt. Macht die klassischen Rasuren und alles, was mit Übergängen zu tun hat. Wenn im Salon jemand über Fußball redet, ist er es.',
         photo: {
           ratio: '1 / 1',
-          alt: 'Porträt eines Mannes mit Vollbart, Rasiermesser in der Hand, hinter ihm ein Handtuchwärmer',
+          src: '/demo/friseur-team-jonte.webp',
+          alt: 'Von hinten aufgenommen: eine Person in Schürze hält Schere und Kamm, vor ihr der hohe Spiegel, links die Fensterfront',
           placeholderLabel: 'Jonte',
         },
       },
@@ -259,7 +270,8 @@ export const friseurWirbel: GastroBusiness = {
         text: 'Verantwortet alles, was Farbe hat – und sagt als Einzige regelmäßig Termine ab, wenn die Haarprobe nicht mitspielt. Eine Balayage plant sie lieber über zwei Termine als über einen langen.',
         photo: {
           ratio: '1 / 1',
-          alt: 'Porträt einer Frau mit langen dunklen Haaren, Farbschale und Pinsel in der Hand',
+          src: '/demo/friseur-team-aylin.webp',
+          alt: 'Von hinten aufgenommen: eine Person in Schürze faltet am Vorhang ein Handtuch, rechts der gerahmte Spiegel und ein Frisierstuhl',
           placeholderLabel: 'Aylin',
         },
       },
@@ -289,18 +301,18 @@ export const friseurWirbel: GastroBusiness = {
           ratio: '4 / 5',
           src: '/demo/friseur-schnitt.webp',
           alt: 'Hände schneiden eine abgeteilte Strähne nassen Haars mit der Schere, zwischen den Fingern liegt der Kamm',
-          placeholderLabel: 'Farbe',
+          placeholderLabel: 'Schnitt',
         },
       },
       {
         id: 'raum',
-        title: 'Der Laden',
-        text: 'Eine alte Ladenwohnung mit hohen Fenstern nach Norden – das gleichmäßigste Licht, das man für Farbe bekommen kann, und der Grund, warum wir hier eingezogen sind. Kein Fernseher, kein Radio auf Zimmerlautstärke, Musik nur so laut, dass man sich normal unterhalten kann. Sonntag und Montag ist zu: an einem der beiden Tage machen wir die Bücher, am anderen gar nichts.',
+        title: 'Was nicht auf der Ablage steht',
+        text: 'Die Ablage ist ein durchgehendes Brett, kein Tisch pro Stuhl – und darauf steht so wenig wie möglich. Der Platz, an dem du sitzt, war vorhin noch der von jemand anderem. Wir wischen ihn nach jedem Termin leer: kein fremdes Haar, keine Zeitschrift von vorgestern, keine halbleere Flasche vom Vorgänger. Was gebraucht wird, rollt auf dem Wagen dazu und wieder weg.',
         photo: {
           ratio: '3 / 2',
-          src: '/demo/friseur-spiegelwand.webp',
-          alt: 'Zwei Mitarbeiterinnen richten die Arbeitsplätze her: runde Spiegel über der langen Ablage, Bürsten und Flaschen im Tablett, links das Fenster zur Straße',
-          placeholderLabel: 'Fensterseite',
+          src: '/demo/friseur-spiegelreihe.webp',
+          alt: 'Zwei Mitarbeiterinnen richten die Arbeitsplätze her: drei hohe rechteckige Spiegel in hellen Holzrahmen über der durchgehenden Ablage, eine wischt sie leer, die andere schiebt den Rollwagen mit den Flaschen; rechts die bodentiefe Fensterfront ins Grüne',
+          placeholderLabel: 'Die Ablage',
         },
       },
     ],

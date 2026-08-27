@@ -30,7 +30,10 @@ import type { GastroBusiness } from './types'
  * **Fotos:** seit 27.08.2026 sieben echte Bilder aus `public/demo/`
  * (`restaurant-*.webp`). Weil jedes `Photo` sein `ratio` schon vorher trug und
  * der Platzhalter exakt dieselbe Fläche belegte, ist beim Nachreichen nur `src`
- * dazugekommen – es hat sich nichts verschoben.
+ * dazugekommen – es hat sich nichts verschoben. Der Hero ist inzwischen in
+ * zweiter Fassung da (`restaurant-tafel.webp` statt der ersten, gelöschten
+ * `restaurant-gastraum.webp`): die Zweitquelle war echtes Hochformat und
+ * musste nicht aus einem Querformat herausgeschnitten werden.
  */
 export const restaurantGlut: GastroBusiness = {
   slug: 'restaurant',
@@ -51,8 +54,8 @@ export const restaurantGlut: GastroBusiness = {
   hero: {
     photo: {
       ratio: '4 / 5',
-      src: '/demo/restaurant-gastraum.webp',
-      alt: 'Langer Holztisch mit Gläsern und Gedecken im dunklen Gastraum, dahinter die offene Feuerstelle mit brennenden Scheiten',
+      src: '/demo/restaurant-tafel.webp',
+      alt: 'Lange, leere Holztafel mit Stuhlreihen im dunklen Gastraum, darüber drei Glühbirnen, am Ende des Raums die offene Feuerstelle mit glimmender Glut',
       placeholderLabel: 'Gastraum',
     },
   },
@@ -81,7 +84,7 @@ export const restaurantGlut: GastroBusiness = {
       ratio: '3 / 2',
       src: '/demo/restaurant-mittagslicht.webp',
       alt: 'Gedeckte Tische am Mittag: Tageslicht durch das hohe Fenster, rechts die offene Feuerstelle und daneben der Holzstapel',
-      placeholderLabel: 'Abendlicht',
+      placeholderLabel: 'Mittagslicht',
     },
   ],
 
@@ -432,18 +435,18 @@ export const restaurantGlut: GastroBusiness = {
           ratio: '4 / 5',
           src: '/demo/restaurant-fleisch.webp',
           alt: 'Hände tranchieren ein über dem Feuer gegartes Stück Fleisch auf einem Holzbrett, daneben grobes Salz; im Hintergrund brennt das Feuer',
-          placeholderLabel: 'Anlieferung',
+          placeholderLabel: 'Tranchieren',
         },
       },
       {
         id: 'haus',
-        title: 'Der Raum',
-        text: 'Ein langer Raum mit einer Bank an der Wand und der Feuerstelle offen im Blick. Es wird laut, wenn es voll ist – wir haben nichts weggedämmt, der Schallschutz sind die Vorhänge. Sonntag und Montag bleibt geschlossen: an einem der beiden Tage ruht das Feuer, am anderen wir.',
+        title: 'Der kurze Weg',
+        text: 'Wer anrichtet, hat eben noch am Feuer gestanden. Warm gestellt wird hier nichts – was fertig ist, geht raus, und die Teller eines Tisches gehen zusammen. Deshalb warten wir am Pass lieber, bis dein Tisch vollständig ist, als den ersten Teller allein loszuschicken.',
         photo: {
           ratio: '3 / 2',
           src: '/demo/restaurant-kueche.webp',
           alt: 'Zwei Köche von hinten an der Anrichte, vor ihnen angerichtete Teller, dahinter die offene Feuerstelle',
-          placeholderLabel: 'Der Raum',
+          placeholderLabel: 'An der Anrichte',
         },
       },
     ],

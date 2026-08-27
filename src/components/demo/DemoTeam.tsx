@@ -51,7 +51,9 @@ export default function DemoTeam({ business }: { business: GastroBusiness }) {
             <article key={member.id} aria-labelledby={`team-${member.id}`}>
               <DemoPhoto
                 photo={member.photo}
-                sizes="(min-width: 640px) 372px, 100vw"
+                // 368 px = (max-w-3xl 768 − gap-8 32) / 2 Spalten, im Browser
+                // bei 1280 px nachgemessen. Vorher standen hier 372 px.
+                sizes="(min-width: 640px) 368px, 100vw"
                 className="rounded-sm"
               />
               <p className="demo-eyebrow mt-4 text-[0.6rem]">{member.role}</p>
