@@ -255,7 +255,7 @@ export const friseurWirbel: GastroBusiness = {
         id: 'jonte',
         name: 'Jonte Reisig',
         role: 'Stylist & Barbier',
-        text: 'Kommt aus der Barbier-Ecke und hat das Messer nie wieder weggelegt. Macht die klassischen Rasuren und alles, was mit Übergängen zu tun hat. Wenn im Salon jemand über Fußball redet, ist er es.',
+        text: 'Kommt aus der Barbier-Ecke und hält an der langsamen Variante fest: erst Pinsel und heißes Tuch, dann rasieren. Macht die klassischen Nassrasuren und alles, was mit Übergängen zu tun hat. Wenn im Salon jemand über Fußball redet, ist er es.',
         photo: {
           ratio: '1 / 1',
           src: '/demo/friseur-team-jonte.webp',
