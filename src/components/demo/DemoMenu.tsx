@@ -1,6 +1,7 @@
 import type { GastroBusiness, MenuItem } from '@/data/demo/types'
 import DemoSection from './DemoSection'
 import DemoCategoryRail from './DemoCategoryRail'
+import DemoMenuBundles from './DemoMenuBundles'
 
 /**
  * Preis in Euro → „3,80 €".
@@ -54,6 +55,20 @@ export function MenuRow({ item, compact = false }: { item: MenuItem; compact?: b
  *
  * Seit der Aufteilung auf drei Routen ist das der Inhalt der eigenen Seite
  * `/karte`; darüber klebt die Kategorie-Leiste als Sprungmarken-Rail.
+ *
+ * Die oberste Ebene (`menu.categories`) hat zwei Formen, und die Komponente
+ * fragt NICHT, welcher Betrieb gerade rendert, sondern nur, welche Felder da
+ * sind – dieselbe Regel wie beim `note` seit jeher:
+ *
+ * - `items` → flache Karte, Gerichte direkt unter der Überschrift (Café).
+ * - `sections` → gegliederte Karte, darunter die Gänge bzw. Gruppen in der
+ *   Reihenfolge des Arrays, jeder mit eigener Überschrift (Restaurant:
+ *   Mittagstisch flach, Abendkarte in Gängen, Weinkarte in Gruppen).
+ * - `bundles` → darunter die Menüs zum Festpreis (`DemoMenuBundles`).
+ *
+ * Der Typ lässt nur ENTWEDER `items` ODER `sections` zu, deshalb steht hier
+ * kein `else`: beide Blöcke sind unabhängig voneinander an ihr eigenes Feld
+ * gebunden, und es kann nie beides zugleich erscheinen.
  */
 export default function DemoMenu({ business }: { business: GastroBusiness }) {
   return (
@@ -75,11 +90,43 @@ export default function DemoMenu({ business }: { business: GastroBusiness }) {
                 {category.note}
               </p>
             ) : null}
-            <ul className="mt-4 divide-y divide-border">
-              {category.items.map((item) => (
-                <MenuRow key={item.name} item={item} />
-              ))}
-            </ul>
+            {category.items ? (
+              <ul className="mt-4 divide-y divide-border">
+                {category.items.map((item) => (
+                  <MenuRow key={item.name} item={item} />
+                ))}
+              </ul>
+            ) : null}
+
+            {category.sections ? (
+              <div className="mt-6 space-y-8">
+                {category.sections.map((section) => (
+                  <section key={section.id} aria-labelledby={`gang-${section.id}`}>
+                    <h4
+                      id={`gang-${section.id}`}
+                      className="demo-anchor demo-display text-foreground"
+                      style={{ fontSize: 'clamp(1.15rem, 5vw, 1.5rem)' }}
+                    >
+                      {section.title}
+                    </h4>
+                    {section.note ? (
+                      <p className="mt-1 text-[0.8rem] uppercase tracking-[0.14em] text-muted-foreground">
+                        {section.note}
+                      </p>
+                    ) : null}
+                    <ul className="mt-3 divide-y divide-border">
+                      {section.items.map((item) => (
+                        <MenuRow key={item.name} item={item} />
+                      ))}
+                    </ul>
+                  </section>
+                ))}
+              </div>
+            ) : null}
+
+            {category.sections && category.bundles ? (
+              <DemoMenuBundles sections={category.sections} bundles={category.bundles} />
+            ) : null}
           </section>
         ))}
       </div>

@@ -1,0 +1,355 @@
+import type { GastroBusiness } from './types'
+
+/**
+ * Demo-Betrieb „Restaurant Glut" – KOMPLETT ERFUNDEN.
+ *
+ * Kein realer Betrieb, keine realen Personen. Straße frei erfunden;
+ * Telefonnummer aus dem Berliner Block `030 23125 xxx`, der für Film/Fernsehen
+ * reserviert ist und nie an echte Anschlüsse vergeben wird; E-Mail auf der
+ * reservierten Test-Domain `.example`, die per Definition nicht auflöst.
+ * Vor einem echten Einsatz: Name, Adresse, Nummer und Mail ersetzen.
+ *
+ * Die zweite Demo neben `cafe-klee.ts` – und der eigentliche Test des
+ * Datenmodells: ein Restaurant bringt drei Dinge mit, die ein Café nicht hat.
+ *
+ * 1. **Mehrere Karten nebeneinander** (Mittagstisch, Abendkarte, Weinkarte).
+ *    Sie stehen als drei Einträge in `menu.categories` – der obersten Ebene der
+ *    Karte. Beim Café ist ein Eintrag dort eine Kategorie, hier eine ganze
+ *    Karte; für die Seite ist beides dasselbe: ein Gliederungspunkt, und damit
+ *    ein Eintrag in der Sprungleiste.
+ * 2. **Gänge als Reihenfolge.** Die Abendkarte trägt `sections` statt `items`.
+ *    Ihre Reihenfolge im Array IST die Reihenfolge des Servierens – es gibt
+ *    kein `position`-Feld, das daneben dasselbe noch einmal behaupten könnte.
+ * 3. **Menü-Bündel zum Festpreis.** `bundles` hängt an der Abendkarte und
+ *    verweist per `id` auf ihre Gänge. Der Typ erlaubt `bundles` nur dort, wo
+ *    es auch `sections` gibt – ein Bündel ohne Gänge lässt sich gar nicht erst
+ *    hinschreiben.
+ *
+ * `cafe-klee.ts` blieb dafür Zeichen für Zeichen unverändert.
+ *
+ * **Fotos:** bewusst noch keine. Jedes `Photo` trägt sein `ratio`, der
+ * Platzhalter belegt exakt dieselbe Fläche wie das spätere Bild – beim
+ * Nachreichen kommt nur `src` dazu, es springt nichts.
+ */
+export const restaurantGlut: GastroBusiness = {
+  slug: 'restaurant',
+  name: 'Restaurant Glut',
+  displayName: 'Glut',
+  kind: 'À-la-carte-Restaurant',
+  tagline: 'Feuer, Zeit und ein paar gute Zutaten.',
+  intro:
+    'Bei uns kocht ein offenes Feuer den ganzen Abend durch. Was darauf landet, entscheidet sich morgens auf dem Hof – deshalb ist die Karte kurz und ändert sich öfter, als uns lieb ist.',
+
+  nav: {
+    start: 'Start',
+    menu: 'Karten',
+    contact: 'Kontakt',
+    about: 'Über uns',
+  },
+
+  hero: {
+    photo: {
+      ratio: '4 / 5',
+      alt: 'Blick in den Gastraum am Abend: dunkle Holztische, im Hintergrund die offene Feuerstelle hinter einer niedrigen Mauer',
+      placeholderLabel: 'Gastraum',
+    },
+  },
+
+  marquee: [
+    'Alles über offenem Feuer',
+    'Gemüse vom Hof am Stadtrand',
+    'Menü in drei oder vier Gängen',
+    'Weine offen ausgeschenkt',
+  ],
+
+  gallery: [
+    {
+      ratio: '1 / 1',
+      alt: 'Glühende Holzkohle unter einem Rost, darauf ein halbierter Spitzkohl',
+      placeholderLabel: 'Feuerstelle',
+    },
+    {
+      ratio: '1 / 1',
+      alt: 'Gedeck auf dunklem Holz: Leinenserviette, schweres Besteck, ein Glas Weißwein',
+      placeholderLabel: 'Gedeck',
+    },
+    {
+      ratio: '3 / 2',
+      alt: 'Der Gastraum von der Tür aus, warmes Licht über den Tischen, rechts die lange Bank an der Wand',
+      placeholderLabel: 'Abendlicht',
+    },
+  ],
+
+  menu: {
+    title: 'Karten',
+    note: 'Alle Preise in Euro, inklusive Mehrwertsteuer.',
+    allergenNote:
+      'Die Buchstaben hinter den Gerichten stehen für kennzeichnungspflichtige Allergene. Sag uns vorher Bescheid, wenn etwas nicht geht – wir kochen darum herum.',
+    categories: [
+      /* Flache Karte: die Gerichte hängen direkt darunter – dieselbe Form, in
+         der das Café seine Kategorien schreibt. */
+      {
+        id: 'mittag',
+        title: 'Mittagstisch',
+        note: 'Dienstag bis Freitag, 12 bis 14:30 Uhr',
+        items: [
+          { name: 'Suppe des Tages', description: 'steht auf der Tafel an der Tür', price: 6.5, allergens: ['I'] },
+          { name: 'Linsen mit Röstgemüse', description: 'Sauerteigbrot dazu', price: 14.5, allergens: ['A', 'I'] },
+          { name: 'Kohlrouladen vom Feuer', description: 'Kartoffelstampf, Kümmeljus', price: 16.5, allergens: ['A', 'C', 'G', 'I', 'J'] },
+          { name: 'Forelle aus der Glut', description: 'braune Butter, Petersilienkartoffeln', price: 18.5, allergens: ['D', 'G'] },
+        ],
+      },
+      /* Gegliederte Karte in GÄNGEN: die Reihenfolge unten ist die Reihenfolge
+         am Tisch. Dazu die beiden Bündel, die genau diese Gänge aufzählen. */
+      {
+        id: 'abend',
+        title: 'Abendkarte',
+        note: 'ab 18 Uhr',
+        sections: [
+          {
+            id: 'vorspeisen',
+            title: 'Vorspeisen',
+            items: [
+              { name: 'Geröstete Rote Bete', description: 'Haselnuss, Meerrettich, Dill', price: 12.0, allergens: ['G', 'H'] },
+              { name: 'Sellerie aus der Asche', description: 'Bergkäse, Apfel', price: 11.5, allergens: ['G', 'I'] },
+              { name: 'Räucherforelle', description: 'Gurke, Sauerrahm, Kresse', price: 14.0, allergens: ['D', 'G'] },
+            ],
+          },
+          {
+            id: 'zwischengang',
+            title: 'Zwischengang',
+            note: 'kleine Portion',
+            items: [
+              { name: 'Handgerollte Nudeln', description: 'Pfifferlinge, Estragon', price: 13.5, allergens: ['A', 'C', 'G'] },
+              { name: 'Brotsuppe', description: 'Röstzwiebel, Kräuteröl', price: 10.5, allergens: ['A', 'I'] },
+            ],
+          },
+          {
+            id: 'hauptgaenge',
+            title: 'Hauptgänge',
+            items: [
+              { name: 'Spitzkohl über der Glut', description: 'Buchweizen, Senfsaat, Brühe', price: 24.0, allergens: ['A', 'I', 'J'] },
+              { name: 'Saibling im Ganzen', description: 'Fenchel, Zitrone, Olivenöl', price: 29.0, allergens: ['D'] },
+              { name: 'Lammschulter aus dem Ofen', description: 'weiße Bohnen, Rosmarin', price: 31.0, allergens: ['I'] },
+              { name: 'Rinderbrust vom Feuer', description: 'Zwiebel, Sellerie, Meerrettich', price: 33.0, allergens: ['I'] },
+            ],
+          },
+          {
+            id: 'nachspeisen',
+            title: 'Nachspeisen',
+            items: [
+              { name: 'Gebrannte Sahne', description: 'Pflaume, Sauerkirsche', price: 9.5, allergens: ['C', 'G'] },
+              { name: 'Apfel im Teig', description: 'Vanille, Zimt', price: 9.0, allergens: ['A', 'C', 'G'] },
+              { name: 'Zweierlei Käse', description: 'aus der Region, mit Birnenbrot', price: 11.5, allergens: ['A', 'G', 'H'] },
+            ],
+          },
+        ],
+        bundles: [
+          {
+            id: 'menue-drei',
+            name: 'Menü Glut – drei Gänge',
+            description: 'Aus jedem Gang ein Gericht deiner Wahl.',
+            courses: ['vorspeisen', 'hauptgaenge', 'nachspeisen'],
+            price: 52.0,
+            note: 'Pro Person. Nur für den ganzen Tisch, Küche bis 21 Uhr.',
+          },
+          {
+            id: 'menue-vier',
+            name: 'Menü Glut – vier Gänge',
+            description: 'Dasselbe mit Zwischengang.',
+            courses: ['vorspeisen', 'zwischengang', 'hauptgaenge', 'nachspeisen'],
+            price: 64.0,
+            note: 'Pro Person. Nur für den ganzen Tisch, Küche bis 21 Uhr.',
+          },
+        ],
+      },
+      /* Dritte Karte, wieder gegliedert – hier sind die Abschnitte aber KEINE
+         Gänge, sondern Gruppen. Genau deshalb hängt die Gang-Eigenschaft nicht
+         am Abschnitt: die Weinkarte bräuchte sonst ein „ist kein Gang"-Feld. */
+      {
+        id: 'weine',
+        title: 'Weinkarte',
+        note: 'Eine Auswahl – die volle Karte liegt am Tisch',
+        sections: [
+          {
+            id: 'offen',
+            title: 'Offen ausgeschenkt',
+            note: '0,2 l',
+            items: [
+              { name: 'Weißburgunder, trocken', description: 'Pfalz', price: 7.5, allergens: ['L'] },
+              { name: 'Silvaner vom Muschelkalk', description: 'Franken', price: 8.0, allergens: ['L'] },
+              { name: 'Spätburgunder, leicht gekühlt', description: 'Baden', price: 8.5, allergens: ['L'] },
+              { name: 'Traubensaft, naturtrüb', description: 'ohne Alkohol', price: 4.5 },
+            ],
+          },
+          {
+            id: 'weiss',
+            title: 'Weiß',
+            note: 'Flasche 0,75 l',
+            items: [
+              { name: 'Riesling vom Schiefer', description: 'Mosel', price: 38.0, allergens: ['L'] },
+              { name: 'Grauburgunder im Holz', description: 'Baden', price: 44.0, allergens: ['L'] },
+              { name: 'Chardonnay, gereift', description: 'Rheinhessen', price: 56.0, allergens: ['L'] },
+            ],
+          },
+          {
+            id: 'rot',
+            title: 'Rot',
+            note: 'Flasche 0,75 l',
+            items: [
+              { name: 'Lemberger, ungeschönt', description: 'Württemberg', price: 42.0, allergens: ['L'] },
+              { name: 'Spätburgunder vom Kalk', description: 'Ahr', price: 48.0, allergens: ['L'] },
+              { name: 'Blaufränkisch', description: 'Burgenland', price: 52.0, allergens: ['L'] },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  allergens: [
+    { code: 'A', label: 'Glutenhaltiges Getreide' },
+    { code: 'C', label: 'Eier' },
+    { code: 'D', label: 'Fisch' },
+    { code: 'G', label: 'Milch und Laktose' },
+    { code: 'H', label: 'Schalenfrüchte (Nüsse)' },
+    { code: 'I', label: 'Sellerie' },
+    { code: 'J', label: 'Senf' },
+    { code: 'L', label: 'Sulfite (Schwefel)' },
+  ],
+
+  hours: {
+    title: 'Öffnungszeiten',
+    note: 'An Feiertagen weichen die Zeiten ab – wir sagen es rechtzeitig an.',
+    // Mittag und Abend sind zwei EIGENE Einträge, nicht zwei Zeitfenster in
+    // einem: die Tage decken sich ohnehin nicht (samstags gibt es nur abends),
+    // und schema.org will überlappende Tage als zwei Angaben. Die Labels müssen
+    // dabei unterschiedlich bleiben – sie sind der React-Key der Liste.
+    entries: [
+      { label: 'Dienstag – Freitag · Mittag', days: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '12:00', closes: '14:30' },
+      { label: 'Dienstag – Samstag · Abend', days: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '18:00', closes: '23:00' },
+      { label: 'Sonntag & Montag', days: ['Sunday', 'Monday'], closed: true },
+    ],
+  },
+
+  location: {
+    title: 'So findest du uns',
+    street: 'Zeisigsteg 6',
+    postalCode: '12045',
+    city: 'Berlin',
+    country: 'DE',
+    countryName: 'Deutschland',
+    note: 'An der Tür ist eine Stufe, drinnen liegt alles auf einer Ebene – sag kurz Bescheid, dann legen wir die Rampe an. Die Feuerstelle steht offen im Raum; die Tische davor sind die wärmsten im Haus.',
+    directionsLabel: 'Route öffnen',
+  },
+
+  contact: {
+    title: 'Reservierung',
+    phone: { display: '030 23125 512', e164: '+493023125512' },
+    email: 'tisch@restaurant-glut.example',
+    reservation: {
+      label: 'Anfrage schreiben',
+      note: 'Wir haben vierunddreißig Plätze und reservieren gern. Ein Menü für sechs oder mehr melde bitte zwei Tage vorher an – dafür brennt das Feuer länger vor.',
+      subject: 'Tischanfrage',
+      body: 'Hallo Restaurant Glut,\n\nich würde gern einen Tisch reservieren.\n\nDatum:\nUhrzeit:\nPersonen:\nName:\n\nViele Grüße',
+    },
+  },
+
+  about: {
+    title: 'Über uns',
+    lead: 'Glut ist aus einer Trotzreaktion entstanden: Wir wollten wieder mit Feuer kochen, nicht mit Knöpfen. Alles andere hat sich daraus ergeben.',
+    blocks: [
+      {
+        id: 'feuer',
+        title: 'Ein Feuer, den ganzen Abend',
+        text: 'Um halb vier wird angezündet, gegen fünf ist die Glut so weit. Von da an läuft alles über dasselbe Feuer: erst die Sachen, die Hitze brauchen, später die, die Zeit brauchen. Das heißt auch, dass wir nicht beliebig nachlegen können – wenn die Lammschulter drin ist, ist sie drin. Deshalb dauert manches länger, als du es gewohnt bist, und deshalb sagen wir es vorher.',
+        photo: {
+          ratio: '3 / 2',
+          alt: 'Die offene Feuerstelle von der Seite: Holzscheite in der Brennkammer, darüber ein höhenverstellbarer Rost',
+          placeholderLabel: 'Feuer',
+        },
+      },
+      {
+        id: 'einkauf',
+        title: 'Was auf den Tisch kommt',
+        text: 'Das Gemüse kommt von einem Hof am Stadtrand, zweimal die Woche, und wir nehmen ab, was gerade da ist – nicht, was auf einer Bestellliste steht. Fisch nur, wenn er frisch ist, und dann im Ganzen. Fleisch selten, dafür vom ganzen Tier: was diese Woche die Schulter war, ist nächste Woche etwas anderes. Die Karte ist kurz, weil sie ehrlich sein soll.',
+        photo: {
+          ratio: '4 / 5',
+          alt: 'Kisten mit Wurzelgemüse und Kohl auf dem Küchentresen, daneben eine Waage',
+          placeholderLabel: 'Anlieferung',
+        },
+      },
+      {
+        id: 'haus',
+        title: 'Der Raum',
+        text: 'Ein langer Raum mit einer Bank an der Wand und der Feuerstelle offen im Blick. Es wird laut, wenn es voll ist – wir haben nichts weggedämmt, der Schallschutz sind die Vorhänge. Sonntag und Montag bleibt geschlossen: an einem der beiden Tage ruht das Feuer, am anderen wir.',
+        photo: {
+          ratio: '3 / 2',
+          alt: 'Die lange Wandbank mit Kissen, davor gedeckte Tische, links Vorhänge bis zum Boden',
+          placeholderLabel: 'Der Raum',
+        },
+      },
+    ],
+    outro: {
+      menuLabel: 'Zu den Karten',
+      contactLabel: 'Reservierung',
+    },
+  },
+
+  legal: {
+    title: 'Impressum',
+    lines: [
+      'Restaurant Glut (Musterbetrieb)',
+      'Zeisigsteg 6, 12045 Berlin',
+      'Vertreten durch: Vorname Nachname',
+      'Telefon: 030 23125 512',
+      'E-Mail: tisch@restaurant-glut.example',
+      'Umsatzsteuer-ID: DE000000000',
+    ],
+    note: 'Platzhalter – dieser Betrieb ist frei erfunden. Für eine echte Seite kommen hier die Angaben nach § 5 DDG hin.',
+  },
+
+  privacy: {
+    title: 'Datenschutz',
+    note: 'Mustertext einer Demo-Seite. „Restaurant Glut" ist ein erfundener Betrieb – es gibt keinen Verantwortlichen, an den sich eine Anfrage richten könnte. Der Text beschreibt, was diese Seite technisch tatsächlich tut, und ist ausdrücklich keine Rechtsberatung. Eine echte Seite braucht eine auf den Betrieb zugeschnittene Erklärung.',
+    sections: [
+      {
+        id: 'nichts',
+        title: 'Was diese Seite nicht tut',
+        body: [
+          'Diese Seite setzt keine Cookies und speichert nichts in deinem Browser. Es gibt keine Reichweitenmessung, keine Analyse-Software und kein Profiling – auch keine anonyme Statistik.',
+          'Es gibt kein Formular und kein Buchungssystem: eine Reservierung läuft über Telefon oder E-Mail, also über ein Programm auf deinem eigenen Gerät. Deshalb steht hier auch kein Cookie-Banner – es gibt nichts, wozu du einwilligen müsstest.',
+        ],
+      },
+      {
+        id: 'fremde-server',
+        title: 'Keine fremden Server',
+        body: [
+          'Alles, was die Seite braucht, liegt auf demselben Server wie die Seite selbst: Schriften, Bilder, Stile. Es werden keine Webfonts von einem fremden Dienst nachgeladen, keine Karte eingebettet, kein Video von einer Videoplattform. Dein Browser nimmt beim Aufruf also zu keinem dritten Anbieter Verbindung auf.',
+          'Der Link zur Route ist ein gewöhnlicher Link auf einen Kartendienst. Erst wenn du ihn antippst, verlässt du diese Seite – und erst dann gelten die Bedingungen des Anbieters. Dasselbe gilt für die Telefonnummer und die E-Mail-Adresse: beide öffnen nur ein Programm auf deinem Gerät.',
+        ],
+      },
+      {
+        id: 'hosting',
+        title: 'Hosting',
+        body: [
+          'Die Seite wird als fertiges HTML ausgeliefert und liegt bei Vercel Inc. Wie jeder Webserver verarbeitet der Hoster dabei die technisch notwendigen Verbindungsdaten – etwa IP-Adresse, Zeitpunkt und die abgerufene Datei. Ohne diese Angaben lässt sich eine Seite technisch nicht ausliefern.',
+          'Bei einem echten Betrieb gehören an diese Stelle der Name des Hosters, der Zweck und die Rechtsgrundlage der Verarbeitung sowie die Speicherdauer – abgestimmt mit dem Anbieter.',
+        ],
+      },
+      {
+        id: 'rechte',
+        title: 'Deine Rechte',
+        body: [
+          'Gegenüber einem Verantwortlichen bestehen nach der DSGVO unter anderem Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch sowie ein Beschwerderecht bei einer Aufsichtsbehörde.',
+          'Weil dieser Betrieb erfunden ist, gibt es hier niemanden, an den sich das richten könnte. Auf einer echten Seite stehen an dieser Stelle die Kontaktdaten des Verantwortlichen.',
+        ],
+      },
+    ],
+  },
+
+  seo: {
+    priceRange: '€€€',
+    servesCuisine: ['Regionale Küche', 'Feuerküche', 'Wein'],
+  },
+}

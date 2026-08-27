@@ -179,6 +179,7 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 | `/datenschutz` | Datenschutzerklärung (Platzhalter, Inhalt vom User) |
 | `/moeglichkeiten` | Stille Showcase-Seite „Was möglich ist" (statisch gerendert, bewusst NICHT in der Navbar verlinkt). **Seit 25.08.2026 ASCII** – vorher `/möglichkeiten`, was einen percent-encodeten Ordner plus einen zweiten Re-Export-Ordner brauchte; jetzt ein Ordner `src/app/moeglichkeiten/`, keine Encoding-Fallstricke. **Kein Redirect** von der alten URL (die Seite war nie verlinkt). Titel/Description weiterhin mit Umlaut („Möglichkeiten – Leon Lang") |
 | `/demo/cafe`<br>`/demo/cafe/karte`<br>`/demo/cafe/ueber-uns`<br>`/demo/cafe/kontakt`<br>`/demo/cafe/impressum`<br>`/demo/cafe/datenschutz` | Stille **Demo-Seiten** eines erfundenen Gastro-Betriebs („Café Klee"), seit 26.08.2026 sechsseitig: Start (Kopf, Laufband, Bildreihe, Karten-Auszug) · Karte (volle Speisekarte mit Kategorie-Leiste) · Über uns (Lead + drei Blöcke im Bild-Text-Wechsel) · Kontakt (Adresse mit Routen-Link, Öffnungszeiten, Telefon, Reservierungs-Mail) · Impressum · Datenschutz. Die ersten vier stehen in der Navigations-Pille, die zwei Rechtsseiten nur im Fuß. Segmente rein ASCII. Alle sechs: `noindex`, NICHT in der Sitemap, NICHT verlinkt. Eigene Layout-Gruppe `(demo)` → **keine** Navbar/Footer/ScrollProgress/Analytics, eigene helle Design-Tokens. Navigation und Impressum-Fuß liefert `DemoShell`. Siehe „Layout-Gruppen" unten |
+| `/demo/restaurant`<br>`/demo/restaurant/karte`<br>`/demo/restaurant/ueber-uns`<br>`/demo/restaurant/kontakt`<br>`/demo/restaurant/impressum`<br>`/demo/restaurant/datenschutz` | **Zweite Demo** (seit 27.08.2026), erfundenes À-la-carte-Restaurant „Restaurant Glut". Gleiche sechs Seiten, gleiche Hülle, gleiche Bausteine wie das Café – der Ordner ist eine Kopie von `demo/cafe/` mit anderem Import, die Inhalte kommen aus `src/data/demo/restaurant-glut.ts`. Unterschied zum Café: `/karte` trägt **drei Karten** (Mittagstisch, Abendkarte, Weinkarte), die Abendkarte ist in **Gänge** gegliedert und trägt zwei **Menü-Bündel** zum Festpreis. Noch **ohne Fotos** (Platzhalter mit reservierten Seitenverhältnissen) und **ohne Buchungsflow** (Non-Goal). Ebenfalls `noindex`, nicht in der Sitemap, nicht verlinkt |
 | _(alles andere)_ | 404 über `src/app/not-found.tsx` – seit der Next-Migration ein **echter HTTP-404** (vorher lieferte Vercel für unbekannte Pfade seine eigene 404-Seite aus; die React-`NotFound`-Route griff nur bei Client-Navigation) |
 
 Dazu zwei generierte Dateien (Next-Dateikonventionen, kein manuelles Pflegen):
@@ -209,21 +210,61 @@ src/app/
       kontakt/page.tsx     ←  Adresse, Zeiten, Telefon, Reservierung
       impressum/page.tsx   ←  nur im Fuß verlinkt
       datenschutz/page.tsx ←  nur im Fuß verlinkt
+    demo/restaurant/    ←   zweiter Betrieb, dieselben sechs Dateien,
+                            einziger Unterschied: der Import der Datendatei
 ```
 
-**Wo die Demo-Inhalte liegen:** nicht in `src/app/`. Die Daten je Betrieb stehen in EINER typisierten Datei (`src/data/demo/cafe-klee.ts`, Typen in `src/data/demo/types.ts`), die Bausteine in `src/components/demo/` (Hülle, Navigation, Hero, Karte, Kategorie-Leiste, Karten-Auszug, Über uns, Öffnungszeiten, Adresse, Kontakt, Bildreihe, Rechtsseiten-Rahmen, Seitenfuß, Laufband, Foto-Box, JSON-LD) sind rein datengetrieben. Ein zweiter Betrieb = zweite Datendatei + Kopie des Ordners `demo/cafe/` (drei winzige `page.tsx`) mit anderem Import; an den Komponenten ändert sich nichts.
+**Wo die Demo-Inhalte liegen:** nicht in `src/app/`. Die Daten je Betrieb stehen in EINER typisierten Datei (`src/data/demo/cafe-klee.ts`, Typen in `src/data/demo/types.ts`), die Bausteine in `src/components/demo/` (Hülle, Navigation, Hero, Karte, Kategorie-Leiste, Karten-Auszug, Über uns, Öffnungszeiten, Adresse, Kontakt, Bildreihe, Rechtsseiten-Rahmen, Seitenfuß, Laufband, Foto-Box, JSON-LD) sind rein datengetrieben. Ein zweiter Betrieb = zweite Datendatei + Kopie des Ordners `demo/cafe/` (sechs winzige `page.tsx`) mit anderem Import. **Am 27.08.2026 durchgeführt und damit belegt:** `restaurant-glut.ts` + `demo/restaurant/`; `cafe-klee.ts` blieb dabei Zeichen für Zeichen unverändert. Drei Bausteine mussten für die neuen Karten-Formen **verallgemeinert** werden (`DemoMenu`, `DemoMenuTeaser`, `buildMenuSchema`) – keiner davon fragt, welcher Betrieb rendert; sie richten sich nach vorhandenen Feldern. Details unter „Datenmodell der Demo-Betriebe".
 
 **Warum die Hülle in einer Komponente steckt und nicht in einem `layout.tsx`:** die Navigation muss den aktiven Punkt markieren. Ein Layout kennt den Pfad nicht, und `usePathname()` wäre ein Client-Hook – das würde die Zusicherung brechen, dass die Demo ohne JavaScript vollständig bedienbar ist. Jede Seite reicht ihr `current` deshalb selbst an `DemoShell`. Aus demselben Grund sind die Seitenwechsel normale `<a href>` (`next/link` ist in Next 16 eine Client-Komponente) und die Navigation eine horizontal scrollbare Pille statt eines Burger-Menüs. Pfade kommen aus `src/components/demo/routes.ts`, damit Navigation, Metadaten und JSON-LD dieselbe Quelle nutzen.
 
-**schema.org folgt der Seitenaufteilung:** `Restaurant` (Adresse, Kontakt, Öffnungszeiten) liegt auf der Startseite und verweist per `hasMenu`-URL auf `/karte`; das `Menu` mit allen Sections und Preisen liegt auf `/karte`. `/kontakt` gibt bewusst KEIN eigenes JSON-LD aus – Adresse und Zeiten stehen schon im `Restaurant`, ein zweites Markup würde denselben Betrieb doppelt behaupten.
+**schema.org folgt der Seitenaufteilung:** `Restaurant` (Adresse, Kontakt, Öffnungszeiten) liegt auf der Startseite und verweist per `hasMenu`-URL auf `/karte`; das `Menu` mit allen Sections und Preisen liegt auf `/karte`. `/kontakt` gibt bewusst KEIN eigenes JSON-LD aus – Adresse und Zeiten stehen schon im `Restaurant`, ein zweites Markup würde denselben Betrieb doppelt behaupten. Seit der zweiten Demo kann eine `MenuSection` zusätzlich `hasMenuSection` tragen (Karte → Gänge → Gerichte); Menü-Bündel stehen als `MenuItem` mit ihrem Festpreis an der Karte, ihre Gänge in der `description` – schema.org kennt kein eigenes Festpreis-Menü, und die Gerichte ein zweites Mal auszugeben würde sie doppelt behaupten. Bewusst KEIN `position` an den Abschnitten.
 
 **Warum die Aufteilung:** Ein Eltern-Layout lässt sich in Next von unten nicht abwählen. Solange Navbar/Footer/ScrollProgress im Root-Layout lagen, hätte JEDE Route sie geerbt – auch die Demo-Seiten, die bewusst wie eigenständige Kundenseiten wirken sollen. Die Hülle ist deshalb eine Ebene tiefer gewandert (`src/components/SiteChrome.tsx`, genutzt von `(site)/layout.tsx` und `not-found.tsx`). **Für die Hauptseite ändert sich nichts:** das gerenderte Markup ist identisch (Zeichen für Zeichen verglichen; abweichend nur ein interner `useId`-Präfix und die Position eines leeren Suspense-Kommentars). Kosten: die zusätzliche Layout-Ebene bläht die RSC-Payload auf, gzip-komprimiert sind das **+157 bis +182 Byte pro Seite**.
 
 **Design-Tokens der Demo:** `(demo)/demo.css` wird NUR vom Demo-Layout importiert (eigener CSS-Chunk – verifiziert, dass die Hauptseite ihn nicht lädt) und belegt DIESELBEN Variablennamen (`--background`, `--foreground`, `--accent` …) auf `html:has(.demo-scope)` bzw. `.demo-scope` neu. Dadurch lösen alle bestehenden Tailwind-Utilities dort automatisch auf warme Werte auf, ohne dass eine einzige globale `:root`-Variable angefasst wird.
 
+### Datenmodell der Demo-Betriebe (seit 27.08.2026: Café **und** Restaurant)
+
+Ein Betrieb = EINE typisierte Datei (`src/data/demo/<slug>.ts`), die `GastroBusiness` aus `src/data/demo/types.ts` erfüllt. Der Aufbau der Karte trägt seit der zweiten Demo zwei sehr verschiedene Betriebe, ohne dass das Café leere Pflichtfelder mitschleppt oder eine Komponente einen Betriebs-Zweig bekommt.
+
+**Die Regel, an der alles hängt:** Eine Komponente darf fragen „ist dieses FELD da?" – so wird `note` seit jeher gerendert. Sie darf nicht fragen „ist das ein Café oder ein Restaurant?". Alles Weitere folgt daraus.
+
+**Drei Ebenen statt zwei:**
+
+```
+menu.categories[]  MenuCategory  – oberste Ebene: die Gliederungspunkte der Kartenseite
+                                   Café:       eine Kategorie („Kaffee")
+                                   Restaurant: eine ganze Karte („Abendkarte")
+                                   → genau das, was in der Sprungleiste steht
+  ├─ items[]       MenuItem      – flache Karte: Gerichte direkt darunter
+  ├─ sections[]    MenuSection   – gegliederte Karte: Gänge (Abendkarte) oder
+  │    └─ items[]                  Gruppen (Weinkarte); Reihenfolge = Array-Reihenfolge
+  └─ bundles[]     MenuBundle    – Menüs aus mehreren Gängen zum Festpreis
+```
+
+**Typ-Entscheidungen und ihre Gründe:**
+
+| Entscheidung | Warum so |
+|---|---|
+| Das Feld heisst weiterhin `menu.categories`, obwohl dort beim Restaurant ganze Karten stehen | Ein Umbenennen (`cards`, `blocks`) hätte `cafe-klee.ts` angefasst. Der Preis ist ein leicht gedehnter Name; die Bedeutung steht im Typ-Kommentar und ist präzise: **Gliederungspunkt der Kartenseite** |
+| `MenuCategory` ist eine **exklusive Union** – entweder `items` oder `sections`, die jeweils andere Seite per `?: never` verboten | Ohne Union hätte `items` nur „optional" werden können; dann liesse sich ein Eintrag ganz ohne Inhalt hinschreiben, der als leere Überschrift rendert. Die Union lässt genau die zwei sinnvollen Formen zu und sonst nichts. An der Render-Stelle kostet sie nichts: `category.items` ist auf der Union schlicht `MenuItem[] \| undefined` |
+| `bundles` hängt **nur** am `sections`-Zweig | Ein Bündel verweist per `id` auf Gänge. Gibt es keine Abschnitte, gibt es nichts zu bündeln – der Typ verbietet die Fehlform, statt sie zur Laufzeit stillschweigend zu übergehen |
+| Die Reihenfolge der Gänge steckt **allein im Array** – kein `position`, kein `order`, auch nicht im JSON-LD | Ein Array IST eine Folge. Ein Feld daneben wäre eine zweite Wahrheit, die auseinanderlaufen kann. Ein `position` im JSON-LD hätte zusätzlich die Ausgabe der Café-Karte verändert, ohne dass sich an ihr etwas geändert hat |
+| „Gang-Sein" ist **keine Eigenschaft** von `MenuSection`, sondern eine Rolle: Gang ist, was ein `MenuBundle` in `courses` aufzählt | Sonst bräuchte die Weinkarte, deren Abschnitte „Weiß"/„Rot" heissen, ein „ist kein Gang"-Feld. Die Rollen-Sicht kommt ohne Schalter aus |
+| `MenuBundle.courses` sind `id`s, keine Titel | Die Titel kommen aus den Abschnitten selbst (`bundleCourses()`); ein umbenannter Gang wird an einer Stelle gepflegt, nicht an zweien |
+| Getrennte Servicezeiten (Mittag/Abend) **ohne** neues Feld: zwei `hours.entries` mit verschiedenen Labels | `entries` ist bereits eine freie Liste, und schema.org will überlappende Tage ohnehin als zwei `OpeningHoursSpecification`. Dazu eine neue Regel in `types.ts`: `label` muss innerhalb von `entries` eindeutig sein – es ist der React-Key der Liste |
+| Weinpreise pro Glas UND pro Flasche wurden **nicht** modelliert | Das hätte `MenuItem.price` zu einer Preisliste gemacht und `MenuRow` umgebaut. Stattdessen zwei Abschnitte („Offen ausgeschenkt · 0,2 l", „Weiß · Flasche 0,75 l") – so lösen es gedruckte Karten auch. Braucht ein echter Betrieb beides in einer Zeile, ist das die nächste ehrliche Typ-Erweiterung |
+
+**Helfer statt Verzweigung:** `src/components/demo/menu.ts` (Geschwister von `routes.ts`, kein JSX) hält die zwei Regeln, die sonst als `if` in Komponenten gelandet wären – `leadItems(category, n)` liefert die ersten Gerichte einer Ebene, egal ob sie direkt oder eine Ebene tiefer hängen (Karten-Auszug auf der Startseite), und `bundleCourses(sections, bundle)` löst die `id`s eines Bündels zu echten Abschnitten auf.
+
+**Belegt statt behauptet:** Das gebaute HTML der sechs Café-Seiten wurde vor und nach dem Umbau byteweise verglichen. Sichtbares Markup identisch, JSON-LD der Café-Karte identisch (2733 Zeichen). Einziger Unterschied im ganzen Build: `,null,null` in der RSC-Payload von `/demo/cafe/karte` – die zwei nicht vorhandenen Optionalblöcke, rund zehn Byte.
+
+---
+
 ### Meta/SEO je Route
 
-Der Pro-Route-`<head>` (`<title>`, `<meta name="description">`, `og:title`/`og:description`/`og:type`) läuft über die **Metadata API**. Single Source of Truth ist `src/data/meta.ts` (`routeMeta` + Helper `pageMetadata`) – die direkte Nachfolgerin der `META`-Map aus `scripts/prerender.mjs`, Werte inhaltlich unverändert. Jede `page.tsx` der Gruppe `(site)` exportiert `export const metadata = pageMetadata(routeMeta.<route>)`; `routeMeta` enthält genau die vier öffentlichen Routen. Die Demo-Seiten laufen bewusst daran vorbei: ihre drei `page.tsx` setzen Title/Description direkt aus der Datendatei zusammen (Start `${name} – ${kind}`, Karte `${menu.title} – ${name}`, Kontakt `${contact.title} – ${name}`) und erbt `robots: { index: false, follow: false }` aus `(demo)/layout.tsx`; dasselbe Layout überschreibt dort auch den `viewport` (`themeColor '#f6f1e7'`, `colorScheme: 'light'`). Das Root-Layout hält nur die Defaults (Startseiten-Title/Description), den Favicon-Satz und den dunklen `viewport`-Export. `og:image`/`og:url` weiterhin NICHT gesetzt (kein Logo, keine finale Domain).
+Der Pro-Route-`<head>` (`<title>`, `<meta name="description">`, `og:title`/`og:description`/`og:type`) läuft über die **Metadata API**. Single Source of Truth ist `src/data/meta.ts` (`routeMeta` + Helper `pageMetadata`) – die direkte Nachfolgerin der `META`-Map aus `scripts/prerender.mjs`, Werte inhaltlich unverändert. Jede `page.tsx` der Gruppe `(site)` exportiert `export const metadata = pageMetadata(routeMeta.<route>)`; `routeMeta` enthält genau die vier öffentlichen Routen. Die Demo-Seiten laufen bewusst daran vorbei: ihre `page.tsx` (sechs je Betrieb) setzen Title/Description direkt aus der Datendatei zusammen (Start `${name} – ${kind}`, Karte `${menu.title} – ${name}`, Kontakt `${contact.title} – ${name}`) und erbt `robots: { index: false, follow: false }` aus `(demo)/layout.tsx`; dasselbe Layout überschreibt dort auch den `viewport` (`themeColor '#f6f1e7'`, `colorScheme: 'light'`). Das Root-Layout hält nur die Defaults (Startseiten-Title/Description), den Favicon-Satz und den dunklen `viewport`-Export. `og:image`/`og:url` weiterhin NICHT gesetzt (kein Logo, keine finale Domain).
 
 ---
 
