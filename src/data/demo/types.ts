@@ -140,6 +140,182 @@ export type Photo = {
   placeholderLabel: string
 }
 
+/**
+ * Ein SERVICEFENSTER der Reservierungs-Attrappe (Mittag, Abend, …).
+ *
+ * Definiert selbst KEINE Zeiten, sondern zeigt über {@link BookingService.hoursLabel}
+ * auf einen Eintrag in `hours.entries`. Damit kann die Attrappe den
+ * ausgewiesenen Öffnungszeiten nicht widersprechen – es gibt nur eine Wahrheit,
+ * und wer die Zeiten ändert, ändert die Strecke mit.
+ */
+export type BookingService = {
+  /** Stabile ASCII-id für Markup-ids und React-Keys, z.B. 'mittag'. */
+  id: string
+  /**
+   * MUSS exakt einem `hours.entries[].label` entsprechen (die sind dort
+   * ohnehin eindeutig). Passt nichts, bietet der Service schlicht keine Zeiten
+   * an – sichtbar im Raster, statt still etwas Falsches zu behaupten.
+   */
+  hoursLabel: string
+  /** Kurzform für Zwischenüberschrift und Zusammenfassung, z.B. 'Mittag'. */
+  short: string
+  /**
+   * Abstand der LETZTEN Tischvergabe zum `closes` des Eintrags, in Minuten.
+   *
+   * Bewusst je Service und nicht einmal für den ganzen Betrieb: der Mittag ist
+   * bei Glut 150 Minuten lang, der Abend 300. Ein gemeinsamer Wert würde
+   * entweder den Mittag leerräumen oder abends bis kurz vor die Sperrstunde
+   * setzen lassen.
+   */
+  lastSeatingBeforeCloseMinutes: number
+  /** Beispielbelegung: Startzeiten, die als „belegt" rendern. */
+  busySlots?: string[]
+  /** Beispielbelegung: Startzeiten, die als „fast voll" rendern. */
+  tightSlots?: string[]
+}
+
+/** Ein Eingabefeld des Kontaktschritts. */
+export type BookingField = {
+  id: string
+  label: string
+  type?: 'text' | 'tel' | 'email'
+  inputMode?: 'text' | 'tel' | 'email'
+  /** WCAG 1.3.5 – 'name' | 'tel' | 'email'. */
+  autoComplete?: string
+  multiline?: boolean
+  required?: boolean
+  /** Meldung, wenn `required` und leer. */
+  error?: string
+}
+
+/** Texte eines Schritts der Attrappe. */
+export type BookingStepCopy = {
+  title: string
+  /**
+   * Der schritteigene Vorschau-Satz unter der Überschrift.
+   *
+   * MUSS sich von den anderen unterscheiden: fünfmal derselbe Satz wird ab dem
+   * zweiten Schritt nicht mehr gelesen, und genau daran scheitert eine
+   * Kennzeichnung, die auf JEDEM Schritt tragen soll.
+   */
+  note: string
+  /** Beschriftung des Weiter-Knopfes dieses Schritts. */
+  action: string
+  /** Zeile UNTER dem Knopf – nicht darin. */
+  actionNote: string
+  /**
+   * Meldung, wenn der Schritt ohne AUSWAHL weitergeklickt wird – gilt also für
+   * die Schritte mit Kacheln, nicht für den Kontaktschritt: dort trägt jedes
+   * Feld sein eigenes {@link BookingField.error}. Der Weiter-Knopf bleibt
+   * bewusst bedienbar; ein `disabled` liesse einen Tastaturnutzer ins Leere
+   * tabben, ohne den Grund zu erfahren.
+   */
+  error?: string
+}
+
+/**
+ * Reservierungs-ATTRAPPE – eine Vorschau, die NICHTS tut.
+ *
+ * Kein Netzwerk-Request, keine Mail, kein Speichern (auch nicht im Browser);
+ * ein Neuladen löscht jede Eingabe. Das ist die EINZIGE Stelle im Demo-Baum
+ * mit eigenem Client-Code – ohne JavaScript tritt `noscript` an ihre Stelle.
+ *
+ * Heisst `booking` und nicht `reservation`: `contact.reservation` gibt es
+ * bereits (die vorbereitete Mail). Zwei Felder gleichen Namens auf zwei Ebenen
+ * wären in jedem Grep mehrdeutig.
+ *
+ * Optional, und genau darin liegt die Regel: Eine Komponente fragt „ist dieses
+ * FELD da?" (`business.booking`), nie „ist das ein Café oder ein Restaurant?".
+ * Das Café hat kein `booking` – deshalb hat es weder die Strecke noch den
+ * Einstieg auf der Kontaktseite, ohne dass eine Komponente den Betrieb kennt.
+ *
+ * Sämtliche Texte stehen hier und nicht in der Komponente – auch der
+ * Schrittzähler, das Wort „(optional)", die Uhrzeit-Endung und die Namen der
+ * Wochentage. Eine Attrappe für einen anderen Betrieb ist damit wirklich nur
+ * Daten.
+ */
+export type BookingDemo = {
+  /** H1. Kurz halten – bei 320 px passen rund 11 Versalien in eine Zeile. */
+  title: string
+  /** Einleitungssatz unter der H1. */
+  intro: string
+  /** Text des klebenden Vorschau-Bands. Eine Zeile bei 320 px. */
+  band: string
+  /** Ausführlicher Hinweis im `.demo-hinweis`-Block unter der H1. */
+  hinweis: string
+  /** Einstieg auf der Kontaktseite. */
+  entryLabel: string
+  entryNote: string
+  /** Ersatzstück ohne JavaScript. */
+  noscript: { title: string; body: string }
+
+  partySizes: number[]
+  /**
+   * Einheit in der Zusammenfassung. Zwei Formen, weil `partySizes` bei 1
+   * beginnt und „1 Personen" auf dem Bestätigungsbildschirm steht – also genau
+   * dort, wo die Attrappe überzeugen soll.
+   */
+  partyUnit: { one: string; other: string }
+  /** Satz unter dem Personenraster für grössere Runden. */
+  partyMore: string
+
+  /** Rasterweite der Startzeiten in Minuten. */
+  slotStepMinutes: number
+  /** Legende ÜBER dem Zeitraster – entwertet die Belegung im Klartext. */
+  slotLegend: string
+  /** Wortlaut der Zustände. Nie Mengenangaben („noch zwei Tische"). */
+  slotStates: { busy: string; tight: string }
+  /** Zeile unter dem Tagesraster. */
+  dayNote: string
+  /** Was in der Zeile eines Ruhetags steht. */
+  closedLabel: string
+
+  /** Beschriftung des Zurück-Knopfes bzw. des Ausstiegs auf Schritt 1. */
+  backLabel: string
+  backToContactLabel: string
+
+  /**
+   * Schrittzähler in der Überschrift, mit den Platzhaltern `{n}` und
+   * `{gesamt}` – z.B. „Schritt {n} von {gesamt}". Steht hier und nicht im
+   * Code, weil es der Text ist, den ein Screenreader bei JEDEM Schrittwechsel
+   * als erstes vorliest.
+   */
+  stepCounterLabel: string
+  /** Klammerzusatz hinter dem Label eines optionalen Feldes, z.B. „(optional)". */
+  optionalLabel: string
+  /** Endung hinter einer Uhrzeit, z.B. „Uhr". */
+  timeSuffix: string
+  /**
+   * Die Wochentage in Anzeigereihenfolge. `key` MUSS ein schema.org-Wochentag
+   * sein (`Monday` …), damit `hours.entries[].days` darauf passt; `label` ist
+   * die Anzeige. Ein Betrieb, der seine Woche anders anfängt, sortiert hier um.
+   */
+  weekdays: { key: string; label: string }[]
+
+  steps: {
+    party: BookingStepCopy
+    day: BookingStepCopy
+    time: BookingStepCopy
+    guest: BookingStepCopy
+  }
+
+  fields: BookingField[]
+
+  /** Schritt 5 – der Bestätigungsschritt. Hier steht am deutlichsten, dass nichts geschah. */
+  done: {
+    /** Überschrift im KONJUNKTIV. */
+    title: string
+    labels: { party: string; day: string; time: string; guest: string }
+    /** Steht in der Zusammenfassung, wenn kein Name eingetippt wurde. */
+    guestFallback: string
+    truth: { title: string; points: string[]; outlook: string }
+    realTitle: string
+    restartLabel: string
+  }
+
+  services: BookingService[]
+}
+
 export type GastroBusiness = {
   slug: string
   /** Voller Name, z.B. „Café Klee". */
@@ -218,6 +394,13 @@ export type GastroBusiness = {
       body: string
     }
   }
+
+  /**
+   * Reservierungs-Attrappe (`/demo/<slug>/reservieren`). FEHLT beim Café – und
+   * weil sie fehlt, entfallen dort Strecke und Einstieg von selbst, ohne dass
+   * eine Komponente den Betrieb kennen müsste. Siehe {@link BookingDemo}.
+   */
+  booking?: BookingDemo
 
   /**
    * „Über uns" – Lead plus Blöcke im Bild-Text-Wechsel.

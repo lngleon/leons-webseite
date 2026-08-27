@@ -38,7 +38,7 @@ export const restaurantGlut: GastroBusiness = {
   kind: 'À-la-carte-Restaurant',
   tagline: 'Feuer, Zeit und ein paar gute Zutaten.',
   intro:
-    'Bei uns kocht ein offenes Feuer den ganzen Abend durch. Was darauf landet, entscheidet sich morgens auf dem Hof – deshalb ist die Karte kurz und ändert sich öfter, als uns lieb ist.',
+    'Bei uns kocht ein offenes Feuer vom späten Vormittag bis in die Nacht. Was darauf landet, entscheidet sich morgens auf dem Hof – deshalb ist die Karte kurz und ändert sich öfter, als uns lieb ist.',
 
   nav: {
     start: 'Start',
@@ -255,6 +255,155 @@ export const restaurantGlut: GastroBusiness = {
     },
   },
 
+  /**
+   * Reservierungs-ATTRAPPE unter `/demo/restaurant/reservieren`.
+   *
+   * Fünf Schritte, die NICHTS tun: kein Netzwerk-Request, keine Mail, kein
+   * Speichern – auch nicht im Browser. Sie ist die einzige Stelle im Demo-Baum
+   * mit eigenem Client-Code und auf jedem Schritt als Vorschau gekennzeichnet.
+   *
+   * Zeiten stehen hier NICHT noch einmal: `services[].hoursLabel` zeigt auf
+   * einen Eintrag in `hours` oben, und `buildBookingWeek` rechnet daraus das
+   * Raster. Ruhetage ergeben sich dadurch von selbst (Sonntag und Montag stehen
+   * in keinem geöffneten Eintrag), und der Samstag bietet folgerichtig nur
+   * abends etwas an. Erfunden ist allein die BELEGUNG.
+   */
+  booking: {
+    title: 'Reservieren',
+    intro:
+      'Eine Vorschau darauf, wie eine Tischanfrage auf dieser Seite laufen könnte – fünf Schritte, und am Ende passiert nichts.',
+    band: 'Vorschau · es wird nichts reserviert',
+    hinweis:
+      'Das hier ist eine Attrappe. Sie schickt nichts ab, spricht mit keinem Server und speichert nichts – auch nicht in deinem Browser. Ein Neuladen löscht jede Eingabe. Reserviert wird bei Glut per Telefon oder E-Mail.',
+    entryLabel: 'Reservierung ansehen (Vorschau)',
+    entryNote:
+      'So könnte eine Reservierung auf dieser Seite aussehen. Die Strecke ist eine Vorschau und bucht nichts – reserviert wird über die beiden Wege oben.',
+
+    noscript: {
+      title: 'Diese Vorschau braucht JavaScript',
+      body: 'Der Rest dieser Seite kommt ohne aus – nur diese Strecke nicht, weil sie deine Auswahl von Schritt zu Schritt mitführen muss. Gebucht hätte sie ohnehin nichts: reserviert wird bei uns über Telefon oder E-Mail.',
+    },
+
+    partySizes: [1, 2, 3, 4, 5, 6, 7, 8],
+    partyUnit: { one: 'Person', other: 'Personen' },
+    partyMore:
+      'Ab neun Personen ruf uns bitte an – dafür stellen wir den langen Tisch um.',
+
+    slotStepMinutes: 30,
+    slotLegend:
+      'Beispielbelegung: welche Zeiten frei, knapp oder belegt sind, ist für diese Vorschau erfunden. In einer echten Umsetzung käme das aus dem Tischbuch.',
+    slotStates: { busy: 'belegt', tight: 'fast voll' },
+    dayNote:
+      'Beispielwoche ohne Datum. Welche Tage geöffnet sind, kommt aus den Öffnungszeiten dieser Seite – die Ruhetage stimmen also.',
+    closedLabel: 'Ruhetag',
+
+    backLabel: 'Zurück',
+    backToContactLabel: 'Zurück zum Kontakt',
+
+    stepCounterLabel: 'Schritt {n} von {gesamt}',
+    optionalLabel: '(optional)',
+    timeSuffix: 'Uhr',
+    // Wochenordnung der Anzeige. `key` muss zu `hours.entries[].days` passen.
+    weekdays: [
+      { key: 'Monday', label: 'Montag' },
+      { key: 'Tuesday', label: 'Dienstag' },
+      { key: 'Wednesday', label: 'Mittwoch' },
+      { key: 'Thursday', label: 'Donnerstag' },
+      { key: 'Friday', label: 'Freitag' },
+      { key: 'Saturday', label: 'Samstag' },
+      { key: 'Sunday', label: 'Sonntag' },
+    ],
+
+    steps: {
+      party: {
+        title: 'Wie viele seid ihr?',
+        note: 'Vorschau: Deine Auswahl bleibt in diesem Browserfenster und wird nirgendwo hingeschickt.',
+        action: 'Weiter zum Tag',
+        actionNote: 'Es wird nichts gebucht – der Knopf blättert nur weiter.',
+        error: 'Bitte wähle zuerst, wie viele Personen kommen.',
+      },
+      day: {
+        title: 'An welchem Tag?',
+        note: 'Vorschau: eine Beispielwoche ohne Datum. Die Ruhetage stammen aber aus den echten Öffnungszeiten dieser Seite.',
+        action: 'Weiter zur Uhrzeit',
+        actionNote: 'Kein Tisch wird gehalten, kein Kalender gefragt.',
+        error: 'Bitte wähle zuerst einen Tag.',
+      },
+      time: {
+        title: 'Um wie viel Uhr?',
+        note: 'Vorschau: die Zeiten sind aus den Öffnungszeiten gerechnet, wer schon belegt ist, ist erfunden.',
+        action: 'Weiter zu deinen Angaben',
+        actionNote: 'Auch jetzt ist nichts reserviert.',
+        error: 'Bitte wähle zuerst eine Uhrzeit.',
+      },
+      guest: {
+        title: 'Wie erreichen wir dich?',
+        note: 'Vorschau: Was du hier eintippst, verlässt dein Gerät nicht. Es geht keine Mail raus und nichts wird gespeichert.',
+        action: 'Anfrage abschicken (Vorschau)',
+        actionNote:
+          'Dieser Knopf sendet nichts. Er zeigt dir nur, wie die Bestätigung aussähe.',
+        // Kein `error` – auf diesem Schritt trägt jedes Feld sein eigenes.
+      },
+    },
+
+    fields: [
+      {
+        id: 'name',
+        label: 'Name',
+        type: 'text',
+        autoComplete: 'name',
+        required: true,
+        error: 'Ohne Namen wüssten wir nicht, für wen der Tisch ist.',
+      },
+      { id: 'telefon', label: 'Telefon', type: 'tel', inputMode: 'tel', autoComplete: 'tel' },
+      { id: 'wunsch', label: 'Anmerkung', multiline: true },
+    ],
+
+    done: {
+      title: 'So sähe deine Bestätigung aus',
+      labels: {
+        party: 'Tisch für',
+        day: 'Wann',
+        time: 'Uhrzeit',
+        guest: 'Auf den Namen',
+      },
+      guestFallback: 'ohne Namen',
+      truth: {
+        title: 'Und jetzt der ehrliche Teil:',
+        points: [
+          'Es ist keine Anfrage rausgegangen – weder an uns noch an sonst jemanden.',
+          'Es wurde nichts gespeichert, auch nicht in deinem Browser.',
+          'Kein Tisch ist reserviert, kein Platz geblockt.',
+          'Ein Neuladen dieser Seite löscht alles, was du eingetippt hast.',
+        ],
+        outlook:
+          'In einer echten Umsetzung ginge an dieser Stelle eine Anfrage an den Betrieb – und die Zeiten kämen aus dem Tischbuch statt aus einer Beispielwoche.',
+      },
+      realTitle: 'So reservierst du wirklich',
+      restartLabel: 'Noch mal von vorn',
+    },
+
+    services: [
+      {
+        id: 'mittag',
+        hoursLabel: 'Dienstag – Freitag · Mittag',
+        short: 'Mittag',
+        // 12:00–14:30 minus 90 Minuten → letzte Sitzung 13:00.
+        lastSeatingBeforeCloseMinutes: 90,
+        busySlots: ['12:30'],
+      },
+      {
+        id: 'abend',
+        hoursLabel: 'Dienstag – Samstag · Abend',
+        short: 'Abend',
+        // 18:00–23:00 minus 90 Minuten → letzte Sitzung 21:30.
+        lastSeatingBeforeCloseMinutes: 90,
+        busySlots: ['19:00', '19:30', '20:00'],
+        tightSlots: ['18:30', '20:30'],
+      },
+    ],
+  },
+
   about: {
     title: 'Über uns',
     lead: 'Glut ist aus einer Trotzreaktion entstanden: Wir wollten wieder mit Feuer kochen, nicht mit Knöpfen. Alles andere hat sich daraus ergeben.',
@@ -262,7 +411,7 @@ export const restaurantGlut: GastroBusiness = {
       {
         id: 'feuer',
         title: 'Ein Feuer, den ganzen Abend',
-        text: 'Um halb vier wird angezündet, gegen fünf ist die Glut so weit. Von da an läuft alles über dasselbe Feuer: erst die Sachen, die Hitze brauchen, später die, die Zeit brauchen. Das heißt auch, dass wir nicht beliebig nachlegen können – wenn die Lammschulter drin ist, ist sie drin. Deshalb dauert manches länger, als du es gewohnt bist, und deshalb sagen wir es vorher.',
+        text: 'Um halb zehn wird angezündet, gegen elf ist die Glut so weit – deshalb geht mittags überhaupt schon etwas vom Feuer. Von da an läuft alles über dieselbe Stelle: mittags, was schnell geht, abends das, was Zeit braucht. Das heißt auch, dass wir nicht beliebig nachlegen können – wenn die Lammschulter drin ist, ist sie drin. Deshalb dauert manches länger, als du es gewohnt bist, und deshalb sagen wir es vorher.',
         photo: {
           ratio: '3 / 2',
           alt: 'Die offene Feuerstelle von der Seite: Holzscheite in der Brennkammer, darüber ein höhenverstellbarer Rost',
@@ -318,7 +467,7 @@ export const restaurantGlut: GastroBusiness = {
         title: 'Was diese Seite nicht tut',
         body: [
           'Diese Seite setzt keine Cookies und speichert nichts in deinem Browser. Es gibt keine Reichweitenmessung, keine Analyse-Software und kein Profiling – auch keine anonyme Statistik.',
-          'Es gibt kein Formular und kein Buchungssystem: eine Reservierung läuft über Telefon oder E-Mail, also über ein Programm auf deinem eigenen Gerät. Deshalb steht hier auch kein Cookie-Banner – es gibt nichts, wozu du einwilligen müsstest.',
+          'Auf der Seite „Reservieren" liegt eine Vorschau-Strecke. Sie läuft vollständig in deinem Browser: nichts wird gesendet, nichts gespeichert – auch nicht im Browser selbst. Ein Neuladen löscht jede Eingabe. Ein Buchungssystem gibt es hier nicht; reserviert wird über Telefon oder E-Mail, also über ein Programm auf deinem eigenen Gerät. Deshalb steht hier auch kein Cookie-Banner – es gibt nichts, wozu du einwilligen müsstest.',
         ],
       },
       {

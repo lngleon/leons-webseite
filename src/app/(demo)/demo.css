@@ -56,6 +56,19 @@ html:has(.demo-scope),
      Kategorie-Leiste auf /karte klebt genau darunter, und Anker-Sprünge halten
      darüber Abstand (.demo-anchor). Deshalb EIN Wert statt drei Schaetzungen. */
   --demo-nav-h: 4.25rem;
+
+  /* Hoehe des klebenden Vorschau-Bands der Reservierungs-Attrappe. EIN Wert,
+     weil Band und scroll-margin-top ihn teilen – dieselbe Begruendung wie bei
+     --demo-nav-h. Zusammen mit dem Navigationsband sind das 104 px; eine
+     DRITTE klebende Reihe darf nicht dazukommen, sonst bleibt auf einem
+     320x568-Geraet kaum Inhalt uebrig. */
+  --demo-band-h: 2.25rem;
+
+  /* Rand von BEDIENELEMENTEN der Reservierungs-Attrappe. --border (#dbcfba)
+     erreicht auf --card nur 1,50:1 und damit nicht die 3:1, die WCAG 1.4.11
+     fuer die Kante eines Eingabefeldes verlangt; derselbe warme Ton weiter
+     abgedunkelt schafft 3,81:1. Dekorative Raender bleiben --border. */
+  --demo-feldrand: #8d7f6a;
 }
 
 .demo-scope {
@@ -389,4 +402,429 @@ html:has(.demo-scope),
     0 0 0 2px var(--background),
     0 0 0 4px var(--ring);
   border-radius: 2px;
+}
+
+/* ── Reservierungs-Attrappe (/demo/<slug>/reservieren) ───────────────────────
+   Die EINZIGE Stelle im Demo-Baum mit eigenem Client-Code. Alles Bewegte hier
+   ist deshalb bewusst CSS statt Framer Motion: eine Ueberblendung rechtfertigt
+   keine Animationsbibliothek in einem sonst code-freien Baum.
+
+   Die Klassen greifen nur auf dieser einen Seite; die Datei waechst dadurch,
+   der gemeinsame CSS-Chunk der Gruppe bekommt einen neuen Hash. Am gerenderten
+   Markup der Cafe-Seiten aendert das nichts. */
+
+/* Kennzeichnung Ebene 1: klebt in demselben Slot, den .demo-rail auf /karte
+   nutzt – deshalb kollisionsfrei und optisch vertraut. Opak, sonst laeuft der
+   Inhalt sichtbar darunter durch. */
+.demo-vorschau-band {
+  position: sticky;
+  top: var(--demo-nav-h);
+  z-index: 20; /* .demo-nav-band liegt bei 30 */
+  display: flex;
+  align-items: center;
+  min-height: var(--demo-band-h);
+  padding-inline: 1.25rem;
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  font-family: var(--demo-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* Gestrichelt statt durchgezogen: der ganze Rest der Demo hat ausschliesslich
+   durchgezogene Raender. Das liest unbewusst als „Muster", ohne dass ein
+   weiterer Satz noetig waere. BEWUSST ohne eigenen Hintergrund – die Kacheln
+   darin brauchen --background als Ringluecke (siehe unten). */
+.demo-buchung {
+  border: 1px dashed var(--accent);
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .demo-buchung {
+    padding: 1.5rem;
+  }
+}
+
+/* Faengt den Hoehensprung zwischen den kleineren Schritten ab. BEWUSST nicht
+   die Hoehe des hoechsten Schritts (sieben Tageszeilen, rund 30rem): das
+   liesse auf Schritt 1 zwanzig Zeilen Leere stehen und saehe kaputter aus als
+   der Sprung. Den Rest deckt der Fokus-Effekt, der die Ueberschrift bei jedem
+   Wechsel ins Bild holt. */
+.demo-buchung__buehne {
+  min-height: 18rem;
+}
+
+.demo-buchung__schritt {
+  animation: demo-buchung-ein 140ms ease-out both;
+}
+
+@keyframes demo-buchung-ein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-buchung__schritt {
+    animation: none;
+  }
+}
+
+/* Fokusziele duerfen nicht unter den zwei klebenden Reihen landen – dieselbe
+   Loesung wie .demo-anchor, hier zusaetzlich fuer das browsereigene
+   Fokus-Scrollen beim Tabben (WCAG 2.2 SC 2.4.11). */
+.demo-buchung :is(h2[tabindex], a, button, input, textarea, [tabindex]) {
+  scroll-margin-top: calc(var(--demo-nav-h) + var(--demo-band-h) + 0.75rem);
+}
+
+/* Der programmatische Fokus auf die Schritt-Ueberschrift soll keinen Ring
+   zeigen, echte Tastaturbedienung schon. */
+.demo-buchung__kopf:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --accent liegt auf --background bei 4,93:1 – genug fuer Fliesstext, aber der
+   Zaehler steht in 0.7rem Versalien mit 0.22em Laufweite. --accent-solid
+   bringt dort 6,98:1. Das ist der einzige Grund fuer diese Klasse. */
+.demo-buchung__zaehler {
+  color: var(--accent-solid);
+}
+
+.demo-buchung__kopf {
+  margin-top: 0.5rem;
+}
+
+/* Kennzeichnung Ebene 3 (unter der Ueberschrift) und Ebene 4 (unter dem Knopf). */
+.demo-buchung__notiz {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.demo-buchung__knopfnotiz {
+  margin-top: 0.625rem;
+  text-align: center;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.demo-buchung__zusatz {
+  margin-top: 0.875rem;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+
+.demo-buchung__legende {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+
+.demo-buchung__auswahl {
+  font-family: var(--demo-display);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-solid);
+}
+
+.demo-buchung__fehler {
+  display: block;
+  margin-top: 0.625rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--destructive);
+}
+
+/* Das Browser-Stylesheet gibt fieldset ein min-inline-size von min-content; im
+   Flex-/Grid-Kontext waechst es dadurch auf seine Inhaltsbreite und zieht die
+   Seite horizontal auf, statt umzubrechen – dieselbe Mechanik, die am <nav>
+   ein min-width: 0 erzwungen hat. Das Raster liegt in einem <div> DARIN, nie
+   auf dem fieldset selbst. */
+.demo-buchung__feld {
+  min-width: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Gemessen bei 320 px: Seite 280 px, Karte innen 246 px. minmax(4.5rem, 1fr)
+   ergibt dort genau drei Spalten (3x72 + 16 = 232 <= 246; vier braeuchten
+   4x72 + 24 = 312) und auf breiteren Geraeten von selbst mehr. */
+.demo-buchung__raster {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+}
+
+.demo-buchung__kachel {
+  display: block;
+}
+
+.demo-buchung__flaeche {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  /* 48 px – ueber der 44-px-Hausregel fuer Tap-Flaechen. */
+  min-height: 3rem;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  font-size: 1rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+/* Geschwister-Selektor statt :has() – funktioniert ueberall und braucht keinen
+   Fallback-Absatz wie html:has(.demo-scope). Das Radio traegt Tailwinds
+   .demo-buchung__nur-sr (clip-path, bleibt fokussierbar); NIEMALS
+   display:none, das naehme es aus der Tabreihenfolge und aus dem
+   Barrierebaum. */
+.demo-buchung__kachel input:checked ~ .demo-buchung__flaeche {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border-color: var(--accent);
+}
+
+/* Die 2-px-Luecke traegt die Farbe des Grundes, auf dem das Element LIEGT –
+   niemals die eigene Fuellung. Eine ausgewaehlte Kachel ist mit --accent
+   gefuellt, und --ring IST --accent: laege der Ring direkt an, waere er
+   unsichtbar (1,0:1). Genau deshalb hat .demo-buchung keinen eigenen
+   Hintergrund. */
+.demo-buchung__kachel input:focus-visible ~ .demo-buchung__flaeche {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--ring);
+}
+
+@media (forced-colors: active) {
+  .demo-buchung__kachel input:checked ~ .demo-buchung__flaeche {
+    outline: 3px solid Highlight;
+    outline-offset: -3px;
+  }
+}
+
+/* Belegte Zeit / Ruhetag: KEIN Bedienelement, sondern ein <span> in derselben
+   Box. disabled naehme sie aus der Tabreihenfolge – ein Screenreader hoerte
+   eine lueckenhafte Liste ohne Erklaerung fuer die Luecke. Das Wort „belegt"
+   statt nur einer Graustufe erfuellt ausserdem SC 1.4.1. */
+.demo-buchung__flaeche--weg {
+  color: var(--muted-foreground);
+  background-color: transparent;
+  border-style: dashed;
+}
+
+.demo-buchung__tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Sieben Kalenderspalten waeren bei 246 px je 32 px breit – unter jeder
+   Daumenflaeche. Deshalb Zeilen statt Raster, ab 480 px zweispaltig. */
+.demo-buchung__tage {
+  display: grid;
+  gap: 0.5rem;
+}
+
+@media (min-width: 480px) {
+  .demo-buchung__tage {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.demo-buchung__tag-flaeche {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding-inline: 0.875rem;
+  text-align: left;
+}
+
+.demo-buchung__label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.demo-buchung__optional {
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+.demo-buchung__input {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  /* NICHT kleiner als 1rem: iOS-Safari zoomt beim Fokussieren jedes Feldes
+     unter 16 px automatisch hinein – auf 320 px verlaesst die Seite dann den
+     Viewport und die klebenden Baender verrutschen sichtbar. */
+  font-size: 1rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--foreground);
+}
+
+.demo-buchung__input:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--ring);
+}
+
+.demo-buchung__zurueck {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* 44 px */
+  min-height: 2.75rem;
+  padding-inline: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  transition: color 0.2s;
+}
+
+.demo-buchung__zurueck:hover {
+  color: var(--accent);
+}
+
+.demo-buchung__zurueck:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--ring);
+  border-radius: 2px;
+}
+
+.demo-buchung__haken {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 1.25rem;
+}
+
+.demo-buchung__fortschritt {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 0.375rem;
+}
+
+.demo-buchung__fortschritt > span {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 0.25rem;
+  border-radius: 999px;
+  background-color: var(--border);
+}
+
+.demo-buchung__fortschritt > span[data-zustand='fertig'] {
+  background-color: var(--accent-solid);
+}
+
+.demo-buchung__fortschritt > span[data-zustand='aktuell'] {
+  background-color: var(--accent);
+  height: 0.375rem;
+}
+
+/* Grundstellung des No-JS-Umschalters. Der <noscript><style> im Body dreht ihn
+   um: ohne JavaScript verschwindet .demo-buchung-live und dieser Block wird
+   sichtbar. Kein !important noetig – der Style steht ungeschichtet im <body>
+   und gewinnt gegen Tailwinds @layer utilities ueber die Dokumentreihenfolge. */
+.demo-buchung-ohne-js {
+  display: none;
+}
+
+/* Nur fuer Screenreader. Bewusst eine EIGENE Klasse statt der gleichnamigen
+   Tailwind-Utility: Tailwind v4 baut EINEN Utility-Chunk fuer die ganze App,
+   und eine hier neu eingefuehrte Utility aenderte dessen Inhalts-Hash – damit
+   auch die Auslieferung von Leons Hauptseite, die denselben Chunk laedt.
+
+   Zu beachten, weil es genau einmal passiert ist: Tailwind liest die Quellen
+   als TEXT und findet Klassennamen auch in KOMMENTAREN. Wer hier erklaert,
+   welche Utility man vermeidet, und sie dabei ausschreibt, erzeugt sie
+   wieder. Deshalb steht sie in diesem Absatz nicht ausgeschrieben.
+
+   Technik identisch (clip-path statt display:none), damit das Element
+   FOKUSSIERBAR bleibt: ein per display:none verstecktes Radio waere weder mit
+   Tab noch mit den Pfeiltasten erreichbar und stuende in keinem
+   Barrierebaum. */
+.demo-buchung__nur-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-width: 0;
+  clip-path: inset(50%);
+}
+
+/* Haelt die Zeile ueber der Ueberschrift auf Tap-Hoehe, auch wenn dort auf
+   Schritt 1 ein Link statt eines Knopfes steht. */
+.demo-buchung__zurueck-zeile {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin-top: 1rem;
+}
+
+/* Volle Breite auf dem Handy, Textbreite ab `sm` – als eigene Klasse aus
+   demselben Grund wie oben. */
+.demo-cta--breit {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .demo-cta--breit {
+    width: auto;
+  }
+}
+
+/* Raender von BEDIENELEMENTEN muessen 3:1 erreichen (WCAG 1.4.11). --border
+   (#dbcfba) schafft auf --card nur 1,50:1 – gut genug fuer eine dekorative
+   Trennlinie, zu wenig fuer die Kante eines Eingabefeldes oder einer noch
+   nicht gewaehlten Kachel. --demo-feldrand ist derselbe warme Ton, so weit
+   abgedunkelt, dass er 3,81:1 auf --card erreicht (gerechnet, nicht geschaetzt).
+   Dekorative Raender im Rest der Demo bleiben unveraendert. */
+.demo-buchung__flaeche,
+.demo-buchung__input {
+  border-color: var(--demo-feldrand);
+}
+
+/* Im Modus mit erzwungenen Farben ignoriert der Browser jeden box-shadow – und
+   alle Fokusregeln hier bestehen aus `outline: none` plus box-shadow. Ohne
+   diesen Block waere der Tastaturfokus auf der ganzen Strecke unsichtbar. */
+@media (forced-colors: active) {
+  .demo-buchung__kachel input:focus-visible ~ .demo-buchung__flaeche,
+  .demo-buchung__input:focus-visible,
+  .demo-buchung__zurueck:focus-visible,
+  .demo-buchung__kopf:focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 2px;
+  }
 }

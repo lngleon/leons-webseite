@@ -34,20 +34,25 @@ export const metadata: Metadata = {
    *     }
    *
    * Ein `metadata.icons` IRGENDWO in der Kette (hier: im Root-Layout) macht
-   * den Wert truthy, und `icon.svg` wird still verworfen – die Datei wird zwar
-   * als Route gebaut, taucht aber in KEINEM `<head>` auf. Die Doku-Aussage
+   * den Wert truthy, und ein `icon.svg` wird still verworfen – die Datei wird
+   * zwar als Route gebaut, taucht aber in KEINEM `<head>` auf. Die Doku-Aussage
    * „file-based metadata has the higher priority" gilt für Icons in dieser
    * Version also NICHT. `icons: null` ist typisiert erlaubt
    * (`icons?: null | IconURL | Array<Icon> | Icons`), setzt den Wert zurück und
    * öffnet damit den Weg für die Datei. Im gebauten HTML verifiziert.
    *
-   * Zwei Dateien liegen daneben und werden beide von dieser Rücksetzung
-   * freigeschaltet: `icon.svg` (Browser-Tab) und `apple-icon.png`
-   * (iOS-Homescreen, 180×180). Das PNG kam am 26.08.2026 dazu – vorher trugen
-   * die Demo-Seiten gar kein `apple-touch-icon`-Tag, und Safari wäre beim
-   * „Zum Home-Bildschirm" womöglich auf die Wurzel-Konvention
-   * `/apple-touch-icon.png` zurückgefallen: Leons LL über einer Café-Seite.
-   * Genau das ist jetzt geschlossen.
+   * **Seit 27.08.2026 liegen die Icons JE BETRIEB**, nicht mehr neben dieser
+   * Datei: `demo/cafe/{icon.svg,apple-icon.png}` und
+   * `demo/restaurant/{icon.svg,apple-icon.png}`. Die Rücksetzung hier gilt
+   * unverändert für den ganzen Zweig und ist weiterhin die Bedingung dafür,
+   * dass die Dateien überhaupt greifen; welches Paar eine Seite bekommt,
+   * entscheidet das nächstgelegene Segment. Ein dritter Betrieb ohne eigenes
+   * Paar bekäme deshalb GAR KEIN Icon-Tag.
+   *
+   * Das `apple-icon.png` gibt es, seit die Demo-Seiten sonst gar kein
+   * `apple-touch-icon`-Tag trügen: Safari wäre beim „Zum Home-Bildschirm"
+   * womöglich auf die Wurzel-Konvention `/apple-touch-icon.png`
+   * zurückgefallen – Leons LL über einer fremden Gastro-Seite.
    */
   icons: null,
 }
