@@ -18,6 +18,13 @@ import type { DemoPage } from './routes'
  * `usePathname()` wäre ein Client-Hook und würde die Zusicherung „diese Seite
  * braucht kein JavaScript" brechen. Also reicht jede Seite ihr `current` selbst
  * herein; das kostet eine Zeile pro Seite und bleibt vollständig server-seitig.
+ *
+ * Die FARBWELT kommt seit Demo 3 nicht mehr zwingend aus `.demo-scope` allein:
+ * nennt der Betrieb ein `theme`, hängt hier eine zweite Klasse
+ * (`demo-scope--<theme>`) daneben, die in `demo.css` dieselben Variablen neu
+ * belegt. Café und Restaurant tragen kein `theme` – sie bekommen deshalb auch
+ * keine zweite Klasse und ihr Markup bleibt unverändert. Wieder eine
+ * Feldfrage, keine Betriebsfrage.
  */
 export default function DemoShell({
   business,
@@ -28,13 +35,17 @@ export default function DemoShell({
   current: DemoPage
   children: ReactNode
 }) {
+  // Ohne `theme` entsteht exakt die Zeichenfolge von vorher – kein
+  // zusätzliches Leerzeichen, keine leere Klasse.
+  const scope = business.theme ? `demo-scope demo-scope--${business.theme}` : 'demo-scope'
+
   return (
     // `demoDisplay.variable` setzt `--font-demo-display` – bewusst HIER auf dem
     // bestehenden `.demo-scope`-Element und nicht in `(demo)/layout.tsx`: das
     // Layout gibt `children` unverändert zurück und hat gar kein eigenes Element,
     // ein Wrapper nur für die Klasse wäre ein zusätzlicher DOM-Knoten. So kostet
     // die Schrift kein Markup. `demo.css` liest die Variable in `--demo-display`.
-    <div className={`${demoDisplay.variable} demo-scope relative flex min-h-dvh flex-col`}>
+    <div className={`${demoDisplay.variable} ${scope} relative flex min-h-dvh flex-col`}>
       <DemoGrain />
 
       <div className="relative z-10 flex flex-1 flex-col">

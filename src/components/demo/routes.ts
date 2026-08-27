@@ -14,7 +14,13 @@
  * `booking` (die Reservierungs-Attrappe) steht WEDER in der Pille NOCH im Fuß,
  * sondern nur als Fläche auf der Kontaktseite. Gemessen: vier Beschriftungen
  * brauchen bei 320 px 401 px bei 288 px verfügbarer Breite – die Pille scrollt
- * bereits. Ein fünfter Eintrag machte ausgerechnet die wichtigste Fläche zu
+ * bereits. (Nachmessung 27.08.2026 im Browser, `scrollWidth` gegen
+ * `clientWidth` der Pille: 286 px sichtbar, Café 380 px, Friseur 422 px. Andere
+ * Messbasis als die 401 oben, gleiche Aussage – und der dritte Betrieb hat den
+ * Überstand von 94 auf 136 px vergrössert, allein durch das längere Wort
+ * „Leistungen". Ein Muster jenseits von vier Einträgen ist als eigener Punkt in
+ * `docs/CLAUDE-CODE-TODO.md` offen; der Friseur ist ihm ausgewichen, indem sein
+ * Team auf `/ueber-uns` liegt statt auf einer fünften Seite.) Ein fünfter Eintrag machte ausgerechnet die wichtigste Fläche zu
  * der einen, die man erst freiwischen muss. Weil `DemoNav` seine Einträge fest
  * aufzählt, trägt `current="booking"` folgerichtig KEIN `aria-current` – genau
  * wie `imprint` und `privacy` heute schon.

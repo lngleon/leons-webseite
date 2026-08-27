@@ -1,6 +1,5 @@
 import type { MenuBundle, MenuSection } from '@/data/demo/types'
-import { formatEuro } from './DemoMenu'
-import { bundleCourses } from './menu'
+import { bundleCourses, formatEuro } from './menu'
 
 /**
  * Die Menü-Bündel einer Karte: mehrere Gänge zum Festpreis.

@@ -5,7 +5,7 @@ import DemoMarquee from '@/components/demo/DemoMarquee'
 import DemoGallery from '@/components/demo/DemoGallery'
 import DemoMenuTeaser from '@/components/demo/DemoMenuTeaser'
 import DemoJsonLd from '@/components/demo/DemoJsonLd'
-import { buildRestaurantSchema } from '@/components/demo/schema'
+import { buildBusinessSchema } from '@/components/demo/schema'
 import { restaurantGlut } from '@/data/demo/restaurant-glut'
 
 /**
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default function RestaurantDemoPage() {
   return (
     <DemoShell business={restaurantGlut} current="start">
-      <DemoJsonLd schema={buildRestaurantSchema(restaurantGlut)} />
+      <DemoJsonLd schema={buildBusinessSchema(restaurantGlut)} />
       <DemoHero business={restaurantGlut} />
       <DemoMarquee business={restaurantGlut} />
       <DemoGallery business={restaurantGlut} />

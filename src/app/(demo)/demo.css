@@ -71,6 +71,64 @@ html:has(.demo-scope),
   --demo-feldrand: #8d7f6a;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   Zweiter Token-Satz: Friseur (.demo-scope--friseur)
+
+   Ein Betrieb, der eigene Farben mitbringt, bekommt eine ZWEITE Klasse neben
+   .demo-scope (aus GastroBusiness.theme, gesetzt in DemoShell) und belegt hier
+   dieselben Variablen neu. Café und Restaurant tragen kein theme, haben also
+   auch keine zweite Klasse – ihr Markup und ihre Farben bleiben unberührt.
+
+   WICHTIG: Dieser Block muss NACH dem Basis-Block stehen. Beide Selektoren
+   haben dieselbe Spezifität – html:has(.demo-scope) und
+   html:has(.demo-scope--friseur) sind beide (0,1,1), die :has()-Spezifität ist
+   die des Arguments –, und die Hülle trägt BEIDE Klassen. Es entscheidet also
+   allein die Reihenfolge im Stylesheet.
+
+   Neu belegt werden nur die FARBEN. Alles Strukturelle (--demo-display,
+   --demo-nav-h, --demo-band-h) bleibt geerbt: die Demos sollen sich in der
+   Farbe unterscheiden, nicht im Raster.
+
+   Kühles Porzellan statt warmem Papier, tiefes Pflaumenrot statt gebranntem
+   Orange – bewusst das andere Ende: ein Salon liest sich sauber und kühl, eine
+   Gastro warm. Alle Paare gegen WCAG gerechnet (kleinster Wert 4,09:1 beim
+   Feldrand gegen die geforderten 3:1, kleinster Textwert 6,07:1 gegen 4,5:1):
+
+     foreground/background            14,90:1
+     muted-foreground/background       6,07:1
+     muted-foreground/card             6,76:1
+     accent/background (Eyebrow, CTA)  7,55:1
+     accent/card                       8,41:1
+     accent-foreground/accent          8,30:1   (Laufband, gefüllter CTA)
+     accent-foreground/accent-solid   11,20:1   (CTA-Hover)
+     accent/background (Fokusring)     7,55:1   (verlangt sind 3:1)
+     demo-feldrand/card                4,09:1   (verlangt sind 3:1)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html:has(.demo-scope--friseur),
+.demo-scope--friseur {
+  --background: #edeef0;
+  --foreground: #1b1a1f;
+  --muted: #e0e1e6;
+  --muted-foreground: #5a5763;
+  --card: #fafafc;
+  --card-foreground: #1b1a1f;
+  --border: #cfd0d8;
+
+  --accent: #7a2f5e;
+  --accent-solid: #5c2247;
+  --accent-foreground: #fdf7fb;
+  --ring: var(--accent);
+  --destructive: #8f2230;
+
+  /* Wird heute von keiner Seite dieses Betriebs gebraucht (der Friseur hat
+     keine Attrappe mit Eingabefeldern). Steht trotzdem hier, damit der
+     Token-Satz VOLLSTÄNDIG ist: erbte er den warmen Wert, sähe das erste
+     Eingabefeld, das hier je entsteht, nach dem falschen Betrieb aus – und
+     niemand würde nachrechnen, ob es noch 3:1 schafft. */
+  --demo-feldrand: #7b7986;
+}
+
 .demo-scope {
   background-color: var(--background);
   color: var(--foreground);

@@ -1,5 +1,6 @@
 import type { GastroBusiness } from '@/data/demo/types'
 import DemoPhoto from './DemoPhoto'
+import DemoTeam from './DemoTeam'
 import { demoHref } from './routes'
 
 /**
@@ -14,6 +15,11 @@ import { demoHref } from './routes'
  * Auf dem Desktop wird das Bild rechts per `order` umgestellt, nicht per zweitem
  * Markup-Zweig: so steht im Quelltext IMMER erst das Bild und dann der Text,
  * und die Vorlesereihenfolge bleibt über alle Blöcke gleich.
+ *
+ * Trägt der Betrieb ein `team`, steht es zwischen den Blöcken und dem
+ * Abbinder – erst die Geschichte, dann die Leute, dann der Weg weiter. Der
+ * Block hängt am FELD, nicht an der Branche; Café und Restaurant haben kein
+ * `team` und rendern hier unverändert nichts.
  */
 export default function DemoAbout({ business }: { business: GastroBusiness }) {
   const { about } = business
@@ -64,6 +70,8 @@ export default function DemoAbout({ business }: { business: GastroBusiness }) {
           </section>
         )
       })}
+
+      <DemoTeam business={business} />
 
       <section
         aria-label={about.title}

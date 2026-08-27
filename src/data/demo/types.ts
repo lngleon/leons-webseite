@@ -1,11 +1,26 @@
 /**
- * Typen für die stillen Gastro-Demoseiten unter `/demo/*`.
+ * Typen für die stillen Demoseiten unter `/demo/*`.
  *
  * Ein Betrieb = EINE Datendatei (z.B. `cafe-klee.ts`), die diesen Typ erfüllt.
  * Die Komponenten unter `src/components/demo/` lesen ausschliesslich aus diesem
  * Objekt – es gibt keinen hartkodierten Inhalt. Ein zweiter Betrieb entsteht
  * dadurch allein durch eine zweite Datei + eine zweite `page.tsx`, die sie
  * hineinreicht.
+ *
+ * **Der Typ heisst weiterhin `GastroBusiness`, trägt seit Demo 3 (Friseur) aber
+ * auch einen Betrieb, der nichts serviert.** Das ist bewusst NICHT umbenannt:
+ * ein neuer Name hätte die Importzeile von `cafe-klee.ts` und
+ * `restaurant-glut.ts` angefasst und damit die Zusage aufgegeben, dass die
+ * beiden Vorgänger Zeichen für Zeichen unverändert bleiben. Derselbe Handel wie
+ * beim Feldnamen `menu.categories`, in dem beim Restaurant ganze Karten stehen:
+ * ein leicht gedehnter Name gegen eine unangetastete Vorgängerdatei. Was der Typ
+ * beschreibt, ist ein KLEINER ORTSGEBUNDENER BETRIEB mit Preisliste, Zeiten und
+ * Adresse – nicht speziell Gastronomie.
+ *
+ * Was NICHT gastro-neutral ist und es auch nicht werden soll, steht an seinem
+ * Feld: `allergens` (nur wer serviert, kennzeichnet) und `seo.servesCuisine`.
+ * Beide sind deshalb optional – ein Betrieb ohne sie rendert die zugehörigen
+ * Blöcke schlicht nicht, ohne dass eine Komponente nach der Branche fragt.
  */
 
 /** Allergen-Kürzel, wie in deutschen Speisekarten üblich (A = Gluten usw.). */
@@ -14,6 +29,16 @@ export type Allergen = {
   label: string
 }
 
+/**
+ * Ein Posten der Karte – beim Café und beim Restaurant ein GERICHT, beim
+ * Friseur eine LEISTUNG. Derselbe Typ, weil es dieselbe Rolle ist: eine Zeile
+ * der Preisliste, Name links, Preis rechts.
+ *
+ * Die Zusatzfelder sind alle optional und hängen an je EINEM Merkmal, das ein
+ * Betrieb hat oder nicht hat – nie an seiner Branche: `allergens` (er
+ * serviert), `durationMinutes` (er verkauft Zeit), die Preis-Union unten (sein
+ * Preis steht nicht fest).
+ */
 export type MenuItem = {
   name: string
   description?: string
@@ -21,11 +46,52 @@ export type MenuItem = {
    * Preis in Euro als ZAHL (3.8), nicht als String.
    * Grund: schema.org braucht den Preis numerisch, die Anzeige formatiert
    * daraus deterministisch „3,80 €" (kein `Intl` im Render – Hydration-Regel).
+   *
+   * Bei den beiden unscharfen Formen unten ist das die UNTERGRENZE.
    */
   price: number
   /** Kürzel aus `GastroBusiness.allergens`. */
   allergens?: string[]
-}
+  /**
+   * Richtwert der Dauer in MINUTEN – für Betriebe, die Zeit verkaufen statt
+   * Teller. Der Friseur schreibt `45`, angezeigt wird „45 Min."; ab einer
+   * vollen Stunde „2 Std." bzw. „1 Std. 30 Min.".
+   *
+   * Zahl und nicht Text, aus demselben Grund wie beim Preis: zwanzig von Hand
+   * getippte Zeilen ergeben sonst „45 Min", „45 min" und „45 Minuten"
+   * nebeneinander. Die eine Form setzt `formatDuration()` in `menu.ts`.
+   *
+   * Bewusst EIN Wert und keine Spanne: eine Dauer ist im Salon ohnehin ein
+   * Richtwert, und zwei Zahlen nebeneinander („60 – 90 Min., 145 – 210 €")
+   * lesen sich in einer Preislistenzeile als Zahlensalat. Dass es Richtwerte
+   * sind, sagt die `note` der Kategorie – einmal, statt zwanzigmal.
+   */
+  durationMinutes?: number
+} & (
+  /**
+   * Wie genau ist der Preis? Drei Formen als EXKLUSIVE Union – dieselbe
+   * Technik wie bei {@link MenuCategory} und aus demselben Grund: die
+   * Fehlform „ab 45,00 – 75,00 €" lässt sich gar nicht erst hinschreiben.
+   *
+   *   beide Felder fehlen  → FESTPREIS  „3,80 €"
+   *   `priceTo: 75`        → SPANNE     „45,00 – 75,00 €"
+   *   `priceOpen: true`    → AB-PREIS   „ab 39,00 €" (offen nach oben)
+   *
+   * Erwogen und verworfen war ein einzelnes `priceTo?: number | null`, in dem
+   * `null` „offen" hiesse: `null` und `undefined` lassen sich mit `??` oder
+   * einem Wahrheitswert-Test unfallfrei verwechseln, und dann rendert ein
+   * Ab-Preis STILL als Festpreis – falsche Zahl, keine Fehlermeldung. Zwei
+   * benannte Felder können das nicht.
+   *
+   * Nach schema.org ist das eine `PriceSpecification`: `price` wird bei beiden
+   * unscharfen Formen zu `minPrice`, `priceTo` zu `maxPrice`, und ein Ab-Preis
+   * hat schlicht keine Obergrenze. Die Union bildet also nicht nur die Anzeige
+   * ab, sondern eine Unterscheidung, die das Vokabular selbst kennt.
+   */
+  | { priceTo?: never; priceOpen?: never }
+  | { priceTo: number; priceOpen?: never }
+  | { priceOpen: true; priceTo?: never }
+)
 
 /**
  * Ein Abschnitt INNERHALB einer Karte.
@@ -138,6 +204,28 @@ export type Photo = {
   src?: string
   /** Kurzes Wort im Platzhalter, z.B. „Tresen". */
   placeholderLabel: string
+}
+
+/**
+ * Eine Person im Betrieb.
+ *
+ * Eine EIGENE Ebene und nicht ein weiterer `about.blocks`-Eintrag. Die Blöcke
+ * dort sind eine Erzählung im Bild-Text-Wechsel: jeder behauptet etwas
+ * anderes, jeder bekommt eine halbe Seite. Mitarbeiter sind das Gegenteil –
+ * gleichrangige Einträge derselben Form, die man als Raster liest und
+ * miteinander vergleicht. In die Blöcke gezwängt bekäme die erste Person eine
+ * Doppelseite und die dritte den Rest, und die Reihenfolge läse sich als
+ * Rangfolge.
+ */
+export type TeamMember = {
+  /** Stabile ASCII-id für React-Key und `aria-labelledby`. */
+  id: string
+  name: string
+  /** Rolle im Betrieb, z.B. „Inhaberin & Meisterin". */
+  role: string
+  /** Ein bis zwei Sätze: Schwerpunkt, Handschrift, Eigenheit. */
+  text: string
+  photo: Photo
 }
 
 /**
@@ -318,6 +406,26 @@ export type BookingDemo = {
 
 export type GastroBusiness = {
   slug: string
+  /**
+   * Name des Token-Satzes in `demo.css` – ergibt die Klasse
+   * `demo-scope--<theme>` neben `demo-scope` an der Hülle.
+   *
+   * FEHLT bei Café und Restaurant: die beiden teilen sich den Basis-Satz
+   * (warmes Papier, gebranntes Orange), und ohne Feld hängt `DemoShell` auch
+   * keine zweite Klasse an – ihr Markup bleibt Zeichen für Zeichen dasselbe.
+   * Genau deshalb ist es ein eigenes Feld und nicht der `slug`: aus dem Slug
+   * abgeleitet hätten die beiden Vorgänger plötzlich eine Klasse mehr im HTML.
+   *
+   * Der Wert ist bewusst NICHT der Slug, auch wenn er beim Friseur gleich
+   * lautet: zwei Betriebe dürfen sich einen Look teilen (zwei Filialen, eine
+   * Handschrift), und ein Betrieb darf seinen Slug ändern, ohne die Farben zu
+   * verlieren.
+   *
+   * Der Betrieb, der eigene Farben mitbringt, braucht ausserdem ein eigenes
+   * `viewport.themeColor` – das steht im `layout.tsx` seines Ordners, weil das
+   * Gruppen-Layout den Wert für alle setzt.
+   */
+  theme?: string
   /** Voller Name, z.B. „Café Klee". */
   name: string
   /** Kurzform für die grosse Versalien-Typo, z.B. „KLEE". */
@@ -354,9 +462,22 @@ export type GastroBusiness = {
     title: string
     note?: string
     categories: MenuCategory[]
-    allergenNote: string
+    /**
+     * Satz unter der Allergen-Legende. Gehört zu `allergens` und fehlt
+     * zusammen mit ihr.
+     */
+    allergenNote?: string
   }
-  allergens: Allergen[]
+
+  /**
+   * Kennzeichnungspflichtige Allergene – die Legende am Ende der Kartenseite.
+   *
+   * FEHLT bei Betrieben, die nichts servieren. `DemoMenu` bindet den ganzen
+   * Legendenblock an dieses Feld: keine Allergene, keine Legende. Das ist
+   * wieder eine Feldfrage – die Komponente erfährt nicht, dass ein Friseur
+   * rendert, sondern nur, dass niemand etwas zu kennzeichnen hat.
+   */
+  allergens?: Allergen[]
 
   hours: {
     title: string
@@ -401,6 +522,26 @@ export type GastroBusiness = {
    * eine Komponente den Betrieb kennen müsste. Siehe {@link BookingDemo}.
    */
   booking?: BookingDemo
+
+  /**
+   * Die Mitarbeiter als eigene Ebene – FEHLT bei Café und Restaurant.
+   *
+   * Derselbe Mechanismus wie bei {@link BookingDemo}, nur eine Ebene weiter:
+   * `DemoAbout` fragt „ist `team` da?" und hängt den Block zwischen die
+   * Erzählblöcke und den Abbinder. Wer das Feld nicht hat, rendert dort
+   * weiterhin nichts – ohne dass eine Komponente die Branche kennt.
+   *
+   * Bewusst KEINE eigene Seite: die Navigations-Pille trägt keinen fünften
+   * Eintrag (gemessen, siehe `routes.ts`), und auf „Über uns" steht ein Team
+   * ohnehin am richtigen Platz – zwischen „wer wir sind" und „so erreichst du
+   * uns".
+   */
+  team?: {
+    title: string
+    /** Optionaler Satz unter der Überschrift. */
+    lead?: string
+    members: TeamMember[]
+  }
 
   /**
    * „Über uns" – Lead plus Blöcke im Bild-Text-Wechsel.
@@ -456,6 +597,21 @@ export type GastroBusiness = {
   seo: {
     /** z.B. '€' oder '€€'. */
     priceRange: string
-    servesCuisine: string[]
+    /** Nur für Betriebe, die Speisen servieren – sonst weglassen. */
+    servesCuisine?: string[]
+    /**
+     * Der schema.org-Typ des Betriebs. Fehlt er → `'Restaurant'`.
+     *
+     * Der Vorgabewert steht in `buildBusinessSchema()` und ist der Grund, warum
+     * Café und Restaurant dieses Feld nicht tragen müssen: ihr Markup bleibt
+     * unverändert. Ein Friseursalon ist nach schema.org ein `HairSalon` – ihn
+     * als `Restaurant` auszuzeichnen wäre keine Ungenauigkeit, sondern eine
+     * falsche Aussage an eine Maschine.
+     *
+     * Bewusst eine geschlossene Union und kein `string`: ein Tippfehler im
+     * Typnamen ergibt stilles Unsinn-Markup, das niemandem auffällt. Ein
+     * vierter Betrieb trägt seinen Typ hier ein – EINE Zeile, an EINER Stelle.
+     */
+    schemaType?: 'Restaurant' | 'HairSalon'
   }
 }
