@@ -52,10 +52,58 @@ html:has(.demo-scope),
   --demo-display: var(--font-demo-display), ui-serif, Georgia,
     "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
 
-  /* Hoehe des klebenden Navigationsbands. Zwei Dinge haengen daran: die
-     Kategorie-Leiste auf /karte klebt genau darunter, und Anker-Sprünge halten
-     darüber Abstand (.demo-anchor). Deshalb EIN Wert statt drei Schaetzungen. */
-  --demo-nav-h: 4.25rem;
+  /* Kleinstes Mass einer Tap-Flaeche. EIN Wert fuer Navigationslinks,
+     Kategorie-Chips und die beiden Rechtslinks im Fuss - die drei Stellen
+     hatten vorher 44, 32 und 18 px und damit dreimal eine andere Antwort auf
+     dieselbe Frage. */
+  --demo-tap: 2.75rem;
+
+  /* ── Geometrie des Navigationsbands ──────────────────────────────────────
+     Bis 27.08.2026 war --demo-nav-h eine feste Zahl (4.25rem) und die Pille
+     scrollte waagerecht, sobald die Beschriftungen nicht mehr in eine Zeile
+     passten. Gemessen bei 320 px: sichtbar sind 286 px, vier Ziele brauchen
+     beim Cafe 380 px und beim Friseur 422 px - der AKTIVE Eintrag konnte also
+     ausserhalb des Sichtfelds liegen. Seitdem bricht die Pille um, statt zu
+     scrollen.
+
+     Damit wird die Hoehe des Bandes veraenderlich - und genau das ist das
+     Problem, denn drei andere Stellen brauchen sie: die Kategorie-Leiste auf
+     /karte klebt darunter, das Vorschau-Band der Attrappe ebenso, und
+     Anker-Sprünge halten darueber Abstand. CSS kann eine GERENDERTE Hoehe
+     nicht auslesen.
+
+     Loesung: die Hoehe wird nicht gemessen, sondern VORGESCHRIEBEN. Die
+     Zeilenzahl haengt bei fester Spaltenzahl allein an der Anzahl der Ziele,
+     und die zaehlt CSS selbst - ueber :has(> li:nth-child(n)) weiter unten.
+     Deshalb steht hier eine Formel und keine Zahl; sie ist an 3 bis 7 Zielen
+     und bei 320/640/768 px gegen die gerenderte Hoehe geprueft.
+
+     Bewusst KEINE Zahl aus dem Markup (kein Inline-Style mit der Anzahl): das
+     waere eine zweite Wahrheit neben den <li> selbst. Die Liste IST die
+     Zaehlung. */
+  --demo-nav-gap: 0.25rem;
+  --demo-nav-innen: 0.25rem;
+  --demo-nav-rand: 1px;
+  /* Luft zwischen Pille und Bandkante. 0.4375rem, damit das Band bei EINER
+     Zeile exakt die alten 4.25rem = 68 px hoch bleibt (44 + 8 + 2 + 14). */
+  --demo-nav-luft: 0.4375rem;
+
+  /* Werden von den :has()-Regeln weiter unten je nach Anzahl der Ziele und
+     Breite neu belegt. Grundwert = eine Zeile, zwei Spalten. */
+  --demo-nav-spalten: 2;
+  --demo-nav-zeilen: 1;
+
+  --demo-nav-h: calc(
+    var(--demo-nav-zeilen) * var(--demo-tap) +
+    (var(--demo-nav-zeilen) - 1) * var(--demo-nav-gap) + 2 * var(--demo-nav-innen) +
+    2 * var(--demo-nav-rand) + 2 * var(--demo-nav-luft)
+  );
+
+  /* Hoehe der Kategorie-Leiste auf /karte: Chip + Innenabstand + Trennlinie.
+     Steht hier, weil .demo-anchor darueber Abstand halten muss und die Zahl
+     sonst als 3.5rem geraten dort stuende - so wandert sie mit, wenn sich das
+     Tap-Mass aendert. */
+  --demo-rail-h: calc(var(--demo-tap) + 1rem + 1px);
 
   /* Hoehe des klebenden Vorschau-Bands der Reservierungs-Attrappe. EIN Wert,
      weil Band und scroll-margin-top ihn teilen – dieselbe Begruendung wie bei
@@ -214,79 +262,146 @@ html:has(.demo-scope--friseur),
 }
 
 /* ── Navigation ──────────────────────────────────────────────────────────────
-   Eine Pille mit drei Links, oben klebend.
+   Die Ziele des Betriebs als Pille, oben klebend.
 
    Das Band ist OPAK, nicht transparent. Die Vorlage lässt ihre Pille über dem
    Inhalt schweben; hier sieht das falsch aus, weil links und rechts neben der
    schmalen Pille die grossen Versalien-Überschriften durchlaufen und wie ein
    Fehler wirken. Ein Demo-Stück muss auf den ersten Blick sauber sein.
 
-   KEIN Burger: der bräuchte State und damit JavaScript. Bei drei Zielen scrollt
-   die Pille auf schmalen Geräten stattdessen horizontal – das kostet nichts und
-   bleibt ohne JS bedienbar. */
+   KEIN Burger und KEINE Aufklappung: beides bräuchte einen Zustand. Ein
+   selbstgebauter Aufklapper bräuchte dafür JavaScript, ein <details> oder ein
+   :target-Muster käme zwar ohne aus, versteckt aber Ziele hinter einem
+   zusätzlichen Tipp – und der aktive Eintrag wäre dann nur noch mittelbar zu
+   sehen.
+
+   UMBRUCH STATT SCROLLEN (27.08.2026). Vorher war die Pille eine Zeile mit
+   overflow-x: auto. Gemessen bei 320 px: 286 px sichtbar, vier Ziele brauchen
+   380 px (Café) bzw. 422 px (Friseur), fünf 556 px, sechs 684 px. Der aktive
+   Eintrag konnte damit ausserhalb des Sichtfelds liegen – das war der Bruch.
+   Jetzt ist die Pille ein GITTER mit fester Spaltenzahl und bricht um; nichts
+   scrollt mehr waagerecht, jedes Ziel steht im Fluss.
+
+   Feste Spaltenzahl und nicht flex-wrap: der Umbruchpunkt einer Flex-Zeile
+   hängt an den Beschriftungen, und die sind Daten („Leistungen" 122 px gegen
+   „Karte" 80 px, gemessen). Bei fester Spaltenzahl hängt die Zeilenzahl allein
+   an der ANZAHL der Ziele – und die zählt CSS selbst (siehe :has() unten).
+   Nur so lässt sich die Höhe des Bandes vorschreiben, statt sie zu messen. */
 .demo-nav-band {
   position: sticky;
   top: 0;
   z-index: 30;
   display: flex;
   align-items: center;
+  /* Beides: die Formel gibt die Höhe vor, der Innenabstand hält die Pille
+     mittig, falls der Inhalt einmal höher ausfällt als vorgeschrieben. */
   min-height: var(--demo-nav-h);
+  padding-block: var(--demo-nav-luft);
   background-color: var(--background);
 }
 
 .demo-nav-pill {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  display: grid;
+  /* Spuren nach oben gedeckelt, damit die Pille auf einem 600-px-Gerät nicht
+     zu zwei sehr breiten Feldern auseinanderläuft; auf 320 px greift die
+     Deckelung nicht, dort teilen sich die Spuren die verfügbare Breite. */
+  grid-template-columns: repeat(var(--demo-nav-spalten), minmax(0, 10rem));
+  justify-content: center;
+  gap: var(--demo-nav-gap);
+  padding: var(--demo-nav-innen);
+  border: var(--demo-nav-rand) solid var(--border);
+  /* Bei EINER Zeile exakt die halbe Höhe – also dieselbe Stadionform wie
+     vorher mit 999px. Bei mehreren Zeilen ein Rechteck mit demselben Radius,
+     statt einer Kapsel, deren Rundung in die Eckfelder schneidet. */
+  border-radius: calc(
+    var(--demo-tap) / 2 + var(--demo-nav-innen) + var(--demo-nav-rand)
+  );
   background-color: var(--card);
-  overflow-x: auto;
-  /* Auf dem Handy scrollt die Pille; die Leiste selbst soll dabei unsichtbar
-     bleiben, den Hinweis uebernimmt der Verlauf unten. */
-  scrollbar-width: none;
-
-  /* ── Scroll-Hinweis an der rechten Kante, rein per CSS (KEIN JavaScript) ──
-     Gemessen bei 320 px: vier Beschriftungen brauchen 401 px, verfuegbar sind
-     288 px. Ohne Hinweis sieht die abgeschnittene Pille wie ein Fehler aus.
-
-     Zwei Verlaufsebenen uebereinander:
-     - der SCHATTEN haengt am Container (`scroll`) und steht still,
-     - die ABDECKUNG haengt am Inhalt (`local`) und wandert beim Scrollen mit.
-     Solange rechts noch etwas liegt, sitzt die Abdeckung ausserhalb des
-     sichtbaren Bereichs und der Schatten ist zu sehen. Am rechten Ende schiebt
-     sie sich exakt darueber – der Hinweis verschwindet von selbst, ohne dass
-     jemand mitzaehlen muesste. Passt der Inhalt ganz hinein (drei Eintraege,
-     breiter Bildschirm), liegt die Abdeckung von Anfang an darauf.
-     Bekannt als „scrolling shadows"-Muster.
-
-     Zuerst genannte Ebene liegt oben – die Abdeckung MUSS also vor dem
-     Schatten stehen. Farbe ueber Tokens, kein Hex. */
-  background-image:
-    linear-gradient(to left, var(--card), transparent),
-    linear-gradient(
-      to left,
-      color-mix(in oklab, var(--foreground) 20%, transparent),
-      transparent
-    );
-  background-position: right center, right center;
-  background-repeat: no-repeat;
-  background-size:
-    1.75rem 100%,
-    1.25rem 100%;
-  background-attachment: local, scroll;
 }
 
-.demo-nav-pill::-webkit-scrollbar {
-  display: none;
+/* Ohne min-width: 0 wächst ein Gitterfeld auf die Breite seiner Beschriftung
+   und sprengt die gedeckelte Spur. */
+.demo-nav-pill > li {
+  min-width: 0;
+}
+
+/* ── Zeilen- und Spaltenzahl: CSS zählt die Ziele selbst ────────────────────
+   :has(> li:nth-child(n)) heisst „es gibt mindestens n Einträge". Damit hängt
+   die vorgeschriebene Höhe an der Liste selbst und nicht an einer Zahl, die
+   irgendwo danebengeschrieben und irgendwann falsch wäre. Die Regeln stehen
+   auf .demo-scope, weil ausser dem Band auch die Kategorie-Leiste und die
+   Anker-Abstände davon lesen – und die sind keine Nachfahren der Pille.
+
+   Die beiden Bereiche schliessen sich aus (max-width 639 / min-width 640),
+   deshalb konkurrieren sie nicht über die Spezifität.
+
+   Schmal: zwei Spalten, also ceil(n/2) Zeilen.
+   Breit:  eine Zeile mit natürlichen Breiten – bis fünf Ziele. Gemessen bei
+           768 px (689 px nutzbar): vier 404 px, fünf 529 px, sechs 650 px,
+           sieben 748 px. Sechs passen also, sieben nicht mehr; ab sechs
+           schaltet der breite Zweig deshalb auf drei Spalten, damit die Zahl
+           auch bei 640 px stimmt, wo nur 576 px zur Verfügung stehen.
+
+   AB SIEBEN ZIELEN neu messen: dann trägt weder der schmale noch der breite
+   Zweig ohne eine weitere Stufe.
+
+   Ohne :has() (sehr alte Browser) bleibt die Zeilenzahl auf 1 stehen. Das Band
+   rendert trotzdem richtig – es ist ein Flex-Container mit MIN-height, wächst
+   also mit seinem Inhalt; nur die Kategorie-Leiste klebte dann eine Zeile zu
+   hoch. Der ganze Demo-Zweig hängt ohnehin schon an :has() (siehe Kopf dieser
+   Datei: ohne das bekommt nicht einmal <body> die warme Farbe), das ist also
+   keine neue Abhängigkeit. */
+@media (max-width: 639px) {
+  .demo-scope:has(.demo-nav-pill > li:nth-child(3)) {
+    --demo-nav-zeilen: 2;
+  }
+  .demo-scope:has(.demo-nav-pill > li:nth-child(5)) {
+    --demo-nav-zeilen: 3;
+  }
+  .demo-scope:has(.demo-nav-pill > li:nth-child(7)) {
+    --demo-nav-zeilen: 4;
+  }
+
+  /* Sicherheitsventil: eine Beschriftung, die selbst für die halbe Breite zu
+     lang ist, bricht innerhalb ihres Feldes um, statt es zu sprengen. Zwei
+     Zeilen à 1.15 sind rund 27 px und bleiben damit unter dem Tap-Mass – die
+     vorgeschriebene Zeilenhöhe hält also auch dann. */
+  .demo-nav-link {
+    white-space: normal;
+    line-height: 1.15;
+    overflow-wrap: break-word;
+  }
+}
+
+@media (min-width: 640px) {
+  .demo-scope:has(.demo-nav-pill > li:nth-child(6)) {
+    --demo-nav-zeilen: 2;
+  }
+  .demo-scope:has(.demo-nav-pill > li:nth-child(7)) {
+    --demo-nav-zeilen: 3;
+  }
+
+  /* Bis fünf Ziele: eine Zeile, natürliche Breiten – Zeichen für Zeichen die
+     Optik von vorher. */
+  .demo-nav-pill {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+  }
+
+  .demo-scope:has(.demo-nav-pill > li:nth-child(6)) .demo-nav-pill {
+    grid-template-columns: repeat(3, minmax(0, 10rem));
+    grid-auto-flow: row;
+  }
 }
 
 .demo-nav-link {
   display: flex;
   align-items: center;
-  /* 44 px: die Navigation ist die primaere Aktion der Seite und soll sich mit
-     dem Daumen sicher treffen lassen. */
-  min-height: 2.75rem;
+  justify-content: center;
+  /* Die Navigation ist die primaere Aktion der Seite und soll sich mit dem
+     Daumen sicher treffen lassen. */
+  min-height: var(--demo-tap);
   padding-inline: 1rem;
   border-radius: 999px;
   font-family: var(--demo-display);
@@ -294,6 +409,7 @@ html:has(.demo-scope--friseur),
   letter-spacing: 0.14em;
   font-size: 0.72rem;
   font-weight: 600;
+  text-align: center;
   white-space: nowrap;
   color: var(--muted-foreground);
   transition:
@@ -343,10 +459,14 @@ html:has(.demo-scope--friseur),
   display: none;
 }
 
+/* 44 px statt der frueheren 32 px (27.08.2026). Die Chips sind Sprungmarken
+   und damit Bedienelemente wie jedes andere; 32 px war schlicht ein anderer
+   Wert fuer dieselbe Frage. Die Leiste waechst dadurch von 49 auf 61 px -
+   --demo-rail-h rechnet das mit, und .demo-anchor liest von dort. */
 .demo-rail-link {
   display: flex;
   align-items: center;
-  min-height: 2rem;
+  min-height: var(--demo-tap);
   padding-inline: 0.75rem;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -364,9 +484,13 @@ html:has(.demo-scope--friseur),
   border-color: var(--accent);
 }
 
-/* Sprungziele dürfen nicht unter den zwei klebenden Reihen landen. */
+/* Sprungziele dürfen nicht unter den zwei klebenden Reihen landen.
+   Frueher stand hier 3.5rem als Schaetzung fuer die Kategorie-Leiste. Seit das
+   Navigationsband umbricht und die Chips 44 px hoch sind, waere jede feste
+   Zahl falsch: beide Hoehen stehen jetzt als Token daneben und werden addiert,
+   plus etwas Luft. */
 .demo-anchor {
-  scroll-margin-top: calc(var(--demo-nav-h) + 3.5rem);
+  scroll-margin-top: calc(var(--demo-nav-h) + var(--demo-rail-h) + 0.5rem);
 }
 
 /* ── Flächiger Textlink („Route öffnen", „Karte") ────────────────────────────
@@ -452,6 +576,22 @@ html:has(.demo-scope--friseur),
 .demo-fuss-link:hover {
   color: var(--accent);
   text-decoration-color: var(--accent);
+}
+
+/* Die beiden Rechtslinks im Fuss sind eigenstaendige Ziele in einer Liste,
+   keine Verweise mitten im Satz - sie brauchen dieselbe Tap-Flaeche wie jedes
+   andere Bedienelement (vorher 18 px).
+
+   Bewusst ueber die Struktur ausgewaehlt und nicht ueber eine zweite Klasse:
+   eine Klasse haette das Markup JEDER Demo-Seite veraendert, und die
+   Regressionspruefung dieser Runde soll zeigen, dass sich ausser der
+   Navigation nichts bewegt hat. Die Gang-Links der Menue-Buendel tragen
+   dieselbe Klasse, stehen aber in einer engen Aufzaehlung - sie bleiben
+   deshalb bewusst aussen vor. */
+.demo-scope footer .demo-fuss-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--demo-tap);
 }
 
 .demo-fuss-link:focus-visible {

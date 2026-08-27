@@ -8,22 +8,25 @@
  * „Umlaut-/Sonderzeichen-Routen" in PROJEKT-STAND.md.
  *
  * `start`, `menu`, `about` und `contact` stehen in der Navigations-Pille,
- * `imprint` und `privacy` nur in der Fußzeile – sonst wären es sechs Einträge
- * in einer Leiste, die schon bei vier scrollen muss.
+ * `imprint` und `privacy` nur in der Fußzeile. Das war zuerst eine Platzfrage;
+ * seit die Pille umbricht statt zu scrollen, ist es eine RANGFRAGE: Impressum
+ * und Datenschutz sind Pflichtangaben, keine Ziele, zu denen man einen Betrieb
+ * besucht. Sie stehen dort, wo man sie sucht.
  *
  * `booking` (die Reservierungs-Attrappe) steht WEDER in der Pille NOCH im Fuß,
- * sondern nur als Fläche auf der Kontaktseite. Gemessen: vier Beschriftungen
- * brauchen bei 320 px 401 px bei 288 px verfügbarer Breite – die Pille scrollt
- * bereits. (Nachmessung 27.08.2026 im Browser, `scrollWidth` gegen
- * `clientWidth` der Pille: 286 px sichtbar, Café 380 px, Friseur 422 px. Andere
- * Messbasis als die 401 oben, gleiche Aussage – und der dritte Betrieb hat den
- * Überstand von 94 auf 136 px vergrössert, allein durch das längere Wort
- * „Leistungen". Ein Muster jenseits von vier Einträgen ist als eigener Punkt in
- * `docs/CLAUDE-CODE-TODO.md` offen; der Friseur ist ihm ausgewichen, indem sein
- * Team auf `/ueber-uns` liegt statt auf einer fünften Seite.) Ein fünfter Eintrag machte ausgerechnet die wichtigste Fläche zu
- * der einen, die man erst freiwischen muss. Weil `DemoNav` seine Einträge fest
- * aufzählt, trägt `current="booking"` folgerichtig KEIN `aria-current` – genau
- * wie `imprint` und `privacy` heute schon.
+ * sondern nur als Fläche auf der Kontaktseite. Ursprünglich war das eine
+ * Platzfrage: die Pille war eine Zeile mit waagerechtem Scrollen, und ein
+ * fünfter Eintrag hätte die wichtigsten Ziele aus dem Bild geschoben.
+ *
+ * **Seit dem 27.08.2026 ist die Platzfrage gelöst** – die Pille bricht um,
+ * statt zu scrollen, und trägt gemessen sechs Ziele (Einzelheiten im
+ * Navigationsabschnitt von `demo.css`). Der Grund, `booking` draussen zu
+ * lassen, ist damit ein ANDERER geworden und gilt weiterhin: eine Attrappe ist
+ * ein vorgeführtes Feature, kein Ziel des Betriebs – sie gehört dorthin, wo
+ * man ohnehin nach dem Weg zum Tisch sucht, und nicht neben „Karte" und
+ * „Kontakt". Weil `DemoNav` seine Einträge fest aufzählt, trägt
+ * `current="booking"` folgerichtig KEIN `aria-current` – genau wie `imprint`
+ * und `privacy` heute schon.
  */
 export type DemoPage =
   | 'start'
