@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { LayoutDashboard, Monitor, Paintbrush, Sparkles } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -10,12 +11,24 @@ import SectionHeading from '@/components/SectionHeading'
 import ServiceDiagram from '@/components/ServiceDiagram'
 import { cn } from '@/lib/utils'
 import { CoolMode } from '@/components/ui/CoolMode'
-import Earth from '@/components/ui/Earth'
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton'
+import LazyVisible from '@/components/ui/LazyVisible'
 import { Marquee } from '@/components/ui/Marquee'
-import SparklesCanvas from '@/components/ui/Sparkles'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/Tilt'
 import { lighthouse, moeglichkeitenIntro, techStack } from '@/data/moeglichkeiten'
+
+/**
+ * Die zwei schweren Effekte kommen als EIGENE Chunks und werden erst geladen,
+ * wenn `LazyVisible` sie in den Baum hängt – siehe Block (6) unten und den
+ * Kopfkommentar von `LazyVisible`.
+ *
+ * `ssr: false` ist hier richtig und nicht bequem: beide rendern serverseitig
+ * ohnehin nur eine leere, `aria-hidden`-Canvas – es geht kein Inhalt aus dem
+ * HTML verloren. Der Platz, den sie einnehmen, wird vom umgebenden Element
+ * reserviert, das der Server ganz normal rendert; deshalb bleibt CLS 0.
+ */
+const Earth = dynamic(() => import('@/components/ui/Earth'), { ssr: false })
+const SparklesCanvas = dynamic(() => import('@/components/ui/Sparkles'), { ssr: false })
 
 /* Stille Showcase-Seite „Was möglich ist" (Route /moeglichkeiten, NICHT in der
    Navbar verlinkt). Reihenfolge: Kopf → Musterseiten → Bento → verspielt/seriös
@@ -296,9 +309,20 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
             </p>
           </div>
 
+          {/* Die Boxen aussen rendert der Server wie bisher – sie reservieren
+              den Platz, deshalb bleibt CLS 0. Gemountet werden die beiden
+              Canvas erst, wenn der Block sich dem Sichtfeld nähert (800 px
+              Vorlauf): gemessen kosteten sie zusammen rund 400 ms Blocking
+              Time beim Seitenaufbau, zwei Bildschirme bevor man sie sieht. */}
           <div className="relative w-full max-w-[34rem]">
-            <SparklesCanvas className="pointer-events-none absolute inset-0" density={70} />
-            <Earth className="relative z-10 mx-auto aspect-square w-full max-w-[26rem]" />
+            <LazyVisible className="pointer-events-none absolute inset-0">
+              <SparklesCanvas className="h-full w-full" density={70} />
+            </LazyVisible>
+            <div className="relative z-10 mx-auto aspect-square w-full max-w-[26rem]">
+              <LazyVisible className="h-full w-full">
+                <Earth className="h-full w-full" />
+              </LazyVisible>
+            </div>
           </div>
         </div>
       </Reveal>

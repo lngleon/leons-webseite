@@ -13,39 +13,38 @@ export const moeglichkeitenIntro = {
  * 27.08.2026 stand dort ein sichtbarer Platzhalter („—"), weil keine erfundene
  * Zahl auf dieser Seite stehen sollte.
  *
- * **Seit dem 28.08.2026 stehen ZWEI Messungen da, und das ist der Punkt.**
- * Gross sind die Werte der **Startseite** – das ist die Seite, um die es im
- * Verkaufsgespräch geht, und sie ist die ehrliche Antwort auf „wie schnell
- * baust du?". Daneben, kleiner aber nicht versteckt, bleibt die Zahl dieser
- * Showcase-Seite stehen, samt Grund. Keine der beiden fällt weg: die 96 ohne
- * die 79 wäre Rosinenpickerei, die 79 allein wäre die Effekt-Seite als Maßstab
- * für alles andere.
+ * **Es stehen ZWEI Messungen da, und das ist der Punkt.** Gross die Werte der
+ * **Startseite** – das ist die Seite, um die es im Verkaufsgespräch geht.
+ * Daneben, kleiner aber nicht versteckt, die Zahl dieser Showcase-Seite. Keine
+ * der beiden fällt weg, und die Zahl steht auf der Seite, die sie beschreibt:
+ * eine veraltete Zahl wäre hier eine Falschaussage, keine Ungenauigkeit.
  *
  * Messbedingungen stehen HIER und nicht nur im Protokoll, weil eine
  * Lighthouse-Zahl ohne sie nichts bedeutet: Lighthouse 12.8.2 CLI, Preset
  * **Mobil** (412 × 823, DPR 1,75, simulierte Drosselung – Slow 4G, CPU 4×),
  * gegen den **Produktionsbuild** (`next build` + `next start`) auf dem eigenen
- * Rechner. Kein Deploy, keine Vercel-Umgebung – die Vercel-Settings sind noch
- * offen, siehe TODO. **Median aus je drei Läufen**, nicht der beste, und beide
- * Seiten gegen denselben Build in derselben Sitzung gemessen.
+ * Rechner. Kein Deploy – die Vercel-Settings sind noch offen, siehe TODO.
+ * **Median aus je drei Läufen**, beide Seiten gegen denselben Build.
  *
- * Die Rohläufe, damit der Median überprüfbar bleibt:
- * Startseite 96 / 96 / 96 (LCP 2,6 s · TBT 81 ms · CLS 0),
- * `/moeglichkeiten` 79 / 74 / 79 (LCP 3,6 s · TBT 450 ms · CLS 0).
+ * Rohläufe vom 28.08.2026 (nach der Ladestrategie-Umstellung):
+ * Startseite **96 / 97 / 96** (LCP 2,6 s · TBT 77 ms · CLS 0),
+ * `/moeglichkeiten` **94 / 95 / 95** (LCP 2,9 s · TBT 39 ms · CLS 0).
  *
- * Protokolliert, weil es sonst nach Schönrechnen aussähe: eine allererste
- * Runde am 27.08.2026 auf einem noch mit dem Build beschäftigten Rechner ergab
- * für `/moeglichkeiten` 66 / 70 / 78 – dieselbe Seite, derselbe Modus, eine
- * Streuung von zwölf Punkten. Wer eine einzelne Lighthouse-Zahl notiert,
- * notiert unter Umständen die Auslastung seines Rechners.
+ * **Vorher standen hier 79 gegen 96, und der Abstand hatte einen Grund, der
+ * kein Naturgesetz war.** Gemessen per Ablation – jeden Effekt einzeln aus dem
+ * Build genommen, drei Läufe je Variante – zeigte sich: mit allen Effekten
+ * 431 ms Blocking Time, **ohne den Globus 28 ms, ohne die Funken 26 ms**.
+ * Nicht additiv, sondern ein Paar: zwei gestapelte Canvas, die beim Mount
+ * gleichzeitig hochfahren (WebGL-Context, Textur, Partikel) – und zwar beim
+ * Seitenaufbau, zwei Bildschirme bevor man sie sieht. Ihre rAF-Schleifen
+ * pausierten ausserhalb des Sichtfelds schon vorher; der Mount liess sich
+ * nicht pausieren, nur verschieben. Genau das tut jetzt `LazyVisible`:
+ * **kein Effekt ist verschwunden, keiner wurde abgeschwächt** – sie starten
+ * 800 px vor dem Sichtfeld statt beim Seitenaufbau. Tilt, Marquee und CoolMode
+ * blieben unangetastet; die Ablation hat ihnen keine messbare Zeit zugeordnet.
  *
- * **Warum 79 und nicht 96 auf dieser Seite** – ungeschönt: LCP 3,6 s und TBT
- * 450 ms gegen 2,6 s und 81 ms auf der Startseite. Beide liefern statisches
- * HTML; diese hier holt zusätzlich Tilt, Globus, Funken, Marquee und die
- * Entrance-Animationen nach, und genau das kostet auf einem gedrosselten
- * Mobilgerät. Das ist keine Panne, sondern der Preis einer Seite, die Effekte
- * vorführt – und der Grund, warum die Startseite ohne sie auskommt. **CLS ist
- * auf beiden 0.**
+ * Der verbliebene Punkt Unterschied (95 gegen 96) ist Messrauschen in der
+ * Grössenordnung der Läufe selbst und wird hier nicht wegerklärt.
  *
  * Best Practices 96 statt 100 hat auf BEIDEN Seiten genau eine Ursache, und
  * sie ist lokal: der 404 auf `/_vercel/insights/script.js`. Das Skript gibt es
@@ -65,14 +64,14 @@ export const lighthouse = {
       { label: 'Best Practices', wert: 96 },
       { label: 'SEO', wert: 100 },
     ],
-    metriken: 'LCP 2,6 s · TBT 81 ms · CLS 0',
+    metriken: 'LCP 2,6 s · TBT 77 ms · CLS 0',
   },
-  /** Diese Seite hier – bleibt sichtbar daneben stehen, mit ihrem Grund. */
+  /** Diese Seite hier – bleibt sichtbar daneben stehen. */
   showcase: {
     label: 'Diese Showcase-Seite',
-    performance: 79,
+    performance: 95,
     grund:
-      'Effekt-Seite: Tilt, Globus, Funken und Marquee laden zusätzlich JavaScript nach (LCP 3,6 s · TBT 450 ms · CLS 0). Barrierefreiheit, Best Practices und SEO sind identisch.',
+      'Gleicher Stack, gleiche Auslieferung – Globus und Funken starten seit dem 28.08.2026 erst kurz vor dem Sichtfeld statt beim Seitenaufbau (LCP 2,9 s · TBT 39 ms · CLS 0, vorher 79 bei 450 ms). Kein Effekt wurde dafür entfernt.',
   },
 } as const
 
