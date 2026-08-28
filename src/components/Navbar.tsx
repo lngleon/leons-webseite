@@ -51,7 +51,13 @@ export default function Navbar() {
         {/* Logo-Platzhalter "LL" */}
         <Link
           href="/"
-          aria-label={`${site.name} – Startseite`}
+          /* WCAG 2.5.3 „Label in Name": der SICHTBARE Text muss im
+             zugänglichen Namen VORKOMMEN, nicht von ihm ersetzt werden. Bis
+             zum 28.08.2026 stand hier nur „Leon Lang – Startseite" – der
+             Screenreader las den Namen, aber Sprachsteuerung fand den Link
+             nicht: „Klick LL" traf ins Leere, weil „LL" im Namen fehlte.
+             Jetzt steht das Kürzel vorn, der Rest erklärt es. */
+          aria-label={`${site.logoText} – Startseite von ${site.name}`}
           className="inline-flex items-center rounded-md border border-border px-2.5 py-1 text-lg font-semibold tracking-tight text-foreground transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {site.logoText}

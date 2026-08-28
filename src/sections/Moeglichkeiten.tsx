@@ -75,10 +75,12 @@ function BentoCard({
 /* Große Zelle „Diese Seite selbst": handgebaute, STATISCHE Mono-Grafik
    (Dark-System) – ein abstraktes Mini-Abbild dieser Seite.
    Seit 27.08.2026 stehen darunter ECHTE Lighthouse-Zahlen statt des
-   Platzhalters „—". Alle vier Kategorien, auch die schwächste: Performance 80.
-   Sie wegzulassen oder den besten von drei Läufen zu nehmen wäre genau die
-   Sorte Zahl gewesen, für die vorher lieber ein Strich dort stand. Werte,
-   Messbedingungen und die Begründung der 80 stehen in data/moeglichkeiten.ts. */
+   Platzhalters „—", seit 28.08.2026 ZWEI Messungen. Gross die Startseite –
+   das ist die Seite, um die es im Verkaufsgespräch geht. Klein, aber nicht
+   versteckt, die Zahl DIESER Seite samt Grund: sie führt Effekte vor und
+   zahlt dafür. Keine der beiden fällt weg – die 96 ohne die 79 wäre
+   Rosinenpickerei, die 79 allein wäre die Effekt-Seite als Maßstab für alles
+   andere. Werte, Rohläufe und Messbedingungen in data/moeglichkeiten.ts. */
 function ThisSiteGraphic() {
   return (
     <div className="flex h-full flex-col gap-3">
@@ -98,11 +100,15 @@ function ThisSiteGraphic() {
         </div>
       </div>
 
-      {/* Lighthouse: gemessen, nicht behauptet. Die vier Kategorien stehen
-          gleichrangig nebeneinander – die 80 bekommt keine Sonderbehandlung
-          und wird nicht versteckt. */}
+      {/* Lighthouse: gemessen, nicht behauptet – und die gemessene Seite steht
+          ausdrücklich dabei. Eine Zahl ohne Seitenangabe wäre eine Behauptung
+          über „die Seite", nicht über eine Messung. */}
+      <p className="text-xs text-muted-foreground">
+        Lighthouse, Mobil ·{' '}
+        <span className="text-foreground">{lighthouse.hauptseite.label}</span>
+      </p>
       <div className="grid grid-cols-2 gap-3">
-        {lighthouse.kategorien.map((k) => (
+        {lighthouse.hauptseite.kategorien.map((k) => (
           <div key={k.label} className="rounded-lg border border-border p-3">
             <p className="text-xs text-muted-foreground">{k.label}</p>
             <p className="text-2xl font-semibold text-foreground">{k.wert}</p>
@@ -110,7 +116,17 @@ function ThisSiteGraphic() {
         ))}
       </div>
       <p className="text-xs leading-relaxed text-muted-foreground/70">
-        {lighthouse.metriken} · {lighthouse.bedingungen}
+        {lighthouse.hauptseite.metriken} · {lighthouse.bedingungen}
+      </p>
+
+      {/* Die schwächere Zahl bleibt sichtbar – abgesetzt, aber nicht kleiner
+          geredet. Der Grund steht in einem Satz daneben, nicht im Kleingedruckten
+          einer anderen Datei. */}
+      <p className="rounded-lg border border-dashed border-border p-3 text-xs leading-relaxed text-muted-foreground">
+        <span className="text-foreground">
+          {lighthouse.showcase.label}: Performance {lighthouse.showcase.performance}
+        </span>{' '}
+        – {lighthouse.showcase.grund}
       </p>
     </div>
   )

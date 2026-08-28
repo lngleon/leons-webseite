@@ -31,7 +31,14 @@ export function InteractiveHoverButton({
           {children}
         </span>
       </div>
-      <div className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-accent-foreground opacity-0 transition-all duration-300 group-hover:-translate-x-5 group-hover:opacity-100">
+      {/* Die zweite Beschriftung ist eine reine Hover-SCHICHT – dasselbe Wort
+          ein zweites Mal, damit es hereingleiten kann. Ohne `aria-hidden` steht
+          es im zugänglichen Namen und der Knopf heisst "Ganz seriös Ganz
+          seriös": doppelt vorgelesen, und die Sprachsteuerung bekommt zwei
+          Treffer für ein Ziel. Gefunden beim 2.5.3-Durchgang am 28.08.2026 –
+          kein Verstoss gegen 2.5.3 (der sichtbare Text IST enthalten), aber
+          derselbe Fehlertyp: zugänglicher Name ungleich sichtbarer Text. */}
+      <div aria-hidden="true" className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-accent-foreground opacity-0 transition-all duration-300 group-hover:-translate-x-5 group-hover:opacity-100">
         <span>{children}</span>
         <ArrowRight className="h-4 w-4" />
       </div>
