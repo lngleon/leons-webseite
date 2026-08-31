@@ -26,9 +26,14 @@ export const moeglichkeitenIntro = {
  * Rechner. Kein Deploy – die Vercel-Settings sind noch offen, siehe TODO.
  * **Median aus je drei Läufen**, beide Seiten gegen denselben Build.
  *
- * Rohläufe vom 28.08.2026 (nach der Ladestrategie-Umstellung):
- * Startseite **96 / 97 / 96** (LCP 2,6 s · TBT 77 ms · CLS 0),
- * `/moeglichkeiten` **94 / 95 / 95** (LCP 2,9 s · TBT 39 ms · CLS 0).
+ * Rohläufe vom 31.08.2026 (nach dem Hero-Umbau mit Showcase-Bühne):
+ * Startseite **95 / 93 / 95** (LCP 2,95 s · TBT ~30 ms · CLS 0),
+ * `/moeglichkeiten` **95 / 96 / 95** (LCP 2,85 s · TBT 24–28 ms · CLS 0).
+ * Die Startseite stand am 28.08.2026 bei 96 (LCP 2,6 s, Element: die H1);
+ * seit dem 31.08.2026 ist das LCP-Element das erste Bild der Hero-Bühne –
+ * ein Punkt weniger, bewusst getragen für ein Hero, das Websites zeigt.
+ * Gemessen NUR auf ruhigem Rechner: eine Runde mit 35 verwaisten
+ * `next start`-Servern im Hintergrund zeigte 58–68 und wurde verworfen.
  *
  * **Vorher standen hier 79 gegen 96, und der Abstand hatte einen Grund, der
  * kein Naturgesetz war.** Gemessen per Ablation – jeden Effekt einzeln aus dem
@@ -43,8 +48,8 @@ export const moeglichkeitenIntro = {
  * 800 px vor dem Sichtfeld statt beim Seitenaufbau. Tilt, Marquee und CoolMode
  * blieben unangetastet; die Ablation hat ihnen keine messbare Zeit zugeordnet.
  *
- * Der verbliebene Punkt Unterschied (95 gegen 96) ist Messrauschen in der
- * Grössenordnung der Läufe selbst und wird hier nicht wegerklärt.
+ * Seit dem 31.08.2026 stehen beide Seiten bei 95 – ein Unterschied in der
+ * Grössenordnung des Messrauschens wird hier weder behauptet noch wegerklärt.
  *
  * Best Practices 96 statt 100 hat auf BEIDEN Seiten genau eine Ursache, und
  * sie ist lokal: der 404 auf `/_vercel/insights/script.js`. Das Skript gibt es
@@ -52,26 +57,26 @@ export const moeglichkeitenIntro = {
  * Konsolenfehler im Bericht.
  */
 export const lighthouse = {
-  gemessenAm: '28.08.2026',
+  gemessenAm: '31.08.2026',
   bedingungen:
     'Lighthouse 12.8.2, Mobil-Preset, lokal gegen next start · Median aus je 3 Läufen',
   /** Die Hauptzahlen der Zelle – ausdrücklich die Startseite. */
   hauptseite: {
     label: 'Startseite',
     kategorien: [
-      { label: 'Performance', wert: 96 },
+      { label: 'Performance', wert: 95 },
       { label: 'Barrierefreiheit', wert: 100 },
       { label: 'Best Practices', wert: 96 },
       { label: 'SEO', wert: 100 },
     ],
-    metriken: 'LCP 2,6 s · TBT 77 ms · CLS 0',
+    metriken: 'LCP 2,95 s · TBT 30 ms · CLS 0',
   },
   /** Diese Seite hier – bleibt sichtbar daneben stehen. */
   showcase: {
     label: 'Diese Showcase-Seite',
     performance: 95,
     grund:
-      'Gleicher Stack, gleiche Auslieferung – Globus und Funken starten seit dem 28.08.2026 erst kurz vor dem Sichtfeld statt beim Seitenaufbau (LCP 2,9 s · TBT 39 ms · CLS 0, vorher 79 bei 450 ms). Kein Effekt wurde dafür entfernt.',
+      'Gleicher Stack, gleiche Auslieferung – Globus und Funken starten seit dem 28.08.2026 erst kurz vor dem Sichtfeld statt beim Seitenaufbau (LCP 2,85 s · TBT 24–28 ms · CLS 0, vorher 79 bei 450 ms). Kein Effekt wurde dafür entfernt.',
   },
 } as const
 

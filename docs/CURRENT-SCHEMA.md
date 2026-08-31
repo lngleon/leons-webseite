@@ -119,6 +119,9 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 | 100 % | individuell programmiert |
 | 1 | Person, voller Stack |
 
+### Branchen-Laufband (12, seit 31.08.2026)
+`src/data/branchen.ts` – Pills mit lucide-Icon, Reihenfolge = Array: Cafés & Bäckereien · Restaurants · Friseure & Barbiere · Nagelstudios · Gärtnereien & Floristik · Handwerk · Praxen · Vereine · Startups · Selbstständige · Studios & Fitness · Fotografie & Kreative. Eyebrow „Websites & Tools für" – bewusst ein **Angebot**, keine Referenzliste (die gebauten Branchen stehen in der Projekte-Sektion).
+
 ### Problem-Schmerzpunkte (4)
 1. Keine oder veraltete Webseite
 2. Unsichtbar im Netz
@@ -140,7 +143,7 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 | Live-Link (aktuell) | https://blumen-lang-start.vercel.app/ | https://naillery-v2.vercel.app/ |
 | Live-Link (später) | https://blumen-lang.de/ | https://naillery.com/ |
 
-Dazu zeigt die Sektion seit 31.08.2026 die **drei Musterseiten** (Café Klee, Restaurant Glut, Salon Wirbel) als Dreierreihe unter den Live-Karten – Daten NICHT dupliziert, sondern `demoPreviews` aus `src/data/demos.ts` (Server-Import in `page.tsx`, als Prop an die Client-Sektion). Jede Karte trägt ihre Branche als Akzent-Eyebrow und ein Badge („Live im Netz" / „Musterseite") auf dem Screenshot. Die ganze Karte ist der Link (Muster von `DemoShowcase`); Live extern in neuem Tab, Musterseiten intern zu `/demo/*`. KEINE Detail-Ansicht/Overlay (geparkt seit 09.06.2026).
+Dazu zeigt die Sektion seit 31.08.2026 die **drei Musterseiten** (Café Klee, Restaurant Glut, Salon Wirbel) als Dreierreihe unter den Live-Karten – Daten NICHT dupliziert, sondern `demoPreviews` aus `src/data/demos.ts` (Server-Import in `page.tsx`, als Prop `muster` an ZWEI Client-Sektionen: `Hero` für die Showcase-Bühne und `Projekte` für die Kartenreihe – `demos.ts` bleibt server-only, in den Client-Komponenten steht nur `import type`). Jede Karte trägt ihre Branche als Akzent-Eyebrow und ein Badge („Live im Netz" / „Musterseite") auf dem Screenshot. Die ganze Karte ist der Link (Muster von `DemoShowcase`); Live extern in neuem Tab, Musterseiten intern zu `/demo/*`. KEINE Detail-Ansicht/Overlay (geparkt seit 09.06.2026).
 
 > Live-Links sind als änderbare Felder zu führen, damit der User später auf die finalen Domains umstellen kann.
 
@@ -178,7 +181,7 @@ Dazu zeigt die Sektion seit 31.08.2026 die **drei Musterseiten** (Café Klee, Re
 
 | Route | Inhalt |
 |-------|--------|
-| `/` | Single-Page (alle Sektionen: Hero → Problem → Leistungen → Über mich → Prozess → Projekte → Statement → Kontakt) |
+| `/` | Single-Page (alle Sektionen: Hero mit Showcase-Bühne → Branchen-Laufband → Problem → Leistungen → Über mich → Prozess → Projekte → Statement → Kontakt) |
 | `/impressum` | Impressum (Platzhalter, Inhalt vom User) |
 | `/datenschutz` | Datenschutzerklärung (Platzhalter, Inhalt vom User) |
 | `/moeglichkeiten` | Stille Showcase-Seite „Was möglich ist" (statisch gerendert, bewusst NICHT in der Navbar verlinkt). **Seit 25.08.2026 ASCII** – vorher `/möglichkeiten`, was einen percent-encodeten Ordner plus einen zweiten Re-Export-Ordner brauchte; jetzt ein Ordner `src/app/moeglichkeiten/`, keine Encoding-Fallstricke. **Kein Redirect** von der alten URL (die Seite war nie verlinkt). Titel/Description weiterhin mit Umlaut („Möglichkeiten – Leon Lang") |

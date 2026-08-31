@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Hero from '@/sections/Hero'
+import Branchen from '@/sections/Branchen'
 import Problem from '@/sections/Problem'
 import Leistungen from '@/sections/Leistungen'
 import UeberMich from '@/sections/UeberMich'
@@ -14,18 +15,20 @@ export const metadata: Metadata = pageMetadata(routeMeta.home)
 
 /**
  * Startseite (Single-Page). Sektionen werden hier nacheinander eingehängt.
- * Reihenfolge: Hero → Problem → Leistungen → Über mich → Prozess → Projekte
- * → Statement → Kontakt.
+ * Reihenfolge: Hero → Branchen-Band → Problem → Leistungen → Über mich →
+ * Prozess → Projekte → Statement → Kontakt.
  *
- * `demoPreviews` wird HIER (Server) geladen und Projekte als Prop
- * hineingereicht – `src/data/demos.ts` darf nicht in Client-Komponenten
- * importiert werden (zieht die vollen Betriebs-Objekte, siehe dortiger
- * Kopfkommentar). Serialisiert werden nur die kleinen Preview-Objekte.
+ * `demoPreviews` wird HIER (Server) geladen und Hero (Showcase-Bühne) sowie
+ * Projekte als Prop hineingereicht – `src/data/demos.ts` darf nicht in
+ * Client-Komponenten importiert werden (zieht die vollen Betriebs-Objekte,
+ * siehe dortiger Kopfkommentar). Serialisiert werden nur die kleinen
+ * Preview-Objekte.
  */
 export default function Home() {
   return (
     <>
-      <Hero />
+      <Hero muster={demoPreviews} />
+      <Branchen />
       <Problem />
       <Leistungen />
       <UeberMich />

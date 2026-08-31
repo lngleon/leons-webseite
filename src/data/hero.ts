@@ -30,7 +30,7 @@ export const heroStats: HeroStat[] = [
   { value: 1, label: 'Person, voller Stack' },
 ]
 
-/* ── Terminal-Hero ──────────────────────────────────────────────
+/* ── Terminal (seit 31.08.2026 auf /moeglichkeiten, vorher im Hero) ──
    Vier Tabs: der reale Stack, der reale Next-Build, der Deploy-Weg
    (Push → Vercel) und „whoami".
 

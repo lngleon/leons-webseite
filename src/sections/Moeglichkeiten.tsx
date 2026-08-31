@@ -9,6 +9,7 @@ import type { ReactNode } from 'react'
 import Card from '@/components/Card'
 import SectionHeading from '@/components/SectionHeading'
 import ServiceDiagram from '@/components/ServiceDiagram'
+import Terminal from '@/components/Terminal'
 import { cn } from '@/lib/utils'
 import { CoolMode } from '@/components/ui/CoolMode'
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton'
@@ -324,6 +325,33 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
               </LazyVisible>
             </div>
           </div>
+        </div>
+      </Reveal>
+
+      {/* (6b) Terminal – bis 31.08.2026 im Hero der Startseite, seitdem hier:
+         die Zielgruppe der Startseite will Websites sehen, keine Build-
+         Ausgabe; auf der Effekt-Seite passt es als Technik-Schaufenster.
+         Ehrlich beschriftet: Stack und Ablauf sind echt, Projektname und
+         Routen sind bewusst Platzhalter (siehe `src/data/hero.ts`) – kein
+         „echter Build dieser Seite". Mountet über `LazyVisible` (800 px
+         Vorlauf), damit das Tippen erst startet, wenn man es sehen kann,
+         statt unsichtbar beim Seitenaufbau (~5 s Timer-Updates umsonst);
+         die min-Höhe reserviert den Platz, der Mount passiert außerhalb
+         des Sichtfelds → kein sichtbarer Shift. */}
+      <Reveal className="mt-24 sm:mt-32">
+        <div className="flex flex-col items-center gap-8 text-center">
+          <div className="flex flex-col items-center gap-3">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              So sieht ein Next-Build aus
+            </h2>
+            <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
+              Kein Baukasten, kein gekauftes Theme: Next.js, TypeScript und Tailwind. Stack und
+              Ablauf sind echt, Projektname und Routen sind Platzhalter – tippt sich Tab für Tab.
+            </p>
+          </div>
+          <LazyVisible className="min-h-[20rem] w-full max-w-2xl text-left">
+            <Terminal />
+          </LazyVisible>
         </div>
       </Reveal>
 

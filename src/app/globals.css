@@ -108,7 +108,8 @@
   }
 }
 
-/* ── Hero: generativer Hintergrund + Terminal-Cursor ─────────────
+/* ── Hero-Hintergrund + Terminal-Cursor (Terminal seit 31.08.2026 auf
+   /moeglichkeiten) ────────────────────────────────────────────────
    Reine Transform-/Opacity-Animationen (GPU-leicht). Bei
    prefers-reduced-motion komplett aus → statisches Frame. */
 @keyframes hero-drift-a {
@@ -166,6 +167,26 @@
   animation: hero-drift-c 26s ease-in-out infinite;
 }
 
+/* Lichtstrahl hinter der Showcase-Bühne: ein großer, langsam rotierender
+   Conic-Verlauf. Bewusst OHNE filter:blur – die weichen Kanten kommen aus
+   breiten Farbstopps und einer Radial-Maske (die zugleich den harten
+   Mittelpunkt des Conic verbirgt). So bleibt die Rotation eine reine
+   Compositor-Transform statt einer Blur-Neuberechnung pro Frame. Die
+   Zentrierung steht IM Keyframe, weil die Animation `transform` komplett
+   ersetzt. */
+@keyframes hero-beam-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+.hero-beam {
+  transform: translate(-50%, -50%);
+  animation: hero-beam-spin 44s linear infinite;
+}
+
 .terminal-cursor {
   animation: terminal-blink 1.05s steps(1, end) infinite;
 }
@@ -174,6 +195,7 @@
   .hero-blob-a,
   .hero-blob-b,
   .hero-blob-c,
+  .hero-beam,
   .terminal-cursor {
     animation: none;
   }

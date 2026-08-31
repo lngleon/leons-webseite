@@ -3,19 +3,23 @@
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import Counter from '@/components/Counter'
-import Terminal from '@/components/Terminal'
+import HeroStage from '@/components/HeroStage'
+import type { StageSlide } from '@/components/HeroStage'
 import { withCodeTags } from '@/components/CodeTag'
 import AuroraText from '@/components/AuroraText'
 import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
 import { hero, heroSecondaryCta, heroStats } from '@/data/hero'
+import { projects } from '@/data/projects'
+import type { DemoPreview } from '@/data/demos'
 import { ctaItem } from '@/data/navigation'
 
 /**
  * Generativer, code-basierter Hintergrund: weiche Violett-Blobs (Akzent über
- * --accent / --accent-solid, color-mix – nichts hardcoden) + feines, statisches
- * SVG-Korn. Blob-Drift läuft per CSS-Keyframe (GPU-leicht); prefers-reduced-motion
- * friert alles ein (siehe index.css). Pro Mode adaptiv, weil der Akzent pro Mode
- * andere Werte hat und der Untergrund die Seiten-Hintergrundfarbe ist.
+ * --accent / --accent-solid, color-mix – nichts hardcoden), ein langsam
+ * rotierender Lichtstrahl hinter der Showcase-Bühne (rechte Hälfte, ab lg)
+ * und feines, statisches SVG-Korn. Alle Bewegung läuft per CSS-Keyframe auf
+ * `transform` (Compositor-only); prefers-reduced-motion friert alles ein
+ * (siehe globals.css).
  */
 function HeroBackground() {
   const noiseId = 'hero-grain'
@@ -24,6 +28,21 @@ function HeroBackground() {
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
+      {/* Lichtstrahl: Conic-Verlauf mit breiten Stopps, Mittelpunkt hinter der
+          Bühne (~72 % / 50 %), Radial-Maske blendet Zentrum und Außenrand
+          weich aus. Größe in vmax, damit er auch bei 1900 px den Rand nicht
+          zeigt. Nur ab lg – auf Mobil liegt die Bühne unter dem Text. */}
+      <div
+        className="hero-beam absolute left-[72%] top-1/2 hidden h-[120vmax] w-[120vmax] lg:block"
+        style={{
+          background:
+            'conic-gradient(from 0deg, transparent 0deg, color-mix(in oklab, var(--accent) 16%, transparent) 34deg, transparent 76deg, transparent 180deg, color-mix(in oklab, var(--accent-solid) 13%, transparent) 214deg, transparent 258deg)',
+          maskImage:
+            'radial-gradient(closest-side, transparent 0%, #000 22%, #000 55%, transparent 100%)',
+          WebkitMaskImage:
+            'radial-gradient(closest-side, transparent 0%, #000 22%, #000 55%, transparent 100%)',
+        }}
+      />
       <div
         className="hero-blob-a absolute -left-[12%] -top-[18%] h-[60vh] w-[60vh] rounded-full"
         style={{
@@ -48,8 +67,8 @@ function HeroBackground() {
             'radial-gradient(circle, color-mix(in oklab, var(--accent) 10%, transparent), transparent 70%)',
         }}
       />
-      {/* Dezentes Punktraster hinter dem Terminal (rechte Hälfte, per Maske
-          weich auslaufend): statisches CSS-Pattern, kein Bild, kein JS. */}
+      {/* Dezentes Punktraster hinter der Showcase-Bühne (rechte Hälfte, per
+          Maske weich auslaufend): statisches CSS-Pattern, kein Bild, kein JS. */}
       <div
         className="absolute inset-y-0 right-0 hidden w-1/2 opacity-35 lg:block"
         style={{
@@ -87,8 +106,35 @@ function HeroBackground() {
   )
 }
 
-export default function Hero() {
+type HeroProps = {
+  /** Die drei Musterseiten – vom Server (`page.tsx`) aus `demoPreviews`
+   *  hineingereicht; `demos.ts` darf hier nicht importiert werden. */
+  muster: DemoPreview[]
+}
+
+export default function Hero({ muster }: HeroProps) {
   const reduce = useReducedMotionSafe()
+
+  // Bühnen-Slides aus denselben Quellen wie die Projekte-Sektion: erst die
+  // zwei Live-Projekte, dann die drei Musterseiten – kein zweiter Wortlaut.
+  const slides: StageSlide[] = [
+    ...projects.map((p) => ({
+      name: p.name,
+      branche: p.branche,
+      kind: 'live' as const,
+      image: p.image,
+      width: p.width,
+      height: p.height,
+    })),
+    ...muster.map((d) => ({
+      name: d.name,
+      branche: d.kind,
+      kind: 'muster' as const,
+      image: d.image,
+      width: d.width,
+      height: d.height,
+    })),
+  ]
 
   // Entrance gated auf reduced-motion: dann „statisches Frame" (kein Versatz/Fade).
   const container: Variants = {
@@ -114,7 +160,10 @@ export default function Hero() {
     >
       <HeroBackground />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
+      {/* max-w-7xl statt 6xl (nur der Hero): mehr Luft für die Bühne auf
+          breiten Screens; die Spalten bleiben 1:1 – „Veränderungen," bei
+          72 px (494 px) braucht ab xl mindestens 512 px Spaltenbreite. */}
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
         {/* Text + Zähler */}
         <motion.div variants={container} initial="hidden" animate="show" className="max-w-xl">
           {/* H1 bewusst ohne Entrance-Opacity: LCP-Element sofort sichtbar (Mobil).
@@ -186,14 +235,18 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Terminal */}
+        {/* Showcase-Bühne (früher: Terminal – seit 31.08.2026 auf /moeglichkeiten).
+            BEWUSST OHNE Opacity-Entrance, nur `y`: das erste Slide-Bild ist auf
+            Desktop das LCP-Element, und Chrome zählt nur den ERSTEN Paint – bei
+            opacity 0 gemalt, ist es für den LCP für immer raus (gemessen:
+            LCP 9,8 s, Performance 42). Gleiche Regel wie bei der H1 oben. */}
         <motion.div
-          initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={reduce ? { y: 0 } : { y: 16 }}
+          animate={{ y: 0 }}
           transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.15, ease: 'easeOut' }}
           className="entrance-anim"
         >
-          <Terminal />
+          <HeroStage slides={slides} />
         </motion.div>
       </div>
     </section>
