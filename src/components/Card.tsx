@@ -33,6 +33,10 @@ const cardBaseClassName =
 export const cardClassName = cardBaseClassName + ' border-border'
 
 // Highlight: Akzent dauerhaft aktiv – dezenter Akzent-Rand + leiser Glow (kein Badge).
+// Der Gradient-Rand (.card-gradient-border) gehört bewusst NICHT hierher:
+// highlight nutzen auch andere Karten (z.B. die Bento-Zelle auf /moeglichkeiten),
+// die freigegebene Ausnahme gilt aber für GENAU EINE Karte – die KI-Karte der
+// Leistungen setzt die Klasse deshalb selbst per className (Leistungen.tsx).
 const cardHighlightClassName = 'border-accent/50 shadow-lg shadow-accent/10'
 
 type CardProps = {

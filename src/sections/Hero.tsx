@@ -7,7 +7,7 @@ import Terminal from '@/components/Terminal'
 import { withCodeTags } from '@/components/CodeTag'
 import AuroraText from '@/components/AuroraText'
 import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
-import { hero, heroStats } from '@/data/hero'
+import { hero, heroSecondaryCta, heroStats } from '@/data/hero'
 import { ctaItem } from '@/data/navigation'
 
 /**
@@ -36,6 +36,28 @@ function HeroBackground() {
         style={{
           background:
             'radial-gradient(circle, color-mix(in oklab, var(--accent-solid) 16%, transparent), transparent 70%)',
+        }}
+      />
+      {/* Dritter, leiser Layer in der Mitte: mehr Tiefe zwischen den zwei
+          Rand-Blobs, eigene (langsamere) Drift-Phase – gleiche Technik,
+          gleiche Tokens, reduced-motion friert ihn mit ein. */}
+      <div
+        className="hero-blob-c absolute left-[28%] top-[30%] h-[50vh] w-[50vh] rounded-full"
+        style={{
+          background:
+            'radial-gradient(circle, color-mix(in oklab, var(--accent) 10%, transparent), transparent 70%)',
+        }}
+      />
+      {/* Dezentes Punktraster hinter dem Terminal (rechte Hälfte, per Maske
+          weich auslaufend): statisches CSS-Pattern, kein Bild, kein JS. */}
+      <div
+        className="absolute inset-y-0 right-0 hidden w-1/2 opacity-35 lg:block"
+        style={{
+          backgroundImage:
+            'radial-gradient(color-mix(in oklab, var(--foreground) 22%, transparent) 1px, transparent 1px)',
+          backgroundSize: '26px 26px',
+          maskImage: 'radial-gradient(closest-side at 65% 45%, #000, transparent)',
+          WebkitMaskImage: 'radial-gradient(closest-side at 65% 45%, #000, transparent)',
         }}
       />
       {/* Feines Korn: prozedurales SVG (gekacheltes feTurbulence), statisch & günstig. */}
@@ -98,7 +120,12 @@ export default function Hero() {
           {/* H1 bewusst ohne Entrance-Opacity: LCP-Element sofort sichtbar (Mobil).
               Nur das Akzentwort bekommt den Gradient – als fließender AuroraText
               (reine CSS-@keyframes, solider Fallback, reduced-motion = statisch). */}
-          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+          {/* Größer für den ersten Eindruck, aber 7xl erst ab xl: bei 72px
+              misst „Veränderungen," 494 px und überliefe die Grid-Spalte
+              zwischen 1024 und ~1130 px (nachgemessen, Spalte 442 px bei
+              1024). Mobil bleibt 4xl – bei 320 px muss das Wort in die
+              Spalte passen (ebenfalls nachgemessen). */}
+          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
             {hero.headline.split(hero.accentWord)[0]}
             <AuroraText>{hero.accentWord}</AuroraText>
             {hero.headline.split(hero.accentWord)[1] ?? ''}
@@ -111,12 +138,21 @@ export default function Hero() {
             {withCodeTags(hero.subline, ['Web-Apps'])}
           </motion.p>
 
-          <motion.div variants={item} className="entrance-anim mt-8">
+          <motion.div variants={item} className="entrance-anim mt-8 flex flex-wrap items-center gap-3">
             <a
               href={ctaItem.href}
-              className="cta-gradient inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="cta-gradient inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {ctaItem.label}
+            </a>
+            {/* Zweiter, ruhiger Weg: erst den Beweis ansehen, dann anfragen.
+                Ghost-Variante, flacher Akzent nur am Hover – der Primär-CTA
+                bleibt der einzige gefüllte Knopf im Hero. */}
+            <a
+              href={heroSecondaryCta.href}
+              className="inline-flex items-center justify-center rounded-full border border-border px-7 py-3 text-sm font-medium text-foreground transition-colors duration-200 hover:border-accent/60 hover:text-accent focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              {heroSecondaryCta.label}
             </a>
           </motion.div>
 

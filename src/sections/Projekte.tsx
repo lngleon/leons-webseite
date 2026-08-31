@@ -77,7 +77,7 @@ export default function Projekte({ muster }: ProjekteProps) {
     'focus-visible:ring-offset-2 focus-visible:ring-offset-background'
 
   return (
-    <section id="projekte" className="py-24 sm:py-32">
+    <section id="projekte" className="section-glow py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={reduce ? { opacity: 1 } : { opacity: 0, y: 20 }}

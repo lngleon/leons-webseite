@@ -18,7 +18,7 @@ Kontaktformular: Formspree (extern). KEIN Supabase, KEINE Datenbank, KEINE SQL/R
 - Deutsche UI-Texte, durchgehend "Du"-Ansprache
 - Dark-only (kein Light Mode, kein Theme-Toggle) – Near-Black/Weiß/Grau-Basis
 - Responsive: Desktop-first, Mobil voll funktionsfähig
-- Akzent NUR über zentrale CSS-Variablen, niemals Farbwerte hardcoden: flach `--accent`/`--accent-solid` (Ränder, Icons, kleine UI, Fokusring) + Violett-Gradient `--accent-gradient`/`--accent-gradient-strong` nur auf Showcase-Flächen
+- Akzent NUR über zentrale CSS-Variablen, niemals Farbwerte hardcoden: flach `--accent`/`--accent-solid` (Ränder, Icons, kleine UI, Fokusring) + Violett-Gradient `--accent-gradient`/`--accent-gradient-strong` nur auf Showcase-Flächen. Einzige dokumentierte Rand-Ausnahme: `.card-gradient-border` auf GENAU EINER Karte (Leistungen-Highlight, 31.08.2026 – siehe docs/PROJEKT-STAND.md → Design-Regeln)
 - Keine Preise auf der Seite
 - Animationen (Framer Motion) subtil und edel, nie verspielt
 - Formspree-Endpoint aus .env.local lesen (NEXT_PUBLIC_FORMSPREE_ENDPOINT), nie hardcoden

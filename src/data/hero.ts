@@ -8,6 +8,12 @@ export const hero = {
     'Moderne Webseiten, Web-Apps und KI-Integration – individuell für dich programmiert, von der Idee bis zum Launch. Alles aus einer Hand.',
 } as const
 
+/** Zweiter, ruhiger CTA neben dem Primär-CTA – führt zum Beweis (Projekte-Sektion). */
+export const heroSecondaryCta = {
+  label: 'Projekte ansehen',
+  href: '/#projekte',
+} as const
+
 export type HeroStat = {
   /** Zahl, auf die hochgezählt wird. */
   value: number

@@ -56,7 +56,11 @@
      ║  --accent-gradient-strong: dunklere Violett-Hälfte für    ║
      ║    Button-/CTA-Füllungen – trägt weiße Schrift ≥4.5:1     ║
      ║    über den GANZEN Verlauf (objektiv verifiziert).        ║
-     ╚══════════════════════════════════════════════════════════╝ */
+     ╚══════════════════════════════════════════════════════════╝
+     Einzige sanktionierte RAND-Nutzung von --accent-gradient:
+     .card-gradient-border (GENAU EINE Karte – die Leistungen-
+     Highlight-Karte; User-beauftragte Ausnahme 31.08.2026, siehe
+     Regelblock weiter unten + PROJEKT-STAND Design-Regeln). */
   --accent-gradient: linear-gradient(135deg, #c4b5fd, #a78bfa, #7c5cff);
   --accent-gradient-strong: linear-gradient(135deg, #6d4dff, #6d28d9);
 }
@@ -127,6 +131,16 @@
   }
 }
 
+@keyframes hero-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, 6%, 0) scale(1.06);
+  }
+}
+
 @keyframes terminal-blink {
   0%,
   100% {
@@ -148,6 +162,10 @@
   animation: hero-drift-b 28s ease-in-out infinite;
 }
 
+.hero-blob-c {
+  animation: hero-drift-c 26s ease-in-out infinite;
+}
+
 .terminal-cursor {
   animation: terminal-blink 1.05s steps(1, end) infinite;
 }
@@ -155,6 +173,7 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-blob-a,
   .hero-blob-b,
+  .hero-blob-c,
   .terminal-cursor {
     animation: none;
   }
@@ -394,6 +413,69 @@ main .cta-gradient:active {
   main .cta-gradient:active {
     transform: none;
     --cta-lift-shadow: 0 0 #0000;
+  }
+}
+
+/* ── Sektions-Rhythmus (Startseite, 31.08.2026) ──────────────────
+   Gegen die Gleichförmigkeit beim Scrollen: Sektionen wechseln zwischen
+   zwei hauchfeinen, STATISCHEN Hintergründen (kein Repaint, kein JS).
+   Beides über Tokens/color-mix, kein Hex, kein --accent-gradient –
+   dieselbe Farbsprache wie Card-Glow und CTA-Schatten. */
+.section-band {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--muted) 55%, var(--background)) 0%,
+    var(--background) 100%
+  );
+}
+.section-glow {
+  background: radial-gradient(
+    56rem 28rem at 50% 0%,
+    color-mix(in oklab, var(--accent) 7%, transparent),
+    transparent 70%
+  );
+}
+
+/* ── Gradient-Rand der Highlight-Karte (Leistungen/KI) ───────────
+   Bewusste, vom User beauftragte Ausnahme der „Ränder flach"-Regel
+   (31.08.2026, „mehr Pepp"): GENAU EINE Karte der Seite trägt den
+   Verlauf als Rand. Technik: ::before als 1px-Ring über inset -1px +
+   mask-composite (der Kartenrand selbst wird transparent). Alles im
+   @supports-Block – ohne mask-composite bleibt der flache
+   border-accent/50 aus der Utility-Klasse einfach stehen (nie ein
+   vollflächiger Verlauf über dem Inhalt). Unlayered, damit die Regel
+   die layered Tailwind-Utilities (border-*) übersteuert. */
+.card-gradient-border {
+  position: relative;
+}
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  .card-gradient-border,
+  .card-gradient-border:hover {
+    border-color: transparent;
+  }
+  .card-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--accent-gradient);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0.55;
+    pointer-events: none;
+    transition: opacity 200ms ease-out;
+  }
+  @media (hover: hover) {
+    .card-gradient-border:hover::before {
+      opacity: 0.85;
+    }
   }
 }
 

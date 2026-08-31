@@ -3,7 +3,8 @@ import { site } from './site'
 export const contactIntro = {
   eyebrow: 'Kontakt',
   title: 'Lass uns dein Projekt besprechen.',
-  subline: 'Erzähl mir kurz, was du vorhast – ich melde mich zeitnah bei dir.',
+  subline:
+    'Erzähl mir kurz, was du vorhast – ich melde mich zeitnah bei dir. Unverbindlich, ohne Fachchinesisch, ohne Verkaufsdruck.',
 } as const
 
 export const contactMessages = {
