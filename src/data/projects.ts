@@ -1,12 +1,18 @@
-/** Inhalte der Projekte-Sektion (zwei Showcases).
+/** Inhalte der Projekte-Sektion (zwei Live-Showcases + Intro-Texte).
+ *  Die drei Musterseiten der Sektion kommen NICHT von hier, sondern aus
+ *  `src/data/demos.ts` (`demoPreviews`) – dieselbe Quelle wie auf
+ *  `/moeglichkeiten`, damit es keinen zweiten Wortlaut gibt. Sie werden in
+ *  `page.tsx` (Server) geladen und der Client-Sektion als Prop hineingereicht.
  *  Live-Links sind bewusst ÄNDERBARE Felder – bei Umstellung auf die finalen
  *  Domains hier anpassen (siehe docs/CURRENT-SCHEMA: Blumen Lang / Naillery).
- *  Keine erfundenen Zahlen/Claims – nur Name, Typzeile, Vorschaubild, Live-URL. */
+ *  Keine erfundenen Zahlen/Claims – nur Name, Branche, Art, Vorschaubild, Live-URL. */
 
 export type Project = {
   name: string
-  /** Kurze Typzeile, z.B. „Website · …". */
-  type: string
+  /** Branche als Eyebrow in Akzent, z.B. „Gärtnerei & Blumengroßhandel". */
+  branche: string
+  /** Was es ist, z.B. „Website" oder „Eigene Plattform". */
+  art: string
   /** Live-URL (aktuell) – änderbar (später finale Domain). */
   href: string
   /** Statisches Vorschaubild aus public/. */
@@ -18,14 +24,23 @@ export type Project = {
 
 export const projectsIntro = {
   eyebrow: 'Ausgewählte Projekte',
-  title: 'Schon live im Netz.',
-  subline: 'Eine Website und eine eigene Plattform — beide kannst du dir direkt ansehen.',
+  title: 'Fünf Projekte, fünf Branchen.',
+  subline:
+    'Zwei Projekte sind live im Netz, drei sind vollständige Musterseiten – alle kannst du dir direkt ansehen. Vielleicht ist deine Branche schon dabei.',
+} as const
+
+/** Zwischenüberschrift über der Musterseiten-Reihe (unter den Live-Karten). */
+export const musterIntro = {
+  title: 'Und drei komplette Musterbetriebe.',
+  subline:
+    'Die Betriebe sind erfunden, die Seiten sind echt – jede vollständig begehbar und einen Klick entfernt.',
 } as const
 
 export const projects: Project[] = [
   {
     name: 'Blumen Lang',
-    type: 'Website · Gärtnerei & Blumengroßhandel',
+    branche: 'Gärtnerei & Blumengroßhandel',
+    art: 'Website',
     href: 'https://blumen-lang-start.vercel.app/',
     image: '/blumen-lang-preview.webp',
     width: 1280,
@@ -33,7 +48,8 @@ export const projects: Project[] = [
   },
   {
     name: 'Naillery',
-    type: 'Eigene Plattform · für Nagelstudios',
+    branche: 'Nagelstudios',
+    art: 'Eigene Plattform',
     href: 'https://naillery-v2.vercel.app/',
     image: '/naillery-preview.webp',
     width: 1280,

@@ -39,20 +39,29 @@ export default function DemoShowcase() {
         </p>
       </div>
 
-      <ul className="grid w-full grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-3">
+      {/* role explizit wie in Hero/Projekte: Safari/Tailwind-Preflight
+          entfernen bei list-style:none die Listen-Semantik aus dem a11y-Baum. */}
+      <ul role="list" className="grid w-full grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-3">
         {demoPreviews.map((demo) => (
-          <li key={demo.slug} className="flex">
+          <li key={demo.slug} role="listitem" className="flex">
             <a
               href={demo.href}
-              className={`${cardClassName} flex w-full flex-col overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background`}
+              // outline-hidden statt outline-none (Tailwind v4): in forced-colors
+              // fällt der box-shadow-Ring weg, outline-hidden lässt dort ein
+              // sichtbares Outline zu – wie die Projekte-Karten der Startseite.
+              className={`${cardClassName} flex w-full flex-col overflow-hidden focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background`}
             >
               {/* Voll-bleed oben wie bei den Projekte-Karten: die negativen
                   Margins heben das Card-Padding auf, die aspect-Box reserviert
                   den Platz vor dem Laden – kein Layout-Shift. */}
               <div className="-mx-6 -mt-6 mb-6 aspect-[8/5] overflow-hidden bg-muted sm:-mx-7 sm:-mt-7">
+                {/* alt="": das Bild liegt IM Link, dessen sichtbarer Text das
+                    Ziel vollständig beschreibt – ein alt läse den Namen doppelt
+                    vor (WAI H2). Zoom wie die Projekte-Karten der Startseite:
+                    200ms wie der Card-Hover, motion-safe + group-hover. */}
                 <Image
                   src={demo.image}
-                  alt={`Startseite der Musterseite ${demo.name}`}
+                  alt=""
                   width={demo.width}
                   height={demo.height}
                   // Im Browser gemessen statt geschätzt: 348 px ab `lg`
@@ -61,7 +70,7 @@ export default function DemoShowcase() {
                   // Seitenrand und Kartenrahmen, gemessen 750 bei 800 px und
                   // 286 bei 320 px.
                   sizes="(min-width: 1024px) 348px, (min-width: 640px) calc(100vw - 50px), calc(100vw - 34px)"
-                  className="h-full w-full object-cover object-top"
+                  className="h-full w-full object-cover object-top transition-transform duration-200 ease-out motion-safe:group-hover:scale-[1.03]"
                 />
               </div>
 

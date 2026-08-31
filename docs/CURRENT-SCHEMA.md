@@ -131,15 +131,16 @@ Inhalte liegen als Konstanten/Daten im Code (kein CMS, keine DB). Empfohlene log
 3. Umsetzung
 4. Launch & Betreuung
 
-### Projekte (2 Showcases)
+### Projekte (2 Live-Showcases + 3 Musterseiten, seit 31.08.2026)
 | Feld | Projekt 1 | Projekt 2 |
 |------|-----------|-----------|
 | Name | Blumen Lang | Naillery |
-| Typ | Webseite (Blumengroßhändler) | SaaS-Plattform (Nagelstudios) |
-| Kurzbeschreibung | Von veralteter, kaum auffindbarer Seite zu modernem, professionellem Auftritt | Eigene Plattform: Buchungsflow, Stripe-Zahlungen, Studio-Webseiten, KI-Designgenerator (projiziert Wunsch-Design auf Foto der Hände) |
+| Branche (Eyebrow) | Gärtnerei & Blumengroßhandel | Nagelstudios |
+| Art | Website | Eigene Plattform |
 | Live-Link (aktuell) | https://blumen-lang-start.vercel.app/ | https://naillery-v2.vercel.app/ |
 | Live-Link (später) | https://blumen-lang.de/ | https://naillery.com/ |
-| Detail-Ansicht | ja (interaktiv beim Klick) | ja (interaktiv beim Klick) |
+
+Dazu zeigt die Sektion seit 31.08.2026 die **drei Musterseiten** (Café Klee, Restaurant Glut, Salon Wirbel) als Dreierreihe unter den Live-Karten – Daten NICHT dupliziert, sondern `demoPreviews` aus `src/data/demos.ts` (Server-Import in `page.tsx`, als Prop an die Client-Sektion). Jede Karte trägt ihre Branche als Akzent-Eyebrow und ein Badge („Live im Netz" / „Musterseite") auf dem Screenshot. Die ganze Karte ist der Link (Muster von `DemoShowcase`); Live extern in neuem Tab, Musterseiten intern zu `/demo/*`. KEINE Detail-Ansicht/Overlay (geparkt seit 09.06.2026).
 
 > Live-Links sind als änderbare Felder zu führen, damit der User später auf die finalen Domains umstellen kann.
 
