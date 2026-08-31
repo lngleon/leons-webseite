@@ -4,13 +4,10 @@ import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import Counter from '@/components/Counter'
 import HeroStage from '@/components/HeroStage'
-import type { StageSlide } from '@/components/HeroStage'
 import { withCodeTags } from '@/components/CodeTag'
 import AuroraText from '@/components/AuroraText'
 import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
 import { hero, heroSecondaryCta, heroStats } from '@/data/hero'
-import { projects } from '@/data/projects'
-import type { DemoPreview } from '@/data/demos'
 import { ctaItem } from '@/data/navigation'
 
 /**
@@ -106,35 +103,8 @@ function HeroBackground() {
   )
 }
 
-type HeroProps = {
-  /** Die drei Musterseiten – vom Server (`page.tsx`) aus `demoPreviews`
-   *  hineingereicht; `demos.ts` darf hier nicht importiert werden. */
-  muster: DemoPreview[]
-}
-
-export default function Hero({ muster }: HeroProps) {
+export default function Hero() {
   const reduce = useReducedMotionSafe()
-
-  // Bühnen-Slides aus denselben Quellen wie die Projekte-Sektion: erst die
-  // zwei Live-Projekte, dann die drei Musterseiten – kein zweiter Wortlaut.
-  const slides: StageSlide[] = [
-    ...projects.map((p) => ({
-      name: p.name,
-      branche: p.branche,
-      kind: 'live' as const,
-      image: p.image,
-      width: p.width,
-      height: p.height,
-    })),
-    ...muster.map((d) => ({
-      name: d.name,
-      branche: d.kind,
-      kind: 'muster' as const,
-      image: d.image,
-      width: d.width,
-      height: d.height,
-    })),
-  ]
 
   // Entrance gated auf reduced-motion: dann „statisches Frame" (kein Versatz/Fade).
   const container: Variants = {
@@ -236,17 +206,18 @@ export default function Hero({ muster }: HeroProps) {
         </motion.div>
 
         {/* Showcase-Bühne (früher: Terminal – seit 31.08.2026 auf /moeglichkeiten).
-            BEWUSST OHNE Opacity-Entrance, nur `y`: das erste Slide-Bild ist auf
-            Desktop das LCP-Element, und Chrome zählt nur den ERSTEN Paint – bei
-            opacity 0 gemalt, ist es für den LCP für immer raus (gemessen:
-            LCP 9,8 s, Performance 42). Gleiche Regel wie bei der H1 oben. */}
+            Fiktives, gezeichnetes Interface ohne Bild – damit ist die H1 das
+            LCP-Element, und die Bühne darf einfaden. (Lehre aus der Bild-
+            Fassung: ein Bild, das bei opacity 0 zum ersten Mal gemalt wird,
+            ist für den LCP für immer raus – Chrome zählt nur den ersten
+            Paint. Käme hier je wieder ein Bild hinein: nur `y` animieren.) */}
         <motion.div
-          initial={reduce ? { y: 0 } : { y: 16 }}
-          animate={{ y: 0 }}
+          initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.15, ease: 'easeOut' }}
           className="entrance-anim"
         >
-          <HeroStage slides={slides} />
+          <HeroStage />
         </motion.div>
       </div>
     </section>

@@ -26,14 +26,16 @@ export const moeglichkeitenIntro = {
  * Rechner. Kein Deploy – die Vercel-Settings sind noch offen, siehe TODO.
  * **Median aus je drei Läufen**, beide Seiten gegen denselben Build.
  *
- * Rohläufe vom 31.08.2026 (nach dem Hero-Umbau mit Showcase-Bühne):
- * Startseite **95 / 93 / 95** (LCP 2,95 s · TBT ~30 ms · CLS 0),
- * `/moeglichkeiten` **95 / 96 / 95** (LCP 2,85 s · TBT 24–28 ms · CLS 0).
+ * Rohläufe vom 31.08.2026 (Hero mit der fiktiven, gezeichneten Bühne –
+ * kein Bild mehr im Hero):
+ * Startseite **95 / 95 / 95** (LCP 2,9 s · TBT 58–97 ms · CLS 0),
+ * `/moeglichkeiten` **95 / 96 / 95** (LCP 2,9 s · TBT 30–41 ms · CLS 0).
  * Die Startseite stand am 28.08.2026 bei 96 (LCP 2,6 s, Element: die H1);
- * seit dem 31.08.2026 ist das LCP-Element das erste Bild der Hero-Bühne –
- * ein Punkt weniger, bewusst getragen für ein Hero, das Websites zeigt.
- * Gemessen NUR auf ruhigem Rechner: eine Runde mit 35 verwaisten
- * `next start`-Servern im Hintergrund zeigte 58–68 und wurde verworfen.
+ * LCP-Element ist jetzt die Hero-Unterzeile (Text, kein Bild), der eine
+ * Punkt liegt an den ~0,2 s mehr bis dahin – im Bereich des Messrauschens
+ * der Läufe selbst, hier nicht wegerklärt. Gemessen NUR auf ruhigem
+ * Rechner: eine Runde mit 35 verwaisten `next start`-Servern im
+ * Hintergrund zeigte 58–68 und wurde verworfen.
  *
  * **Vorher standen hier 79 gegen 96, und der Abstand hatte einen Grund, der
  * kein Naturgesetz war.** Gemessen per Ablation – jeden Effekt einzeln aus dem
@@ -69,14 +71,14 @@ export const lighthouse = {
       { label: 'Best Practices', wert: 96 },
       { label: 'SEO', wert: 100 },
     ],
-    metriken: 'LCP 2,95 s · TBT 30 ms · CLS 0',
+    metriken: 'LCP 2,9 s · TBT 58–97 ms · CLS 0',
   },
   /** Diese Seite hier – bleibt sichtbar daneben stehen. */
   showcase: {
     label: 'Diese Showcase-Seite',
     performance: 95,
     grund:
-      'Gleicher Stack, gleiche Auslieferung – Globus und Funken starten seit dem 28.08.2026 erst kurz vor dem Sichtfeld statt beim Seitenaufbau (LCP 2,85 s · TBT 24–28 ms · CLS 0, vorher 79 bei 450 ms). Kein Effekt wurde dafür entfernt.',
+      'Gleicher Stack, gleiche Auslieferung – Globus und Funken starten seit dem 28.08.2026 erst kurz vor dem Sichtfeld statt beim Seitenaufbau (LCP 2,9 s · TBT 30–41 ms · CLS 0, vorher 79 bei 450 ms). Kein Effekt wurde dafür entfernt.',
   },
 } as const
 

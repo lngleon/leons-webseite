@@ -18,16 +18,17 @@ export const metadata: Metadata = pageMetadata(routeMeta.home)
  * Reihenfolge: Hero → Branchen-Band → Problem → Leistungen → Über mich →
  * Prozess → Projekte → Statement → Kontakt.
  *
- * `demoPreviews` wird HIER (Server) geladen und Hero (Showcase-Bühne) sowie
- * Projekte als Prop hineingereicht – `src/data/demos.ts` darf nicht in
- * Client-Komponenten importiert werden (zieht die vollen Betriebs-Objekte,
- * siehe dortiger Kopfkommentar). Serialisiert werden nur die kleinen
- * Preview-Objekte.
+ * `demoPreviews` wird HIER (Server) geladen und Projekte als Prop
+ * hineingereicht – `src/data/demos.ts` darf nicht in Client-Komponenten
+ * importiert werden (zieht die vollen Betriebs-Objekte, siehe dortiger
+ * Kopfkommentar). Serialisiert werden nur die kleinen Preview-Objekte.
+ * (Die Hero-Bühne brauchte sie vorübergehend auch – seit sie ein fiktives,
+ * gezeichnetes Interface zeigt, nicht mehr.)
  */
 export default function Home() {
   return (
     <>
-      <Hero muster={demoPreviews} />
+      <Hero />
       <Branchen />
       <Problem />
       <Leistungen />
