@@ -1,10 +1,9 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import { ArrowUpRight, Lock } from 'lucide-react'
-import { CardBody, CardContainer, CardItem } from '@/components/ui/Tilt'
 import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
 
 /**
@@ -29,14 +28,27 @@ import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
  * statisches End-Frame, keine Dauerschleife. `useInView` + gesteuertes
  * `animate` (nicht `whileInView`), Server-Frame = erstes Client-Frame
  * (Ruhezustand), reduced-motion zeigt über `.entrance-anim` sofort das
- * End-Frame. Der Tilt zur Maus kommt vom bestehenden `CardContainer`.
+ * End-Frame.
  *
- * Perspektive: außen ein STATISCHER Kipp (ab lg, `rotateY(-8deg)`: die
- * rechte Kante rückt näher, die Fläche dreht sich zur Headline hin – die
- * Referenz-Skizze kippte spiegelbildlich, hier steht die Bühne aber rechts
- * vom Text und soll sich ihm zuwenden), innen der dynamische Tilt – zwei
- * getrennte Elemente, damit sich die Transforms nicht überschreiben.
+ * **Maus-Verfolgung (User-Wunsch 31.08.2026: „neutral nach vorne, und wo
+ * die Maus hinzieht, bewegt sich das Teil mit"):** in Ruhe steht die Bühne
+ * plan nach vorne (kein statischer Kipp mehr). Sie dreht sich zur Cursor-
+ * Position im GANZEN Sichtfeld hin – nicht erst, wenn man über ihr ist –
+ * bis ±12° (Y) / ±9° (X), berechnet aus dem Abstand des Cursors zur
+ * Bühnenmitte, normiert auf die halbe Viewport-Größe. Zwei `useSpring`-
+ * Werte glätten die Bewegung; verlässt die Maus das Fenster, federt sie
+ * zurück auf 0. Nur bei echtem Zeiger (`hover: hover` + `pointer: fine`),
+ * nicht unter reduced-motion, nie auf Touch – dort bleibt sie flach.
+ * Listener hängen im Effekt am `window` (client-only), die Motion-Values
+ * starten bei 0 → Server-Frame = erstes Client-Frame. Die drei Ebenen
+ * (zwei Deko-Karten hinten, Bühne vorn) tragen feste `translateZ`-Tiefen
+ * unter `preserve-3d`, damit die Drehung Parallaxe bekommt. Der geteilte
+ * `Tilt` (6°, nur über der Karte) bleibt für `/moeglichkeiten` unangetastet.
  */
+
+const MAX_ROT_Y = 12
+const MAX_ROT_X = 9
+const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v))
 
 /** Balkenhöhen in Prozent der Diagrammfläche – fiktiv, bewusst ohne Achsen. */
 const BARS = [38, 62, 55, 84, 42, 72, 60, 50, 80]
@@ -61,29 +73,70 @@ export default function HeroStage() {
     show: { scaleY: 1, transition: { duration: 0.7, ease } },
   }
 
-  return (
-    <div className="lg:[perspective:1400px]">
-      <div className="lg:[transform:rotateY(-8deg)_rotateX(3deg)]">
-        <CardContainer containerClassName="w-full" className="w-full">
-          <CardBody className="relative w-full pt-5 pb-4">
-            {/* Zwei tonige Karten dahinter – reine Tiefe. Rotation auf einem
-                INNEREN Div, weil `CardItem` sein translateZ als Inline-
-                Transform schreibt. Insets größer als der Rotations-Überhang
-                → kein x-Überlauf bei 320 px. */}
-            <CardItem translateZ={-30} className="pointer-events-none absolute inset-x-[5%] top-0">
-              <div
-                aria-hidden="true"
-                className="aspect-[16/10] rotate-[3deg] rounded-2xl border border-border/60 bg-card/70"
-              />
-            </CardItem>
-            <CardItem translateZ={-15} className="pointer-events-none absolute inset-x-[3%] top-2.5">
-              <div
-                aria-hidden="true"
-                className="aspect-[16/10] -rotate-[1.5deg] rounded-2xl border border-border/70 bg-card/80"
-              />
-            </CardItem>
+  // Maus-Verfolgung: Rohwerte → Federn → Transform der Bühne.
+  const stageRef = useRef<HTMLDivElement>(null)
+  const rotX = useMotionValue(0)
+  const rotY = useMotionValue(0)
+  const springRotX = useSpring(rotX, { stiffness: 110, damping: 18, mass: 0.7 })
+  const springRotY = useSpring(rotY, { stiffness: 110, damping: 18, mass: 0.7 })
 
-            <CardItem translateZ={40} className="relative">
+  useEffect(() => {
+    if (reduce) return
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return
+      const el = stageRef.current
+      if (!el) return
+      const r = el.getBoundingClientRect()
+      // Nur reagieren, solange die Bühne (annähernd) im Bild ist.
+      if (r.bottom < -100 || r.top > window.innerHeight + 100) return
+      const cx = r.left + r.width / 2
+      const cy = r.top + r.height / 2
+      const dx = clamp((e.clientX - cx) / (window.innerWidth / 2), -1, 1)
+      const dy = clamp((e.clientY - cy) / (window.innerHeight / 2), -1, 1)
+      rotY.set(dx * MAX_ROT_Y)
+      rotX.set(-dy * MAX_ROT_X)
+    }
+    const onLeave = () => {
+      rotX.set(0)
+      rotY.set(0)
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    document.documentElement.addEventListener('mouseleave', onLeave)
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      document.documentElement.removeEventListener('mouseleave', onLeave)
+    }
+  }, [reduce, rotX, rotY])
+
+  return (
+    <div className="w-full [perspective:1200px]">
+      <motion.div
+        ref={stageRef}
+        style={{ rotateX: springRotX, rotateY: springRotY, transformStyle: 'preserve-3d' }}
+        className="relative w-full pt-5 pb-4"
+      >
+        {/* Zwei tonige Karten dahinter – reine Tiefe, mit festem translateZ
+            hinter der Bühne, damit die Drehung Parallaxe zeigt. Rotation und
+            Tiefe auf getrennten Elementen (Inline-Transform vs. Klasse).
+            Insets größer als der Rotations-Überhang → kein x-Überlauf. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-[5%] top-0"
+          style={{ transform: 'translateZ(-40px)' }}
+        >
+          <div className="aspect-[16/10] rotate-[3deg] rounded-2xl border border-border/60 bg-card/70" />
+        </div>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-[3%] top-2.5"
+          style={{ transform: 'translateZ(-20px)' }}
+        >
+          <div className="aspect-[16/10] -rotate-[1.5deg] rounded-2xl border border-border/70 bg-card/80" />
+        </div>
+
+        <div className="relative" style={{ transform: 'translateZ(30px)' }}>
               <a
                 href="/#projekte"
                 // `transition` (nicht `transition-[box-shadow,transform]`): Tailwind v4
@@ -226,10 +279,8 @@ export default function HeroStage() {
                   <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </span>
               </a>
-            </CardItem>
-          </CardBody>
-        </CardContainer>
-      </div>
+        </div>
+      </motion.div>
     </div>
   )
 }
