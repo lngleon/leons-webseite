@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Doku vom Utility-Scan ausnehmen: docs/ und Root-Markdown enthalten
+   Klassennamen in Codebeispielen (z. B. blur-[120px] in DESIGN-UMSETZUNG.md),
+   die sonst im Tailwind-Chunk der Seite landen wuerden. */
+@source not "../../docs";
+@source not "../../*.md";
+
 /* Globale Design-Tokens (nicht moduspezifisch). */
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,

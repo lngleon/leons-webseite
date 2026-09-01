@@ -1,0 +1,141 @@
+{
+ "erhoben": "2026-09-01",
+ "methode": "Playwright/Chromium 1440x900; document.fonts + CSSFontFaceRule (src-Host, format(), font-display) + angewandte font-family je Rolle (computed style, haeufigster Wert)",
+ "hinweis": "faces = im Dokument erreichbare @font-face-Regeln; blockedSheets = cross-origin Stylesheets, deren Regeln nicht lesbar sind (dort koennen weitere Faces liegen)",
+ "seiten": [
+  {
+   "slug": "a1-haoqi", "gruppe": "A",
+   "rollen": { "body": "tiktok 400 16px", "display": "tiktok 700 81-98px uppercase", "label": "tronica-mono 400 12-14px uppercase", "button": "tronica-mono 400 16px uppercase" },
+   "kategorien": ["Neo-Grotesk", "Mono"],
+   "loaded": ["tiktok 100-900", "mono 100-900", "tronica-mono 400"],
+   "faces": [], "faceHosts": [], "fontDisplay": [], "blockedSheets": 0,
+   "anmerkung": "keine @font-face-Regeln im DOM erreichbar (Schriften vermutlich per JS/Canvas geladen)"
+  },
+  {
+   "slug": "a2-adrianziegler", "gruppe": "A",
+   "rollen": { "body": "Archivo 400 16px", "display": "Archivo Black 900 164px uppercase", "h2": "Archivo 700 56-68px", "label": "IBM Plex Mono 600 9-12px uppercase", "para": "Archivo 400 14-16px" },
+   "kategorien": ["Neo-Grotesk", "Display-Grotesk schwer", "Mono"],
+   "faces": [
+    { "f": "Archivo", "w": "400", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "Archivo Fallback", "display": "(nicht gesetzt)", "host": "relativ/self", "anmerkung": "size-adjust-Fallback gegen CLS" },
+    { "f": "Archivo Black", "w": "400", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "Archivo Black Fallback", "display": "(nicht gesetzt)", "host": "relativ/self" },
+    { "f": "IBM Plex Mono", "w": "400", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "IBM Plex Mono Fallback", "display": "(nicht gesetzt)", "host": "relativ/self" }
+   ],
+   "faceHosts": ["relativ/self"], "fontDisplay": ["swap"], "blockedSheets": 0
+  },
+  {
+   "slug": "a3-amphora", "gruppe": "A",
+   "rollen": { "body": "The Future 400 16px", "display": "The Future 700 70px", "akzentwort": "Tiempos Headline 400 italic 70px", "h2": "The Future 600 60px", "button": "The Future 600 12-14px" },
+   "kategorien": ["Neo-Grotesk", "Serif-Kursiv (Akzent)", "Mono"],
+   "faces": [
+    { "f": "The Future", "w": "100 400", "display": "swap", "host": "relativ/self", "fmt": "woff2+opentype" },
+    { "f": "The Future Mono", "w": "100", "display": "swap", "host": "relativ/self", "fmt": "opentype" },
+    { "f": "Tiempos Headline", "w": "300", "display": "swap", "host": "relativ/self", "fmt": "opentype" }
+   ],
+   "faceHosts": ["relativ/self"], "fontDisplay": ["swap"], "blockedSheets": 0,
+   "anmerkung": "The Future und Tiempos Headline sind kommerziell lizenzierte Schriften; opentype statt woff2 bei zwei Faces"
+  },
+  {
+   "slug": "a4-farisschmidt", "gruppe": "A",
+   "rollen": { "body": "Helveticaneue 400 16px", "display": "Helveticaneue 500 58px", "h2": "Helveticaneue 500 52px", "akzentwort": "Instrumentserif 400 italic", "para": "Helveticaneue 400 18px" },
+   "kategorien": ["Neo-Grotesk", "Serif-Kursiv (Akzent)"],
+   "faces": [
+    { "f": "webflow-icons", "display": "(nicht gesetzt)", "host": "relativ/self", "fmt": "truetype" },
+    { "f": "Instrumentserif", "w": "400", "display": "swap", "host": "https://cdn.prod.website-files.com", "fmt": "woff2" },
+    { "f": "Helveticaneue", "w": "500", "display": "swap", "host": "https://cdn.prod.website-files.com", "fmt": "woff2" }
+   ],
+   "faceHosts": ["relativ/self", "https://cdn.prod.website-files.com"], "fontDisplay": ["swap", "(nicht gesetzt)"], "blockedSheets": 1,
+   "anmerkung": "Helvetica Neue ist kommerziell lizenziert; Auslieferung ueber US-CDN (Webflow)"
+  },
+  {
+   "slug": "a5-xtrakt", "gruppe": "A",
+   "rollen": { "body": "Overpass 400 16px", "display": "Overpass 700 68px", "button": "Overpass 500 20-24px uppercase", "para": "Overpass 400 16px" },
+   "kategorien": ["Neo-Grotesk", "Mono"],
+   "faces": [
+    { "f": "Material Icons", "w": "400", "display": "(nicht gesetzt)", "host": "relativ/self", "fmt": "woff" },
+    { "f": "Brand-Icons", "w": "400", "display": "(nicht gesetzt)", "host": "relativ/self", "fmt": "woff" },
+    { "f": "Overpass", "w": "100", "display": "fallback", "host": "https://xtrakt-media.de", "fmt": "truetype" },
+    { "f": "Overpass Mono", "w": "400", "display": "fallback", "host": "https://xtrakt-media.de", "fmt": "truetype" }
+   ],
+   "faceHosts": ["relativ/self", "https://xtrakt-media.de"], "fontDisplay": ["fallback", "(nicht gesetzt)"], "blockedSheets": 0,
+   "anmerkung": "eine Familie fuer alles; als truetype statt woff2 ausgeliefert"
+  },
+  {
+   "slug": "b1-wuerzburger", "gruppe": "B",
+   "rollen": { "body": "Palatino Linotype 400 20px (Systemschrift)", "display": "Palatino Linotype 400 52px", "h2": "Lucida Sans Unicode 700 28px (Systemschrift)", "dekor": "Italianno 400 90-105px", "button": "Palatino Linotype 700 14px" },
+   "kategorien": ["Alte-Stil-Serif (System)", "Humanistische Sans (System)", "Script/Dekor"],
+   "faces": [
+    { "f": "Italianno", "w": "400", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "Kaushan Script", "w": "400", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "Indie Flower", "w": "400", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "Lato", "w": "100", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "Open Sans", "w": "300", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "Poppins", "w": "100", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "Montserrat", "display": "(nicht gesetzt)", "host": "relativ/self", "fmt": "woff2+woff" },
+    { "f": "PT Sans", "w": "400", "display": "swap", "host": "https://fonts.gstatic.com", "fmt": "woff2" }
+   ],
+   "faceHosts": ["relativ/self", "https://fonts.gstatic.com"], "fontDisplay": ["swap", "(nicht gesetzt)"], "blockedSheets": 1,
+   "anmerkung": "laedt 14 Schriftfamilien, setzt den Text aber in Systemschriften; PT Sans kommt vom Google-CDN fonts.gstatic.com"
+  },
+  {
+   "slug": "b2-beef800", "gruppe": "B",
+   "rollen": { "body": "PT Serif 400 16px", "display": "Fjalla One 700 75px uppercase", "h2": "Fjalla One 700 53px uppercase", "label": "PT Serif 500 14px uppercase" },
+   "kategorien": ["Condensed-Versal-Display", "Serif-Fliesstext"],
+   "faces": [
+    { "f": "Material Icons", "w": "400", "display": "(nicht gesetzt)", "host": "relativ/self", "fmt": "woff2+woff" },
+    { "f": "Fjalla One", "w": "400", "display": "fallback", "host": "https://beef800.de", "fmt": "woff2" },
+    { "f": "PT Serif", "w": "400", "display": "fallback", "host": "https://beef800.de", "fmt": "woff2" }
+   ],
+   "faceHosts": ["relativ/self", "https://beef800.de"], "fontDisplay": ["fallback", "(nicht gesetzt)"], "blockedSheets": 1
+  },
+  {
+   "slug": "b3-wohner", "gruppe": "B",
+   "rollen": { "body": "Manrope 400 16px", "display": "Manrope 600 53px", "h2": "Manrope 600 31-53px", "button": "Manrope 500 18px uppercase" },
+   "kategorien": ["Geometrische Sans"],
+   "faces": [
+    { "f": "Material Icons", "w": "400", "display": "(nicht gesetzt)", "host": "relativ/self", "fmt": "woff" },
+    { "f": "Brand-Icons", "w": "400", "display": "(nicht gesetzt)", "host": "relativ/self", "fmt": "woff" },
+    { "f": "Manrope", "w": "200", "display": "fallback", "host": "https://wohner-pfeiffer.de", "fmt": "woff2" }
+   ],
+   "faceHosts": ["relativ/self", "https://wohner-pfeiffer.de"], "fontDisplay": ["fallback", "(nicht gesetzt)"], "blockedSheets": 0,
+   "anmerkung": "eine Familie in 200-800"
+  },
+  {
+   "slug": "b4-steinburg", "gruppe": "B",
+   "rollen": { "body": "Roboto 300 18px", "display": "Reem Kufi 400 86px uppercase", "h2": "Reem Kufi 400 30-68px uppercase", "subline": "Rasa 300 italic 30px", "label": "Reem Kufi 500 13px uppercase" },
+   "kategorien": ["Humanistische Versal-Display", "Serif-Kursiv (Subline)", "Neutrale Sans (Fliesstext)"],
+   "faces": [
+    { "f": "Roboto", "w": "100", "display": "fallback", "host": "https://steinburg.com", "fmt": "woff2" },
+    { "f": "Rasa", "w": "300", "display": "fallback", "host": "https://steinburg.com", "fmt": "woff2" },
+    { "f": "Reem Kufi", "w": "500", "display": "fallback", "host": "https://steinburg.com", "fmt": "woff2" }
+   ],
+   "faceHosts": ["https://steinburg.com"], "fontDisplay": ["fallback"], "blockedSheets": 6
+  },
+  {
+   "slug": "b5-steinwelten", "gruppe": "B",
+   "rollen": { "body": "Inter 400 18px", "display": "Inter 800 32px", "kicker": "Inter 500 16px uppercase", "h2": "Inter 500 18px", "button": "Inter 500 14px uppercase" },
+   "kategorien": ["Neo-Grotesk"],
+   "faces": [
+    { "f": "Montserrat", "w": "400", "display": "swap", "host": "relativ/self", "fmt": "woff2" },
+    { "f": "Font Awesome 6 Brands", "w": "400", "display": "block", "host": "relativ/self", "fmt": "woff2+truetype" },
+    { "f": "Font Awesome 6 Pro", "w": "300", "display": "block", "host": "relativ/self", "fmt": "woff2+truetype" },
+    { "f": "swiper-icons", "w": "400", "display": "(nicht gesetzt)", "host": "relativ/self", "fmt": "woff" }
+   ],
+   "faceHosts": ["relativ/self"], "fontDisplay": ["swap", "block", "(nicht gesetzt)"], "blockedSheets": 0,
+   "anmerkung": "setzt Inter, laedt zusaetzlich Montserrat; Font Awesome Pro mit font-display: block"
+  }
+ ],
+ "auswertung": {
+  "selfHosted": 8,
+  "ueberFremdCDN": ["b1-wuerzburger (fonts.gstatic.com)", "a4-farisschmidt (cdn.prod.website-files.com)"],
+  "fontDisplaySwap": ["a2", "a3", "a4", "b1", "b5(Montserrat)"],
+  "fontDisplayFallback": ["a5", "b2", "b3", "b4"],
+  "fontDisplayBlock": ["b5 (Font Awesome Pro)"],
+  "nichtWoff2": ["a3 (opentype)", "a5 (truetype)", "b1 (teilweise truetype/woff)"],
+  "expliziteFallbackFaces": ["a2 (Archivo Fallback, Archivo Black Fallback, IBM Plex Mono Fallback)"],
+  "einzigeFamilie": ["a5", "b3", "b5"],
+  "systemschriftenFuerText": ["b1"]
+ }
+}

@@ -13,6 +13,9 @@ Kontaktformular: Formspree (extern). KEIN Supabase, KEINE Datenbank, KEINE SQL/R
 - docs/PROJEKT-STAND.md → Projektkontext, Sektionen, Content, Workflows, Regeln
 - docs/CURRENT-SCHEMA.md → Architektur & Datenfluss (kein DB-Schema; dokumentiert externe Dienste wie Formspree)
 - docs/CLAUDE-CODE-TODO.md → aktuelle Frontend-Tasks mit Priorität
+- docs/ARBEITSWEISE.md → wie mit Claude gearbeitet wird (Loop, Tools, Anti-Patterns)
+- Vor jeder UI-Arbeit zusätzlich lesen: docs/DESIGN-WISSEN.md (Regeln R…/N…) und docs/DESIGN-UMSETZUNG.md (Rezepte; Projekt-Notiz am Kopf beachten)
+- Session-Abschluss: /session-end · Design-Prüfung: /design-review [route]
 
 ## Regeln
 - Deutsche UI-Texte, durchgehend "Du"-Ansprache
