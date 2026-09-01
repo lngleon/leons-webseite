@@ -13,6 +13,7 @@ Kontaktformular: Formspree (extern). KEIN Supabase, KEINE Datenbank, KEINE SQL/R
 - docs/PROJEKT-STAND.md → Projektkontext, Sektionen, Content, Workflows, Regeln
 - docs/CURRENT-SCHEMA.md → Architektur & Datenfluss (kein DB-Schema; dokumentiert externe Dienste wie Formspree)
 - docs/CLAUDE-CODE-TODO.md → aktuelle Frontend-Tasks mit Priorität
+- docs/DESIGN-SYSTEM.md → Design-Regeln, Token-Rollen, No-Gos, geschlossene Ausnahmenliste – Prüfmaßstab für /design-review, bei jeder UI-Arbeit lesen
 - docs/ARBEITSWEISE.md → wie mit Claude gearbeitet wird (Loop, Tools, Anti-Patterns)
 - Vor jeder UI-Arbeit zusätzlich lesen: docs/DESIGN-WISSEN.md (Regeln R…/N…) und docs/DESIGN-UMSETZUNG.md (Rezepte; Projekt-Notiz am Kopf beachten)
 - Session-Abschluss: /session-end · Design-Prüfung: /design-review [route]
@@ -21,7 +22,7 @@ Kontaktformular: Formspree (extern). KEIN Supabase, KEINE Datenbank, KEINE SQL/R
 - Deutsche UI-Texte, durchgehend "Du"-Ansprache
 - Dark-only (kein Light Mode, kein Theme-Toggle) – Near-Black/Weiß/Grau-Basis
 - Responsive: Desktop-first, Mobil voll funktionsfähig
-- Akzent NUR über zentrale CSS-Variablen, niemals Farbwerte hardcoden: flach `--accent`/`--accent-solid` (Ränder, Icons, kleine UI, Fokusring) + Violett-Gradient `--accent-gradient`/`--accent-gradient-strong` nur auf Showcase-Flächen. Einzige dokumentierte Rand-Ausnahme: `.card-gradient-border` auf GENAU EINER Karte (Leistungen-Highlight, 31.08.2026 – siehe docs/PROJEKT-STAND.md → Design-Regeln)
+- Akzent NUR über zentrale CSS-Variablen, niemals Farbwerte hardcoden: flach `--accent`/`--accent-solid` (Ränder, Icons, kleine UI, Fokusring) + Violett-Gradient `--accent-gradient`/`--accent-gradient-strong` nur auf Showcase-Flächen. Einzige dokumentierte Rand-Ausnahme: `.card-gradient-border` auf GENAU EINER Karte (Leistungen-Highlight, 31.08.2026). Weitere Ausnahmen nur über die geschlossene Liste in docs/DESIGN-SYSTEM.md §10
 - Keine Preise auf der Seite
 - Animationen (Framer Motion) subtil und edel, nie verspielt
 - Formspree-Endpoint aus .env.local lesen (NEXT_PUBLIC_FORMSPREE_ENDPOINT), nie hardcoden

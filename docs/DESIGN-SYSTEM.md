@@ -3,8 +3,12 @@
 > **Projekt-Prüfmaßstab** für `/design-review`, über den projektunabhängigen Regelwerken
 > [DESIGN-WISSEN.md](./DESIGN-WISSEN.md) (Regeln R…, No-Gos N…/E…/K…) und
 > [DESIGN-UMSETZUNG.md](./DESIGN-UMSETZUNG.md) (Rezepte).
-> Stand 01.09.2026, destilliert aus **PROJEKT-STAND.md → „Design-Regeln" + „Erkenntnisse & Regeln"**,
-> **CLAUDE.md** und dem Token-Satz in **`src/app/globals.css`**. Gemessen am Build `7332d64`.
+> Stand 01.09.2026, destilliert aus den früheren Design-Regeln in **PROJEKT-STAND.md** (dort seit
+> Runde 2 nur noch ein Verweis hierher) + „Erkenntnisse & Regeln", **CLAUDE.md** und dem Token-Satz in
+> **`src/app/globals.css`**. Gemessen am Build `7332d64`. Die sechs Quellen-Widersprüche aus Runde 1
+> hat der User am 01.09.2026 entschieden (§11.1 → Protokoll); W5 bleibt offen.
+> **Dieses Dokument ist der einzige Ort für Design-Regeln** – PROJEKT-STAND und CURRENT-SCHEMA
+> verweisen nur noch hierher, Werte stehen ausschließlich in `globals.css`.
 
 ## 0. Lesart
 
@@ -34,7 +38,7 @@ ist `src/app/globals.css` (`:root` + `@theme`). Dieses Dokument nennt nur Token-
 | Regel | **Dark-only.** Kein Light Mode, kein Theme-Toggle. Genau EIN Token-Satz in `:root`, `color-scheme: dark`, `html` ohne Klasse. | CLAUDE.md, PROJEKT-STAND (08.06.2026) |
 | Regel | Die Seite selbst ist das Portfolio-Stück – Handwerksqualität ist sichtbares Verkaufsargument. | PROJEKT-STAND |
 | Regel | Desktop-first, Mobil voll funktionsfähig. | CLAUDE.md |
-| Offen | **Stilprofil** nach DESIGN-WISSEN §5 („Expressiv" / „Klassisch") ist nie festgelegt worden → §11, W1. | – |
+| Regel | **Stilprofil „Expressiv"** (DESIGN-WISSEN §2). Es gelten die universellen Regeln R1–R47, die No-Gos N1–N15 **und E1–E7**; die Klassisch-No-Gos **K1–K8 gelten nicht** (Pill-Buttons und Akzent-Glow sind damit kein Verstoß). | User-Entscheidung W1, 01.09.2026 |
 
 **Prüfung Dark-only:** `getComputedStyle(document.body).backgroundColor` liefert den
 `--background`-Wert; kein zweites `:root`, kein `[data-theme]`, kein `prefers-color-scheme`-Block
@@ -55,7 +59,7 @@ in `globals.css` (die Demo-Gruppe hat einen eigenen Scope, §10).
 | `--ring` | Fokusring – zeigt auf `--accent`, **nie Gradient** |
 | `--destructive` | Fehlerzustand (Formular) |
 | `--accent` / `--accent-solid` / `--accent-foreground` | **flacher** Violett-Akzent: Ränder, Icons, kleine UI, Fokusring; Schrift auf Akzentfüllung |
-| `--accent-gradient` | Violett-Verlauf (helle → tiefe Stops), **nur Text-Clip** auf Showcase-Flächen |
+| `--accent-gradient` | Violett-Verlauf (helle → tiefe Stops), **nur Text-Clip** auf Showcase-Flächen. Source-of-Truth für den Verlauf; innerhalb Violett frei nachjustierbar, der Mittelstop darf leicht ins Pink-Violett |
 | `--accent-gradient-strong` | dunkle Violett-Hälfte, **nur Füllung primärer CTAs** |
 
 Tailwind-Utilities (`bg-background`, `text-accent`, `border-border`, `ring-ring` …) lösen per
@@ -68,16 +72,16 @@ Tailwind-Utilities (`bg-background`, `text-accent`, `border-border`, `ring-ring`
 | F1 | **Keine Farbwerte im Code** außerhalb `globals.css` – kein Hex, kein rgb/hsl, keine Tailwind-Palettenfarbe. | Suche nach Hex-, rgb- und hsl-Literalen in `src/` → nur die Ausnahmen aus §10. | CLAUDE.md, PROJEKT-STAND |
 | F2 | **Eine** Akzentfarbe (Violett) für alle Handlungen und Hervorhebungen. | Kein zweiter Farbton außer `--destructive` für Fehler. | PROJEKT-STAND (R3, N3) |
 | F3 | Flacher Akzent (`--accent`/`--accent-solid`) für Ränder, Icons, kleine UI und den **Fokusring**. Der Ring ist nie ein Verlauf. | Jeder Fokusring = `ring-ring`; kein `background-image` auf Ring/Outline. | PROJEKT-STAND |
-| F4 | `--accent-gradient` **nur als Text-Clip auf Near-Black**, und nur an: Headline-**Akzentwörtern** (nie ganze Headlines), den 4 Hero-Zahlen, dem Sektions-Eyebrow. Immer über `.accent-gradient-text` bzw. `.aurora-text` (solider Fallback `var(--accent)`, nie unsichtbar). | Jede Verwendung von `--accent-gradient` im Markup ist eine dieser drei Stellen oder die Ausnahme §10-1. | PROJEKT-STAND, globals.css |
+| F4 | `--accent-gradient` **nur als Text-Clip auf Near-Black**, und nur an: Headline-**Akzentwörtern** (nie ganze Headlines), den 4 Hero-Zahlen, den **Sektions-Eyebrows der Startseite** (T2). Immer über `.accent-gradient-text` bzw. `.aurora-text` (solider Fallback `var(--accent)`, nie unsichtbar). | Jede Verwendung von `--accent-gradient` im Markup ist eine dieser drei Stellen oder die Ausnahme §10-1. | PROJEKT-STAND, globals.css; Eyebrow-Reichweite: W6 |
 | F5 | `--accent-gradient-strong` **nur als Füllung primärer CTAs** (`.cta-gradient`); trägt weiße Schrift ≥ 4.5 : 1 über den ganzen Verlauf (verifiziert min. 5.05 : 1). Die hellen Stops nie auf CTAs. | Kein `--accent-gradient` in `.cta-gradient`; kein anderer Selektor mit `-strong`. | PROJEKT-STAND, globals.css (R42) |
 | F6 | Gradient nur auf **Showcase-Flächen**; Body-Text, Ränder, Flächen bleiben flach. | – | PROJEKT-STAND |
-| F7 | **Kein Gradient-Rand** – mit genau einer sanktionierten Ausnahme (§10-1). | `.card-gradient-border` genau 1× im Markup (Leistungen/KI). | CLAUDE.md, PROJEKT-STAND (31.08.2026) |
+| F7 | **Kein Gradient-Rand** – mit genau einer sanktionierten Ausnahme (§10-1), die ausdrücklich auch die Kombination Rand + Schatten + Verlauf auf dieser einen Karte deckt (N7, R26). | `.card-gradient-border` genau 1× im Markup (Leistungen/KI). | CLAUDE.md, PROJEKT-STAND (31.08.2026); N7-Deckung: W4 |
 | F8 | Sekundärtext = `--muted-foreground`. | Kein `text-foreground/xx` als Ersatz für Sekundärtext (Bestand: siehe §11.3 B10). | globals.css (R4, E7) |
-| F9 | **Sektions-Rhythmus der Startseite:** `.section-band` (Problem, Prozess, Kontakt) und `.section-glow` (Leistungen, Projekte) wechseln sich ab; Hero, Über-mich, Statement ohne; Branchen-Laufband = eigener schmaler Streifen mit `border-y`. Statisches CSS, Tokens/`color-mix` only, kein `--accent-gradient`. | Zuordnung im Markup exakt so. | PROJEKT-STAND (31.08.2026) |
+| F9 | **Sektions-Rhythmus der Startseite** (gegen die Gleichförmigkeit beim Scrollen): `.section-band` (Verlauf aus `--muted` nach `--background`; Problem, Prozess, Kontakt) und `.section-glow` (radialer `color-mix`-Akzent-Schein, 7 %; Leistungen, Projekte) wechseln sich ab; Hero, Über-mich, Statement ohne; Branchen-Laufband (zwischen Hero und Problem) = eigener schmaler Streifen mit `border-y`, weder band noch glow. Statisches CSS (kein Repaint, kein JS), Tokens/`color-mix` only, kein `--accent-gradient`. | Zuordnung im Markup exakt so. | PROJEKT-STAND (31.08.2026) |
 | F10 | Kontrast: Fließtext ≥ 4.5 : 1, große Schrift ≥ 3 : 1, Bedienelement/Fokusring ≥ 3 : 1 – **gerechnet, nicht geschätzt**. | Gerenderte Text/Hintergrund-Paare im Browser messen (auch `color-mix`-Flächen). | PROJEKT-STAND (R42, R43, R45) |
 | F11 | Farbe ist nie alleiniger Informationsträger: Fehler = Farbe **+ Text + Icon**; Live/Musterseiten-Trennung = Badge mit Text. | Formularfehler, Projekte-Badges. | PROJEKT-STAND (R47) |
 | F12 | **Glow-Sprache** ist eine: akzent-getönter `box-shadow` via `color-mix(in oklab, var(--accent) x%, transparent)` (wie `shadow-accent/x`). Primär-CTA: Ruhe ~18 %, Hover ~36 %, `:active` ~52 %; **kein Puls-/Dauereffekt**. | Nur State-Transitions, keine Keyframes auf `box-shadow`. | PROJEKT-STAND (09.06.2026) |
-| Offen | Reichweite des Glows (Card-Hover, Highlight-Dauerglow) gegen R27/E1 → §11, W3. | | |
+| F13 | **Glow-Reichweite (Lesart von R27/E1 für dieses Projekt):** **Dauer-Glows** – also im Ruhezustand sichtbare Akzent-Schatten (Primär-CTAs, Highlight-Karten) – **maximal 2–3 pro Seite**. **Hover-Glows** (Card-Hover, CTA-Hover-Stufe) zählen **nicht** gegen E1/R27. | Ruhende Akzent-Schatten je Route zählen (ohne Hover). | User-Entscheidung W3, 01.09.2026 |
 
 ---
 
@@ -88,10 +92,10 @@ Tailwind-Utilities (`bg-background`, `text-accent`, `border-border`, `ring-ring`
 | # | Regel | Prüfung | Quelle |
 |---|---|---|---|
 | T1 | Headline-Akzentwort im Gradient (`.accent-gradient-text`), **nur das Wort**, nie die ganze Headline; das fließende `.aurora-text` **nur** am Hero-Akzentwort. | `aurora-text` genau 1× (Hero). | PROJEKT-STAND, globals.css |
-| T2 | Sektions-Eyebrow: Versalien, weites Tracking, kleiner Grad, Gradient-Clip. | `SectionHeading` = Referenz-Implementierung. | PROJEKT-STAND (R13) |
+| T2 | Eyebrow: Versalien, weites Tracking, kleiner Grad. **Gradient-Clip nur an den Sektions-Eyebrows der Startseite** (`SectionHeading`-Köpfe der Sektionen auf `/`); **Karten-Eyebrows** (Projekte, DemoShowcase) und **Sonderseiten** (404, Rechtsseiten, Branchen-Band, `/moeglichkeiten`) bleiben **flach** (`--accent` oder `--muted-foreground`). | `SectionHeading` auf `/` = Referenz. Bestand-Hinweis: der `SectionHeading`-Kopf auf `/moeglichkeiten` trägt heute den Gradient-Clip – bei der nächsten `/design-review` gegen diese Regel prüfen. | PROJEKT-STAND (R13); Reichweite: User-Entscheidung W6, 01.09.2026 |
 | T3 | Versalien nur in Labels ≤ 14 px, nie im Fließtext. | – | DESIGN-WISSEN N8 |
 | T4 | Große Versalien-Displays im Deutschen brauchen `hyphens: auto` + `overflow-wrap: break-word` (Komposita-Überlauf); Größe messen, nicht schätzen. | `documentElement.scrollWidth ≤ clientWidth` bei 320/390 px. | PROJEKT-STAND (25.08.2026) |
-| T5 | **CodeTag** (`src/components/CodeTag.tsx`): Mono, flacher Akzent-Hintergrund/-Rahmen, nur echte Tech-/Fach-Begriffe, die ohnehin im Text stehen, ≤ 1–2 pro Absatz; **nicht** in Headlines, Eyebrows, CTAs, Schaubildern, Terminal. | – | PROJEKT-STAND |
+| T5 | **CodeTag** (`src/components/CodeTag.tsx`): Mono, dezenter **flacher** Akzent-Hintergrund/-Rahmen (kein Gradient), klein, vertikal mittig, kein Zeilenumbruch; rein dekorativ (kein Button, keine Semantik/aria). Nur echte Tech-/Fach-Begriffe, die ohnehin im Text stehen und zu Leon passen – keine erfundenen Claims/Zahlen, kein Marketing; ohne passenden Begriff nichts erzwingen; sparsam (≤ 1–2 pro Absatz). Helper `withCodeTags(text, terms)` markiert im Render, ohne die Datenquelle zu ändern. **Nicht** in Headlines, Eyebrows, CTAs, Schaubildern, Terminal. | – | PROJEKT-STAND (Session 8) |
 | T6 | Text-Gradient stets mit solidem Fallback; animierter Gradient-Text nie über direkt animierte `background-position` (Chromium-Clip-Drop) – nur über registrierte `@property`. | `.aurora-text`, `.cta-gradient` folgen dem Muster. | PROJEKT-STAND (08.06.2026) |
 | Offen | Schriftfamilie: heute System-Stack (`--font-sans`) + System-Mono – **nie entschieden**, Prüfung läuft als TODO 9 (DESIGN-UMSETZUNG §§1.2–1.5). Bis dahin kein Befund gegen R6/N1 aussprechen, sondern auf TODO 9 verweisen. | | |
 
@@ -257,8 +261,9 @@ liegen außerhalb (B6).
 12. Utility-Klassennamen in Kommentaren oder Doku innerhalb des Tailwind-Scans („umschreiben statt nennen"; `docs/` und Root-Markdown sind per `@source not` ausgenommen).
 13. Sonderzeichen in Routen-Segmenten.
 
-**Kit (DESIGN-WISSEN §4), soweit auf Dark-only anwendbar:** N1–N15 universell; E1–E7 (Expressiv);
-K1–K8 **nur**, falls Profil „Klassisch" (→ W1). Bei Befund immer die ID nennen.
+**Kit (DESIGN-WISSEN §4), Profil „Expressiv" (W1):** N1–N15 universell und E1–E7 gelten; K1–K8
+gelten **nicht**. E1/R27 nach der Lesart F13 (Dauer-Glows zählen, Hover-Glows nicht). Bei Befund
+immer die ID nennen.
 
 ---
 
@@ -266,29 +271,35 @@ K1–K8 **nur**, falls Profil „Klassisch" (→ W1). Bei Befund immer die ID ne
 
 | # | Ausnahme | Reichweite | Quelle |
 |---|---|---|---|
-| 1 | `.card-gradient-border` – `--accent-gradient` als 1-px-Rand | **genau eine** Karte: Highlight-Karte der Leistungen (KI) | PROJEKT-STAND, User-Auftrag 31.08.2026 |
-| 2 | CoolMode-Klickpartikel mit bunten `hsl`-Zufallsfarben | nur `/moeglichkeiten`, gekapselt, restloser Cleanup | PROJEKT-STAND (08.06.2026: „einzige gekapselte Ausnahme vom Violett-System") |
+| 1 | `.card-gradient-border` – `--accent-gradient` als 1-px-Rand. Technik: `::before` als 1-px-Ring über `inset: -1px` + `mask-composite`, alles im `@supports`-Block; ohne Support bleibt der flache Akzent-Rand (50 %) aus der Utility-Klasse stehen – nie ein vollflächiger Verlauf über dem Inhalt. Unlayered, damit die Regel die layered Tailwind-Utilities übersteuert. **Deckt ausdrücklich auch N7/R26** (Rand + Schatten + Verlauf auf dieser einen Karte). | **genau eine** Karte: Highlight-Karte der Leistungen (KI). Weitere Gradient-Ränder bleiben verboten. | PROJEKT-STAND, User-Auftrag „mehr Pepp" 31.08.2026; N7-Deckung: W4, 01.09.2026 |
+| 2 | CoolMode-Klickpartikel mit bunten `hsl`-Zufallsfarben | nur `/moeglichkeiten`, gekapselt; der Cleanup baut den globalen Partikel-Layer und die rAF-Schleife restlos ab | PROJEKT-STAND (08.06.2026) |
 | 3 | Demo-Gruppe `/demo/*` mit eigenem, hellem Token-Scope (gleiche Variablennamen, andere Werte; Fraunces per OFL) | nur `(demo)`-Route-Gruppe | PROJEKT-STAND (25./26.08.2026) |
+| 4 | **„Vorher"-Layer des Redesign-Schaubilds** (`src/components/ServiceDiagram.tsx`, Leistungen-Karte „Redesign & Modernisierung"): eigene, bewusst gedämpft-clashende Alt-Web-Illustrationsfarben als Hex, **nicht** aus der Theme-/Akzent-Palette. Begründung: die Illustration soll als „hässlich-veraltet" registrierbar sein, bevor das cleane „Nachher" hereinwischt; der Layer ist opak und selbsttragend, also unabhängig vom Seiten-Theme lesbar. Der Marken-Akzent kommt weiterhin ausschließlich über Tokens (nur im „Nachher"). | nur dieser eine Layer; keine weitere Hex-Illustration ohne neuen Eintrag hier | Code-Kommentar (Session 8, 08.06.2026); sanktioniert per User-Entscheidung W2, 01.09.2026 |
 
-**Im Code vorhanden, aber in keiner Doku-Quelle sanktioniert:** der „Vorher"-Layer des
-Redesign-Schaubilds (`src/components/ServiceDiagram.tsx`, Alt-Web-Illustration mit eigenen
-Hex-Farben; Begründung nur im Code-Kommentar) → §11, W2. Bis zur Entscheidung: kein Befund,
-kein Freibrief.
+**Die Liste ist geschlossen.** Jede weitere Ausnahme braucht einen neuen Eintrag hier – vorher
+ist sie ein Befund.
 
 ---
 
 ## 11. Offene Punkte
 
-### 11.1 Widersprüche zwischen den Quellen (Entscheidung beim User – hier nicht aufgelöst)
+### 11.1 Widersprüche zwischen den Quellen
+
+**Noch offen (Entscheidung beim User – hier nicht aufgelöst):**
 
 | # | Widerspruch | Beteiligte Quellen |
 |---|---|---|
-| W1 | **Stilprofil nie gewählt.** DESIGN-WISSEN verlangt vor dem ersten Pixel „Expressiv" oder „Klassisch" (§5). PROJEKT-STAND beschreibt „futuristisch, clean, edel, premium" + „Du", entscheidet aber kein Profil. Folge: ob K1–K8 gelten, ist unklar – K6 verbietet Pill-Buttons und farbige Glow-Schatten, beides trägt die Seite. | DESIGN-WISSEN §5/§4.3 ↔ PROJEKT-STAND Design-Regeln |
-| W2 | **„Einzige" Ausnahme vom Violett-System.** PROJEKT-STAND nennt CoolMode die einzige gekapselte Ausnahme; CLAUDE.md sagt „niemals Farbwerte hardcoden"; `ServiceDiagram.tsx` trägt seit Session 8 einen zweiten Hex-Satz (Vorher-Illustration), begründet nur im Code. | PROJEKT-STAND „Erkenntnisse" ↔ CLAUDE.md ↔ Code |
-| W3 | **Glow-Reichweite.** R27: farbige Glow-Schatten höchstens auf dem Primär-CTA; E1: Glow nicht auf jedem Element. PROJEKT-STAND beschließt Card-Hover-Glow auf **allen** Karten, Dauerglow auf Highlight-Karten und den CTA-Glow. | DESIGN-WISSEN R27/E1 ↔ PROJEKT-STAND Card-Muster |
-| W4 | **Rand + Schatten + Verlauf auf derselben Karte.** N7/R26 verbieten die Kombination; die sanktionierte Highlight-Karte (§10-1) trägt genau das: Akzent-Rand-Fallback, Akzent-Schatten und den Gradient-Rand. | DESIGN-WISSEN N7/R26 ↔ PROJEKT-STAND Ausnahme 31.08.2026 |
-| W5 | **Dark-only vs. gewünschter Light Mode.** CLAUDE.md und PROJEKT-STAND: Dark-only, kein Toggle. CLAUDE-CODE-TODO 4/5: helle Fassung liegt zur Beurteilung, Light Mode „gewünscht". Bis zur Entscheidung gilt Dark-only als Prüfmaßstab. | CLAUDE.md/PROJEKT-STAND ↔ CLAUDE-CODE-TODO 4, 5 |
-| W6 | **Eyebrow-Farbe.** PROJEKT-STAND: Sektions-Eyebrow im Gradient-Clip. Bestand: `SectionHeading` ✓, aber Karten-Eyebrows in Projekte/DemoShowcase flach in `--accent`, Branchen-Band und 404 in `--muted-foreground`. Ob „Sektions-Eyebrow" nur den Sektionskopf meint oder jede Versal-Zeile, sagt keine Quelle. | PROJEKT-STAND ↔ Code |
+| W5 | **Dark-only vs. gewünschter Light Mode.** CLAUDE.md und PROJEKT-STAND: Dark-only, kein Toggle. CLAUDE-CODE-TODO 4/5: helle Fassung liegt zur Beurteilung, Light Mode „gewünscht". Hängt an TODO 4. Bis zur Entscheidung gilt Dark-only als Prüfmaßstab. | CLAUDE.md/PROJEKT-STAND ↔ CLAUDE-CODE-TODO 4, 5 |
+
+**Entschieden am 01.09.2026 (User, Runde 2) – Protokoll, damit die Herkunft der Regeln nachvollziehbar bleibt:**
+
+| # | War | Entscheidung → eingearbeitet in |
+|---|---|---|
+| W1 | Stilprofil nie gewählt; unklar, ob K1–K8 gelten (K6 verbietet Pill-Buttons und Glow). | **„Expressiv"**: E-Regeln gelten, K-Regeln nicht → §1, §9 |
+| W2 | PROJEKT-STAND nannte CoolMode die „einzige" Farb-Ausnahme; `ServiceDiagram.tsx` trug einen zweiten Hex-Satz (Vorher-Illustration), begründet nur im Code-Kommentar. | **Zweite benannte Ausnahme**, Begründung aus dem Code in die Doku, Liste geschlossen → §10-4 |
+| W3 | R27/E1 (Glow nur auf Primär-CTA) vs. Card-Hover-Glow auf allen Karten + Highlight-Dauerglow. | **Lesart:** Dauer-Glows max. 2–3 pro Seite, Hover-Glow zählt nicht → F13 |
+| W4 | N7/R26 (nie Rand + Schatten + Verlauf auf einer Karte) vs. die sanktionierte Highlight-Karte. | Ausnahme §10-1 **deckt ausdrücklich auch N7** → F7, §10-1 |
+| W6 | „Sektions-Eyebrow im Gradient" vs. Bestand: Karten-Eyebrows flach, Branchen/404 grau. | **Regel:** Gradient-Eyebrow nur Sektions-Eyebrows der Startseite; Karten-Eyebrows und Sonderseiten flach → T2, F4 |
 
 ### 11.2 Nie entschieden (nur Bestand vorhanden)
 

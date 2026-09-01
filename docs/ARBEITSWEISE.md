@@ -36,9 +36,9 @@ Explore → Plan → Implement → Commit.
   Stilprofile „Expressiv"/„Klassisch") und docs/DESIGN-UMSETZUNG.md (Rezepte für
   React + Tailwind; die Projekt-Notiz am Kopf sagt, welche Abschnitte hier gelten).
   Hex-Werte dort sind Belege aus der Messung, keine Vorgaben.
-  docs/DESIGN-SYSTEM.md ist die Projekt-Ebene: Fonts, Farbdisziplin, No-Gos –
-  sie wird aus PROJEKT-STAND.md → „Design-Regeln" destilliert (siehe
-  CLAUDE-CODE-TODO Punkt 8); bis dahin gilt dieser Abschnitt direkt.
+  docs/DESIGN-SYSTEM.md ist die Projekt-Ebene: Farbdisziplin, Typografie, No-Gos,
+  Ausnahmen – seit 01.09.2026 der einzige Ort für Design-Regeln (PROJEKT-STAND
+  und CURRENT-SCHEMA verweisen nur noch dorthin).
 - Dark-only ist hier Projektentscheidung (CLAUDE.md) – kein Light-Mode-Check.
 - Prompting: Richtung + Referenzen + explizite No-Gos vorgeben. NICHT pixelgenau
   mikromanagen (Hex-Codes, Paddings) – zu enge Vorgaben machen Ergebnisse
@@ -46,8 +46,8 @@ Explore → Plan → Implement → Commit.
 - Referenzen schlagen Beschreibungen: Screenshots von Vorbildern direkt in den
   Prompt (Fundgruben: Land-book, Godly, Mobbin).
 - Verifikationsloop: /design-review (Screenshots Desktop/Mobil, nur Dark)
-  gegen drei Prüfmaßstäbe – DESIGN-SYSTEM.md (bzw. bis dahin PROJEKT-STAND →
-  Design-Regeln), DESIGN-WISSEN.md, DESIGN-UMSETZUNG.md; Verstöße mit Regel-ID
+  gegen drei Prüfmaßstäbe – DESIGN-SYSTEM.md, DESIGN-WISSEN.md,
+  DESIGN-UMSETZUNG.md; Verstöße mit Regel-ID
   (z. B. „verstößt gegen R6").
 
 ## Tool-Entscheidungen (und warum)
