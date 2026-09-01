@@ -58,7 +58,11 @@ export default function Navbar() {
              nicht: „Klick LL" traf ins Leere, weil „LL" im Namen fehlte.
              Jetzt steht das Kürzel vorn, der Rest erklärt es. */
           aria-label={`${site.logoText} – Startseite von ${site.name}`}
-          className="inline-flex items-center rounded-md border border-border px-2.5 py-1 text-lg font-semibold tracking-tight text-foreground transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          /* Tap-Fläche (TODO 2, 01.09.2026): die sichtbare Kachel ist 38 px hoch;
+             ab der Desktop-Leiste legt eine unsichtbare Pseudo-Ebene 4 px rundum
+             dazu → ≥ 44 × 44. Optik, Rand und Fokusring bleiben auf der Kachel.
+             Mobil bewusst unangetastet (dort nachgemessen und freigegeben). */
+          className="relative inline-flex items-center rounded-md border border-border px-2.5 py-1 text-lg font-semibold tracking-tight text-foreground transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:before:absolute md:before:-inset-1 md:before:content-['']"
         >
           {site.logoText}
         </Link>
@@ -69,7 +73,12 @@ export default function Navbar() {
             <li key={item.href}>
               <a
                 href={item.href}
-                className="rounded-sm text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                /* Tap-Fläche (TODO 2): der Textlink ist ~18 px hoch. Eine
+                   unsichtbare Pseudo-Ebene ergänzt 14 px oben und unten → ~46 px,
+                   ohne die Leiste auseinanderzuziehen (kein Innenabstand, keine
+                   größere Schrift). Seitlich nichts: die Wörter sind breit genug,
+                   und der Zwischenraum zum Nachbarn bleibt frei. */
+                className="relative rounded-sm text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:inset-x-0 before:-inset-y-3.5 before:content-['']"
               >
                 {item.label}
               </a>
@@ -81,7 +90,10 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <a
             href={ctaItem.href}
-            className="hidden rounded-full cta-gradient px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex"
+            /* Tap-Fläche (TODO 2): die Pille ist 36 px hoch; sobald sie sichtbar
+               ist, legt eine unsichtbare Pseudo-Ebene 4 px oben/unten dazu → 44 px.
+               Die Pille selbst bleibt, wie sie ist (Navbar-CTAs bleiben ruhig). */
+            className="relative hidden rounded-full cta-gradient px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex sm:before:absolute sm:before:inset-x-0 sm:before:-inset-y-1 sm:before:content-['']"
           >
             {ctaItem.label}
           </a>

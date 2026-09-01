@@ -72,7 +72,7 @@ Tailwind-Utilities (`bg-background`, `text-accent`, `border-border`, `ring-ring`
 | F1 | **Keine Farbwerte im Code** außerhalb `globals.css` – kein Hex, kein rgb/hsl, keine Tailwind-Palettenfarbe. | Suche nach Hex-, rgb- und hsl-Literalen in `src/` → nur die Ausnahmen aus §10. | CLAUDE.md, PROJEKT-STAND |
 | F2 | **Eine** Akzentfarbe (Violett) für alle Handlungen und Hervorhebungen. | Kein zweiter Farbton außer `--destructive` für Fehler. | PROJEKT-STAND (R3, N3) |
 | F3 | Flacher Akzent (`--accent`/`--accent-solid`) für Ränder, Icons, kleine UI und den **Fokusring**. Der Ring ist nie ein Verlauf. | Jeder Fokusring = `ring-ring`; kein `background-image` auf Ring/Outline. | PROJEKT-STAND |
-| F4 | `--accent-gradient` **nur als Text-Clip auf Near-Black**, und nur an: Headline-**Akzentwörtern** (nie ganze Headlines), den 4 Hero-Zahlen, den **Sektions-Eyebrows der Startseite** (T2). Immer über `.accent-gradient-text` bzw. `.aurora-text` (solider Fallback `var(--accent)`, nie unsichtbar). | Jede Verwendung von `--accent-gradient` im Markup ist eine dieser drei Stellen oder die Ausnahme §10-1. | PROJEKT-STAND, globals.css; Eyebrow-Reichweite: W6 |
+| F4 | `--accent-gradient` **nur als Text-Clip auf Near-Black**, und nur an: Headline-**Akzentwörtern** (nie ganze Headlines), den 4 Hero-Zahlen, den **Sektions-Eyebrows** von Startseite und `/moeglichkeiten` (T2). Immer über `.accent-gradient-text` bzw. `.aurora-text` (solider Fallback `var(--accent)`, nie unsichtbar). | Jede Verwendung von `--accent-gradient` im Markup ist eine dieser drei Stellen oder die Ausnahme §10-1. | PROJEKT-STAND, globals.css; Eyebrow-Reichweite: W6 |
 | F5 | `--accent-gradient-strong` **nur als Füllung primärer CTAs** (`.cta-gradient`); trägt weiße Schrift ≥ 4.5 : 1 über den ganzen Verlauf (verifiziert min. 5.05 : 1). Die hellen Stops nie auf CTAs. | Kein `--accent-gradient` in `.cta-gradient`; kein anderer Selektor mit `-strong`. | PROJEKT-STAND, globals.css (R42) |
 | F6 | Gradient nur auf **Showcase-Flächen**; Body-Text, Ränder, Flächen bleiben flach. | – | PROJEKT-STAND |
 | F7 | **Kein Gradient-Rand** – mit genau einer sanktionierten Ausnahme (§10-1), die ausdrücklich auch die Kombination Rand + Schatten + Verlauf auf dieser einen Karte deckt (N7, R26). | `.card-gradient-border` genau 1× im Markup (Leistungen/KI). | CLAUDE.md, PROJEKT-STAND (31.08.2026); N7-Deckung: W4 |
@@ -92,7 +92,7 @@ Tailwind-Utilities (`bg-background`, `text-accent`, `border-border`, `ring-ring`
 | # | Regel | Prüfung | Quelle |
 |---|---|---|---|
 | T1 | Headline-Akzentwort im Gradient (`.accent-gradient-text`), **nur das Wort**, nie die ganze Headline; das fließende `.aurora-text` **nur** am Hero-Akzentwort. | `aurora-text` genau 1× (Hero). | PROJEKT-STAND, globals.css |
-| T2 | Eyebrow: Versalien, weites Tracking, kleiner Grad. **Gradient-Clip nur an den Sektions-Eyebrows der Startseite** (`SectionHeading`-Köpfe der Sektionen auf `/`); **Karten-Eyebrows** (Projekte, DemoShowcase) und **Sonderseiten** (404, Rechtsseiten, Branchen-Band, `/moeglichkeiten`) bleiben **flach** (`--accent` oder `--muted-foreground`). | `SectionHeading` auf `/` = Referenz. Bestand-Hinweis: der `SectionHeading`-Kopf auf `/moeglichkeiten` trägt heute den Gradient-Clip – bei der nächsten `/design-review` gegen diese Regel prüfen. | PROJEKT-STAND (R13); Reichweite: User-Entscheidung W6, 01.09.2026 |
+| T2 | Eyebrow: Versalien, weites Tracking, kleiner Grad. **Gradient-Clip nur an den Sektions-Eyebrows** – den `SectionHeading`-Köpfen auf der **Startseite und auf `/moeglichkeiten`**; **Karten-Eyebrows** (Projekte, DemoShowcase) und **Sonderseiten** (404, Rechtsseiten, Branchen-Band) bleiben **flach** (`--accent` oder `--muted-foreground`). | `SectionHeading` = Referenz; jede andere Versal-Zeile ohne Gradient-Clip. | PROJEKT-STAND (R13); Reichweite: User-Entscheidung W6, 01.09.2026, erweitert um `/moeglichkeiten` am 01.09.2026 |
 | T3 | Versalien nur in Labels ≤ 14 px, nie im Fließtext. | – | DESIGN-WISSEN N8 |
 | T4 | Große Versalien-Displays im Deutschen brauchen `hyphens: auto` + `overflow-wrap: break-word` (Komposita-Überlauf); Größe messen, nicht schätzen. | `documentElement.scrollWidth ≤ clientWidth` bei 320/390 px. | PROJEKT-STAND (25.08.2026) |
 | T5 | **CodeTag** (`src/components/CodeTag.tsx`): Mono, dezenter **flacher** Akzent-Hintergrund/-Rahmen (kein Gradient), klein, vertikal mittig, kein Zeilenumbruch; rein dekorativ (kein Button, keine Semantik/aria). Nur echte Tech-/Fach-Begriffe, die ohnehin im Text stehen und zu Leon passen – keine erfundenen Claims/Zahlen, kein Marketing; ohne passenden Begriff nichts erzwingen; sparsam (≤ 1–2 pro Absatz). Helper `withCodeTags(text, terms)` markiert im Render, ohne die Datenquelle zu ändern. **Nicht** in Headlines, Eyebrows, CTAs, Schaubildern, Terminal. | – | PROJEKT-STAND (Session 8) |
@@ -136,7 +136,7 @@ Display-Tracking −2.5 % (R8 ✓); Eyebrow-Tracking +20 % liegt **über** dem K
 | # | Regel | Quelle |
 |---|---|---|
 | A1 | Desktop-first; Seitenrand mobil nie unter 16 px, kein horizontales Scrollen (`scrollWidth ≤ clientWidth` bei 320/390 px). | CLAUDE.md, PROJEKT-STAND (N12) |
-| A2 | Touchziele ≥ 44 × 44 px. Mobil nachgemessen ✓ (Menü 288 × 44, Burger 44 × 44). **Desktop-Leiste ist bekannt darunter** – offener Punkt TODO 2, hier kein neuer Befund. | PROJEKT-STAND / CLAUDE-CODE-TODO 2 (N12) |
+| A2 | Touchziele ≥ 44 × 44 px – **Zielfläche, nicht sichtbare Fläche.** Mobil nachgemessen ✓ (Menü 288 × 44, Burger 44 × 44). Desktop-Leiste und Fußzeile seit 01.09.2026 ✓ über unsichtbare Pseudo-Ebenen um Logo, Nav-Links, CTA, Fußzeilen-Links und Instagram-Icon (Technik: `relative` + absolut positioniertes `::before` mit negativem Inset; Fokusring bleibt auf dem sichtbaren Element). Neue Ziele in Leiste oder Fußzeile folgen demselben Muster. | PROJEKT-STAND (Session 37) (N12) |
 | A3 | Sektionsabstand ist eine feste Zahl (R18) – Bestand siehe 4.2, Wert nie beschlossen. | DESIGN-WISSEN |
 
 ### 4.2 Bestand (gemessen)
@@ -299,7 +299,7 @@ ist sie ein Befund.
 | W2 | PROJEKT-STAND nannte CoolMode die „einzige" Farb-Ausnahme; `ServiceDiagram.tsx` trug einen zweiten Hex-Satz (Vorher-Illustration), begründet nur im Code-Kommentar. | **Zweite benannte Ausnahme**, Begründung aus dem Code in die Doku, Liste geschlossen → §10-4 |
 | W3 | R27/E1 (Glow nur auf Primär-CTA) vs. Card-Hover-Glow auf allen Karten + Highlight-Dauerglow. | **Lesart:** Dauer-Glows max. 2–3 pro Seite, Hover-Glow zählt nicht → F13 |
 | W4 | N7/R26 (nie Rand + Schatten + Verlauf auf einer Karte) vs. die sanktionierte Highlight-Karte. | Ausnahme §10-1 **deckt ausdrücklich auch N7** → F7, §10-1 |
-| W6 | „Sektions-Eyebrow im Gradient" vs. Bestand: Karten-Eyebrows flach, Branchen/404 grau. | **Regel:** Gradient-Eyebrow nur Sektions-Eyebrows der Startseite; Karten-Eyebrows und Sonderseiten flach → T2, F4 |
+| W6 | „Sektions-Eyebrow im Gradient" vs. Bestand: Karten-Eyebrows flach, Branchen/404 grau. | **Regel:** Gradient-Eyebrow nur an `SectionHeading`-Köpfen (Startseite und – seit der Erweiterung vom 01.09.2026 – `/moeglichkeiten`); Karten-Eyebrows und Sonderseiten flach → T2, F4 |
 
 ### 11.2 Nie entschieden (nur Bestand vorhanden)
 
@@ -320,5 +320,5 @@ wandert dann aus „Bestand" nach „Regel".
 | B6 | Einzelne Entrance-Dauern 1.15–1.5 s außerhalb 0.4–0.7 s | DESIGN-UMSETZUNG §3.1 |
 | B7 | `InteractiveHoverButton` auf `/moeglichkeiten` als dritte Button-Ausprägung | R23 |
 | B8 | Formularfeld 42 px, Submit 44 px (nicht in einer Zeile – R28 greift nur bedingt) | R28 |
-| B9 | Desktop-Tap-Ziele in Navbar/Fußzeile < 44 px – bekannt, TODO 2 | N12 |
+| B9 | ~~Desktop-Tap-Ziele in Navbar/Fußzeile < 44 px~~ – **erledigt 01.09.2026** (TODO 2, Pseudo-Ebenen; Zielflächen 44–46 px nachgemessen, Optik pixelidentisch) | N12 |
 | B10 | Ein Sekundärtext über `--foreground` mit 90 % Deckung und ein Platzhalter über `--muted-foreground` mit 80 % statt eigener Token | R4 |

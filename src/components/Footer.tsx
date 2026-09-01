@@ -11,19 +11,26 @@ export default function Footer() {
           <p className="mt-1 text-sm text-muted-foreground">{site.tagline}</p>
         </div>
 
+        {/* Tap-Flächen (TODO 2, 01.09.2026): Textlinks sind 20 px hoch, das
+            Instagram-Icon 16 × 16. Unsichtbare Pseudo-Ebenen bringen jedes Ziel
+            auf ≥ 44 px (Text: 12 px oben/unten; Icon: 14 px rundum), ohne dass
+            sich Abstand, Schrift oder Fokusring ändern. Gilt in jeder Breite –
+            die Fußzeile hat keine eigene Mobil-Variante, und die Ebene ist
+            unsichtbar. Das Icon greift 14 px in die 24-px-Lücke zum Nachbarn;
+            der hat seitlich keine Erweiterung, also keine Überlappung. */}
         <nav
           aria-label="Rechtliches"
           className="flex items-center gap-6 text-sm text-muted-foreground"
         >
           <Link
             href="/impressum"
-            className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="relative rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']"
           >
             Impressum
           </Link>
           <Link
             href="/datenschutz"
-            className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="relative rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']"
           >
             Datenschutz
           </Link>
@@ -32,7 +39,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
-            className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="relative rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:-inset-3.5 before:content-['']"
           >
             <InstagramIcon className="h-4 w-4" />
           </a>
