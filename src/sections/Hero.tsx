@@ -1,9 +1,9 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import Counter from '@/components/Counter'
-import HeroStage from '@/components/HeroStage'
 import { withCodeTags } from '@/components/CodeTag'
 import AuroraText from '@/components/AuroraText'
 import { useReducedMotionSafe } from '@/hooks/useReducedMotionSafe'
@@ -51,7 +51,7 @@ function HeroBackground() {
         className="hero-blob-b absolute -bottom-[22%] -right-[12%] h-[65vh] w-[65vh] rounded-full"
         style={{
           background:
-            'radial-gradient(circle, color-mix(in oklab, var(--accent-solid) 16%, transparent), transparent 70%)',
+            'radial-gradient(circle, color-mix(in oklab, var(--accent-warm) 11%, transparent), transparent 70%)',
         }}
       />
       {/* Dritter, leiser Layer in der Mitte: mehr Tiefe zwischen den zwei
@@ -144,9 +144,14 @@ export default function Hero() {
               zwischen 1024 und ~1130 px (nachgemessen, Spalte 442 px bei
               1024). Mobil bleibt 4xl – bei 320 px muss das Wort in die
               Spalte passen (ebenfalls nachgemessen). */}
-          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
+          <h1 className="font-display text-balance text-4xl font-semibold leading-[1.04] tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
             {hero.headline.split(hero.accentWord)[0]}
-            <AuroraText>{hero.accentWord}</AuroraText>
+            {/* Akzentwort im WARMEN Verlauf (Vorbild-Mischung) – gleiche
+                Aurora-Technik, nur der Verlauf kommt per Variable aus dem
+                Zweitakzent (.aurora-warm, siehe globals.css). */}
+            <span className="aurora-warm">
+              <AuroraText>{hero.accentWord}</AuroraText>
+            </span>
             {hero.headline.split(hero.accentWord)[1] ?? ''}
           </h1>
 
@@ -205,19 +210,65 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Showcase-Bühne (früher: Terminal – seit 31.08.2026 auf /moeglichkeiten).
-            Fiktives, gezeichnetes Interface ohne Bild – damit ist die H1 das
-            LCP-Element, und die Bühne darf einfaden. (Lehre aus der Bild-
-            Fassung: ein Bild, das bei opacity 0 zum ersten Mal gemalt wird,
-            ist für den LCP für immer raus – Chrome zählt nur den ersten
-            Paint. Käme hier je wieder ein Bild hinein: nur `y` animieren.) */}
+        {/* Leon als Person in den Hero (User-Entscheidung 02.09.2026, wie bei
+            den Vorbildern): Portraet-Karte mit Glow und zwei schwebenden
+            Chips. Ersetzt auf diesem Branch die gezeichnete Showcase-Buehne
+            (HeroStage) – Entscheidung darueber faellt mit dem Redesign.
+            WICHTIG (LCP): das Bild wird NIE mit opacity 0 gemalt – nur `y`
+            wird animiert (Lehre aus der frueheren Bild-Fassung), dazu
+            `priority`, damit Next es sofort laedt. */}
         <motion.div
-          initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.15, ease: 'easeOut' }}
-          className="entrance-anim"
+          initial={reduce ? { y: 0 } : { y: 24 }}
+          animate={{ y: 0 }}
+          transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.1, ease: 'easeOut' }}
+          className="entrance-anim relative mx-auto w-full max-w-sm lg:max-w-md"
         >
-          <HeroStage />
+          {/* Licht hinter der Karte: violett oben, warm unten – die Mischung. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-10 rounded-full"
+            style={{
+              background:
+                'radial-gradient(58% 58% at 45% 32%, color-mix(in oklab, var(--accent) 30%, transparent), transparent 74%), radial-gradient(48% 48% at 70% 92%, color-mix(in oklab, var(--accent-warm) 16%, transparent), transparent 72%)',
+            }}
+          />
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-2xl shadow-accent/25">
+            <Image
+              src="/leon-portrait.webp"
+              alt="Leon Lang – Porträt"
+              width={880}
+              height={1100}
+              priority
+              sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, 100vw"
+              className="h-auto w-full object-cover"
+            />
+            {/* Abdunklung unten, damit der Namens-Chip auf jedem Foto traegt (R44). */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-32"
+              style={{
+                background:
+                  'linear-gradient(180deg, transparent, color-mix(in oklab, var(--background) 92%, transparent))',
+              }}
+            />
+            <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3">
+              <div>
+                <p className="font-display text-lg font-semibold text-foreground">Leon Lang</p>
+                <p className="text-xs text-muted-foreground">Webentwickler &amp; KI-Integration</p>
+              </div>
+              <span aria-hidden="true" className="mb-1 inline-flex h-2.5 w-2.5 rounded-full bg-accent-warm" />
+            </div>
+          </div>
+          {/* Zwei schwebende Chips wie beim Vorbild – Inhalte sind die echten
+              Rollen aus dem whoami-Text, nichts erfunden. Mono = Label-Stimme. */}
+          <span className="absolute -left-4 top-6 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-background/85 px-3 py-1.5 font-mono text-[11px] text-foreground backdrop-blur sm:-left-8">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+            Webseiten &amp; Web-Apps
+          </span>
+          <span className="absolute -right-3 bottom-20 inline-flex items-center gap-1.5 rounded-full border border-accent-warm/40 bg-background/85 px-3 py-1.5 font-mono text-[11px] text-foreground backdrop-blur sm:-right-6">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent-warm" />
+            KI-Integration
+          </span>
         </motion.div>
       </div>
     </section>

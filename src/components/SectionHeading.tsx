@@ -30,11 +30,11 @@ export default function SectionHeading({
       )}
     >
       {eyebrow && (
-        <span className="accent-gradient-text text-xs font-medium uppercase tracking-[0.2em]">
+        <span className="accent-gradient-text font-mono text-xs font-medium uppercase tracking-[0.2em]">
           {eyebrow}
         </span>
       )}
-      <Heading className="mt-3 max-w-2xl text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+      <Heading className="font-display mt-3 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
         {title}
       </Heading>
       {description && (
