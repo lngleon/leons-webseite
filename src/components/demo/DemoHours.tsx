@@ -7,7 +7,13 @@ import DemoSection from './DemoSection'
  */
 export default function DemoHours({ business }: { business: GastroBusiness }) {
   return (
-    <DemoSection id="zeiten" title={business.hours.title} note={business.hours.note}>
+    <DemoSection
+      id="zeiten"
+      title={business.hours.title}
+      note={business.hours.note}
+      wide
+      split
+    >
       <dl className="mt-8 divide-y divide-border">
         {business.hours.entries.map((entry) => (
           <div key={entry.label} className="demo-leader py-3">

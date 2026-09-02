@@ -29,7 +29,7 @@ export default function DemoLocation({ business }: { business: GastroBusiness })
   const { location } = business
 
   return (
-    <DemoSection id="anfahrt" title={location.title}>
+    <DemoSection id="anfahrt" title={location.title} wide split>
       <address className="mt-8 not-italic">
         <p
           className="demo-display text-foreground"

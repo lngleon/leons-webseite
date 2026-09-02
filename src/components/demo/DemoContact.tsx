@@ -25,7 +25,7 @@ export default function DemoContact({ business }: { business: GastroBusiness }) 
   )}&body=${encodeURIComponent(contact.reservation.body)}`
 
   return (
-    <DemoSection id="kontakt" title={contact.title}>
+    <DemoSection id="kontakt" title={contact.title} wide split>
       <p className="mt-6 max-w-prose text-[0.95rem] leading-relaxed text-muted-foreground">
         {contact.reservation.note}
       </p>

@@ -90,10 +90,13 @@ export function MenuRow({ item, compact = false }: { item: MenuItem; compact?: b
  */
 export default function DemoMenu({ business }: { business: GastroBusiness }) {
   return (
-    <DemoSection id="karte" title={business.menu.title} note={business.menu.note}>
+    <DemoSection id="karte" title={business.menu.title} note={business.menu.note} wide>
       <DemoCategoryRail categories={business.menu.categories} />
 
-      <div className="mt-8 space-y-10">
+      {/* Ab 60 rem zwei Spalten – eine gedruckte Karte setzt ihre Rubriken auch
+          nebeneinander. Die Sprungmarken der Leiste funktionieren unverändert:
+          ein Anker findet seine Überschrift auch in der rechten Spalte. */}
+      <div className="demo-menue-spalten mt-8">
         {business.menu.categories.map((category) => (
           <section key={category.id} aria-labelledby={`kat-${category.id}`}>
             <h3
@@ -157,7 +160,7 @@ export default function DemoMenu({ business }: { business: GastroBusiness }) {
         wirklich um Allergene geht.
       */}
       {business.allergens?.length ? (
-        <div className="mt-10 border-t border-border pt-6">
+        <div className="demo-lese mt-12 border-t border-border pt-6">
           <h3 className="demo-eyebrow">Allergene</h3>
           <dl className="mt-3 grid grid-cols-1 gap-x-8 gap-y-1.5 sm:grid-cols-2">
             {business.allergens.map((allergen) => (

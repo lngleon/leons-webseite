@@ -360,6 +360,68 @@ html:has(.demo-scope--friseur),
   }
 }
 
+/* Volle Speisekarte: zwei Spalten ab der Bahn-Breite. Eine gedruckte Karte
+   setzt ihre Rubriken auch nebeneinander – einspaltig sind es auf dem Desktop
+   drei Bildschirmlängen Scrollen für vier Rubriken.
+
+   Bewusst ein Gitter und NICHT `columns: 2`: der Mehrspalten-Satz verteilt die
+   Rubriken automatisch und bricht sie in manchen Browsern trotz
+   `break-inside: avoid` doch um – eine Rubrik, die zwischen zwei Spalten
+   zerreisst, ist schlimmer als eine Spalte, die unten früher endet.
+
+   Grössere Lücken als beim Auszug auf der Startseite (dort 2.75/4rem): hier
+   stehen ganze Rubriken mit Beschreibungen untereinander, keine zwei Zeilen. */
+.demo-menue-spalten {
+  display: grid;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (min-width: 60rem) {
+  .demo-menue-spalten {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3.5rem 4.5rem;
+  }
+}
+
+/* Abschnitt mit Kopf links und Inhalt rechts.
+   Für die Kontaktseite: dort stehen drei kurze Blöcke (Adresse, Zeiten,
+   Draht) untereinander, jeder mit einer 64-px-Überschrift und 112 px Abstand –
+   das ergab eine sehr lange Seite für sehr wenig Inhalt. Nebeneinander gelesen
+   trägt die Überschrift ihren Block, statt ihn anzukündigen.
+
+   1 zu 1.45, damit der Inhalt die breitere Spalte bekommt: die Überschrift ist
+   ein Wort bis drei, der Inhalt eine Liste. Die Kopfspalte ist damit 444 px
+   breit – gebraucht wird das für das längste Wort der drei Betriebe:
+   „ÖFFNUNGSZEITEN" braucht bei Fraunces 9,198 px Breite je px Schriftgrad,
+   also 368 px bei den 40 px unten. Mit den ursprünglichen 0.85fr und dem
+   normalen 64-px-Grad stand dort „ÖFFNUNGSZ / EITEN": ein harter Wortbruch
+   ohne Trennstrich, weil `overflow-wrap: break-word` aus `.demo-display`
+   zuschlägt, sobald das Wort nicht mehr passt. */
+@media (min-width: 60rem) {
+  .demo-teiler {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+    gap: 4rem;
+    align-items: start;
+  }
+
+  /* Im Zweispalter ist die Überschrift die Beschriftung eines Blocks und nicht
+     mehr der Titel eines ganzen Kapitels – 40 px statt 64 px. `!important`,
+     weil `DemoSection` den Grad als Inline-Style setzt (er hängt an einem
+     `clamp()`, das für die einspaltige Fassung gemessen ist). Unterhalb von
+     60 rem greift die Regel nicht, die Handy-Fassung bleibt unverändert. */
+  .demo-teiler > :first-child > h2 {
+    font-size: 2.5rem !important;
+  }
+
+  /* Der Inhalt fängt im Zweispalter oben an – der Abstand, den er im
+     Einspalter zur Überschrift braucht, wäre hier ein Versatz. */
+  .demo-teiler > :last-child > :first-child {
+    margin-top: 0;
+  }
+}
+
 /* Praktisches: Öffnungszeiten, Adresse, kurzer Draht nebeneinander. Schon ab
    48rem – die drei Blöcke sind kurz und stehen auf einem Tablet gut zu dritt. */
 @media (min-width: 48rem) {
