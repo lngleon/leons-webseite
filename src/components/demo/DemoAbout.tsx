@@ -27,7 +27,7 @@ export default function DemoAbout({ business }: { business: GastroBusiness }) {
   return (
     <>
       <header className="px-5 pb-2 pt-10 sm:px-8 sm:pt-14">
-        <div className="mx-auto max-w-3xl">
+        <div className="demo-bahn">
           <h1
             className="demo-display text-foreground"
             style={{ fontSize: 'clamp(2.25rem, 12vw, 4.5rem)' }}
@@ -46,13 +46,17 @@ export default function DemoAbout({ business }: { business: GastroBusiness }) {
           <section
             key={block.id}
             aria-labelledby={`ueber-${block.id}`}
-            className="border-t border-border px-5 py-12 sm:px-8 sm:py-16"
+            className="demo-abschnitt border-t border-border"
           >
-            <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2 md:items-center md:gap-10">
+            <div className="demo-bahn grid gap-6 md:grid-cols-2 md:items-center md:gap-10">
               <DemoPhoto
                 photo={block.photo}
-                sizes="(min-width: 768px) 364px, 100vw"
-                className={bildRechts ? 'rounded-sm md:order-2' : 'rounded-sm'}
+                sizes="(min-width: 60rem) 545px, (min-width: 768px) 364px, 100vw"
+                className={
+                  bildRechts
+                    ? 'demo-ueber__bild rounded-sm md:order-2'
+                    : 'demo-ueber__bild rounded-sm'
+                }
               />
               <div>
                 <h2
@@ -62,7 +66,10 @@ export default function DemoAbout({ business }: { business: GastroBusiness }) {
                 >
                   {block.title}
                 </h2>
-                <p className="mt-4 text-[0.95rem] leading-relaxed text-muted-foreground">
+                {/* Lesespalte, obwohl die Bahn breiter ist: der Absatz läuft
+                    sonst über 545 px und damit über die ~75 Zeichen, ab denen
+                    das Auge die nächste Zeile schlechter findet. */}
+                <p className="demo-lese mt-4 text-[0.95rem] leading-relaxed text-muted-foreground">
                   {block.text}
                 </p>
               </div>
@@ -75,9 +82,9 @@ export default function DemoAbout({ business }: { business: GastroBusiness }) {
 
       <section
         aria-label={about.title}
-        className="border-t border-border px-5 py-12 sm:px-8 sm:py-16"
+        className="demo-abschnitt border-t border-border"
       >
-        <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:flex-row">
+        <div className="demo-bahn flex flex-col gap-3 sm:flex-row">
           <a href={demoHref(business.slug, 'menu')} className="demo-cta demo-cta--fill">
             {about.outro.menuLabel}
             <span aria-hidden="true">→</span>

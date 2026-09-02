@@ -211,6 +211,165 @@ html:has(.demo-scope--friseur),
   color: var(--accent);
 }
 
+/* ── Breiten & Desktop-Raster ────────────────────────────────────────────────
+   Bis 02.09.2026 hatte die ganze Demo GENAU EIN Mass: `max-w-3xl` (768 px) für
+   Kopf, Bildreihe, Karte und Fuss. Auf dem Handy ist das richtig – dort ist die
+   Seite auch entworfen worden. Auf 1440 px stand sie als schmale Spalte in der
+   Mitte, die Hälfte des Bildschirms blieb leer, und weil alles dieselbe Breite
+   hatte, gab es keinen Rhythmus: Kopf, Bilder und Preisliste lagen als ein
+   einziger Streifen untereinander.
+
+   Deshalb jetzt ZWEI Masse statt einem – und ein Wechsel zwischen ihnen ist das,
+   was auf dem Desktop überhaupt erst Komposition ergibt:
+   - `.demo-bahn`  breite Bahn (1152 px) für Kopf, Bilder, Karte, Fuss
+   - `.demo-lese`  Lesespalte (~34rem) für alles, was am Stück gelesen wird
+
+   Alle Desktop-Regeln hängen an 60rem (960 px) und nicht an Tailwinds `lg`:
+   das Raster soll umschalten, wenn die BAHN Platz hat, nicht wenn ein Gerät
+   eine bestimmte Klasse hat. Darunter bleibt exakt das bisherige, auf dem Handy
+   entworfene Layout stehen. */
+.demo-bahn {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+.demo-lese {
+  max-width: 34rem;
+}
+
+/* Abstand zwischen den Abschnitten – EINE Regel statt der bisherigen
+   Utility-Kette an jedem Block. Vorher 48 px (Handy) / 64 px (ab sm); das ist
+   der Wert, mit dem die Seite auf 1440 px als durchgehender Streifen las.
+   Jetzt 56 → 112 px: der Sprung zwischen den Abschnitten ist auf dem Desktop
+   grösser als der Abstand innerhalb eines Abschnitts, und erst dadurch werden
+   sie als getrennte Kapitel gelesen. */
+.demo-abschnitt {
+  padding-inline: 1.25rem;
+  padding-block: clamp(3.5rem, 8vw, 7rem);
+}
+
+@media (min-width: 40rem) {
+  .demo-abschnitt {
+    padding-inline: 2rem;
+  }
+}
+
+/* Die Tagline im Kopf bricht nach SINN statt nach Länge. `.demo-display` setzt
+   `text-wrap: balance`, und das macht aus „Guter Kaffee, warmes Brot, ein
+   ruhiger Tisch." zwei gleich lange Zeilen – mitten durch „warmes | Brot".
+   `pretty` bricht stattdessen an der natürlichen Stelle (nach dem Komma).
+   Browser ohne `pretty` verwerfen die Zeile und behalten `balance`, also
+   genau den bisherigen Stand. */
+.demo-kopf__zeile {
+  text-wrap: pretty;
+}
+
+/* Das Foto im Kopf steht auf dem Handy UNTER dem Text und braucht dort Luft;
+   im Zweispalter daneben wäre derselbe Abstand ein Versatz. */
+.demo-kopf__bild {
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 60rem) {
+  .demo-kopf__bild {
+    margin-top: 0;
+  }
+}
+
+/* Kopf der Startseite: Wortmarke links, Foto rechts. Erst ab der Bahn-Breite –
+   darunter steht das Foto wie bisher unter dem Text.
+
+   `align-items: center` und nicht `end`: die drei Betriebe haben unterschiedlich
+   lange Namen („Klee" 4, „Wirbel" 6 Zeichen) und damit unterschiedlich hohe
+   Textblöcke; an der Grundlinie ausgerichtet stünde das Foto je Betrieb woanders. */
+@media (min-width: 60rem) {
+  .demo-kopf {
+    display: grid;
+    /* 1.15 zu 1 und nicht 1 zu 1: die linke Spalte trägt den Namen in
+       Versalien, und der längste im Repo („WIRBEL") stand bei gleicher
+       Aufteilung auf 4 px genau an der Spaltenkante. Mit dieser Aufteilung
+       bleiben rund 60 px Reserve – genug, dass auch ein Browser mit leicht
+       anderer Schriftbreite nicht umbricht. */
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+}
+
+/* Bildreihe: bleibt bei ZWEI Spalten, wird auf dem Desktop aber breit – und
+   damit werden die Fotos gross statt zahlreich. Bewusst kein drei- oder
+   vierspaltiges Raster: Café-Seiten, die gut aussehen, zeigen wenige grosse
+   Bilder (belegt an caffe.design, cafefrida.ca, arabica.com – alle zweispaltig
+   auf 1440 px). Der grössere Abstand ab der Bahn-Breite lässt sie als einzelne
+   Bilder stehen statt als Kachelblock. */
+@media (min-width: 60rem) {
+  .demo-bildreihe {
+    gap: 1.25rem;
+  }
+
+  /* Das Bild über die volle Breite bekommt auf dem Desktop einen flacheren
+     Schnitt. Ohne ihn rechnet sein Seitenverhältnis aus 1152 px Breite eine
+     768 px hohe Fläche – dreimal so viel Platz wie jedes andere Bild der Reihe,
+     und die Bildstrecke kippt.
+
+     Bewusst über `aspect-ratio` und NICHT über `max-height`: eine Höhenbremse
+     macht die Höhe definit, woraufhin `aspect-ratio` die BREITE zurückrechnet –
+     das Bild schrumpfte dann auf 720 px und stünde nicht mehr über die Bahn
+     (nachgemessen). `!important` ist hier kein Holzhammer, sondern die einzige
+     Möglichkeit: `DemoPhoto` setzt das Verhältnis als Inline-Style, weil es aus
+     den Daten kommt. Das `object-cover` im Bild schneidet sauber mittig. */
+  .demo-bild--breit {
+    aspect-ratio: 5 / 2 !important;
+  }
+}
+
+/* „Über uns": auf dem Desktop bekommen alle Bild-Text-Blöcke DASSELBE
+   Bildformat. In den Daten stehen 3/2 und 4/5 gemischt; in der breiten Bahn
+   ergab das Zeilen von 390 px und 680 px Höhe, und neben dem hohen Bild stand
+   ein Textabsatz von fünf Zeilen mit 300 px Leere darunter. Ein einheitliches
+   Format macht aus drei Zufallshöhen drei gleich gebaute Kapitel.
+
+   `!important` wie bei `.demo-bild--breit`: das Verhältnis kommt aus den Daten
+   und wird von `DemoPhoto` inline gesetzt. Auf dem Handy bleibt das echte
+   Format der Daten stehen – dort steht je ein Bild allein, es gibt also nichts
+   auszurichten. */
+@media (min-width: 60rem) {
+  .demo-ueber__bild {
+    aspect-ratio: 4 / 3 !important;
+  }
+}
+
+/* Karten-Auszug: eine Spalte, ab der Bahn-Breite zwei. `align-items: start`,
+   damit Kategorien mit unterschiedlich vielen Zeilen oben bündig stehen.
+
+   Bewusst schon in der Handy-Fassung ein Gitter mit `gap` und nicht
+   `space-y-*`: eine Utility, die Abstand über `margin-top` der Geschwister
+   herstellt, setzt im Zweispalter Ränder an die Elemente der zweiten Reihe und
+   verschiebt sie gegen die erste. Ein `gap` kennt dieses Problem nicht. */
+.demo-karte-spalten {
+  display: grid;
+  gap: 2.25rem;
+  align-items: start;
+}
+
+@media (min-width: 60rem) {
+  .demo-karte-spalten {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.75rem 4rem;
+  }
+}
+
+/* Praktisches: Öffnungszeiten, Adresse, kurzer Draht nebeneinander. Schon ab
+   48rem – die drei Blöcke sind kurz und stehen auf einem Tablet gut zu dritt. */
+@media (min-width: 48rem) {
+  .demo-praktisch {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem;
+  }
+}
+
 /* ── Preisliste: gepunktete Führungslinie zwischen Gericht und Preis ─────── */
 .demo-leader {
   display: flex;
@@ -239,6 +398,16 @@ html:has(.demo-scope--friseur),
 .demo-grain {
   position: fixed;
   inset: 0;
+  /* `inset: 0` allein reicht bei einem SVG NICHT. Ein <svg> ist ein ERSETZTES
+     Element: bei `width/height: auto` gewinnt seine intrinsische Grösse gegen
+     die vier Kanten, und ohne width/height-Attribut sind das laut Spezifikation
+     300 x 150 px. Das Korn lag deshalb bis 02.09.2026 nur in der linken oberen
+     Ecke – und weil das opake Navigationsband die obersten ~68 px verdeckt, sah
+     man davon genau einen grauen Kasten von rund 300 x 80 px unter der Leiste
+     stehen. Auf allen 19 Demo-Seiten. Die zwei Zeilen ziehen die Fläche auf den
+     ganzen Viewport, wofür `inset` gedacht war. */
+  width: 100%;
+  height: 100%;
   z-index: 0;
   pointer-events: none;
   opacity: 0.055;

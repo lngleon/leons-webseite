@@ -4,6 +4,7 @@ import DemoHero from '@/components/demo/DemoHero'
 import DemoMarquee from '@/components/demo/DemoMarquee'
 import DemoGallery from '@/components/demo/DemoGallery'
 import DemoMenuTeaser from '@/components/demo/DemoMenuTeaser'
+import DemoFacts from '@/components/demo/DemoFacts'
 import DemoJsonLd from '@/components/demo/DemoJsonLd'
 import { buildBusinessSchema } from '@/components/demo/schema'
 import { cafeKlee } from '@/data/demo/cafe-klee'
@@ -30,6 +31,7 @@ export default function CafeDemoPage() {
       <DemoMarquee business={cafeKlee} />
       <DemoGallery business={cafeKlee} />
       <DemoMenuTeaser business={cafeKlee} />
+      <DemoFacts business={cafeKlee} />
     </DemoShell>
   )
 }

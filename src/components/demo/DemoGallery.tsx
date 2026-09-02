@@ -19,8 +19,8 @@ export default function DemoGallery({ business }: { business: GastroBusiness }) 
     // Bewusst ein <div> und keine <section>: der Block hat keine Überschrift
     // (es gibt keine Copy dafür), eine Sektion ohne zugänglichen Namen wäre nur
     // ein leerer Eintrag mehr in der Struktur. Die Bilder tragen ihren Alt-Text.
-    <div className="border-t border-border px-5 py-12 sm:px-8 sm:py-16">
-      <div className="mx-auto grid max-w-3xl grid-cols-2 gap-2 sm:gap-3">
+    <div className="demo-abschnitt border-t border-border">
+      <div className="demo-bahn demo-bildreihe grid grid-cols-2 gap-2 sm:gap-3">
         {business.gallery.map((photo, index) => {
           // Ungerade Anzahl: das letzte Bild bekommt die volle Breite.
           const wide =
@@ -30,9 +30,11 @@ export default function DemoGallery({ business }: { business: GastroBusiness }) 
               key={photo.placeholderLabel}
               photo={photo}
               sizes={
-                wide ? '(min-width: 640px) 768px, 100vw' : '(min-width: 640px) 378px, 50vw'
+                wide
+                  ? '(min-width: 60rem) 1152px, (min-width: 40rem) 768px, 100vw'
+                  : '(min-width: 60rem) 566px, (min-width: 40rem) 378px, 50vw'
               }
-              className={wide ? 'col-span-2 rounded-sm' : 'rounded-sm'}
+              className={wide ? 'demo-bild--breit col-span-2 rounded-sm' : 'rounded-sm'}
             />
           )
         })}

@@ -48,6 +48,12 @@ export default function DemoLegal({ business }: { business: GastroBusiness }) {
       className="border-t border-border px-5 py-10 sm:px-8"
       aria-label={business.name}
     >
+      {/* Bewusst die schmale Spalte und NICHT die breite Bahn, obwohl Startseite
+          und „Über uns" seit 02.09.2026 breit laufen: die Demo hat drei
+          Inhaltsmasse (Bahn für Schaufenster-Seiten, 3xl für Karte/Kontakt,
+          2xl für die Rechtstexte). Ein Fuss, der breiter ist als der Inhalt
+          über ihm, liest sich als Fehler; ein Fuss, der schmaler ist, liest
+          sich als Abbinder. Also das Mass, das die MEISTEN Seiten haben. */}
       <div className="mx-auto max-w-3xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between">
           <p className="demo-eyebrow">{business.name}</p>

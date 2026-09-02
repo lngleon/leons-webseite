@@ -9,20 +9,28 @@ export default function DemoSection({
   id,
   title,
   note,
+  wide = false,
   children,
 }: {
   id: string
   title: string
   note?: string
+  /**
+   * Breite Bahn (1152 px) statt Lesespalte (768 px). Für Abschnitte, die auf
+   * dem Desktop ein eigenes Raster aufspannen – Bilder, der Karten-Auszug.
+   * Reiner Fliesstext (Rechtsseiten, „Über uns") bleibt schmal: eine 1152 px
+   * breite Textzeile liest sich nicht.
+   */
+  wide?: boolean
   children: ReactNode
 }) {
   return (
     <section
       id={id}
       aria-labelledby={`${id}-titel`}
-      className="border-t border-border px-5 py-12 sm:px-8 sm:py-16"
+      className="demo-abschnitt border-t border-border"
     >
-      <div className="mx-auto max-w-3xl">
+      <div className={wide ? 'demo-bahn' : 'mx-auto max-w-3xl'}>
         <h2
           id={`${id}-titel`}
           className="demo-display text-foreground"
@@ -47,13 +55,20 @@ export default function DemoSection({
            * Und selbst wenn es zu eng würde, zieht die Seite sich NICHT mehr
            * horizontal auf: `hyphens: auto` + `overflow-wrap` in `.demo-display`
            * brechen das Wort um (bei 9.6vw verifiziert, Seitenüberlauf 0 px).
+           *
+           * OBERGRENZE seit 02.09.2026 4rem statt 3.5rem. Die alte Zahl war für
+           * eine 768 px breite Spalte gemessen; in der 1152-px-Bahn las sich
+           * eine 56-px-Überschrift wie eine Zwischenzeile. 64 px liegt im
+           * Korridor, den die Vorbilder für Abschnittstitel fahren (56–64 px).
+           * Nur Fenster ab ~711 px sehen den Unterschied – darunter gewinnt
+           * weiterhin 9vw, die Handy-Messung oben bleibt also gültig.
            */
-          style={{ fontSize: 'clamp(1.75rem, 9vw, 3.5rem)' }}
+          style={{ fontSize: 'clamp(1.75rem, 9vw, 4rem)' }}
         >
           {title}
         </h2>
         {note ? (
-          <p className="mt-2 text-[0.82rem] text-muted-foreground">{note}</p>
+          <p className="demo-lese mt-3 text-[0.9rem] text-muted-foreground">{note}</p>
         ) : null}
         {children}
       </div>

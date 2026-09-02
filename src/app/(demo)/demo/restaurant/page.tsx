@@ -4,6 +4,7 @@ import DemoHero from '@/components/demo/DemoHero'
 import DemoMarquee from '@/components/demo/DemoMarquee'
 import DemoGallery from '@/components/demo/DemoGallery'
 import DemoMenuTeaser from '@/components/demo/DemoMenuTeaser'
+import DemoFacts from '@/components/demo/DemoFacts'
 import DemoJsonLd from '@/components/demo/DemoJsonLd'
 import { buildBusinessSchema } from '@/components/demo/schema'
 import { restaurantGlut } from '@/data/demo/restaurant-glut'
@@ -30,6 +31,7 @@ export default function RestaurantDemoPage() {
       <DemoMarquee business={restaurantGlut} />
       <DemoGallery business={restaurantGlut} />
       <DemoMenuTeaser business={restaurantGlut} />
+      <DemoFacts business={restaurantGlut} />
     </DemoShell>
   )
 }

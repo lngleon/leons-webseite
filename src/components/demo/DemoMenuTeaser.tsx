@@ -30,8 +30,11 @@ export default function DemoMenuTeaser({ business }: { business: GastroBusiness 
   const { menu } = business
 
   return (
-    <DemoSection id="karte-auszug" title={menu.title} note={menu.note}>
-      <div className="mt-8 space-y-8">
+    <DemoSection id="karte-auszug" title={menu.title} note={menu.note} wide>
+      {/* Ab 60 rem zwei Spalten (`.demo-karte-spalten`): vier Kategorien
+          untereinander ergaben in der breiten Bahn eine sehr lange, sehr
+          schmale Liste. Die Abstände macht das Gitter selbst. */}
+      <div className="demo-karte-spalten mt-10">
         {menu.categories.map((category) => (
           <section key={category.id} aria-labelledby={`auszug-${category.id}`}>
             <h3 id={`auszug-${category.id}`} className="demo-eyebrow">

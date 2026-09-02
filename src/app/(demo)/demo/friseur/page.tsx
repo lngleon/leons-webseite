@@ -4,6 +4,7 @@ import DemoHero from '@/components/demo/DemoHero'
 import DemoMarquee from '@/components/demo/DemoMarquee'
 import DemoGallery from '@/components/demo/DemoGallery'
 import DemoMenuTeaser from '@/components/demo/DemoMenuTeaser'
+import DemoFacts from '@/components/demo/DemoFacts'
 import DemoJsonLd from '@/components/demo/DemoJsonLd'
 import { buildBusinessSchema } from '@/components/demo/schema'
 import { friseurWirbel } from '@/data/demo/friseur-wirbel'
@@ -32,6 +33,7 @@ export default function FriseurDemoPage() {
       <DemoMarquee business={friseurWirbel} />
       <DemoGallery business={friseurWirbel} />
       <DemoMenuTeaser business={friseurWirbel} />
+      <DemoFacts business={friseurWirbel} />
     </DemoShell>
   )
 }
