@@ -1,10 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import type { ComponentType } from 'react'
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import { ArrowUpRight, Mail } from 'lucide-react'
 import SectionHeading from '@/components/SectionHeading'
+import AnfrageFlow from '@/components/AnfrageFlow'
 import ContactForm from '@/components/ContactForm'
 import { InstagramIcon, WhatsAppIcon } from '@/components/BrandIcons'
 import { contactIntro, directChannels } from '@/data/contact'
@@ -73,6 +75,14 @@ function DirectContact() {
 }
 
 export default function Kontakt() {
+  /**
+   * Zwei Wege in dieselbe Formspree-Sendung: der geführte Fragebogen ist der
+   * Standard (er fragt genau das ab, was ich für ein erstes Angebot brauche),
+   * das freie Formular bleibt einen Klick entfernt. Startwert konstant –
+   * Server-Frame = erstes Client-Frame (Hydration-Regel).
+   */
+  const [modus, setModus] = useState<'gefuehrt' | 'frei'>('gefuehrt')
+
   return (
     <section id="kontakt" className="section-band py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -83,7 +93,7 @@ export default function Kontakt() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-          <SectionHeading
+          <SectionHeading number="06"
             eyebrow={contactIntro.eyebrow}
             title={contactIntro.title}
             description={contactIntro.subline}
@@ -117,7 +127,11 @@ export default function Kontakt() {
                   'radial-gradient(38rem 22rem at 50% 30%, color-mix(in oklab, var(--accent) 13%, transparent), transparent 70%)',
               }}
             />
-            <ContactForm />
+            {modus === 'gefuehrt' ? (
+              <AnfrageFlow onWechsel={() => setModus('frei')} />
+            ) : (
+              <ContactForm onWechsel={() => setModus('gefuehrt')} />
+            )}
           </motion.div>
 
           {/* Direkte Wege – rechts auf Desktop */}

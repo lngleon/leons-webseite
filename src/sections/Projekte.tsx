@@ -40,7 +40,7 @@ import type { DemoPreview } from '@/data/demos'
 function ImageBadge({ live, children }: { live?: boolean; children: string }) {
   return (
     <span className="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-background/80 px-2.5 py-1 text-xs font-medium text-foreground backdrop-blur">
-      {live && <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />}
+      {live && <span className="h-1.5 w-1.5 rounded-full bg-accent-warm" aria-hidden="true" />}
       {children}
     </span>
   )
@@ -85,7 +85,7 @@ export default function Projekte({ muster }: ProjekteProps) {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: reduce ? 0 : 0.5, ease: 'easeOut' }}
         >
-          <SectionHeading
+          <SectionHeading number="04"
             eyebrow={projectsIntro.eyebrow}
             title={projectsIntro.title}
             description={projectsIntro.subline}
@@ -158,7 +158,7 @@ export default function Projekte({ muster }: ProjekteProps) {
           transition={{ duration: reduce ? 0 : 0.5, ease: 'easeOut' }}
           className="mt-20 flex flex-col items-center gap-3 text-center"
         >
-          <h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h3 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             {musterIntro.title}
           </h3>
           <p className="max-w-2xl text-pretty leading-relaxed text-muted-foreground">

@@ -1,0 +1,5 @@
+Switzer und Clash Display: Indian Type Foundry via Fontshare (fontshare.com),
+kostenlos fuer private und kommerzielle Nutzung nach Fontshare-EULA
+(Self-Hosting als Teil einer Website erlaubt; die Dateien duerfen nicht
+eigenstaendig weiterverbreitet werden). Bezogen am 02.09.2026.
+Dateien: switzer-400/500/600.woff2, clash-display-600.woff2.

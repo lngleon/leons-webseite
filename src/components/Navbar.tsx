@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ctaItem, navItems } from '@/data/navigation'
@@ -48,24 +47,30 @@ export default function Navbar() {
         aria-label="Hauptnavigation"
         className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8"
       >
-        {/* Logo-Platzhalter "LL" */}
-        <Link
-          href="/"
-          /* WCAG 2.5.3 „Label in Name": der SICHTBARE Text muss im
-             zugänglichen Namen VORKOMMEN, nicht von ihm ersetzt werden. Bis
-             zum 28.08.2026 stand hier nur „Leon Lang – Startseite" – der
-             Screenreader las den Namen, aber Sprachsteuerung fand den Link
-             nicht: „Klick LL" traf ins Leere, weil „LL" im Namen fehlte.
-             Jetzt steht das Kürzel vorn, der Rest erklärt es. */
-          aria-label={`${site.logoText} – Startseite von ${site.name}`}
-          /* Tap-Fläche (TODO 2, 01.09.2026): die sichtbare Kachel ist 38 px hoch;
-             ab der Desktop-Leiste legt eine unsichtbare Pseudo-Ebene 4 px rundum
-             dazu → ≥ 44 × 44. Optik, Rand und Fokusring bleiben auf der Kachel.
-             Mobil bewusst unangetastet (dort nachgemessen und freigegeben). */
-          className="relative inline-flex items-center rounded-md border border-border px-2.5 py-1 text-lg font-semibold tracking-tight text-foreground transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:before:absolute md:before:-inset-1 md:before:content-['']"
+        {/* Wortmarke "Leon Lang" (02.09.2026, User-Wunsch): Monogramm-Kachel
+            plus voller Name in der Display-Schrift, "Lang" im warmen Verlauf.
+            Als ANKER auf /#start statt Link auf "/": so landet der Klick von
+            jeder Stelle wieder oben beim Hero (auf Unterseiten erst zur
+            Startseite, dort an der Sprungmarke; smooth laut globals.css,
+            hart bei reduced-motion). Sichtbarer Text = zugaenglicher Name
+            (WCAG 2.5.3, "Klick Leon Lang" trifft). */}
+        <a
+          href="/#start"
+          /* Tap-Flaeche (TODO 2): sichtbar ~38 px hoch; ab der Desktop-Leiste
+             legt die unsichtbare Pseudo-Ebene 4 px rundum dazu (>= 44 px). */
+          className="group relative inline-flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:before:absolute md:before:-inset-1 md:before:content-['']"
         >
-          {site.logoText}
-        </Link>
+          <span
+            aria-hidden="true"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-accent/40 bg-linear-to-br from-accent/15 via-transparent to-accent-warm/20 font-display text-sm font-semibold text-foreground transition-colors duration-200 group-hover:border-accent"
+          >
+            {site.logoText}
+          </span>
+          <span className="font-display text-lg font-semibold leading-none tracking-tight text-foreground">
+            Leon <span className="warm-gradient-text">Lang</span>
+          </span>
+          <span className="sr-only"> – nach oben zur Startseite</span>
+        </a>
 
         {/* Desktop-Navigation */}
         <ul className="hidden items-center gap-8 md:flex">

@@ -6,10 +6,15 @@
 @source not "../../docs";
 @source not "../../*.md";
 
-/* Globale Design-Tokens (nicht moduspezifisch). */
-@theme {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
+/* Globale Design-Tokens (nicht moduspezifisch).
+   Schriften kommen als CSS-Variablen aus next/font/local (Root-Layout):
+   Switzer traegt den Text, Clash Display die Headlines (Utility: font-display).
+   "inline", weil die Werte zur Laufzeit gesetzte Variablen referenzieren. */
+@theme inline {
+  --font-sans: var(--font-switzer), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: var(--font-clash-display), var(--font-switzer), ui-sans-serif,
+    system-ui, sans-serif;
 }
 
 /* Semantische Farb-Tokens → als Tailwind-Utilities nutzbar:
@@ -26,6 +31,8 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-accent-solid: var(--accent-solid);
+  --color-accent-warm: var(--accent-warm);
+  --color-accent-warm-solid: var(--accent-warm-solid);
   --color-accent-foreground: var(--accent-foreground);
   --color-ring: var(--ring);
   --color-destructive: var(--destructive);
@@ -38,13 +45,13 @@
 :root {
   color-scheme: dark;
 
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --muted: #18181b;
-  --muted-foreground: #a1a1aa;
-  --card: #111113;
-  --card-foreground: #fafafa;
-  --border: #27272a;
+  --background: #070b21;
+  --foreground: #f7f8ff;
+  --muted: #10173a;
+  --muted-foreground: #a3aed2;
+  --card: #0b1130;
+  --card-foreground: #f7f8ff;
+  --border: #232c55;
   --ring: var(--accent);
   --destructive: #f87171;
 
@@ -69,6 +76,15 @@
      Regelblock weiter unten + PROJEKT-STAND Design-Regeln). */
   --accent-gradient: linear-gradient(135deg, #c4b5fd, #a78bfa, #7c5cff);
   --accent-gradient-strong: linear-gradient(135deg, #6d4dff, #6d28d9);
+
+  /* Warmer Zweitakzent (User-Entscheidung 02.09.2026, Vorbild-Mischung):
+     Orange→Pink fuer Highlights und die Fuellung primaerer CTAs. Die dunkle
+     -strong-Haelfte ist auf weisse Schrift >= 4.5:1 gerechnet (Stops
+     #c2410c ~5.2:1 und #db2777 ~4.6:1); die hellen Stops NICHT auf CTAs. */
+  --accent-warm: #fb923c;
+  --accent-warm-solid: #db2777;
+  --accent-warm-gradient: linear-gradient(135deg, #fb923c, #f472b6);
+  --accent-warm-gradient-strong: linear-gradient(135deg, #c2410c, #db2777);
 }
 
 @layer base {
@@ -251,9 +267,19 @@
 .accent-gradient-text {
   color: var(--accent);
 }
+.warm-gradient-text {
+  color: var(--accent-warm);
+}
 @supports (-webkit-background-clip: text) or (background-clip: text) {
   .accent-gradient-text {
     background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .warm-gradient-text {
+    background-image: var(--accent-warm-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -289,12 +315,17 @@
 }
 
 .aurora-text {
-  color: var(--accent); /* solider Fallback – nie unsichtbar */
+  color: var(--aurora-fallback, var(--accent)); /* solider Fallback – nie unsichtbar */
+}
+/* Warme Spielart: gleiche Technik, nur der Verlauf kommt aus dem Zweitakzent. */
+.aurora-warm {
+  --aurora-gradient: var(--accent-warm-gradient);
+  --aurora-fallback: var(--accent-warm);
 }
 @supports (-webkit-background-clip: text) or (background-clip: text) {
   .aurora-text {
     display: inline-block; /* stabile Paint-Box für die Inline-Clip-Maske */
-    background-image: var(--accent-gradient);
+    background-image: var(--aurora-gradient, var(--accent-gradient));
     background-size: 200% 100%; /* verbreitert → Spielraum zum Fließen */
     background-position: var(--aurora-pos) 50%;
     -webkit-background-clip: text;
@@ -359,8 +390,8 @@
    weiße Schrift bleibt über den GANZEN Fluss ≥4.5:1; die hellen Stops NICHT
    einziehen. reduced-motion → statisch (s.u.). */
 .cta-gradient {
-  background-color: var(--accent-solid);
-  background-image: var(--accent-gradient-strong);
+  background-color: var(--accent-warm-solid);
+  background-image: var(--accent-warm-gradient-strong);
   background-size: 200% 100%;
   background-position: var(--cta-pos) 50%;
   color: var(--accent-foreground);
@@ -371,7 +402,7 @@
   box-shadow:
     var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000),
-    0 4px 22px -6px color-mix(in oklab, var(--accent) 18%, transparent),
+    0 4px 22px -6px color-mix(in oklab, var(--accent-warm) 22%, transparent),
     var(--cta-lift-shadow);
   /* MUSS unlayered bleiben: überschreibt bewusst die layered Tailwind-Utility
      `transition-opacity` an den Buttons und deckt zusätzlich `transform` (Lift)
@@ -386,7 +417,7 @@
     box-shadow:
       var(--tw-ring-offset-shadow, 0 0 #0000),
       var(--tw-ring-shadow, 0 0 #0000),
-      0 6px 30px -6px color-mix(in oklab, var(--accent) 36%, transparent),
+      0 6px 30px -6px color-mix(in oklab, var(--accent-warm) 40%, transparent),
       var(--cta-lift-shadow);
   }
 }
@@ -394,7 +425,7 @@
   box-shadow:
     var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000),
-    0 4px 24px -4px color-mix(in oklab, var(--accent) 52%, transparent),
+    0 4px 24px -4px color-mix(in oklab, var(--accent-warm) 55%, transparent),
     var(--cta-lift-shadow);
 }
 
@@ -422,7 +453,7 @@
 @media (hover: hover) {
   main .cta-gradient:hover {
     transform: translateY(-4px);
-    --cta-lift-shadow: 0 12px 24px -8px color-mix(in oklab, var(--accent) 30%, transparent);
+    --cta-lift-shadow: 0 12px 24px -8px color-mix(in oklab, var(--accent-warm) 34%, transparent);
   }
 }
 main .cta-gradient:active {
@@ -457,11 +488,17 @@ main .cta-gradient:active {
   );
 }
 .section-glow {
-  background: radial-gradient(
-    56rem 28rem at 50% 0%,
-    color-mix(in oklab, var(--accent) 7%, transparent),
-    transparent 70%
-  );
+  background:
+    radial-gradient(
+      56rem 28rem at 50% 0%,
+      color-mix(in oklab, var(--accent) 7%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      40rem 22rem at 88% 100%,
+      color-mix(in oklab, var(--accent-warm) 4%, transparent),
+      transparent 70%
+    );
 }
 
 /* ── Gradient-Rand der Highlight-Karte (Leistungen/KI) ───────────

@@ -67,7 +67,7 @@ npm run build   →   next build (Turbopack)
 - **Zweck:** Nimmt die Daten des Kontaktformulars per HTTP POST entgegen und leitet sie als E-Mail weiter.
 - **Empfänger:** `leonlang95@gmail.com` (später auf professionelle Adresse änderbar)
 - **Account:** ✅ vorhanden (Phase 1 abgeschlossen). Formular end-to-end bestätigt – lokal UND live, Mail kommt an.
-- **Endpoint/Form-ID:** ✅ gesetzt. Wird NIE hardcodiert, sondern aus der Env-Variable **`NEXT_PUBLIC_FORMSPREE_ENDPOINT`** gelesen (`src/components/ContactForm.tsx`, `process.env.…`). Seit der Next-Migration (24.08.2026) heißt sie so – vorher `VITE_FORMSPREE_ENDPOINT`. Steht lokal in `.env.local` UND muss im Vercel-Dashboard hinterlegt sein (alle Environments).
+- **Endpoint/Form-ID:** ✅ gesetzt. Wird NIE hardcodiert, sondern aus der Env-Variable **`NEXT_PUBLIC_FORMSPREE_ENDPOINT`** gelesen (`src/components/ContactForm.tsx` und `src/components/AnfrageFlow.tsx`, jeweils `process.env.…`). Seit der Next-Migration (24.08.2026) heißt sie so – vorher `VITE_FORMSPREE_ENDPOINT`. Steht lokal in `.env.local` UND muss im Vercel-Dashboard hinterlegt sein (alle Environments).
 - **Tarif:** kostenloser Free-Tier (ausreichend für erwartetes Anfragevolumen)
 - **Sichtbar für Besucher?** Nein – Formspree taucht im UI nicht auf, das Formular gehört optisch komplett der Seite.
 - **Späterer Wechsel:** optionaler Umstieg auf Resend + Vercel Serverless Function, sobald eigene Domain steht (für Absender über eigene Domain). Aktuell nicht umgesetzt.
@@ -86,11 +86,35 @@ npm run build   →   next build (Turbopack)
 ## Datenfluss
 
 ### Kontaktformular (Variante A)
-1. Besucher füllt Felder aus: **Name**, **E-Mail**, **Nachricht** (ggf. weitere optionale Felder).
-2. Klick auf „Senden" → Frontend sendet HTTP POST an den Formspree-Endpoint.
+
+Zwei Wege, EINE Sendung: Die Kontakt-Sektion zeigt standardmäßig den geführten
+Fragebogen (`src/components/AnfrageFlow.tsx`, seit 02.09.2026); ein Textlink schaltet
+auf das freie Formular (`src/components/ContactForm.tsx`) und zurück. Beide senden an
+denselben Endpoint, beide setzen `name`, `email`, `message`.
+
+**A1 – geführter Fragebogen (Standard)**
+1. Vier Fragen (Projektart, Ziele, Ausgangslage, Zeitrahmen) aus `src/data/anfrage.ts`;
+   Frage 2 ist Mehrfachauswahl, alle vier sind Pflicht (jede hat eine „weiß ich noch
+   nicht"-Antwort, niemand bleibt hängen).
+2. Schritt 5: **Name**, **E-Mail** (Pflicht) + freie Nachricht (optional), darüber eine
+   Zusammenfassung der Antworten.
+3. Klick auf „Anfrage senden" → EIN HTTP POST an den Formspree-Endpoint mit
+   `name`, `email`, `message` **plus** je einem Feld pro Frage – die Feldnamen sind
+   deutsch (`Projektart`, `Ziele`, `Ausgangslage`, `Zeitrahmen`) und werden in der Mail
+   zu je einer Zeile. Dazu `_subject` = `Projektanfrage: <Projektart> – <Name>`.
+   Die Feldnamen stehen als `feld` in `src/data/anfrage.ts` – wer sie ändert, ändert die
+   Beschriftung in Leons Mail.
+
+**A2 – freies Formular**
+1. Besucher füllt Felder aus: **Name**, **E-Mail**, **Nachricht**.
+2. Klick auf „Projekt anfragen" → Frontend sendet HTTP POST an den Formspree-Endpoint.
+
+**Beide Varianten**
 3. Formspree verarbeitet und sendet E-Mail an Leon.
 4. Frontend zeigt Erfolgs- bzw. Fehlermeldung an.
-5. **Es werden KEINE Daten in einer eigenen Datenbank gespeichert.**
+5. **Es werden KEINE Daten in einer eigenen Datenbank gespeichert.** Auch die Antworten
+   des Fragebogens leben nur in `useState` – ohne Absenden sind sie beim Neuladen weg
+   (kein `localStorage`, keine URL-Parameter).
 
 ### Direkte Kontaktwege (Variante B)
 - **E-Mail-Button** → öffnet `mailto:leonlang95@gmail.com`

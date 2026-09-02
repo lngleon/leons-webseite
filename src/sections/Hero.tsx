@@ -30,7 +30,7 @@ function HeroBackground() {
           weich aus. Größe in vmax, damit er auch bei 1900 px den Rand nicht
           zeigt. Nur ab lg – auf Mobil liegt die Bühne unter dem Text. */}
       <div
-        className="hero-beam absolute left-[72%] top-1/2 hidden h-[120vmax] w-[120vmax] lg:block"
+        className="hero-beam absolute left-1/2 top-1/2 hidden h-[120vmax] w-[120vmax] lg:block"
         style={{
           background:
             'conic-gradient(from 0deg, transparent 0deg, color-mix(in oklab, var(--accent) 16%, transparent) 34deg, transparent 76deg, transparent 180deg, color-mix(in oklab, var(--accent-solid) 13%, transparent) 214deg, transparent 258deg)',
@@ -51,7 +51,7 @@ function HeroBackground() {
         className="hero-blob-b absolute -bottom-[22%] -right-[12%] h-[65vh] w-[65vh] rounded-full"
         style={{
           background:
-            'radial-gradient(circle, color-mix(in oklab, var(--accent-solid) 16%, transparent), transparent 70%)',
+            'radial-gradient(circle, color-mix(in oklab, var(--accent-warm) 11%, transparent), transparent 70%)',
         }}
       />
       {/* Dritter, leiser Layer in der Mitte: mehr Tiefe zwischen den zwei
@@ -64,16 +64,16 @@ function HeroBackground() {
             'radial-gradient(circle, color-mix(in oklab, var(--accent) 10%, transparent), transparent 70%)',
         }}
       />
-      {/* Dezentes Punktraster hinter der Showcase-Bühne (rechte Hälfte, per
-          Maske weich auslaufend): statisches CSS-Pattern, kein Bild, kein JS. */}
+      {/* Dezentes Punktraster hinter der mittigen Buehne (per Maske weich
+          auslaufend): statisches CSS-Pattern, kein Bild, kein JS. */}
       <div
-        className="absolute inset-y-0 right-0 hidden w-1/2 opacity-35 lg:block"
+        className="absolute inset-0 hidden opacity-35 lg:block"
         style={{
           backgroundImage:
             'radial-gradient(color-mix(in oklab, var(--foreground) 22%, transparent) 1px, transparent 1px)',
           backgroundSize: '26px 26px',
-          maskImage: 'radial-gradient(closest-side at 65% 45%, #000, transparent)',
-          WebkitMaskImage: 'radial-gradient(closest-side at 65% 45%, #000, transparent)',
+          maskImage: 'radial-gradient(40rem 24rem at 50% 62%, #000, transparent)',
+          WebkitMaskImage: 'radial-gradient(40rem 24rem at 50% 62%, #000, transparent)',
         }}
       />
       {/* Feines Korn: prozedurales SVG (gekacheltes feTurbulence), statisch & günstig. */}
@@ -99,6 +99,32 @@ function HeroBackground() {
         </defs>
         <rect width="100%" height="100%" fill={`url(#${noiseId}-tile)`} />
       </svg>
+    </div>
+  )
+}
+
+/** Zahlen-Karte neben der Buehne: kleine Glas-Karte (Vorbild: die zwei
+ *  flankierenden Info-Karten bei Ziegler). Zaehler + Label wie gehabt,
+ *  aria-label traegt den Sinn, die Einzelteile sind dekorativ. */
+function HeroStatCard({ stat }: { stat: (typeof heroStats)[number] }) {
+  return (
+    <div
+      aria-label={`${stat.value}${stat.suffix ?? ''} – ${stat.label}`}
+      className="w-full rounded-2xl border border-border bg-card/60 p-4 backdrop-blur lg:max-w-[240px] lg:p-5"
+    >
+      <span aria-hidden="true" className="mb-2 block h-px w-8 bg-accent" />
+      <span
+        aria-hidden="true"
+        className="accent-gradient-text font-display text-3xl font-semibold tracking-tight sm:text-4xl"
+      >
+        <Counter value={stat.value} suffix={stat.suffix} />
+      </span>
+      <span
+        aria-hidden="true"
+        className="mt-1 block text-xs uppercase tracking-wider text-muted-foreground"
+      >
+        {stat.label}
+      </span>
     </div>
   )
 }
@@ -130,43 +156,44 @@ export default function Hero() {
     >
       <HeroBackground />
 
-      {/* max-w-7xl statt 6xl (nur der Hero): mehr Luft für die Bühne auf
-          breiten Screens; die Spalten bleiben 1:1 – „Veränderungen," bei
-          72 px (494 px) braucht ab xl mindestens 512 px Spaltenbreite. */}
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
-        {/* Text + Zähler */}
-        <motion.div variants={container} initial="hidden" animate="show" className="max-w-xl">
-          {/* H1 bewusst ohne Entrance-Opacity: LCP-Element sofort sichtbar (Mobil).
-              Nur das Akzentwort bekommt den Gradient – als fließender AuroraText
-              (reine CSS-@keyframes, solider Fallback, reduced-motion = statisch). */}
-          {/* Größer für den ersten Eindruck, aber 7xl erst ab xl: bei 72px
-              misst „Veränderungen," 494 px und überliefe die Grid-Spalte
-              zwischen 1024 und ~1130 px (nachgemessen, Spalte 442 px bei
-              1024). Mobil bleibt 4xl – bei 320 px muss das Wort in die
-              Spalte passen (ebenfalls nachgemessen). */}
-          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
+      {/* Stufe 3 (02.09.2026, User-Feedback: "bei Adrian passt das, weil es
+          mittig ist und die Schrift nicht allein steht"): alles zentriert.
+          Riesen-H1, Lead und CTAs mittig; darunter die Buehne in der MITTE,
+          flankiert von den vier Zahlen als kleinen Glas-Karten links/rechts
+          (mobil: Buehne oben, Zahlen als 2x2-Raster darunter). */}
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="flex flex-col items-center"
+        >
+          {/* H1 bewusst ohne Entrance-Opacity: LCP-Element sofort sichtbar.
+              Nur das Akzentwort traegt den warmen Verlauf (AuroraText, solider
+              Fallback, reduced-motion = statisch). Groessen nachgemessen. */}
+          <h1 className="font-display max-w-5xl text-balance text-center text-4xl font-semibold leading-[0.98] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
             {hero.headline.split(hero.accentWord)[0]}
-            <AuroraText>{hero.accentWord}</AuroraText>
+            <span className="aurora-warm">
+              <AuroraText>{hero.accentWord}</AuroraText>
+            </span>
             {hero.headline.split(hero.accentWord)[1] ?? ''}
           </h1>
 
           <motion.p
             variants={item}
-            className="entrance-anim mt-6 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
+            className="entrance-anim mt-6 max-w-2xl text-balance text-center text-base leading-relaxed text-muted-foreground sm:text-lg"
           >
             {withCodeTags(hero.subline, ['Web-Apps'])}
           </motion.p>
 
-          <motion.div variants={item} className="entrance-anim mt-8 flex flex-wrap items-center gap-3">
+          <motion.div variants={item} className="entrance-anim mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
               href={ctaItem.href}
               className="cta-gradient inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {ctaItem.label}
             </a>
-            {/* Zweiter, ruhiger Weg: erst den Beweis ansehen, dann anfragen.
-                Ghost-Variante, flacher Akzent nur am Hover – der Primär-CTA
-                bleibt der einzige gefüllte Knopf im Hero. */}
+            {/* Zweiter, ruhiger Weg: erst den Beweis ansehen, dann anfragen. */}
             <a
               href={heroSecondaryCta.href}
               className="inline-flex items-center justify-center rounded-full border border-border px-7 py-3 text-sm font-medium text-foreground transition-colors duration-200 hover:border-accent/60 hover:text-accent focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -175,49 +202,28 @@ export default function Hero() {
             </a>
           </motion.div>
 
+          {/* Buehne mittig, Zahlen-Karten flankieren (Vorbild-Komposition).
+              Ein gemeinsamer motion-Block: faedet als Ganzes ein. Auf Mobil
+              steht die Buehne oben (volle Breite), die Karten rutschen als
+              zwei Spalten darunter. */}
           <motion.div
             variants={item}
-            role="list"
-            className="entrance-anim mt-12 grid grid-cols-2 gap-x-6 gap-y-8"
+            className="entrance-anim mt-12 grid w-full grid-cols-2 items-center gap-x-4 gap-y-4 lg:mt-14 lg:grid-cols-[1fr_minmax(0,34rem)_1fr] lg:gap-8"
           >
-            {heroStats.map((stat) => (
-              <div
-                key={stat.label}
-                role="listitem"
-                aria-label={`${stat.value}${stat.suffix ?? ''} – ${stat.label}`}
-                className="flex flex-col"
-              >
-                <span aria-hidden="true" className="mb-2 h-px w-8 bg-accent" />
-                <span
-                  aria-hidden="true"
-                  className="accent-gradient-text text-3xl font-semibold tracking-tight sm:text-4xl"
-                >
-                  <Counter value={stat.value} suffix={stat.suffix} />
-                </span>
-                <span
-                  aria-hidden="true"
-                  className="mt-1 text-xs uppercase tracking-wider text-muted-foreground sm:text-sm"
-                >
-                  {stat.label}
-                </span>
-              </div>
-            ))}
+            <div className="order-2 flex flex-col gap-4 lg:order-1 lg:items-end lg:gap-6">
+              {heroStats.slice(0, 2).map((stat) => (
+                <HeroStatCard key={stat.label} stat={stat} />
+              ))}
+            </div>
+            <div className="order-1 col-span-2 lg:order-2 lg:col-span-1">
+              <HeroStage />
+            </div>
+            <div className="order-3 flex flex-col gap-4 lg:items-start lg:gap-6">
+              {heroStats.slice(2).map((stat) => (
+                <HeroStatCard key={stat.label} stat={stat} />
+              ))}
+            </div>
           </motion.div>
-        </motion.div>
-
-        {/* Showcase-Bühne (früher: Terminal – seit 31.08.2026 auf /moeglichkeiten).
-            Fiktives, gezeichnetes Interface ohne Bild – damit ist die H1 das
-            LCP-Element, und die Bühne darf einfaden. (Lehre aus der Bild-
-            Fassung: ein Bild, das bei opacity 0 zum ersten Mal gemalt wird,
-            ist für den LCP für immer raus – Chrome zählt nur den ersten
-            Paint. Käme hier je wieder ein Bild hinein: nur `y` animieren.) */}
-        <motion.div
-          initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.15, ease: 'easeOut' }}
-          className="entrance-anim"
-        >
-          <HeroStage />
         </motion.div>
       </div>
     </section>

@@ -1,7 +1,28 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
+import localFont from 'next/font/local'
 import { routeMeta } from '@/data/meta'
 import './globals.css'
+
+/* Marken-Schriften, self-hosted (DSGVO: kein CDN-Request zur Laufzeit).
+   Quelle Fontshare (ITF), Dateien unter src/app/fonts/ – siehe LIZENZ.txt.
+   Nur CSS-Variablen ans <html>; die Zuordnung passiert in globals.css
+   (@theme inline: --font-sans / --font-display). */
+const switzer = localFont({
+  src: [
+    { path: './fonts/switzer-400.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/switzer-500.woff2', weight: '500', style: 'normal' },
+    { path: './fonts/switzer-600.woff2', weight: '600', style: 'normal' },
+  ],
+  variable: '--font-switzer',
+  display: 'swap',
+})
+const clashDisplay = localFont({
+  src: './fonts/clash-display-600.woff2',
+  weight: '600',
+  variable: '--font-clash-display',
+  display: 'swap',
+})
 
 /**
  * Root-Layout – bewusst minimal: nur `<html>`, `<body>` und der Head.
@@ -36,15 +57,15 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  // theme-color = --background (#0a0a0a); Meta-Tags können kein var() nutzen → Literal.
+  // theme-color = --background (#070b21); Meta-Tags können kein var() nutzen → Literal.
   // Die Demo-Gruppe überschreibt beides in ihrem eigenen viewport-Export.
-  themeColor: '#0a0a0a',
+  themeColor: '#070b21',
   colorScheme: 'dark',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="de">
+    <html lang="de" className={`${switzer.variable} ${clashDisplay.variable}`}>
       <body>{children}</body>
     </html>
   )
