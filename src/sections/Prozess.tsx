@@ -135,15 +135,15 @@ export default function Prozess() {
               >
                 {/* Nummer-Badge + Verbindungslinie */}
                 <div className="relative flex flex-col items-center md:w-full">
-                  {/* Der letzte Schritt (Launch) landet im WARMEN Akzent -
-                      der Prozess kommt an. Davor bleibt alles violett. */}
+                  {/* Bis 02.09.2026 wechselte der letzte Schritt in den warmen
+                      Zweitakzent. Mit dem einen Akzent trägt jetzt das Ziel den
+                      vollen Rand, die Schritte davor bleiben neutral gerahmt –
+                      die Reihenfolge liest sich weiter, ohne zweite Farbe. */}
                   <motion.span
                     variants={badge}
                     custom={index}
-                    className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-kante border bg-background text-lg font-semibold ${
-                      isLast
-                        ? 'border-accent text-accent'
-                        : 'border-accent/50 text-accent'
+                    className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-kante border bg-background text-lg font-semibold text-accent ${
+                      isLast ? 'border-accent' : 'border-border-stark'
                     }`}
                   >
                     {index + 1}
@@ -151,9 +151,7 @@ export default function Prozess() {
                       aria-hidden="true"
                       variants={ping}
                       custom={index}
-                      className={`pointer-events-none absolute inset-0 rounded-kante border ${
-                        isLast ? 'border-accent' : 'border-accent'
-                      }`}
+                      className="pointer-events-none absolute inset-0 rounded-kante border border-accent"
                     />
                   </motion.span>
 
