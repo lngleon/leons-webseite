@@ -20,9 +20,10 @@ Kontaktformular: Formspree (extern). KEIN Supabase, KEINE Datenbank, KEINE SQL/R
 
 ## Regeln
 - Deutsche UI-Texte, durchgehend "Du"-Ansprache
-- Dark-only (kein Light Mode, kein Theme-Toggle) – Near-Black/Weiß/Grau-Basis
+- Dark-only (kein Light Mode, kein Theme-Toggle) – seit 02.09.2026 Nachtblau/Weiß/Blaugrau-Basis („Vorbilder-Mischung")
 - Responsive: Desktop-first, Mobil voll funktionsfähig
-- Akzent NUR über zentrale CSS-Variablen, niemals Farbwerte hardcoden: flach `--accent`/`--accent-solid` (Ränder, Icons, kleine UI, Fokusring) + Violett-Gradient `--accent-gradient`/`--accent-gradient-strong` nur auf Showcase-Flächen. Einzige dokumentierte Rand-Ausnahme: `.card-gradient-border` auf GENAU EINER Karte (Leistungen-Highlight, 31.08.2026). Weitere Ausnahmen nur über die geschlossene Liste in docs/DESIGN-SYSTEM.md §10
+- Akzente NUR über zentrale CSS-Variablen, niemals Farbwerte hardcoden: Violett führt (`--accent`/`--accent-solid` flach, `--accent-gradient*`), dazu seit 02.09.2026 der warme Zweitakzent `--accent-warm*` (Orange→Pink: primäre CTAs, Hero-Akzentwort, einzelne Highlights). Rollen, Grenzen und die geschlossene Ausnahmenliste: docs/DESIGN-SYSTEM.md §2/§10
+- Schriften: Switzer (Text) + Clash Display (Headlines, Utility `font-display`), self-hosted via next/font/local unter src/app/fonts/ – keine Font-CDNs zur Laufzeit
 - Keine Preise auf der Seite
 - Animationen (Framer Motion) subtil und edel, nie verspielt
 - Formspree-Endpoint aus .env.local lesen (NEXT_PUBLIC_FORMSPREE_ENDPOINT), nie hardcoden

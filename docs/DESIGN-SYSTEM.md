@@ -9,6 +9,12 @@
 > hat der User am 01.09.2026 entschieden (§11.1 → Protokoll); W5 bleibt offen.
 > **Dieses Dokument ist der einzige Ort für Design-Regeln** – PROJEKT-STAND und CURRENT-SCHEMA
 > verweisen nur noch hierher, Werte stehen ausschließlich in `globals.css`.
+>
+> **Redesign „Vorbilder-Mischung" (02.09.2026, auf main übernommen):** Nachtblau-Grund,
+> warmer Zweitakzent Orange→Pink, Marken-Schriften Switzer/Clash Display, neuer Hero,
+> Sektionsnummern. Die „Bestand (gemessen)"-Werte in §3.2/§4.2/§5/§6.2 und die Befunde
+> in §11.3 stammen vom Build `7332d64` VOR dem Redesign – **Neuvermessung steht aus**;
+> bis dahin dort nichts als aktuellen Ist-Zustand zitieren.
 
 ## 0. Lesart
 
@@ -34,7 +40,7 @@ ist `src/app/globals.css` (`:root` + `@theme`). Dieses Dokument nennt nur Token-
 
 | | Aussage | Quelle |
 |---|---|---|
-| Regel | Stil: futuristisch, clean, edel, premium. Referenzen adrianziegler.de (Dark), farisschmidt.de (Light). | PROJEKT-STAND |
+| Regel | Stil: futuristisch, clean, edel, premium – seit 02.09.2026 als „Vorbilder-Mischung": Tiefe und Licht wie adrianziegler.de, Farb-Wärme und Verspieltheit wie amphora-it.com. | PROJEKT-STAND; User-Entscheidung 02.09.2026 |
 | Regel | **Dark-only.** Kein Light Mode, kein Theme-Toggle. Genau EIN Token-Satz in `:root`, `color-scheme: dark`, `html` ohne Klasse. | CLAUDE.md, PROJEKT-STAND (08.06.2026) |
 | Regel | Die Seite selbst ist das Portfolio-Stück – Handwerksqualität ist sichtbares Verkaufsargument. | PROJEKT-STAND |
 | Regel | Desktop-first, Mobil voll funktionsfähig. | CLAUDE.md |
@@ -52,7 +58,7 @@ in `globals.css` (die Demo-Gruppe hat einen eigenen Scope, §10).
 
 | Token | Rolle |
 |---|---|
-| `--background` / `--foreground` | Grundfläche (Near-Black) / Haupttext (gebrochenes Weiß) – R1, R2 |
+| `--background` / `--foreground` | Grundfläche (seit 02.09.2026 tiefes Nachtblau) / Haupttext (gebrochenes Weiß) – R1, R2 |
 | `--muted` / `--muted-foreground` | abgesetzte Fläche / **Sekundärtext** (definierte Farbe, keine Opacity-Improvisation – R4, E7) |
 | `--card` / `--card-foreground` | Kartenfläche / Kartentext |
 | `--border` | neutrale Haarlinie (global als `border-color`-Default gesetzt) |
@@ -60,7 +66,10 @@ in `globals.css` (die Demo-Gruppe hat einen eigenen Scope, §10).
 | `--destructive` | Fehlerzustand (Formular) |
 | `--accent` / `--accent-solid` / `--accent-foreground` | **flacher** Violett-Akzent: Ränder, Icons, kleine UI, Fokusring; Schrift auf Akzentfüllung |
 | `--accent-gradient` | Violett-Verlauf (helle → tiefe Stops), **nur Text-Clip** auf Showcase-Flächen. Source-of-Truth für den Verlauf; innerhalb Violett frei nachjustierbar, der Mittelstop darf leicht ins Pink-Violett |
-| `--accent-gradient-strong` | dunkle Violett-Hälfte, **nur Füllung primärer CTAs** |
+| `--accent-gradient-strong` | dunkle Violett-Hälfte (seit 02.09.2026 nicht mehr auf CTAs – dort füllt der warme Verlauf) |
+| `--accent-warm` / `--accent-warm-solid` | **warmer Zweitakzent** (Orange bzw. Pink-Fallback): Highlights, Chips, Sektionsnummern, Prozess-Ziel |
+| `--accent-warm-gradient` | Orange→Pink, **nur Text-Clip** (Hero-Akzentwort, Statement-Wort, „Lang" in der Wortmarke) |
+| `--accent-warm-gradient-strong` | dunkle warme Hälfte, **Füllung primärer CTAs** – weiße Schrift 4.6–5.2:1 über den ganzen Verlauf (im Browser verifiziert) |
 
 Tailwind-Utilities (`bg-background`, `text-accent`, `border-border`, `ring-ring` …) lösen per
 `@theme inline` auf genau diese Variablen auf.
@@ -70,10 +79,10 @@ Tailwind-Utilities (`bg-background`, `text-accent`, `border-border`, `ring-ring`
 | # | Regel | Prüfung | Quelle |
 |---|---|---|---|
 | F1 | **Keine Farbwerte im Code** außerhalb `globals.css` – kein Hex, kein rgb/hsl, keine Tailwind-Palettenfarbe. | Suche nach Hex-, rgb- und hsl-Literalen in `src/` → nur die Ausnahmen aus §10. | CLAUDE.md, PROJEKT-STAND |
-| F2 | **Eine** Akzentfarbe (Violett) für alle Handlungen und Hervorhebungen. | Kein zweiter Farbton außer `--destructive` für Fehler. | PROJEKT-STAND (R3, N3) |
+| F2 | **Violett führt**, der warme Zweitakzent Orange→Pink ist seit 02.09.2026 sanktioniert (primäre CTAs, Hero-/Statement-Akzentwort, Sektionsnummern, einzelne Chips/Highlights – nie als dritte Farbe, nie flächig). Außer den beiden Akzenten nur `--destructive` für Fehler. | Kein Farbton jenseits von Violett/Warm/Destructive. | PROJEKT-STAND (R3); N3-Ausnahme: User-Entscheidung 02.09.2026 |
 | F3 | Flacher Akzent (`--accent`/`--accent-solid`) für Ränder, Icons, kleine UI und den **Fokusring**. Der Ring ist nie ein Verlauf. | Jeder Fokusring = `ring-ring`; kein `background-image` auf Ring/Outline. | PROJEKT-STAND |
-| F4 | `--accent-gradient` **nur als Text-Clip auf Near-Black**, und nur an: Headline-**Akzentwörtern** (nie ganze Headlines), den 4 Hero-Zahlen, den **Sektions-Eyebrows** von Startseite und `/moeglichkeiten` (T2). Immer über `.accent-gradient-text` bzw. `.aurora-text` (solider Fallback `var(--accent)`, nie unsichtbar). | Jede Verwendung von `--accent-gradient` im Markup ist eine dieser drei Stellen oder die Ausnahme §10-1. | PROJEKT-STAND, globals.css; Eyebrow-Reichweite: W6 |
-| F5 | `--accent-gradient-strong` **nur als Füllung primärer CTAs** (`.cta-gradient`); trägt weiße Schrift ≥ 4.5 : 1 über den ganzen Verlauf (verifiziert min. 5.05 : 1). Die hellen Stops nie auf CTAs. | Kein `--accent-gradient` in `.cta-gradient`; kein anderer Selektor mit `-strong`. | PROJEKT-STAND, globals.css (R42) |
+| F4 | `--accent-gradient` **nur als Text-Clip auf dunklem Grund**, und nur an: Headline-**Akzentwörtern** (nie ganze Headlines), den 4 Hero-Zahlen, den **Sektions-Eyebrows** von Startseite und `/moeglichkeiten` (T2). Immer über `.accent-gradient-text` bzw. `.aurora-text` (solider Fallback `var(--accent)`, nie unsichtbar). | Jede Verwendung von `--accent-gradient` im Markup ist eine dieser drei Stellen oder die Ausnahme §10-1. | PROJEKT-STAND, globals.css; Eyebrow-Reichweite: W6 |
+| F5 | Primäre CTAs füllt seit 02.09.2026 `--accent-warm-gradient-strong` (`.cta-gradient`); trägt weiße Schrift ≥ 4.5 : 1 über den ganzen Verlauf (verifiziert 4.6–5.2 : 1). Die hellen Stops (violett wie warm) nie auf CTAs. | Kein heller Verlauf in `.cta-gradient`; `-strong`-Verläufe nur dort. | globals.css (R42); User-Entscheidung 02.09.2026 |
 | F6 | Gradient nur auf **Showcase-Flächen**; Body-Text, Ränder, Flächen bleiben flach. | – | PROJEKT-STAND |
 | F7 | **Kein Gradient-Rand** – mit genau einer sanktionierten Ausnahme (§10-1), die ausdrücklich auch die Kombination Rand + Schatten + Verlauf auf dieser einen Karte deckt (N7, R26). | `.card-gradient-border` genau 1× im Markup (Leistungen/KI). | CLAUDE.md, PROJEKT-STAND (31.08.2026); N7-Deckung: W4 |
 | F8 | Sekundärtext = `--muted-foreground`. | Kein `text-foreground/xx` als Ersatz für Sekundärtext (Bestand: siehe §11.3 B10). | globals.css (R4, E7) |
@@ -97,7 +106,7 @@ Tailwind-Utilities (`bg-background`, `text-accent`, `border-border`, `ring-ring`
 | T4 | Große Versalien-Displays im Deutschen brauchen `hyphens: auto` + `overflow-wrap: break-word` (Komposita-Überlauf); Größe messen, nicht schätzen. | `documentElement.scrollWidth ≤ clientWidth` bei 320/390 px. | PROJEKT-STAND (25.08.2026) |
 | T5 | **CodeTag** (`src/components/CodeTag.tsx`): Mono, dezenter **flacher** Akzent-Hintergrund/-Rahmen (kein Gradient), klein, vertikal mittig, kein Zeilenumbruch; rein dekorativ (kein Button, keine Semantik/aria). Nur echte Tech-/Fach-Begriffe, die ohnehin im Text stehen und zu Leon passen – keine erfundenen Claims/Zahlen, kein Marketing; ohne passenden Begriff nichts erzwingen; sparsam (≤ 1–2 pro Absatz). Helper `withCodeTags(text, terms)` markiert im Render, ohne die Datenquelle zu ändern. **Nicht** in Headlines, Eyebrows, CTAs, Schaubildern, Terminal. | – | PROJEKT-STAND (Session 8) |
 | T6 | Text-Gradient stets mit solidem Fallback; animierter Gradient-Text nie über direkt animierte `background-position` (Chromium-Clip-Drop) – nur über registrierte `@property`. | `.aurora-text`, `.cta-gradient` folgen dem Muster. | PROJEKT-STAND (08.06.2026) |
-| Offen | Schriftfamilie: heute System-Stack (`--font-sans`) + System-Mono – **nie entschieden**, Prüfung läuft als TODO 9 (DESIGN-UMSETZUNG §§1.2–1.5). Bis dahin kein Befund gegen R6/N1 aussprechen, sondern auf TODO 9 verweisen. | | |
+| Regel | **Schriftfamilien entschieden (02.09.2026, TODO 9):** Switzer (Text, 400/500/600) + Clash Display (Headlines/Display, 600, Utility `font-display`), self-hosted via next/font/local (`src/app/fonts/`, Fontshare – LIZENZ.txt); Mono bleibt System-Mono für Labels/CodeTag. Damit R6 erfüllt (zwei Familien mit Stimmenunterschied + Mono-Akzent). | `--font-sans`/`--font-display` in globals.css `@theme inline`; kein Font-CDN-Request zur Laufzeit (DESIGN-UMSETZUNG §1.5/1.6). | User-Entscheidung 02.09.2026 |
 
 ### 3.2 Bestand (gemessen, 01.09.2026)
 
@@ -304,7 +313,7 @@ ist sie ein Befund.
 ### 11.2 Nie entschieden (nur Bestand vorhanden)
 
 Typo-Skala (R10) · Abstandsskala und Sektionspadding-Wert (R17, R18) · Radius-Familie (R24) ·
-Container- und Textspaltenbreite (R20, R21) · Schriftfamilie (R6 – TODO 9) · Button-Höhen (R22).
+Container- und Textspaltenbreite (R20, R21) · Button-Höhen (R22). Die Schriftfamilie ist seit 02.09.2026 entschieden (§3.1).
 Für jede dieser Größen steht der gemessene Stand in §3.2, §4.2, §5, §6.2. Eine Entscheidung
 wandert dann aus „Bestand" nach „Regel".
 
