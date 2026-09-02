@@ -30,12 +30,16 @@ export default function Branchen() {
 
       <div className="relative mt-4">
         <Marquee aria-hidden="true" pauseOnHover className="[--duration:48s] [--gap:0.75rem]">
-          {branchen.map(({ label, icon: Icon }) => (
+          {branchen.map(({ label, icon: Icon }, index) => (
             <span
               key={label}
               className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground/90"
             >
-              <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
+              {/* Icons wechseln violett/warm – das Band traegt die Mischung weiter. */}
+              <Icon
+                className={`h-4 w-4 ${index % 2 === 0 ? 'text-accent' : 'text-accent-warm'}`}
+                aria-hidden="true"
+              />
               {label}
             </span>
           ))}

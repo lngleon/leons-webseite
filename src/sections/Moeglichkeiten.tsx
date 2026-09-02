@@ -216,7 +216,7 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
       {/* (4) Verspielt vs. seriös – zwei Knöpfe */}
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-5 text-center">
-          <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Verspielt oder seriös?
           </h2>
           <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
@@ -247,7 +247,7 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-8 text-center">
           <div className="flex flex-col items-center gap-3">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Tiefe auf Hover
             </h2>
             <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
@@ -301,7 +301,7 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-8 text-center">
           <div className="flex flex-col items-center gap-3">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Live im Browser gerechnet
             </h2>
             <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
@@ -341,7 +341,7 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-8 text-center">
           <div className="flex flex-col items-center gap-3">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               So sieht ein Next-Build aus
             </h2>
             <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
@@ -358,7 +358,7 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
       {/* (7) Marquee – Leons echter Tech-Stack */}
       <Reveal className="mt-24 sm:mt-32">
         <div className="flex flex-col items-center gap-6">
-          <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Mein Werkzeugkasten
           </h2>
           <div className="relative w-full">

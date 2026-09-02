@@ -31,6 +31,8 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-accent-solid: var(--accent-solid);
+  --color-accent-warm: var(--accent-warm);
+  --color-accent-warm-solid: var(--accent-warm-solid);
   --color-accent-foreground: var(--accent-foreground);
   --color-ring: var(--ring);
   --color-destructive: var(--destructive);
