@@ -137,7 +137,8 @@ Kein Datenmodell – reines Frontend ohne Datenbank.
 Hero (mit Showcase-Bühne) → Branchen-Laufband → Problem-Sektion → Leistungen → Über mich → Prozess → Projekte → Statement (Scroll-Reveal) → Kontakt → Footer (Impressum/Datenschutz)
 
 ### Kontakt-Flow
-- **Variante A (Formular):** Besucher füllt Name, E-Mail, Nachricht aus → Klick „Senden" → Daten gehen still an Formspree → Formspree leitet als E-Mail an Leon (`leonlang95@gmail.com`) → Besucher sieht Erfolgsmeldung („Danke, ich melde mich!").
+- **Variante A1 (geführter Fragebogen, Standard seit 02.09.2026):** Die Kontakt-Sektion zeigt zuerst eine kleine Umfrage – vier Fragen (Projektart · Ziele als Mehrfachauswahl · Ausgangslage · Zeitrahmen), dann Name/E-Mail plus optionale Nachricht, dann die Bestätigung. Der Fortschrittsbalken und der Zähler („Schritt 3 von 5") stehen über jedem Schritt, vor dem Absenden sieht der Besucher seine Antworten noch einmal und kann per „Zurück" korrigieren. Am Ende geht EINE Formspree-Sendung raus: `name`, `email`, `message` **plus** ein Feld je Frage (deutsche Feldnamen → je eine Zeile in Leons Mail) und ein sprechender Betreff. Fragen und Texte stehen komplett in `src/data/anfrage.ts`, die Mechanik in `src/components/AnfrageFlow.tsx`. **Warum:** Leon weiß nach der ersten Mail, worum es geht, statt nachfragen zu müssen – und die kleinen Schritte sind eine niedrigere Hürde als ein leeres Textfeld.
+- **Variante A2 (freies Formular):** Ein Textlink unter dem Fragebogen schaltet auf das klassische Formular (Name, E-Mail, Nachricht) und wieder zurück. Klick „Senden" → Daten gehen still an Formspree → Formspree leitet als E-Mail an Leon (`leonlang95@gmail.com`) → Besucher sieht Erfolgsmeldung („Danke, ich melde mich!").
 - **Variante B (direkte Buttons):** Klick auf E-Mail / WhatsApp / Instagram öffnet das jeweilige Programm direkt.
 
 ### Projekte-Flow (Stand 31.08.2026)

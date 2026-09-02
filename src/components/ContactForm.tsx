@@ -4,7 +4,9 @@ import { useEffect, useId, useRef, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { CircleAlert, CircleCheck, Loader2, Send } from 'lucide-react'
 import { clsx } from 'clsx'
+import { anfrageCopy } from '@/data/anfrage'
 import { contactMessages } from '@/data/contact'
+import { fieldClass } from '@/components/formField'
 
 type Status = 'idle' | 'sending' | 'success' | 'error'
 type Field = 'name' | 'email' | 'message'
@@ -26,17 +28,12 @@ function validate(values: Values): Errors {
   return errors
 }
 
-const fieldBase =
-  'w-full rounded-lg border bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/80 transition-colors focus:outline-none focus:ring-2 focus:ring-ring'
-
-function fieldClass(hasError: boolean) {
-  return clsx(
-    fieldBase,
-    hasError ? 'border-destructive' : 'border-border focus:border-accent',
-  )
-}
-
-export default function ContactForm() {
+/**
+ * Das freie Formular. Seit dem geführten Fragebogen (`AnfrageFlow`) die
+ * ZWEITE Art, Kontakt aufzunehmen – `onWechsel` blendet den Rückweg dorthin
+ * ein und bleibt optional, damit das Formular überall allein stehen kann.
+ */
+export default function ContactForm({ onWechsel }: { onWechsel?: () => void }) {
   const [values, setValues] = useState<Values>(emptyValues)
   const [errors, setErrors] = useState<Errors>({})
   const [status, setStatus] = useState<Status>('idle')
@@ -258,6 +255,18 @@ export default function ContactForm() {
           </>
         )}
       </button>
+
+      {onWechsel && (
+        <p className="text-center">
+          <button
+            type="button"
+            onClick={onWechsel}
+            className="rounded-sm text-sm text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {anfrageCopy.zumFlow}
+          </button>
+        </p>
+      )}
     </form>
   )
 }
