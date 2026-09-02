@@ -27,7 +27,7 @@ export default function Problem() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-          <SectionHeading eyebrow="Das Problem" title={problemHeading} />
+          <SectionHeading number="01" eyebrow="Das Problem" title={problemHeading} />
         </motion.div>
 
         <motion.div

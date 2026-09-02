@@ -15,7 +15,7 @@ export default function Statement() {
         <TextAnimation
           as="p"
           direction="up"
-          classname="font-display mx-auto max-w-3xl text-balance text-center text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl md:text-5xl"
+          classname="font-display mx-auto max-w-4xl text-balance text-center text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl md:text-6xl"
         >
           <span>Nicht noch eine Seite von der Stange.</span>
           <span>

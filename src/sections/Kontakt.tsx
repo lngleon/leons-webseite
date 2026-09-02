@@ -83,7 +83,7 @@ export default function Kontakt() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-          <SectionHeading
+          <SectionHeading number="06"
             eyebrow={contactIntro.eyebrow}
             title={contactIntro.title}
             description={contactIntro.subline}

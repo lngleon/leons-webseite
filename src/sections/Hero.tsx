@@ -130,60 +130,71 @@ export default function Hero() {
     >
       <HeroBackground />
 
-      {/* max-w-7xl statt 6xl (nur der Hero): mehr Luft für die Bühne auf
-          breiten Screens; die Spalten bleiben 1:1 – „Veränderungen," bei
-          72 px (494 px) braucht ab xl mindestens 512 px Spaltenbreite. */}
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
-        {/* Text + Zähler */}
-        <motion.div variants={container} initial="hidden" animate="show" className="max-w-xl">
+      {/* Stufe 2 (02.09.2026, Vorbild Ziegler: Typo als Buehne): die H1 steht
+          allein ueber die volle Breite, darunter zwei Spalten (Lead + CTAs
+          links, Buehne rechts), ganz unten die vier Zahlen als Band ueber die
+          gesamte Breite. max-w-7xl nur im Hero – mehr Luft auf breiten Screens. */}
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <motion.div variants={container} initial="hidden" animate="show">
           {/* H1 bewusst ohne Entrance-Opacity: LCP-Element sofort sichtbar (Mobil).
-              Nur das Akzentwort bekommt den Gradient – als fließender AuroraText
-              (reine CSS-@keyframes, solider Fallback, reduced-motion = statisch). */}
-          {/* Größer für den ersten Eindruck, aber 7xl erst ab xl: bei 72px
-              misst „Veränderungen," 494 px und überliefe die Grid-Spalte
-              zwischen 1024 und ~1130 px (nachgemessen, Spalte 442 px bei
-              1024). Mobil bleibt 4xl – bei 320 px muss das Wort in die
-              Spalte passen (ebenfalls nachgemessen). */}
-          <h1 className="font-display text-balance text-4xl font-semibold leading-[1.04] tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
+              Nur das Akzentwort bekommt den warmen Verlauf – als fliessender
+              AuroraText (reine CSS-@keyframes, solider Fallback, reduced-motion
+              = statisch). Groessen je Breite nachgemessen (kein Ueberlauf 320+). */}
+          <h1 className="font-display max-w-5xl text-balance text-4xl font-semibold leading-[0.98] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
             {hero.headline.split(hero.accentWord)[0]}
-            {/* Akzentwort im WARMEN Verlauf (Vorbild-Mischung) – gleiche
-                Aurora-Technik, nur der Verlauf kommt per Variable aus dem
-                Zweitakzent (.aurora-warm, siehe globals.css). */}
             <span className="aurora-warm">
               <AuroraText>{hero.accentWord}</AuroraText>
             </span>
             {hero.headline.split(hero.accentWord)[1] ?? ''}
           </h1>
 
-          <motion.p
-            variants={item}
-            className="entrance-anim mt-6 max-w-lg text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
-          >
-            {withCodeTags(hero.subline, ['Web-Apps'])}
-          </motion.p>
+          <div className="mt-10 grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            <div className="max-w-xl">
+              <motion.p
+                variants={item}
+                className="entrance-anim text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
+              >
+                {withCodeTags(hero.subline, ['Web-Apps'])}
+              </motion.p>
 
-          <motion.div variants={item} className="entrance-anim mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href={ctaItem.href}
-              className="cta-gradient inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              {ctaItem.label}
-            </a>
-            {/* Zweiter, ruhiger Weg: erst den Beweis ansehen, dann anfragen.
-                Ghost-Variante, flacher Akzent nur am Hover – der Primär-CTA
-                bleibt der einzige gefüllte Knopf im Hero. */}
-            <a
-              href={heroSecondaryCta.href}
-              className="inline-flex items-center justify-center rounded-full border border-border px-7 py-3 text-sm font-medium text-foreground transition-colors duration-200 hover:border-accent/60 hover:text-accent focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              {heroSecondaryCta.label}
-            </a>
-          </motion.div>
+              <motion.div variants={item} className="entrance-anim mt-8 flex flex-wrap items-center gap-3">
+                <a
+                  href={ctaItem.href}
+                  className="cta-gradient inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  {ctaItem.label}
+                </a>
+                {/* Zweiter, ruhiger Weg: erst den Beweis ansehen, dann anfragen.
+                    Ghost-Variante, flacher Akzent nur am Hover – der Primaer-CTA
+                    bleibt der einzige gefuellte Knopf im Hero. */}
+                <a
+                  href={heroSecondaryCta.href}
+                  className="inline-flex items-center justify-center rounded-full border border-border px-7 py-3 text-sm font-medium text-foreground transition-colors duration-200 hover:border-accent/60 hover:text-accent focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  {heroSecondaryCta.label}
+                </a>
+              </motion.div>
+            </div>
 
+            {/* Showcase-Buehne (gezeichnetes Interface, klickbar zu den echten
+                Projekten). Eigene motion-Props (kein Variants-Kind): faedet als
+                Ganzes ein. LCP-Hinweis bleibt: kaeme hier je ein BILD hinein,
+                nie mit opacity 0 malen, nur `y` animieren. */}
+            <motion.div
+              initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.15, ease: 'easeOut' }}
+              className="entrance-anim"
+            >
+              <HeroStage />
+            </motion.div>
+          </div>
+
+          {/* Zahlen-Band: ueber die volle Breite, mit Haarlinie abgesetzt. */}
           <motion.div
             variants={item}
             role="list"
-            className="entrance-anim mt-12 grid grid-cols-2 gap-x-6 gap-y-8"
+            className="entrance-anim mt-14 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-border pt-8 md:grid-cols-4"
           >
             {heroStats.map((stat) => (
               <div
@@ -208,21 +219,6 @@ export default function Hero() {
               </div>
             ))}
           </motion.div>
-        </motion.div>
-
-        {/* Showcase-Buehne (gezeichnetes Interface, klickbar zu den echten
-            Projekten). Das Portraet stand hier kurz (Entwurf 02.09.2026) und
-            ist auf User-Feedback nach "Ueber mich" gewandert - der Hero macht
-            wieder das Angebot sichtbar, die Person kommt weiter unten.
-            LCP-Hinweis bleibt: kaeme hier je ein BILD hinein, nie mit
-            opacity 0 malen, nur `y` animieren. */}
-        <motion.div
-          initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.15, ease: 'easeOut' }}
-          className="entrance-anim"
-        >
-          <HeroStage />
         </motion.div>
       </div>
     </section>

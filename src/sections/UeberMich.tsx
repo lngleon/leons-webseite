@@ -80,7 +80,7 @@ export default function UeberMich() {
 
           {/* Text – rechts auf Desktop */}
           <motion.div variants={item} className="entrance-anim">
-            <SectionHeading
+            <SectionHeading number="03"
               align="left"
               eyebrow={about.eyebrow}
               title={about.title}

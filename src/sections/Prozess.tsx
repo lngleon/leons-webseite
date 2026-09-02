@@ -63,7 +63,7 @@ export default function Prozess() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: reduce ? 0 : 0.5, ease: 'easeOut' }}
         >
-          <SectionHeading
+          <SectionHeading number="05"
             eyebrow={processIntro.eyebrow}
             title={processIntro.title}
             description={processIntro.subline}
@@ -97,13 +97,13 @@ export default function Prozess() {
                       <motion.span
                         aria-hidden="true"
                         variants={lineVertical}
-                        className="mt-2 w-0.5 flex-1 origin-top rounded-full bg-accent/30 md:hidden"
+                        className="mt-2 w-0.5 flex-1 origin-top rounded-full bg-linear-to-b from-accent/40 to-accent-warm/35 md:hidden"
                       />
                       {/* Desktop: horizontale Linie zum nächsten Badge */}
                       <motion.span
                         aria-hidden="true"
                         variants={lineHorizontal}
-                        className="absolute left-1/2 top-6 hidden h-0.5 w-full -translate-y-1/2 origin-left rounded-full bg-accent/30 md:block"
+                        className="absolute left-1/2 top-6 hidden h-0.5 w-full -translate-y-1/2 origin-left rounded-full bg-linear-to-r from-accent/40 to-accent-warm/35 md:block"
                       />
                     </>
                   )}

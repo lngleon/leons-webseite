@@ -1,6 +1,8 @@
 import { cn } from '@/lib/utils'
 
 type SectionHeadingProps = {
+  /** Sektionsnummer ("01" …) vor dem Eyebrow – mono im warmen Verlauf (optional). */
+  number?: string
   /** Kleine Akzent-Zeile über dem Titel (optional). */
   eyebrow?: string
   title: string
@@ -14,6 +16,7 @@ type SectionHeadingProps = {
 
 /** Wiederverwendbare Sektions-Überschrift für die Single-Page. */
 export default function SectionHeading({
+  number,
   eyebrow,
   title,
   description,
@@ -29,9 +32,10 @@ export default function SectionHeading({
         className,
       )}
     >
-      {eyebrow && (
-        <span className="accent-gradient-text font-mono text-xs font-medium uppercase tracking-[0.2em]">
-          {eyebrow}
+      {(eyebrow || number) && (
+        <span className="flex items-baseline gap-2.5 font-mono text-xs font-medium uppercase tracking-[0.2em]">
+          {number && <span className="warm-gradient-text">{number}</span>}
+          {eyebrow && <span className="accent-gradient-text">{eyebrow}</span>}
         </span>
       )}
       <Heading className="font-display mt-3 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">

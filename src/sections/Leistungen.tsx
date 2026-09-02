@@ -29,7 +29,7 @@ export default function Leistungen() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-          <SectionHeading
+          <SectionHeading number="02"
             eyebrow={servicesHeading.eyebrow}
             title={servicesHeading.title}
             description={servicesHeading.subline}

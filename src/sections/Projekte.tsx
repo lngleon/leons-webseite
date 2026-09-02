@@ -85,7 +85,7 @@ export default function Projekte({ muster }: ProjekteProps) {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: reduce ? 0 : 0.5, ease: 'easeOut' }}
         >
-          <SectionHeading
+          <SectionHeading number="04"
             eyebrow={projectsIntro.eyebrow}
             title={projectsIntro.title}
             description={projectsIntro.subline}
