@@ -66,7 +66,7 @@ npm run build   →   next build (Turbopack)
 ### Formspree
 - **Zweck:** Nimmt die Daten des Kontaktformulars per HTTP POST entgegen und leitet sie als E-Mail weiter.
 - **Empfänger:** `leonlang95@gmail.com` (später auf professionelle Adresse änderbar)
-- **Account:** ✅ vorhanden (Phase 1 abgeschlossen). Formular end-to-end bestätigt – lokal UND live, Mail kommt an.
+- **Account:** ✅ vorhanden (Phase 1 abgeschlossen). Formular end-to-end bestätigt – lokal UND live, Mail kommt an. **Auch der geführte Fragebogen (A1) ist live bestätigt** (02.09.2026): Anfrage abgeschickt, Mail mit den vier Zusatzfeldern kam an.
 - **Endpoint/Form-ID:** ✅ gesetzt. Wird NIE hardcodiert, sondern aus der Env-Variable **`NEXT_PUBLIC_FORMSPREE_ENDPOINT`** gelesen (`src/components/ContactForm.tsx` und `src/components/AnfrageFlow.tsx`, jeweils `process.env.…`). Seit der Next-Migration (24.08.2026) heißt sie so – vorher `VITE_FORMSPREE_ENDPOINT`. Steht lokal in `.env.local` UND muss im Vercel-Dashboard hinterlegt sein (alle Environments).
 - **Tarif:** kostenloser Free-Tier (ausreichend für erwartetes Anfragevolumen)
 - **Sichtbar für Besucher?** Nein – Formspree taucht im UI nicht auf, das Formular gehört optisch komplett der Seite.
