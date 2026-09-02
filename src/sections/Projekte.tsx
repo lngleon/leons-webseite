@@ -39,8 +39,8 @@ import type { DemoPreview } from '@/data/demos'
 /** Badge auf dem Screenshot – oben rechts, über Tokens, kein Hex. */
 function ImageBadge({ live, children }: { live?: boolean; children: string }) {
   return (
-    <span className="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-background/80 px-2.5 py-1 text-xs font-medium text-foreground backdrop-blur">
-      {live && <span className="h-1.5 w-1.5 rounded-full bg-accent-warm" aria-hidden="true" />}
+    <span className="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-kante border border-border-stark bg-background px-2.5 py-1 text-xs font-medium text-foreground">
+      {live && <span className="h-1.5 w-1.5 rounded-punkt bg-accent" aria-hidden="true" />}
       {children}
     </span>
   )
@@ -77,7 +77,7 @@ export default function Projekte({ muster }: ProjekteProps) {
     'focus-visible:ring-offset-2 focus-visible:ring-offset-background'
 
   return (
-    <section id="projekte" className="section-glow py-24 sm:py-32">
+    <section id="projekte" className="py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={reduce ? { opacity: 1 } : { opacity: 0, y: 20 }}

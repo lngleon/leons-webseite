@@ -29,62 +29,113 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
+  --color-border-stark: var(--border-stark);
   --color-accent: var(--accent);
   --color-accent-solid: var(--accent-solid);
-  --color-accent-warm: var(--accent-warm);
-  --color-accent-warm-solid: var(--accent-warm-solid);
   --color-accent-foreground: var(--accent-foreground);
   --color-ring: var(--ring);
   --color-destructive: var(--destructive);
 }
 
+/* ── FORMENSPRACHE: zwei Radien, drei Schatten ────────────────────
+   Vorher gab es KEIN Radius-Token: die Seite trug neun ungeordnete
+   Tailwind-Defaults gleichzeitig (rounded-full 60x, dazu -sm/-md/-lg/
+   -xl/-2xl/-3xl/-[2.5rem]). Genau diese Mischung aus Pillen-Buttons und
+   mittleren Rundungen ist der generische Eindruck, den der User am
+   02.09.2026 beanstandet hat („Buttons mit den basic rundungen").
+
+   `--radius-*: initial` und `--shadow-*: initial` LÖSCHEN die Tailwind-
+   Defaults aus dem Build. Ein Rückfall auf `rounded-xl` oder `shadow-lg`
+   erzeugt danach sichtbar nichts mehr und fällt sofort auf – die Regel
+   setzt sich selbst durch, statt nur dokumentiert zu sein.
+
+   Zuweisungsregel (testbar): Alles, was Text trägt oder breiter als hoch
+   ist, bekommt `rounded-kante` (2 px). Rund bleibt ausschließlich, was
+   quadratisch, höchstens ~14 px groß und textlos ist – Statuspunkte,
+   Ampelpunkte, Radio-Punkte – über `rounded-punkt`.
+
+   Schatten haben IMMER Y-Versatz und Weichzeichnung und sind IMMER
+   neutral schwarz. Farbige Glows ohne Versatz sind ersatzlos entfallen;
+   Tiefe trägt jetzt `--border-stark`. */
+@theme inline {
+  --radius-*: initial;
+  --radius-kante: 2px;
+  --radius-punkt: 9999px;
+
+  --shadow-*: initial;
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.3), 0 2px 6px -2px rgb(0 0 0 / 0.25);
+  --shadow-2: 0 2px 4px rgb(0 0 0 / 0.3), 0 12px 28px -10px rgb(0 0 0 / 0.45);
+}
+
 /* ============================================================
-   DARK-ONLY (einziger Token-Satz). Edel-zurückhaltend: Near-Black /
-   Weiß / Grau + Violett-Akzent. Kein Light Mode, kein Toggle.
+   DARK-ONLY (einziger Token-Satz) – „Ruß & Waschblau", 02.09.2026.
+
+   Ersetzt den Nachtblau/Violett-Satz. Der Grund dafür war messbar, nicht
+   geschmacklich: Grund, Karte und Fläche lagen bei 1.05 : 1 bzw. 1.10 : 1
+   auseinander, die Seite war Ton in Ton und brauchte deshalb überall
+   farbigen Schein, um überhaupt Tiefe zu haben. Dazu standen mit
+   #a78bfa (violet-400), #6d28d9 (violet-700), #fb923c (orange-400),
+   #f472b6 (pink-400), #db2777 (pink-600) und #f87171 (red-400) sechs
+   unveränderte Tailwind-Default-Swatches im System – Violett auf
+   Nachtblau plus Orange-nach-Pink ist die Signatur generierter Seiten.
+
+   DIE THESE: warmer Ruß als Grund, ein kreidiges Emailleblau als EINZIGER
+   Akzent. Der Akzent ist damit der einzige KÜHLE und zugleich der am
+   wenigsten gesättigte Wert der Seite (OKLCH C 0.056) – Aufmerksamkeit
+   entsteht über Temperatur, nicht über Leuchtkraft. Das ist das Gegenteil
+   des Generator-Defaults „fast schwarz plus maximal gesättigter Akzent".
+
+   ALLE WERTE GERECHNET (WCAG, sRGB-linearisiert), nicht geschätzt:
+     Werte-Treppe   card/bg 1.29 · muted/card 1.31 · muted/bg 1.70
+                    border/bg 2.68 · border/card 2.07 · border/muted 1.58
+                    border-stark/bg 4.73   (vorher: 1.05 / 1.10 / 1.40)
+     Text           foreground/bg 16.29 · muted-foreground 8.85 / 6.84 / 5.21
+                    (auf Grund / Karte / muted)
+     Akzent         accent/bg 8.08 · accent-solid/bg 6.24
+                    Schrift auf accent-solid: DUNKEL 6.24 – Weiß fällt mit
+                    3.09 objektiv durch. Genau das ist der sichtbarste
+                    Bruch mit der Weiß-auf-Violett-Pille jeder KI-Seite.
+     Fehler         destructive 10.89 / 8.42 / 6.42
+
+   AUFLAGEN:
+   - Der Akzent bleibt bei maximal ~30 % HSL-Sättigung. Höher gedreht
+     kippt er nach Neon-Zyan und landet im ausgeschlossenen Muster.
+   - Höchstens EINE gefüllte Akzentfläche pro Bildschirm.
+   - Es gibt KEINEN Verlauf im Farbsystem. Kein Verlaufstext, keine
+     Verlaufsfüllung, kein Verlaufsrand.
+   - Fehler laufen nie allein über Farbe (unter Protanopie liegt die
+     Trennung Akzent/Fehler nur bei 1.17 : 1) – immer Icon plus Text.
    ============================================================ */
 :root {
   color-scheme: dark;
 
-  --background: #070b21;
-  --foreground: #f7f8ff;
-  --muted: #10173a;
-  --muted-foreground: #a3aed2;
-  --card: #0b1130;
-  --card-foreground: #f7f8ff;
-  --border: #232c55;
+  --background: #130d06;
+  --foreground: #f2ebdf;
+  --muted: #423927;
+  --muted-foreground: #bbae99;
+  --card: #2e2619;
+  --card-foreground: #f2ebdf;
   --ring: var(--accent);
-  --destructive: #f87171;
+  --destructive: #f5b3a1;
 
-  /* Flacher Akzent – für Ränder, Icons, kleine UI und den Fokusring (NICHT Gradient). */
-  --accent: #a78bfa;
-  --accent-solid: #6d4dff;
-  --accent-foreground: #ffffff;
+  /* Ränder tragen jetzt die Struktur, die vorher der Schein getragen hat.
+     Zwei Stufen, keine Opacity-Leiter:
+       --border        leise  – Trennlinien, Formularfelder in Ruhe
+       --border-stark  tragend – Karten, Panels, Bühne, sekundärer Button */
+  --border: #605644;
+  --border-stark: #8a7c63;
 
-  /* ╔══════════════════════════════════════════════════════════╗
-     ║  AKZENT-GRADIENT (Violett) – Source-of-Truth.             ║
-     ║  --accent-gradient: helle→tiefe Stops, NUR für Text-Clip  ║
-     ║    (Headline-Akzentwörter, Hero-Zahlen, Eyebrow) auf      ║
-     ║    Near-Black. Innerhalb Violett frei nachjustierbar      ║
-     ║    (Mittelstop darf leicht ins Pink-Violett).             ║
-     ║  --accent-gradient-strong: dunklere Violett-Hälfte für    ║
-     ║    Button-/CTA-Füllungen – trägt weiße Schrift ≥4.5:1     ║
-     ║    über den GANZEN Verlauf (objektiv verifiziert).        ║
-     ╚══════════════════════════════════════════════════════════╝
-     Einzige sanktionierte RAND-Nutzung von --accent-gradient:
-     .card-gradient-border (GENAU EINE Karte – die Leistungen-
-     Highlight-Karte; User-beauftragte Ausnahme 31.08.2026, siehe
-     Regelblock weiter unten + PROJEKT-STAND Design-Regeln). */
-  --accent-gradient: linear-gradient(135deg, #c4b5fd, #a78bfa, #7c5cff);
-  --accent-gradient-strong: linear-gradient(135deg, #6d4dff, #6d28d9);
+  /* Der EINZIGE Akzent. Flach für Text, Icons, Ränder bedienbarer
+     Elemente und den Fokusring; -solid als gefüllte Fläche (CTA). */
+  --accent: #7db0ba;
+  --accent-solid: #5d9ca9;
+  --accent-solid-hover: #6fadb9;
+  --accent-solid-active: #4d8894;
+  --accent-foreground: #130d06;
 
-  /* Warmer Zweitakzent (User-Entscheidung 02.09.2026, Vorbild-Mischung):
-     Orange→Pink fuer Highlights und die Fuellung primaerer CTAs. Die dunkle
-     -strong-Haelfte ist auf weisse Schrift >= 4.5:1 gerechnet (Stops
-     #c2410c ~5.2:1 und #db2777 ~4.6:1); die hellen Stops NICHT auf CTAs. */
-  --accent-warm: #fb923c;
-  --accent-warm-solid: #db2777;
-  --accent-warm-gradient: linear-gradient(135deg, #fb923c, #f472b6);
-  --accent-warm-gradient-strong: linear-gradient(135deg, #c2410c, #db2777);
+  /* Tiefe: neutral, mit Versatz, Licht von oben. Keine farbigen Halos. */
+  --shadow-druck: inset 0 1px 2px rgb(0 0 0 / 0.35);
+  --lichtkante: inset 0 1px 0 rgb(255 255 255 / 0.14);
 }
 
 @layer base {
@@ -108,7 +159,7 @@
      `@media (prefers-reduced-motion: no-preference) { … smooth }`: so bleibt
      das Standardverhalten auch in Browsern erhalten, die die Media-Query gar
      nicht kennen, und die Datei behält die Reihenfolge „normal definieren,
-     danach für reduce zurücknehmen" wie bei `.entrance-anim`, `.cta-gradient`
+     danach für reduce zurücknehmen" wie bei `.entrance-anim`
      und dem Marquee. Gleiche Spezifität, spätere Regel gewinnt.
 
      Gilt auch für programmatisches `scrollIntoView()` – dort greift
@@ -260,220 +311,133 @@
   }
 }
 
-/* ── Akzent-Gradient: Showcase-Flächen ───────────────────────────
-   Text-Gradient mit SOLIDEM Fallback: Standard ist die flache
-   Akzentfarbe (immer sichtbar); nur wo background-clip:text
-   unterstützt wird, wird der Verlauf eingeclippt. Nie unsichtbar. */
+/* ── Akzenttext (früher: Verlaufstext) ───────────────────────────
+   Bis 02.09.2026 clippten diese beiden Klassen einen Violett- bzw. einen
+   Orange→Pink-Verlauf in die Glyphen (Eyebrows, Hero-Zahlen, Sektions-
+   nummern, einzelne Headline-Wörter). Verlaufstext ist das am leichtesten
+   erkennbare Merkmal generierter Seiten – er wird nicht ersetzt, sondern
+   ersatzlos gestrichen. Betonung kommt ab jetzt aus Größe und Gewicht.
+
+   Die Klassennamen bleiben, damit sie an einer Stelle steuerbar sind:
+   `.accent-gradient-text` = Akzentfarbe (Eyebrow, kleine Auszeichnung),
+   `.warm-gradient-text` = ruhige Sekundärfarbe (Sektionsnummern, Wortmarke),
+   damit der Akzent seiner einen Aufgabe – Handlung – vorbehalten bleibt. */
 .accent-gradient-text {
   color: var(--accent);
 }
 .warm-gradient-text {
-  color: var(--accent-warm);
-}
-@supports (-webkit-background-clip: text) or (background-clip: text) {
-  .accent-gradient-text {
-    background-image: var(--accent-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-  }
-  .warm-gradient-text {
-    background-image: var(--accent-warm-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-  }
+  color: var(--muted-foreground);
 }
 
-/* ── Aurora-Text: EIN fließendes Headline-Akzentwort ─────────────
-   Spiegelt EXAKT die bewährte .accent-gradient-text-Clip-Technik (gleicher
-   @supports-Block, identische Clip-/Fill-Reihenfolge, nur --accent-gradient /
-   --accent), nur wandert der Verlauf langsam.
-
-   WICHTIG (Bugfix): Eine DIREKT animierte `background-position` auf einem
-   `background-clip:text`-Element lässt Chromium die geclippte Glyphen-Maske
-   (zeitweise) fallen → bei transparentem Text-Fill wird das Wort UNSICHTBAR
-   (statische Verläufe wie .accent-gradient-text sind nicht betroffen). Fix:
-   den Flow NICHT über background-position selbst animieren, sondern über eine
-   REGISTRIERTE Custom-Property `--aurora-pos` (@property, typisiert als
-   <percentage> → interpolierbar). Deren Animation erzwingt pro Frame eine
-   saubere Style-/Paint-Neuberechnung der Text-Clip-Maske. Zusätzlich gibt
-   `display:inline-block` der Inline-<span> eine stabile Paint-Box.
-
-   Reine CSS-@keyframes → SSR-/hydration-sicher, Wort durchgehend sichtbar
-   (LCP). Sanftes Hin-und-Her (alternate, ease-in-out, 8 s) → edel, kein
-   Flackern, kein Seam. Graceful degradation: ohne @property-Support bleibt der
-   Verlauf statisch (sichtbar), ohne background-clip:text die solide Akzentfarbe.
-   Bewusst NUR am Hero-Akzentwort – Eyebrow/Zähler bleiben statisch via
-   .accent-gradient-text. */
-@property --aurora-pos {
-  syntax: "<percentage>";
-  inherits: false;
-  initial-value: 0%;
-}
-
-.aurora-text {
-  color: var(--aurora-fallback, var(--accent)); /* solider Fallback – nie unsichtbar */
-}
-/* Warme Spielart: gleiche Technik, nur der Verlauf kommt aus dem Zweitakzent. */
+/* ── Akzentwort im Hero (früher: fließender Verlauf) ─────────────
+   Die Klasse .aurora-text clippte bis 02.09.2026 einen wandernden Verlauf in EIN
+   Headline-Wort. Der Verlauf ist mit dem Farbsystem entfallen (kein Verlauf
+   mehr, nirgends); die Klasse bleibt als die eine Stelle, an der ein Wort
+   ausgezeichnet wird. Kein background-clip, keine @property, keine
+   Dauer-Animation – dadurch auch kein reduced-motion-Sonderfall mehr.
+   .aurora-warm bleibt als Alias, damit vorhandenes Markup unveraendert bleibt. */
+.aurora-text,
 .aurora-warm {
-  --aurora-gradient: var(--accent-warm-gradient);
-  --aurora-fallback: var(--accent-warm);
-}
-@supports (-webkit-background-clip: text) or (background-clip: text) {
-  .aurora-text {
-    display: inline-block; /* stabile Paint-Box für die Inline-Clip-Maske */
-    background-image: var(--aurora-gradient, var(--accent-gradient));
-    background-size: 200% 100%; /* verbreitert → Spielraum zum Fließen */
-    background-position: var(--aurora-pos) 50%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    animation: aurora-flow 8s ease-in-out infinite alternate;
-  }
+  color: var(--accent);
 }
 
-/* Animiert NUR die registrierte Custom-Property (nicht background-position
-   direkt) → Text-Clip-Maske bleibt pro Frame erhalten. */
-@keyframes aurora-flow {
-  0% {
-    --aurora-pos: 0%;
-  }
-  100% {
-    --aurora-pos: 100%;
-  }
-}
+/* ── Buttons: eine Form, drei Gewichte ───────────────────────────
+   Vorher: eine gefüllte Verlaufs-PILLE mit Dauer-Animation, farbigem Glow
+   und Hover-Lift, daneben eine "Geisterpille" mit fast unsichtbarem Rand –
+   und dasselbe Bauteil in vier verschiedenen Paddings über die Seite
+   verteilt. Das ist wörtlich, was der User am 02.09.2026 beanstandet hat.
 
-/* reduced-motion → statischer, weiterhin geclippter & sichtbarer Verlauf. */
-@media (prefers-reduced-motion: reduce) {
-  .aurora-text {
-    animation: none;
-    background-position: 0% 50%;
-  }
-}
+   Jetzt haben primärer und sekundärer Button DIESELBE Silhouette
+   (44 px hoch, 20 px innen, 2 px Radius) und unterscheiden sich über
+   GEWICHT, nicht über Form:
+     primär    liegt AUF der Seite – gefüllt, Lichtkante, Schatten
+     sekundär  liegt IN der Seite – transparent, sichtbarer Rand, nie Schatten
+   Beim Klick kippt die Lichtkante in eine Druckkante: der Knopf geht
+   HINEIN statt sich anzuheben. Keine Bewegung, kein farbiger Schein.
 
-/* Registrierte Custom-Property für die fließende CTA-Füllung – speist
-   `background-position`. Bewusst der bewährte AuroraText-Weg: die typisierte
-   `@property` (<percentage>) animieren statt `background-position` direkt –
-   saubere Interpolation, sauberer Repaint pro Frame.
-   HINWEIS: Hier ist die direkte Animation eigentlich UNKRITISCH (der Clip-Drop-
-   Bug betrifft nur `background-clip:text`, der Button hat das nicht / volle
-   Füllung) – derselbe Weg wird aus Konsistenz mit AuroraText + sauberer
-   Interpolation trotzdem gewählt, nicht aus Zwang. */
-@property --cta-pos {
-  syntax: "<percentage>";
-  inherits: false;
-  initial-value: 0%;
-}
-
-/* Gefüllte CTA: dunklere Violett-Hälfte (weiße Schrift ≥4.5:1 über den
-   ganzen Verlauf). Solider Fallback, falls Gradient nicht unterstützt.
-
-   Dezenter Violett-Glow – BEWUSST dieselbe Sprache wie der Card-Hover-Glow:
-   ein weicher, akzent-getönter Schatten über `--accent` (color-mix wie Tailwinds
-   `shadow-accent/x`), kein neuer Effekt, kein Hex hardcodiert. Ruhezustand leicht,
-   bei Hover kräftiger, beim Klick (`:active`) am kräftigsten – KEIN Dauer-/Puls-
-   Effekt. Hover ist touch-sicher (nur bei echtem Zeiger via @media hover).
-
-   Der box-shadow bindet die Tailwind-Ring-Variablen mit ein, damit der Fokusring
-   (`focus-visible:ring-*`, eine layered Utility) sichtbar BLEIBT – diese Regel ist
-   unlayered und würde sonst die box-shadow des Rings überschreiben. So komponieren
-   Glow + Fokusring statt sich gegenseitig auszuschalten.
-
-   Langsam FLIESSENDE Füllung (gefüllter Look bleibt, nur der Verlauf wandert):
-   verbreiterter Verlauf (`background-size:200%`) + `background-position` aus der
-   registrierten `@property --cta-pos` (NICHT direkt animiert → kein Verlauf-Drop,
-   analog AuroraText). Bewusst NUR `--accent-gradient-strong` (dunkle Stops) – die
-   weiße Schrift bleibt über den GANZEN Fluss ≥4.5:1; die hellen Stops NICHT
-   einziehen. reduced-motion → statisch (s.u.). */
-.cta-gradient {
-  background-color: var(--accent-warm-solid);
-  background-image: var(--accent-warm-gradient-strong);
-  background-size: 200% 100%;
-  background-position: var(--cta-pos) 50%;
-  color: var(--accent-foreground);
-  /* Zusätzlicher Lift-Schatten als eigener box-shadow-Layer „oben drauf" – im
-     Ruhezustand unsichtbar (0 0 #0000), sodass der Glow UNVERÄNDERT bleibt. NUR
-     die großen CTAs setzen ihn auf Hover (s.u.); über Akzent-Tokens, kein Hex. */
-  --cta-lift-shadow: 0 0 #0000;
-  box-shadow:
-    var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000),
-    0 4px 22px -6px color-mix(in oklab, var(--accent-warm) 22%, transparent),
-    var(--cta-lift-shadow);
-  /* MUSS unlayered bleiben: überschreibt bewusst die layered Tailwind-Utility
-     `transition-opacity` an den Buttons und deckt zusätzlich `transform` (Lift)
-     + `box-shadow` (Glow) ab. Wird diese Regel je in einen @layer verschoben
-     ODER `transition-opacity` aus dem Markup als „redundant" entfernt, ohne das
-     hier zu spiegeln, „snappt" der Lift statt weich zu animieren. */
-  transition: box-shadow 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
-  animation: cta-flow 9s ease-in-out infinite alternate;
-}
-@media (hover: hover) {
-  .cta-gradient:hover {
+   Die Tailwind-Ring-Variablen bleiben in den box-shadow einkomponiert –
+   sonst würde diese unlayered Regel den Fokusring überschreiben. */
+/* In @layer components, damit Tailwind-Utilities im Markup gewinnen:
+   sonst schlaegt das unlayered display:inline-flex die Utility `hidden`,
+   und der Desktop-CTA der Navbar erscheint auch auf dem Handy. */
+@layer components {
+  .btn-primaer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding-inline: 1.25rem;
+    border-radius: var(--radius-kante);
+    background-color: var(--accent-solid);
+    color: var(--accent-foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
     box-shadow:
       var(--tw-ring-offset-shadow, 0 0 #0000),
       var(--tw-ring-shadow, 0 0 #0000),
-      0 6px 30px -6px color-mix(in oklab, var(--accent-warm) 40%, transparent),
-      var(--cta-lift-shadow);
+      var(--lichtkante),
+      var(--shadow-1);
+    transition: background-color 160ms ease-out, box-shadow 160ms ease-out;
   }
-}
-.cta-gradient:active {
-  box-shadow:
-    var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000),
-    0 4px 24px -4px color-mix(in oklab, var(--accent-warm) 55%, transparent),
-    var(--cta-lift-shadow);
+  @media (hover: hover) {
+    .btn-primaer:hover {
+      background-color: var(--accent-solid-hover);
+      box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000),
+        var(--lichtkante),
+        var(--shadow-2);
+    }
+  }
+  .btn-primaer:active {
+    background-color: var(--accent-solid-active);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000),
+      var(--tw-ring-shadow, 0 0 #0000),
+      var(--shadow-druck);
+  }
+  .btn-primaer:disabled,
+  .btn-primaer[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  /* Nur die Navbar-Leiste im Desktop – sonst identisch. */
+  .btn-primaer-kompakt {
+    height: 2.25rem;
+    padding-inline: 1rem;
+  }
+
+  .btn-sekundaer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding-inline: 1.25rem;
+    border-radius: var(--radius-kante);
+    border: 1px solid var(--border-stark);
+    background-color: transparent;
+    color: var(--foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color 160ms ease-out, border-color 160ms ease-out;
+  }
+  @media (hover: hover) {
+    .btn-sekundaer:hover {
+      background-color: var(--muted);
+      border-color: color-mix(in oklab, var(--foreground) 45%, transparent);
+    }
+  }
+  .btn-sekundaer:active {
+    background-color: color-mix(in oklab, var(--muted) 70%, var(--background));
+    box-shadow: var(--shadow-druck);
+  }
 }
 
-/* Animiert NUR die registrierte Custom-Property (nicht background-position
-   direkt) → sauberer Repaint pro Frame, kein Verlauf-Drop (analog AuroraText). */
-@keyframes cta-flow {
-  0% {
-    --cta-pos: 0%;
-  }
-  100% {
-    --cta-pos: 100%;
-  }
-}
-
-/* Spürbarer Lift NUR auf den großen Content-CTAs (Hero, Kontakt-Submit,
-   /moeglichkeiten = allesamt in <main>); die Navbar-CTAs (in <header>) bleiben
-   bewusst ruhig, sonst wirkt die Sticky-Leiste unruhig. Vorbild:
-   `hover:-translate-y-1` + `hover:shadow-md` – NUR Bewegung + Schatten
-   übernommen, der Schatten über die Akzent-Tokens (color-mix, KEIN graues/
-   neutrales Hex). Hover hebt ~4px an UND legt den weichen Akzent-Lift-Schatten
-   „oben drauf" (touch-sicher via @media hover); beim Klick „drückt" es sich auf
-   die Grundlinie zurück und der Lift-Schatten verschwindet (:active, bewusst
-   ungated → reagiert auch auf Touch). transform + box-shadow laufen über die
-   `.cta-gradient`-Transition weich; Glow + Füllung bleiben unverändert. */
-@media (hover: hover) {
-  main .cta-gradient:hover {
-    transform: translateY(-4px);
-    --cta-lift-shadow: 0 12px 24px -8px color-mix(in oklab, var(--accent-warm) 34%, transparent);
-  }
-}
-main .cta-gradient:active {
-  transform: translateY(0);
-  --cta-lift-shadow: 0 0 #0000;
-}
-
-/* reduced-motion: Füllung statisch (kein Fluss) UND kein Lift (weder Bewegung
-   noch Lift-Schatten). Der Glow (box-shadow) bleibt wie gehabt. */
-@media (prefers-reduced-motion: reduce) {
-  .cta-gradient {
-    animation: none;
-    background-position: 0% 50%;
-  }
-  main .cta-gradient:hover,
-  main .cta-gradient:active {
-    transform: none;
-    --cta-lift-shadow: 0 0 #0000;
-  }
-}
 
 /* ── Sektions-Rhythmus (Startseite, 31.08.2026) ──────────────────
    Gegen die Gleichförmigkeit beim Scrollen: Sektionen wechseln zwischen
@@ -486,62 +450,6 @@ main .cta-gradient:active {
     color-mix(in oklab, var(--muted) 55%, var(--background)) 0%,
     var(--background) 100%
   );
-}
-.section-glow {
-  background:
-    radial-gradient(
-      56rem 28rem at 50% 0%,
-      color-mix(in oklab, var(--accent) 7%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      40rem 22rem at 88% 100%,
-      color-mix(in oklab, var(--accent-warm) 4%, transparent),
-      transparent 70%
-    );
-}
-
-/* ── Gradient-Rand der Highlight-Karte (Leistungen/KI) ───────────
-   Bewusste, vom User beauftragte Ausnahme der „Ränder flach"-Regel
-   (31.08.2026, „mehr Pepp"): GENAU EINE Karte der Seite trägt den
-   Verlauf als Rand. Technik: ::before als 1px-Ring über inset -1px +
-   mask-composite (der Kartenrand selbst wird transparent). Alles im
-   @supports-Block – ohne mask-composite bleibt der flache
-   border-accent/50 aus der Utility-Klasse einfach stehen (nie ein
-   vollflächiger Verlauf über dem Inhalt). Unlayered, damit die Regel
-   die layered Tailwind-Utilities (border-*) übersteuert. */
-.card-gradient-border {
-  position: relative;
-}
-@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
-  .card-gradient-border,
-  .card-gradient-border:hover {
-    border-color: transparent;
-  }
-  .card-gradient-border::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: var(--accent-gradient);
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    opacity: 0.55;
-    pointer-events: none;
-    transition: opacity 200ms ease-out;
-  }
-  @media (hover: hover) {
-    .card-gradient-border:hover::before {
-      opacity: 0.85;
-    }
-  }
 }
 
 /* ── Marquee (Showcase /moeglichkeiten) ───────────────────────────

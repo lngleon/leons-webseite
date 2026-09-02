@@ -157,20 +157,20 @@ export default function HeroStage() {
           className="pointer-events-none absolute inset-x-[5%] top-0"
           style={{ transform: 'translateZ(-40px)' }}
         >
-          <div className="aspect-[16/10] rotate-[3deg] rounded-2xl border border-border/60 bg-card/70" />
+          <div className="aspect-[16/10] rotate-[3deg] rounded-kante border border-border/60 bg-card/70" />
         </div>
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-[3%] top-2.5"
           style={{ transform: 'translateZ(-20px)' }}
         >
-          <div className="aspect-[16/10] -rotate-[1.5deg] rounded-2xl border border-border/70 bg-card/80" />
+          <div className="aspect-[16/10] -rotate-[1.5deg] rounded-kante border border-border/70 bg-card/80" />
         </div>
 
         <div className="relative" style={{ transform: 'translateZ(30px)' }}>
           <a
             href="/#projekte"
-            className="group/stage relative block overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-accent/15 transition duration-300 ease-out hover:border-accent/50 hover:shadow-accent/30 motion-safe:hover:-translate-y-1 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="group/stage relative block overflow-hidden rounded-kante border border-border-stark bg-card shadow-2 transition duration-300 ease-out hover:border-accent focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {/* Browser-Kopfzeile – Kulisse, daher aria-hidden. Dummy-Domain wie
                 im Terminal (`deine-seite.de`). Der Ladebalken liegt an ihrer
@@ -180,11 +180,11 @@ export default function HeroStage() {
               className="relative flex items-center gap-3 border-b border-border bg-muted/60 px-4 py-2.5"
             >
               <span className="flex gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
-                <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
-                <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
+                <span className="h-2.5 w-2.5 rounded-punkt bg-foreground/15" />
+                <span className="h-2.5 w-2.5 rounded-punkt bg-foreground/15" />
+                <span className="h-2.5 w-2.5 rounded-punkt bg-foreground/15" />
               </span>
-              <span className="mx-auto flex h-6 items-center gap-1.5 rounded-md bg-background/60 px-3 font-mono text-[11px] text-muted-foreground">
+              <span className="mx-auto flex h-6 items-center gap-1.5 rounded-kante bg-background/60 px-3 font-mono text-[11px] text-muted-foreground">
                 <Lock className="h-3 w-3 text-accent" />
                 deine-seite.de
               </span>
@@ -218,14 +218,14 @@ export default function HeroStage() {
                 <div className="flex items-center justify-between">
                   <motion.span
                     variants={pop(T.nav)}
-                    className="entrance-anim h-2.5 w-12 origin-left rounded bg-accent-solid sm:h-3 sm:w-16"
+                    className="entrance-anim h-2.5 w-12 origin-left rounded-kante bg-accent-solid sm:h-3 sm:w-16"
                   />
                   <span className="flex gap-2 sm:gap-3">
                     {[0, 1, 2].map((i) => (
                       <motion.span
                         key={i}
                         variants={fadeUp(T.nav + 0.1 + i * 0.08)}
-                        className="entrance-anim h-1.5 w-6 rounded-full bg-foreground/15 sm:w-8"
+                        className="entrance-anim h-1.5 w-6 rounded-kante bg-foreground/15 sm:w-8"
                       />
                     ))}
                   </span>
@@ -238,7 +238,7 @@ export default function HeroStage() {
                       rest: { opacity: 0, scale: 0.96 },
                       show: { opacity: 1, scale: 1, transition: { delay: T.image, duration: 0.6, ease } },
                     }}
-                    className="entrance-anim relative min-h-0 overflow-hidden rounded-xl border border-border/60 bg-background/40"
+                    className="entrance-anim relative min-h-0 overflow-hidden rounded-kante border border-border/60 bg-background/40"
                     style={{
                       backgroundImage:
                         'radial-gradient(70% 80% at 65% 35%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 75%)',
@@ -246,40 +246,40 @@ export default function HeroStage() {
                   >
                     <motion.span
                       variants={pop(T.image + 0.35)}
-                      className="entrance-anim absolute right-[7%] top-[10%] aspect-square h-[24%] rounded-full bg-accent/25"
+                      className="entrance-anim absolute right-[7%] top-[10%] aspect-square h-[24%] rounded-punkt bg-accent/25"
                     />
                     <motion.span
                       variants={pop(T.image + 0.5)}
-                      className="entrance-anim absolute bottom-[10%] left-[6%] aspect-square h-[30%] rounded-lg bg-accent/30"
+                      className="entrance-anim absolute bottom-[10%] left-[6%] aspect-square h-[30%] rounded-kante bg-accent/30"
                     />
                   </motion.div>
 
                   <div className="flex min-h-0 flex-col justify-center gap-1.5 sm:gap-2.5">
                     <motion.span
                       variants={grow(T.text)}
-                      className="entrance-anim h-2.5 w-full origin-left rounded bg-foreground/25 sm:h-3.5"
+                      className="entrance-anim h-2.5 w-full origin-left rounded-kante bg-foreground/25 sm:h-3.5"
                     />
                     <motion.span
                       variants={grow(T.text + 0.12)}
-                      className="entrance-anim h-1 w-4/5 origin-left rounded-full bg-foreground/10 sm:h-1.5"
+                      className="entrance-anim h-1 w-4/5 origin-left rounded-kante bg-foreground/10 sm:h-1.5"
                     />
                     <motion.span
                       variants={grow(T.text + 0.24)}
-                      className="entrance-anim h-2.5 w-1/3 origin-left rounded bg-accent-solid sm:h-3.5"
+                      className="entrance-anim h-2.5 w-1/3 origin-left rounded-kante bg-accent-solid sm:h-3.5"
                     />
                     <motion.span
                       variants={grow(T.text + 0.36)}
-                      className="entrance-anim h-1 w-full origin-left rounded-full bg-foreground/10 sm:h-1.5"
+                      className="entrance-anim h-1 w-full origin-left rounded-kante bg-foreground/10 sm:h-1.5"
                     />
                     <motion.span
                       variants={grow(T.text + 0.48)}
-                      className="entrance-anim h-1 w-3/4 origin-left rounded-full bg-foreground/10 sm:h-1.5"
+                      className="entrance-anim h-1 w-3/4 origin-left rounded-kante bg-foreground/10 sm:h-1.5"
                     />
                     {/* Primär-CTA der fiktiven Seite – Gradient-Füllung wie ein echter CTA */}
                     <motion.span
                       variants={pop(T.cta)}
-                      className="entrance-anim mt-0.5 h-4 w-1/2 origin-left rounded-full sm:h-6"
-                      style={{ background: 'var(--accent-gradient-strong)' }}
+                      className="entrance-anim mt-0.5 h-4 w-1/2 origin-left rounded-kante sm:h-6"
+                      style={{ background: 'var(--accent-solid)' }}
                     />
                     <span className="flex items-center gap-1.5">
                       <span className="flex -space-x-1">
@@ -287,13 +287,13 @@ export default function HeroStage() {
                           <motion.span
                             key={i}
                             variants={pop(T.avatars + i * 0.1)}
-                            className="entrance-anim h-2.5 w-2.5 rounded-full border border-card bg-accent/40 sm:h-3.5 sm:w-3.5"
+                            className="entrance-anim h-2.5 w-2.5 rounded-punkt border border-card bg-accent/40 sm:h-3.5 sm:w-3.5"
                           />
                         ))}
                       </span>
                       <motion.span
                         variants={grow(T.avatars + 0.3)}
-                        className="entrance-anim h-1 w-1/4 origin-left rounded-full bg-foreground/10 sm:h-1.5"
+                        className="entrance-anim h-1 w-1/4 origin-left rounded-kante bg-foreground/10 sm:h-1.5"
                       />
                     </span>
                   </div>
@@ -306,7 +306,7 @@ export default function HeroStage() {
                     <motion.div
                       key={i}
                       variants={i === 2 ? hoveredCard : fadeUp(T.cards + i * 0.12)}
-                      className="entrance-anim relative min-h-0 overflow-hidden rounded-xl border border-border/60 bg-background/40"
+                      className="entrance-anim relative min-h-0 overflow-hidden rounded-kante border border-border/60 bg-background/40"
                       style={{
                         backgroundImage:
                           'linear-gradient(160deg, color-mix(in oklab, var(--accent) 10%, transparent), transparent 60%)',
@@ -315,7 +315,7 @@ export default function HeroStage() {
                       {i === 2 && (
                         <motion.span
                           variants={hoverRing}
-                          className="entrance-anim pointer-events-none absolute inset-0 rounded-xl border border-accent/70 shadow-lg shadow-accent/20"
+                          className="entrance-anim pointer-events-none absolute inset-0 rounded-kante border border-accent"
                         />
                       )}
                     </motion.div>
@@ -337,7 +337,7 @@ export default function HeroStage() {
 
             {/* Der einzige Text im Link = sein zugänglicher Name. Außerhalb
                 der aria-hidden-Kulisse, immer sichtbar (auch mobil). */}
-            <span className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1.5 rounded-full border border-border bg-background/80 px-2.5 py-1 text-[11px] font-medium text-foreground backdrop-blur transition-colors duration-200 group-hover/stage:border-accent/60 group-hover/stage:text-accent sm:bottom-4 sm:right-4 sm:px-3 sm:py-1.5 sm:text-xs">
+            <span className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1.5 rounded-kante border border-border-stark bg-background px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors duration-200 group-hover/stage:border-accent group-hover/stage:text-accent sm:bottom-4 sm:right-4 sm:px-3 sm:py-1.5 sm:text-xs">
               Echte Projekte ansehen
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </span>

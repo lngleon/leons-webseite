@@ -16,7 +16,7 @@ export default function Datenschutz() {
       </p>
       <Link
         href="/"
-        className="mt-10 inline-block rounded-sm text-sm text-accent transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="mt-10 inline-block rounded-kante text-sm text-accent transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         ← Zurück zur Startseite
       </Link>

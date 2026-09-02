@@ -30,15 +30,10 @@ const item: Variants = {
 function Portrait() {
   return (
     <div className="relative mx-auto w-full max-w-sm">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-10 rounded-full"
-        style={{
-          background:
-            'radial-gradient(58% 58% at 45% 32%, color-mix(in oklab, var(--accent) 26%, transparent), transparent 74%), radial-gradient(48% 48% at 70% 92%, color-mix(in oklab, var(--accent-warm) 14%, transparent), transparent 72%)',
-        }}
-      />
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-border bg-muted shadow-2xl shadow-accent/25">
+      {/* Der zweifarbige Akzent-Halo hinter dem Porträt ist am 02.09.2026
+          ersatzlos entfallen. Tiefe kommt jetzt aus dem tragenden Rand und
+          dem neutralen Schatten des Bildes, nicht aus farbigem Schein. */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-kante border border-border-stark bg-muted shadow-2">
         <Image
           src="/leon-portrait.webp"
           alt="Porträtfoto von Leon Lang"
@@ -47,12 +42,12 @@ function Portrait() {
           className="object-cover"
         />
       </div>
-      <span className="absolute -left-3 top-6 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-background/85 px-3 py-1.5 font-mono text-[11px] text-foreground backdrop-blur sm:-left-6">
-        <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+      <span className="absolute -left-3 top-6 inline-flex items-center gap-1.5 rounded-kante border border-border-stark bg-card px-3 py-1.5 font-mono text-[11px] text-foreground sm:-left-6">
+        <span aria-hidden="true" className="h-1.5 w-1.5 rounded-punkt bg-accent" />
         Webseiten &amp; Web-Apps
       </span>
-      <span className="absolute -right-2 bottom-8 inline-flex items-center gap-1.5 rounded-full border border-accent-warm/40 bg-background/85 px-3 py-1.5 font-mono text-[11px] text-foreground backdrop-blur sm:-right-5">
-        <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent-warm" />
+      <span className="absolute -right-2 bottom-8 inline-flex items-center gap-1.5 rounded-kante border border-accent bg-card px-3 py-1.5 font-mono text-[11px] text-foreground sm:-right-5">
+        <span aria-hidden="true" className="h-1.5 w-1.5 rounded-punkt bg-accent" />
         KI-Integration
       </span>
     </div>

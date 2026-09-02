@@ -58,11 +58,11 @@ export default function Navbar() {
           href="/#start"
           /* Tap-Flaeche (TODO 2): sichtbar ~38 px hoch; ab der Desktop-Leiste
              legt die unsichtbare Pseudo-Ebene 4 px rundum dazu (>= 44 px). */
-          className="group relative inline-flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:before:absolute md:before:-inset-1 md:before:content-['']"
+          className="group relative inline-flex items-center gap-2.5 rounded-kante focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:before:absolute md:before:-inset-1 md:before:content-['']"
         >
           <span
             aria-hidden="true"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-accent/40 bg-linear-to-br from-accent/15 via-transparent to-accent-warm/20 font-display text-sm font-semibold text-foreground transition-colors duration-200 group-hover:border-accent"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-kante border border-border-stark bg-muted font-display text-sm font-semibold text-foreground transition-colors duration-200 group-hover:border-accent"
           >
             {site.logoText}
           </span>
@@ -83,7 +83,7 @@ export default function Navbar() {
                    ohne die Leiste auseinanderzuziehen (kein Innenabstand, keine
                    größere Schrift). Seitlich nichts: die Wörter sind breit genug,
                    und der Zwischenraum zum Nachbarn bleibt frei. */
-                className="relative rounded-sm text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:inset-x-0 before:-inset-y-3.5 before:content-['']"
+                className="relative rounded-kante text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:inset-x-0 before:-inset-y-3.5 before:content-['']"
               >
                 {item.label}
               </a>
@@ -98,7 +98,7 @@ export default function Navbar() {
             /* Tap-Fläche (TODO 2): die Pille ist 36 px hoch; sobald sie sichtbar
                ist, legt eine unsichtbare Pseudo-Ebene 4 px oben/unten dazu → 44 px.
                Die Pille selbst bleibt, wie sie ist (Navbar-CTAs bleiben ruhig). */
-            className="relative hidden rounded-full cta-gradient px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex sm:before:absolute sm:before:inset-x-0 sm:before:-inset-y-1 sm:before:content-['']"
+            className="btn-primaer btn-primaer-kompakt relative hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex sm:before:absolute sm:before:inset-x-0 sm:before:-inset-y-1 sm:before:content-['']"
           >
             {ctaItem.label}
           </a>
@@ -109,7 +109,7 @@ export default function Navbar() {
             aria-expanded={open}
             /* h-11 w-11 = 44x44 px – Mindestgröße für eine Tap-Fläche. Vorher
                h-9 w-9 (36 px). Passt weiterhin in die 64 px hohe Leiste. */
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-kante border border-border text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -136,7 +136,7 @@ export default function Navbar() {
                        Vorher 36 px – über dem WCAG-2.2-AA-Minimum von 24 px,
                        aber unter den 44 px, die die Demo-Seiten erreichen. Diese
                        Seite ist das Portfolio-Stück und darf nicht schlechter sein. */
-                    className="block rounded-md px-3 py-3 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    className="block rounded-kante px-3 py-3 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     {item.label}
                   </a>
@@ -147,7 +147,7 @@ export default function Navbar() {
                   href={ctaItem.href}
                   onClick={() => setOpen(false)}
                   /* py-3 wie die Links darüber → 44 px. */
-                  className="block rounded-full cta-gradient px-4 py-3 text-center text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="btn-primaer w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {ctaItem.label}
                 </a>

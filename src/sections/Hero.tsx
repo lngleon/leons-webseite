@@ -41,27 +41,27 @@ function HeroBackground() {
         }}
       />
       <div
-        className="hero-blob-a absolute -left-[12%] -top-[18%] h-[60vh] w-[60vh] rounded-full"
+        className="hero-blob-a absolute -left-[12%] -top-[18%] h-[60vh] w-[60vh] rounded-kante"
         style={{
           background:
-            'radial-gradient(circle, color-mix(in oklab, var(--accent) 20%, transparent), transparent 70%)',
+            'radial-gradient(circle, color-mix(in oklab, var(--muted) 85%, transparent), transparent 70%)',
         }}
       />
       <div
-        className="hero-blob-b absolute -bottom-[22%] -right-[12%] h-[65vh] w-[65vh] rounded-full"
+        className="hero-blob-b absolute -bottom-[22%] -right-[12%] h-[65vh] w-[65vh] rounded-kante"
         style={{
           background:
-            'radial-gradient(circle, color-mix(in oklab, var(--accent-warm) 11%, transparent), transparent 70%)',
+            'radial-gradient(circle, color-mix(in oklab, var(--card) 90%, transparent), transparent 70%)',
         }}
       />
       {/* Dritter, leiser Layer in der Mitte: mehr Tiefe zwischen den zwei
           Rand-Blobs, eigene (langsamere) Drift-Phase – gleiche Technik,
           gleiche Tokens, reduced-motion friert ihn mit ein. */}
       <div
-        className="hero-blob-c absolute left-[28%] top-[30%] h-[50vh] w-[50vh] rounded-full"
+        className="hero-blob-c absolute left-[28%] top-[30%] h-[50vh] w-[50vh] rounded-kante"
         style={{
           background:
-            'radial-gradient(circle, color-mix(in oklab, var(--accent) 10%, transparent), transparent 70%)',
+            'radial-gradient(circle, color-mix(in oklab, var(--muted) 55%, transparent), transparent 70%)',
         }}
       />
       {/* Dezentes Punktraster hinter der mittigen Buehne (per Maske weich
@@ -110,12 +110,12 @@ function HeroStatCard({ stat }: { stat: (typeof heroStats)[number] }) {
   return (
     <div
       aria-label={`${stat.value}${stat.suffix ?? ''} – ${stat.label}`}
-      className="w-full rounded-2xl border border-border bg-card/60 p-4 backdrop-blur lg:max-w-[240px] lg:p-5"
+      className="w-full rounded-kante border border-border-stark bg-card p-4 lg:max-w-[240px] lg:p-5"
     >
       <span aria-hidden="true" className="mb-2 block h-px w-8 bg-accent" />
       <span
         aria-hidden="true"
-        className="accent-gradient-text font-display text-3xl font-semibold tracking-tight sm:text-4xl"
+        className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
       >
         <Counter value={stat.value} suffix={stat.suffix} />
       </span>
@@ -189,14 +189,14 @@ export default function Hero() {
           <motion.div variants={item} className="entrance-anim mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
               href={ctaItem.href}
-              className="cta-gradient inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-medium shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="btn-primaer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {ctaItem.label}
             </a>
             {/* Zweiter, ruhiger Weg: erst den Beweis ansehen, dann anfragen. */}
             <a
               href={heroSecondaryCta.href}
-              className="inline-flex items-center justify-center rounded-full border border-border px-7 py-3 text-sm font-medium text-foreground transition-colors duration-200 hover:border-accent/60 hover:text-accent focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="btn-sekundaer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {heroSecondaryCta.label}
             </a>

@@ -123,9 +123,9 @@ export default function ContactForm({ onWechsel }: { onWechsel?: () => void }) {
         ref={successRef}
         role="status"
         tabIndex={-1}
-        className="flex h-full flex-col items-start justify-center gap-4 rounded-2xl border border-accent/40 bg-accent/5 p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-8"
+        className="flex h-full flex-col items-start justify-center gap-4 rounded-kante border border-accent/40 bg-accent/5 p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-8"
       >
-        <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-accent/50 text-accent">
+        <span className="inline-flex h-11 w-11 items-center justify-center rounded-kante border border-accent/50 text-accent">
           <CircleCheck className="h-5 w-5" aria-hidden="true" />
         </span>
         <p className="text-base text-foreground">{contactMessages.success}</p>
@@ -230,7 +230,7 @@ export default function ContactForm({ onWechsel }: { onWechsel?: () => void }) {
       {status === 'error' && (
         <p
           role="alert"
-          className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/5 px-3.5 py-3 text-sm text-destructive"
+          className="flex items-start gap-2 rounded-kante border border-destructive/40 bg-destructive/5 px-3.5 py-3 text-sm text-destructive"
         >
           <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
           <span>{contactMessages.error}</span>
@@ -241,7 +241,7 @@ export default function ContactForm({ onWechsel }: { onWechsel?: () => void }) {
         type="submit"
         disabled={sending}
         aria-busy={sending}
-        className="cta-gradient inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-70"
+        className="btn-primaer w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         {sending ? (
           <>
@@ -261,7 +261,7 @@ export default function ContactForm({ onWechsel }: { onWechsel?: () => void }) {
           <button
             type="button"
             onClick={onWechsel}
-            className="rounded-sm text-sm text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="rounded-kante text-sm text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {anfrageCopy.zumFlow}
           </button>
