@@ -206,16 +206,16 @@ export default function AnfrageFlow({ onWechsel }: { onWechsel?: () => void }) {
         ref={erfolgRef}
         role="status"
         tabIndex={-1}
-        className="flex h-full flex-col items-start justify-center gap-4 rounded-kante border border-accent/40 bg-accent/5 p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-8"
+        className="flex h-full flex-col items-start justify-center gap-4 rounded-2xl border border-accent/40 bg-accent/5 p-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-8"
       >
-        <span className="inline-flex h-11 w-11 items-center justify-center rounded-kante border border-accent/50 text-accent">
+        <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-accent/50 text-accent">
           <CircleCheck className="h-5 w-5" aria-hidden="true" />
         </span>
         <p className="text-base text-foreground">{anfrageCopy.erfolg}</p>
         <button
           type="button"
           onClick={vonVorn}
-          className="rounded-kante text-sm font-medium text-accent transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="rounded-sm text-sm font-medium text-accent transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {anfrageCopy.neueAnfrage}
         </button>
@@ -247,7 +247,7 @@ export default function AnfrageFlow({ onWechsel }: { onWechsel?: () => void }) {
           <span
             key={n}
             className={clsx(
-  'h-1 flex-1 rounded-kante transition-colors duration-300 ease-out',
+              'h-1 flex-1 rounded-full transition-colors duration-300 ease-out',
               n < schritt && 'bg-accent/60',
               n === schritt && 'bg-accent',
               n > schritt && 'bg-border',
@@ -292,7 +292,7 @@ export default function AnfrageFlow({ onWechsel }: { onWechsel?: () => void }) {
                     />
                     <span
                       className={clsx(
-  'flex min-h-12 cursor-pointer items-center gap-3 rounded-kante border px-4 py-3 text-sm transition duration-200 ease-out',
+                        'flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm transition duration-200 ease-out',
                         'peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background',
                         gewaehlt
                           ? 'border-accent bg-accent/10 text-foreground'
@@ -305,7 +305,7 @@ export default function AnfrageFlow({ onWechsel }: { onWechsel?: () => void }) {
                         aria-hidden="true"
                         className={clsx(
                           'flex h-5 w-5 shrink-0 items-center justify-center border transition-colors duration-200',
-                          frage.mehrfach ? 'rounded-kante' : 'rounded-punkt',
+                          frage.mehrfach ? 'rounded-md' : 'rounded-full',
                           gewaehlt
                             ? 'border-accent bg-accent text-background'
                             : 'border-border',
@@ -338,7 +338,7 @@ export default function AnfrageFlow({ onWechsel }: { onWechsel?: () => void }) {
             <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
               {anfrageCopy.kontakt.zusammenfassung}
             </p>
-            <dl className="mt-2 rounded-kante border border-border bg-card px-4 py-3 text-sm">
+            <dl className="mt-2 rounded-xl border border-border bg-card px-4 py-3 text-sm">
               {anfrageFragen.map((f) => (
                 <div
                   key={f.id}
@@ -436,7 +436,7 @@ export default function AnfrageFlow({ onWechsel }: { onWechsel?: () => void }) {
       {status === 'error' && (
         <p
           role="alert"
-          className="mt-5 flex items-start gap-2 rounded-kante border border-destructive/40 bg-destructive/5 px-3.5 py-3 text-sm text-destructive"
+          className="mt-5 flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/5 px-3.5 py-3 text-sm text-destructive"
         >
           <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
           <span>{contactMessages.error}</span>
@@ -449,7 +449,7 @@ export default function AnfrageFlow({ onWechsel }: { onWechsel?: () => void }) {
             type="button"
             onClick={() => geheZu(schritt - 1)}
             disabled={sendet}
-            className="inline-flex min-h-11 items-center gap-2 rounded-kante border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors duration-200 ease-out hover:border-accent/50 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors duration-200 ease-out hover:border-accent/50 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-70"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             {anfrageCopy.zurueck}
@@ -459,7 +459,7 @@ export default function AnfrageFlow({ onWechsel }: { onWechsel?: () => void }) {
           type="submit"
           disabled={sendet}
           aria-busy={sendet}
-          className="btn-primaer flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="cta-gradient inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-70"
         >
           {sendet ? (
             <>
@@ -485,7 +485,7 @@ export default function AnfrageFlow({ onWechsel }: { onWechsel?: () => void }) {
           <button
             type="button"
             onClick={onWechsel}
-            className="rounded-kante text-sm text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="rounded-sm text-sm text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {anfrageCopy.zumFreitext}
           </button>

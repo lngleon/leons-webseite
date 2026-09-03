@@ -20,7 +20,7 @@ const card: Variants = {
 
 export default function Leistungen() {
   return (
-    <section id="leistungen" className="py-24 sm:py-32">
+    <section id="leistungen" className="section-glow py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
           className="entrance-anim"
@@ -51,7 +51,7 @@ export default function Leistungen() {
                   Bento-Highlight-Zelle auf /moeglichkeiten. */}
               <Card
                 highlight={service.highlight}
-                className={"flex h-full flex-col gap-4"}
+                className={`flex h-full flex-col gap-4${service.highlight ? ' card-gradient-border' : ''}`}
               >
                 <ServiceDiagram kind={service.diagram} icon={service.icon} />
                 <h3 className="text-base font-semibold text-foreground sm:text-lg">

@@ -99,18 +99,18 @@ function ThisSiteGraphic() {
   return (
     <div className="flex h-full flex-col gap-3">
       {/* Mini-Fenster (statisch) */}
-      <div className="overflow-hidden rounded-kante border border-border bg-background">
+      <div className="overflow-hidden rounded-lg border border-border bg-background">
         <div className="flex items-center gap-1.5 border-b border-border bg-muted/60 px-3 py-2">
-          <span className="h-2 w-2 rounded-punkt bg-muted-foreground/40" />
-          <span className="h-2 w-2 rounded-punkt bg-muted-foreground/30" />
-          <span className="h-2 w-2 rounded-punkt bg-muted-foreground/20" />
+          <span className="h-2 w-2 rounded-full bg-muted-foreground/40" />
+          <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
+          <span className="h-2 w-2 rounded-full bg-muted-foreground/20" />
         </div>
         <div className="space-y-2.5 p-4">
           {/* Akzent-„Hero"-Balken über den Token-Gradient (nicht hardcoden) */}
-          <span className="block h-3.5 w-1/2 rounded-kante bg-accent-solid" />
-          <span className="block h-2 w-3/4 rounded-kante bg-foreground/15" />
-          <span className="block h-2 w-2/3 rounded-kante bg-foreground/10" />
-          <span className="mt-1 block h-5 w-24 rounded-kante bg-accent-solid/80" />
+          <span className="block h-3.5 w-1/2 rounded [background-image:var(--accent-gradient)]" />
+          <span className="block h-2 w-3/4 rounded bg-foreground/15" />
+          <span className="block h-2 w-2/3 rounded bg-foreground/10" />
+          <span className="mt-1 block h-5 w-24 rounded-full bg-accent-solid/80" />
         </div>
       </div>
 
@@ -123,7 +123,7 @@ function ThisSiteGraphic() {
       </p>
       <div className="grid grid-cols-2 gap-3">
         {lighthouse.hauptseite.kategorien.map((k) => (
-          <div key={k.label} className="rounded-kante border border-border p-3">
+          <div key={k.label} className="rounded-lg border border-border p-3">
             <p className="text-xs text-muted-foreground">{k.label}</p>
             <p className="text-2xl font-semibold text-foreground">{k.wert}</p>
           </div>
@@ -136,7 +136,7 @@ function ThisSiteGraphic() {
       {/* Die schwächere Zahl bleibt sichtbar – abgesetzt, aber nicht kleiner
           geredet. Der Grund steht in einem Satz daneben, nicht im Kleingedruckten
           einer anderen Datei. */}
-      <p className="rounded-kante border border-dashed border-border p-3 text-xs leading-relaxed text-muted-foreground">
+      <p className="rounded-lg border border-dashed border-border p-3 text-xs leading-relaxed text-muted-foreground">
         <span className="text-foreground">
           {lighthouse.showcase.label}: Performance {lighthouse.showcase.performance}
         </span>{' '}
@@ -227,7 +227,7 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
             <CoolMode>
               <button
                 type="button"
-                className="btn-primaer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="rounded-full cta-gradient px-6 py-3 text-sm font-medium transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 Mach's bunt
               </button>
@@ -257,7 +257,7 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
           </div>
 
           <CardContainer>
-            <CardBody className="w-[19rem] rounded-kante border border-border-stark bg-card p-6 text-left transition-shadow duration-200 hover:shadow-2 sm:w-[24rem]">
+            <CardBody className="w-[19rem] rounded-2xl border border-border bg-card p-6 text-left transition-shadow duration-200 hover:shadow-2xl hover:shadow-accent/10 sm:w-[24rem]">
               <CardItem translateZ={30}>
                 <span className="accent-gradient-text text-xs font-medium uppercase tracking-[0.2em]">
                   Aus der Demo · Restaurant Glut
@@ -273,7 +273,7 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
                     Vorschauen in Block (2). Im Browser gemessene Slot-Breite:
                     332 px ab `sm`, 252 px darunter (Karte 24 bzw. 19 rem, minus
                     p-6 beidseitig und minus Rahmen). */}
-                <div className="aspect-[8/5] overflow-hidden rounded-kante border border-border bg-muted">
+                <div className="aspect-[8/5] overflow-hidden rounded-lg border border-border bg-muted">
                   <Image
                     src="/demo-reservierung-preview.webp"
                     alt="Schritt 3 von 5 der Reservierungs-Vorschau von Restaurant Glut: eine Uhrzeit wählen, belegte Zeiten sind ausgegraut"
@@ -366,7 +366,7 @@ export default function Moeglichkeiten({ demos }: { demos?: ReactNode }) {
               {techStack.map((tool) => (
                 <span
                   key={tool}
-                  className="rounded-kante border border-border bg-card px-5 py-2 text-sm font-medium text-muted-foreground"
+                  className="rounded-full border border-border bg-card px-5 py-2 text-sm font-medium text-muted-foreground"
                 >
                   {tool}
                 </span>

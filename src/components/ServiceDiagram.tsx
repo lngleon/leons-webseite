@@ -39,13 +39,13 @@ function BrowserDiagram({ play, reduced }: DiagramProps) {
   }
   return (
     <motion.div variants={container} initial={initial} animate={animate} className="flex h-full flex-col">
-      <motion.div variants={block} className="h-2.5 rounded-kante bg-foreground/15" />
-      <motion.div variants={block} className="mt-2 flex-1 rounded-kante bg-foreground/10" />
+      <motion.div variants={block} className="h-2.5 rounded bg-foreground/15" />
+      <motion.div variants={block} className="mt-2 flex-1 rounded-md bg-foreground/10" />
       <div className="mt-2 flex gap-2">
-        <motion.div variants={block} className="h-5 flex-1 rounded-kante bg-foreground/10" />
-        <motion.div variants={block} className="h-5 flex-1 rounded-kante bg-foreground/10" />
+        <motion.div variants={block} className="h-5 flex-1 rounded bg-foreground/10" />
+        <motion.div variants={block} className="h-5 flex-1 rounded bg-foreground/10" />
       </div>
-      <motion.div variants={block} className="mt-2 h-2.5 w-14 rounded-kante bg-accent-solid" />
+      <motion.div variants={block} className="mt-2 h-2.5 w-14 rounded-full bg-accent-solid" />
     </motion.div>
   )
 }
@@ -63,19 +63,19 @@ function AppDiagram({ play, reduced }: DiagramProps) {
     <motion.div variants={container} initial={initial} animate={animate} className="flex h-full flex-col justify-center gap-4">
       {/* Toggle */}
       <div className="flex items-center justify-between">
-        <span className="h-2 w-14 rounded-kante bg-foreground/15" />
-        <span className="relative inline-flex h-4 w-8 items-center rounded-kante bg-foreground/15">
-          <motion.span variants={fade} className="absolute inset-0 rounded-kante bg-accent-solid" />
+        <span className="h-2 w-14 rounded bg-foreground/15" />
+        <span className="relative inline-flex h-4 w-8 items-center rounded-full bg-foreground/15">
+          <motion.span variants={fade} className="absolute inset-0 rounded-full bg-accent-solid" />
           <motion.span
             variants={{ rest: { x: 2 }, show: { x: 18, transition: { duration: 0.4, ease } } }}
-            className="relative z-10 h-3 w-3 rounded-punkt bg-background"
+            className="relative z-10 h-3 w-3 rounded-full bg-background shadow-sm"
           />
         </span>
       </div>
       {/* Häkchen */}
       <div className="flex items-center gap-2">
-        <span className="relative inline-flex h-4 w-4 items-center justify-center rounded-kante border border-border">
-          <motion.span variants={fade} className="absolute inset-0 rounded-kante bg-accent-solid" />
+        <span className="relative inline-flex h-4 w-4 items-center justify-center rounded border border-border">
+          <motion.span variants={fade} className="absolute inset-0 rounded bg-accent-solid" />
           <motion.svg
             viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5"
             strokeLinecap="round" strokeLinejoin="round"
@@ -85,13 +85,13 @@ function AppDiagram({ play, reduced }: DiagramProps) {
             <path d="M20 6 9 17l-5-5" />
           </motion.svg>
         </span>
-        <span className="h-2 w-20 rounded-kante bg-foreground/15" />
+        <span className="h-2 w-20 rounded bg-foreground/15" />
       </div>
       {/* Ladebalken */}
-      <div className="h-2 w-full overflow-hidden rounded-kante bg-foreground/10">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-foreground/10">
         <motion.div
           variants={{ rest: { width: '12%' }, show: { width: '82%', transition: { duration: 0.7, ease } } }}
-          className="h-full rounded-kante bg-accent-solid"
+          className="h-full rounded-full bg-accent-solid"
         />
       </div>
     </motion.div>
@@ -108,14 +108,14 @@ function AppDiagram({ play, reduced }: DiagramProps) {
 function RedesignDiagram({ play, reduced }: DiagramProps) {
   const { initial, animate } = useStates(play, reduced)
   return (
-    <div className="relative h-full overflow-hidden rounded-kante">
+    <div className="relative h-full overflow-hidden rounded">
       {/* VORHER – glaubwürdig altes, hässliches Web (Illustration, keine Tokens) */}
       <div className="absolute inset-0 bg-[#d8d1ba] font-serif text-[#322c1c]">
-        <div className="flex items-center justify-between border-b-2 border-[#6f6442] bg-[#6b5a2e] px-1.5 py-0.5">
+        <div className="flex items-center justify-between border-b-2 border-[#6f6442] bg-[#356a6a] px-1.5 py-0.5">
           <span className="text-[9px] font-bold italic tracking-tight text-[#f2ead0]">
             Müller &amp; Söhne
           </span>
-          <span className="text-[8px] text-[#e6dcbb]">★ Startseite ★</span>
+          <span className="text-[8px] text-[#cfe2d4]">★ Startseite ★</span>
         </div>
         <div className="-rotate-1 space-y-1 px-1.5 pt-2">
           <span className="block h-1.5 w-[85%] bg-[#7c6f4c]" />
@@ -143,10 +143,10 @@ function RedesignDiagram({ play, reduced }: DiagramProps) {
         animate={animate}
         className="absolute inset-0 flex flex-col justify-center gap-2.5 bg-card px-2"
       >
-        <span className="h-3 w-1/2 rounded-kante bg-foreground/80" />
-        <span className="h-1.5 w-3/4 rounded-kante bg-foreground/15" />
-        <span className="h-1.5 w-2/3 rounded-kante bg-foreground/15" />
-        <span className="mt-0.5 h-2.5 w-14 rounded-kante bg-accent-solid" />
+        <span className="h-3 w-1/2 rounded bg-foreground/80" />
+        <span className="h-1.5 w-3/4 rounded bg-foreground/15" />
+        <span className="h-1.5 w-2/3 rounded bg-foreground/15" />
+        <span className="mt-0.5 h-2.5 w-14 rounded-full bg-accent-solid" />
       </motion.div>
     </div>
   )
@@ -198,13 +198,13 @@ function ChatDiagram({ play, reduced }: DiagramProps) {
     >
       <motion.div
         variants={bubble}
-        className="max-w-[80%] self-end rounded-kante  bg-accent-solid px-2.5 py-1 text-accent-foreground"
+        className="max-w-[80%] self-end rounded-lg rounded-br-sm bg-accent-solid px-2.5 py-1 text-accent-foreground"
       >
         {CHAT_PROMPT}
       </motion.div>
       <motion.div
         variants={bubble}
-        className="max-w-[88%] self-start rounded-kante  border border-border bg-background px-2.5 py-1 text-foreground"
+        className="max-w-[88%] self-start rounded-lg rounded-bl-sm border border-border bg-background px-2.5 py-1 text-foreground"
       >
         {CHAT_ANSWER.slice(0, count)}
         {streaming && (
@@ -252,14 +252,14 @@ export default function ServiceDiagram({ kind, icon: Icon }: ServiceDiagramProps
       aria-hidden="true"
       onMouseEnter={replay}
       onFocusCapture={replay}
-      className="overflow-hidden rounded-kante border border-border bg-muted/40"
+      className="overflow-hidden rounded-lg border border-border bg-muted/40"
     >
       {/* Gemeinsame, ruhige Fensterleiste */}
       <div className="flex items-center gap-2 border-b border-border bg-background/40 px-3 py-1.5">
         <span className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-punkt bg-muted-foreground/40" />
-          <span className="h-1.5 w-1.5 rounded-punkt bg-muted-foreground/30" />
-          <span className="h-1.5 w-1.5 rounded-punkt bg-muted-foreground/20" />
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/20" />
         </span>
         <span className="ml-auto text-accent">
           <Icon className="h-3.5 w-3.5" />

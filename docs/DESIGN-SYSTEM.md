@@ -16,58 +16,6 @@
 > in §11.3 stammen vom Build `7332d64` VOR dem Redesign – **Neuvermessung steht aus**;
 > bis dahin dort nichts als aktuellen Ist-Zustand zitieren.
 
-## 0.0 Umbau „Ruß & Waschblau" (02.09.2026) – gilt vor allem Folgenden
-
-> **Auslöser (User, wörtlich):** „gefaellt mir immernoch nicht wirklich versuche es mal wie
-> davor zu lassen aber einfach nicht mehr so krass nach KI aussehen zu lassen. Andere
-> Farbkombinationen die gut miteinander und passen und auch gewissen Kontrast ergeben.
-> Nicht diese Buttons mit den basic rundungen die alle so nach KI aussehen"
-
-**Struktur, Inhalte und Sektionsreihenfolge sind unverändert.** Geändert wurden ausschließlich
-Farbwerte, Formensprache und einzelne Effekte.
-
-### Was gemessen wurde (Bestand vor dem Umbau)
-
-| Paar | Bestand | Neu | Anforderung |
-|---|---|---|---|
-| `--card` zu `--background` | **1.05 : 1** | 1.29 : 1 | ≥ 1.25 : 1 |
-| `--muted` zu `--background` | 1.10 : 1 | 1.70 : 1 | – |
-| `--border` zu `--background` | 1.40 : 1 | 2.68 : 1 | ≥ 1.8 : 1 |
-| `--border-stark` zu `--background` | existierte nicht | 4.73 : 1 | ≥ 3 : 1 |
-
-Die Seite war Ton in Ton: Karten waren als Fläche nicht zu erkennen und brauchten deshalb
-überall farbigen Schein, um Tiefe vorzutäuschen. Dazu standen sechs unveränderte
-Tailwind-Default-Swatches im System (violet-400, violet-700, orange-400, pink-400, pink-600,
-red-400) – Violett auf Nachtblau plus Orange→Pink ist die Signatur generierter Seiten.
-
-### Die vier Beschlüsse
-
-1. **Ein Akzent, kein Verlauf.** `--accent` / `--accent-solid` (kreidiges Emailleblau) ist der
-   einzige Akzent und der einzige kühle Wert der Seite; Aufmerksamkeit entsteht über
-   Temperatur, nicht über Sättigung. `--accent-warm*` und alle `--accent-gradient*` sind
-   **ersatzlos gestrichen**, ebenso `.section-glow`, `.card-gradient-border`, der Verlaufstext
-   (`.accent-gradient-text` / `.aurora-text` sind jetzt flache Farben) und die fließende
-   CTA-Füllung samt `@property --cta-pos` und `@keyframes cta-flow`.
-2. **Schrift auf dem gefüllten Akzent ist DUNKEL** (`--accent-foreground` = Grundton der Seite,
-   6.24 : 1). Weiß erreicht auf `--accent-solid` nur 3.09 : 1 und fällt objektiv durch. Das ist
-   zugleich der sichtbarste Bruch mit der Weiß-auf-Violett-Pille.
-3. **Zwei Radien.** `--radius-kante` (2 px) für alles, was Text trägt oder breiter als hoch ist;
-   `--radius-punkt` nur für echte Punkte und runde Bildmasken. Vorher lagen neun Radien
-   gleichzeitig auf der Seite (`rounded-full` 60×, dazu -sm/-md/-lg/-xl/-2xl/-3xl/-[2.5rem]).
-   Die Tailwind-Defaults sind per `--radius-*: initial` und `--shadow-*: initial` aus dem Build
-   entfernt – ein Rückfall erzeugt sichtbar nichts und fällt sofort auf.
-4. **Buttons als Bauteil, nicht als Utility-Kette.** `.btn-primaer` (+ `.btn-primaer-kompakt`)
-   und `.btn-sekundaer` in `@layer components`; gleiche Silhouette (44 px hoch, 20 px innen,
-   2 px Radius), Unterschied über Gewicht. Beim Klick kippt die Lichtkante in eine Druckkante –
-   keine Bewegung, kein farbiger Glow, kein Hover-Lift (auch nicht mehr auf Karten).
-
-**Veraltet durch diesen Umbau:** §2.1 Token-Rollen (`--accent-warm*`, `--accent-gradient*`),
-§2.2 F2/F4/F5/F6/F7, §9 (Sektions-Rhythmus: `.section-glow` gibt es nicht mehr) sowie die
-Ausnahme §10-1 (Gradient-Rand). Der Rest dieses Dokuments gilt unverändert weiter; eine
-Neufassung von §2–§10 steht aus.
-
----
-
 ## 0. Lesart
 
 Jeder Eintrag trägt eine von drei Markierungen:

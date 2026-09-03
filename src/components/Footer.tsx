@@ -9,7 +9,7 @@ export default function Footer() {
           das leise Echo des Scroll-Balkens am Seitenende. */}
       <div
         aria-hidden="true"
-        className="h-px w-full bg-border"
+        className="h-px w-full bg-linear-to-r from-accent/45 via-accent-warm/45 to-transparent"
       />
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
         <div>
@@ -30,13 +30,13 @@ export default function Footer() {
         >
           <Link
             href="/impressum"
-            className="relative rounded-kante transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']"
+            className="relative rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']"
           >
             Impressum
           </Link>
           <Link
             href="/datenschutz"
-            className="relative rounded-kante transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']"
+            className="relative rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']"
           >
             Datenschutz
           </Link>
@@ -45,7 +45,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
-            className="relative rounded-kante transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:-inset-3.5 before:content-['']"
+            className="relative rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background before:absolute before:-inset-3.5 before:content-['']"
           >
             <InstagramIcon className="h-4 w-4" />
           </a>

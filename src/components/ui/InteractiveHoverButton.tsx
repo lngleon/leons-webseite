@@ -20,13 +20,13 @@ export function InteractiveHoverButton({
   return (
     <button
       className={cn(
-  'group relative w-auto cursor-pointer overflow-hidden rounded-kante border border-border bg-background p-2 px-6 text-center font-semibold text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'group relative w-auto cursor-pointer overflow-hidden rounded-full border border-border bg-background p-2 px-6 text-center font-semibold text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         className,
       )}
       {...props}
     >
       <div className="flex items-center justify-center gap-2">
-        <div className="h-2 w-2 rounded-punkt bg-accent-solid transition-all duration-300 group-hover:scale-[100.8]" />
+        <div className="h-2 w-2 rounded-full bg-accent-solid transition-all duration-300 group-hover:scale-[100.8]" />
         <span className="inline-block transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0">
           {children}
         </span>

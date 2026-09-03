@@ -2,41 +2,42 @@ import type { ReactNode } from 'react'
 import { clsx } from 'clsx'
 
 /**
- * Wiederverwendbares Karten-Muster: 2-px-Kante, tragender Rand, Kartenfläche.
+ * Wiederverwendbares Karten-Muster mit dezenter Desktop-Hover-Wirkung:
+ * leichtes Anheben, betonter Akzent-Rand und weicher Akzent-Glow – smooth (~200ms, ease-out).
  *
- * Seit 02.09.2026 trägt der Rand (`--border-stark`, 4.73 : 1 gegen den Grund)
- * die Tiefe. Vorher lag die Kartenfläche nur 1.05 : 1 über dem Hintergrund –
- * die Karte war als Fläche gar nicht zu erkennen und brauchte deshalb einen
- * farbigen Glow, um überhaupt zu existieren. Der Glow ist ersatzlos entfallen,
- * ebenso der Hover-Lift auf JEDER Karte (auch die Problem-Karten hoben ab,
- * obwohl sie nicht klickbar sind).
+ * Touch-sicher: Tailwind v4 koppelt die `hover`-Variante an `@media (hover: hover)`,
+ * d.h. die Effekte greifen nur auf Geräten mit echtem Zeiger, nicht bei Touch.
+ * Das Anheben ist zusätzlich an `motion-safe` gekoppelt (respektiert prefers-reduced-motion).
  *
- * Hover: betonter Akzent-Rand plus ein neutraler, versetzter Schatten
- * (`shadow-1`). Touch-sicher, weil Tailwind v4 `hover` an
- * `@media (hover: hover)` koppelt – auf Touch passiert nichts.
- *
- * Mit `highlight` steht der Akzent-Rand dauerhaft (kein Badge, kein Schein).
+ * Mit `highlight` ist der Akzent dauerhaft aktiv (dezenter Akzent-Rand + leiser Glow,
+ * kein Badge) – der Hover bleibt unverändert obendrauf.
  *
  * Wichtig: Die Entrance-Animation (Fade-up/Stagger) gehört NICHT hierher, sondern auf ein
- * umschließendes motion-Element – sonst kollidieren zwei transform-Quellen.
+ * umschließendes motion-Element. So kollidieren die beiden transform-Quellen nicht
+ * (Framer setzt ein inline-transform, das eine CSS-:hover-Transform sonst überschreibt).
  *
- * Hinweis: bewusst clsx statt cn/twMerge – die ruhende Rahmenfarbe wird genau
- * einmal gesetzt, damit es keinen border-color-Konflikt gibt.
+ * Hinweis: bewusst clsx statt cn/twMerge – damit `shadow-lg` + `shadow-accent/20`
+ * (Größe + Farbe) nicht fälschlich zu einer Klasse zusammengeführt werden. Die ruhende
+ * Rahmenfarbe wird genau einmal gesetzt (border-border ODER border-accent/50), damit es
+ * keinen border-color-Konflikt gibt.
  */
 
+// Basis ohne ruhende Rahmenfarbe: Breite, Transition, Hover-Wirkung, Lift.
 const cardBaseClassName =
-  'group rounded-kante border border-border-stark bg-card p-6 sm:p-7 ' +
+  'group rounded-2xl border bg-card p-6 sm:p-7 ' +
   'transition duration-200 ease-out ' +
-  'hover:border-accent hover:shadow-1'
+  'hover:border-accent/50 hover:shadow-lg hover:shadow-accent/20 ' +
+  'motion-safe:hover:-translate-y-1.5'
 
-// Vollständiges Standard-Kartenmuster (ruhender, tragender Rahmen).
-export const cardClassName = cardBaseClassName
+// Vollständiges Standard-Kartenmuster (ruhender, neutraler Rahmen).
+export const cardClassName = cardBaseClassName + ' border-border'
 
-// Highlight: voll deckender Akzent-Rand statt des früheren Verlaufsrands
-// (.card-gradient-border, am 02.09.2026 ersatzlos gestrichen – ein leuchtender
-// 1-px-Verlauf um eine hervorgehobene Karte ist das kanonische Pricing-Tier-
-// Highlight aus SaaS-Vorlagen).
-const cardHighlightClassName = 'border-accent'
+// Highlight: Akzent dauerhaft aktiv – dezenter Akzent-Rand + leiser Glow (kein Badge).
+// Der Gradient-Rand (.card-gradient-border) gehört bewusst NICHT hierher:
+// highlight nutzen auch andere Karten (z.B. die Bento-Zelle auf /moeglichkeiten),
+// die freigegebene Ausnahme gilt aber für GENAU EINE Karte – die KI-Karte der
+// Leistungen setzt die Klasse deshalb selbst per className (Leistungen.tsx).
+const cardHighlightClassName = 'border-accent/50 shadow-lg shadow-accent/10'
 
 type CardProps = {
   children: ReactNode
@@ -50,7 +51,7 @@ export default function Card({ children, className, highlight = false }: CardPro
     <div
       className={clsx(
         cardBaseClassName,
-        highlight ? cardHighlightClassName : '',
+        highlight ? cardHighlightClassName : 'border-border',
         className,
       )}
     >

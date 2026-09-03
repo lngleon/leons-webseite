@@ -2,7 +2,7 @@
 
 > Dieses Dokument ist die zentrale Wissensdatei des Projekts.
 > 🔒 = Feststehend | 🔄 = Kann sich ändern
-> Letzte Aktualisierung: 02.09.2026
+> Letzte Aktualisierung: 26.08.2026
 
 ---
 
@@ -11,7 +11,7 @@
 Markenname: Leon Lang
 Tagline: „Veränderungen, die spürbar werden."
 Logo: „LL"-Monogramm – noch zu erstellen (via ChatGPT-Bildgenerator), in heller + dunkler Variante. **Favicon ✅** (27.07.2026): kompletter Satz für dunklen Hintergrund (`favicon.svg` primär + `favicon.ico` Fallback + PNG 16/32 + `apple-touch-icon.png`) in `public/`, im `<head>` aller Routen verlinkt, dazu `theme-color #0a0a0a`.
-Design-System: **Dark-only** (kein Light/Toggle). Seit 02.09.2026 **„Ruß & Waschblau"**: warmer Ruß-Grund (`#130d06`), gealtertes Papierweiß, gestufte Warmneutrale – und GENAU EIN Akzent, ein kreidiges Emailleblau (`--accent` flach / `--accent-solid` gefüllt, dunkle Schrift darauf). Ersetzt Nachtblau + Violett + warmen Zweitakzent. **Kein Verlauf im System** (Verlaufstext, Verlaufsfüllung, Verlaufsrand und farbige Glows sind ersatzlos entfallen), Tiefe über `--border-stark` und neutrale Schatten. Formensprache: **zwei Radien** (`rounded-kante` 2 px / `rounded-punkt`), Buttons nur über `.btn-primaer`/`.btn-sekundaer`. Zentral als CSS-Variablen; Regeln und Ausnahmen in `docs/DESIGN-SYSTEM.md`, Werte in `src/app/globals.css`
+Design-System: edel-zurückhaltend (Near-Black/Weiß/Grau), **Dark-only** (kein Light/Toggle), Akzent **Violett** – flach via `--accent`/`--accent-solid` + **Violett-Gradient** (`--accent-gradient`/`--accent-gradient-strong`) auf Showcase-Flächen; zentral als CSS-Variablen; Regeln und Ausnahmen in `docs/DESIGN-SYSTEM.md`, Werte in `src/app/globals.css`
 
 ---
 
@@ -67,7 +67,7 @@ Reine öffentliche Website – keine Benutzerkonten, keine Logins, keine Rollen,
 | 0 | Discovery (Interview) | ✅ Abgeschlossen |
 | 1 | Infrastruktur-Setup (GitHub, Vercel, Formspree, lokale Umgebung) | ✅ Abgeschlossen |
 | 2 | Aufbau & Sektionen via Claude Code | ✅ Abgeschlossen (alle Sektionen stehen, inkl. Projekte seit 09.06.2026 und Statement) |
-| 3 | Content & Feinschliff (Logo, Texte, Recht, Akzentfarbe) | 🔄 Akzentfarbe ✅ (02.09.2026 neu: Emailleblau auf Ruß, „Ruß & Waschblau"), Favicon ✅ (Werte noch aus dem Violett-Satz – nachzuziehen); Logo („LL"-Monogramm) + Impressum/Datenschutz-Texte offen |
+| 3 | Content & Feinschliff (Logo, Texte, Recht, Akzentfarbe) | 🔄 Akzentfarbe ✅ (Violett), Favicon ✅; Logo („LL"-Monogramm) + Impressum/Datenschutz-Texte offen |
 | 4 | Testing | ⬜ Offen |
 | 5 | Launch / Domain | ⬜ Offen |
 

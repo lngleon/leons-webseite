@@ -46,11 +46,11 @@ function DirectContact() {
                 {...(channel.external
                   ? { target: '_blank', rel: 'noopener noreferrer' }
                   : {})}
-                className="group flex items-center gap-4 rounded-kante border border-border-stark bg-card p-4 transition duration-200 ease-out hover:border-accent hover:shadow-1 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition duration-200 ease-out hover:border-accent/40 hover:shadow-lg hover:shadow-accent/10 motion-safe:hover:-translate-y-0.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {/* Akzent-gewaschener Icon-Chip (bg/border wie CodeTag-Sprache):
                     die direkten Wege dürfen prominenter einladen als bisher. */}
-                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-kante border border-border-stark bg-muted text-accent transition-colors duration-200 group-hover:border-accent">
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent transition-colors duration-200 group-hover:border-accent/50">
                   <Icon className="h-5 w-5" />
                 </span>
                 <span className="min-w-0 flex-1">
@@ -107,13 +107,26 @@ export default function Kontakt() {
           viewport={{ once: true, amount: 0.2 }}
           className="mt-14 grid grid-cols-1 gap-10 md:grid-cols-2 lg:gap-16"
         >
-          {/* Formular – links auf Desktop, auf Mobil oben. Bis 02.09.2026 lag
-              hier ein radialer Akzent-Schein hinter der Karte. Er ist mit dem
-              Farbsystem ersatzlos entfallen: die Werte-Treppe (Grund → Karte →
-              Fläche) trägt die Tiefe jetzt selbst, ein Nebel dahinter würde
-              nur wieder Kontur kosten. Damit entfällt auch das `isolate`, das
-              ausschließlich den Stacking-Context für das -z-10-Kind gebaut hat. */}
-          <motion.div variants={item} className="entrance-anim relative">
+          {/* Formular – links auf Desktop, auf Mobil oben. Der Glow dahinter
+              macht den Abschluss der Seite zum Moment: statischer radialer
+              Akzent-Schein (Tokens/color-mix wie Card-Glow), -z-10 hinter der
+              Formular-Karte, aria-hidden, kein JS, kein Repaint. */}
+          {/* `isolate` ist tragend, nicht kosmetisch: ohne eigenen Stacking-
+              Context fällt das -z-10-Kind in den Root-Context und malt HINTER
+              dem opaken section-band/bg-background – der Glow wäre im
+              Endzustand unsichtbar (im Review empirisch nachgewiesen). */}
+          <motion.div variants={item} className="entrance-anim relative isolate">
+            {/* Horizontal schmaler als vertikal: -inset-x bleibt unter dem
+                Seiten-Padding (16/24 px), sonst entsteht bei 320 px ein
+                x-Überlauf (nachgemessen: -inset-8 ergab 16 px). */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-x-3 -inset-y-8 -z-10 rounded-[2.5rem] sm:-inset-x-5 md:-inset-x-8"
+              style={{
+                background:
+                  'radial-gradient(38rem 22rem at 50% 30%, color-mix(in oklab, var(--accent) 13%, transparent), transparent 70%)',
+              }}
+            />
             {modus === 'gefuehrt' ? (
               <AnfrageFlow onWechsel={() => setModus('frei')} />
             ) : (

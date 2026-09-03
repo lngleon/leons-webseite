@@ -122,13 +122,13 @@ export default function Terminal() {
 
   return (
     // Dark-only: das Terminal nutzt direkt die (einzigen) Theme-Variablen.
-    <div className="overflow-hidden rounded-kante border border-border-stark bg-card shadow-2">
+    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-black/40">
         {/* Fensterleiste: dezente Punkte + Tabs (keine Refresh-/Download-Buttons) */}
         <div className="flex items-center gap-3 border-b border-border bg-muted/60 px-4 py-2.5">
           <div className="flex items-center gap-1.5" aria-hidden="true">
-            <span className="h-3 w-3 rounded-punkt bg-muted-foreground/40" />
-            <span className="h-3 w-3 rounded-punkt bg-muted-foreground/30" />
-            <span className="h-3 w-3 rounded-punkt bg-muted-foreground/20" />
+            <span className="h-3 w-3 rounded-full bg-muted-foreground/40" />
+            <span className="h-3 w-3 rounded-full bg-muted-foreground/30" />
+            <span className="h-3 w-3 rounded-full bg-muted-foreground/20" />
           </div>
           <div
             role="tablist"
@@ -151,7 +151,7 @@ export default function Terminal() {
                   onClick={() => setActiveKey(t.key)}
                   onKeyDown={onTabKeyDown}
                   className={clsx(
-  'rounded-kante px-2.5 py-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                    'rounded-md px-2.5 py-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                     selected
                       ? 'bg-foreground/10 text-accent'
                       : 'text-muted-foreground hover:text-foreground',

@@ -8,7 +8,7 @@ import type { ReactNode } from 'react'
  */
 export default function CodeTag({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-block whitespace-nowrap rounded-kante border border-accent/25 bg-accent/10 px-1.5 py-px align-middle font-mono text-[0.85em] leading-none text-foreground">
+    <span className="inline-block whitespace-nowrap rounded-md border border-accent/25 bg-accent/10 px-1.5 py-px align-middle font-mono text-[0.85em] leading-none text-foreground">
       {children}
     </span>
   )

@@ -34,7 +34,7 @@ export default function SectionHeading({
     >
       {(eyebrow || number) && (
         <span className="flex items-baseline gap-2.5 font-mono text-xs font-medium uppercase tracking-[0.2em]">
-          {number && <span className="text-muted-foreground">{number}</span>}
+          {number && <span className="warm-gradient-text">{number}</span>}
           {eyebrow && <span className="accent-gradient-text">{eyebrow}</span>}
         </span>
       )}

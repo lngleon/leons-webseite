@@ -135,15 +135,15 @@ export default function Prozess() {
               >
                 {/* Nummer-Badge + Verbindungslinie */}
                 <div className="relative flex flex-col items-center md:w-full">
-                  {/* Bis 02.09.2026 wechselte der letzte Schritt in den warmen
-                      Zweitakzent. Mit dem einen Akzent trägt jetzt das Ziel den
-                      vollen Rand, die Schritte davor bleiben neutral gerahmt –
-                      die Reihenfolge liest sich weiter, ohne zweite Farbe. */}
+                  {/* Der letzte Schritt (Launch) landet im WARMEN Akzent -
+                      der Prozess kommt an. Davor bleibt alles violett. */}
                   <motion.span
                     variants={badge}
                     custom={index}
-                    className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-kante border bg-background text-lg font-semibold text-accent ${
-                      isLast ? 'border-accent' : 'border-border-stark'
+                    className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border bg-background text-lg font-semibold ${
+                      isLast
+                        ? 'border-accent-warm/60 text-accent-warm'
+                        : 'border-accent/50 text-accent'
                     }`}
                   >
                     {index + 1}
@@ -151,7 +151,9 @@ export default function Prozess() {
                       aria-hidden="true"
                       variants={ping}
                       custom={index}
-                      className="pointer-events-none absolute inset-0 rounded-kante border border-accent"
+                      className={`pointer-events-none absolute inset-0 rounded-full border ${
+                        isLast ? 'border-accent-warm/70' : 'border-accent/60'
+                      }`}
                     />
                   </motion.span>
 
@@ -162,14 +164,14 @@ export default function Prozess() {
                         aria-hidden="true"
                         variants={lineVertical}
                         custom={index}
-                        className="mt-2 w-0.5 flex-1 origin-top rounded-kante bg-border-stark md:hidden"
+                        className="mt-2 w-0.5 flex-1 origin-top rounded-full bg-linear-to-b from-accent/40 to-accent-warm/35 md:hidden"
                       />
                       {/* Desktop: horizontale Linie zum nächsten Badge */}
                       <motion.span
                         aria-hidden="true"
                         variants={lineHorizontal}
                         custom={index}
-                        className="absolute left-1/2 top-6 hidden h-0.5 w-full -translate-y-1/2 origin-left rounded-kante bg-border-stark md:block"
+                        className="absolute left-1/2 top-6 hidden h-0.5 w-full -translate-y-1/2 origin-left rounded-full bg-linear-to-r from-accent/40 to-accent-warm/35 md:block"
                       />
                     </>
                   )}

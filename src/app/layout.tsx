@@ -57,9 +57,9 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  // theme-color = --background (#130d06); Meta-Tags können kein var() nutzen → Literal.
+  // theme-color = --background (#070b21); Meta-Tags können kein var() nutzen → Literal.
   // Die Demo-Gruppe überschreibt beides in ihrem eigenen viewport-Export.
-  themeColor: '#130d06',
+  themeColor: '#070b21',
   colorScheme: 'dark',
 }
 
