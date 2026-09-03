@@ -15,8 +15,8 @@ import { demoHref } from './routes'
  * darüber schüfe zwei konkurrierende Primaries – und die Rangfolge stimmt so
  * auch inhaltlich, weil oben die echten Wege stehen und die Vorschau ein
  * vorgeführtes Feature ist. Der Block hängt an der Feldfrage „ist `booking`
- * da?", nicht an der Art des Betriebs; das Café hat kein `booking` und
- * rendert hier deshalb unverändert nichts.
+ * da?", nicht an der Art des Betriebs – seit 03.09.2026 tragen alle vier
+ * Betriebe das Feld, die Frage bleibt trotzdem eine Feldfrage.
  */
 export default function DemoContact({ business }: { business: GastroBusiness }) {
   const { contact } = business

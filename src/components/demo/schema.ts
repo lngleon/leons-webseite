@@ -43,6 +43,7 @@ const PREISLISTEN_PROP: Record<
 > = {
   Restaurant: 'hasMenu',
   HairSalon: 'hasOfferCatalog',
+  BarberShop: 'hasOfferCatalog',
 }
 
 /**

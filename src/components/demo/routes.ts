@@ -13,20 +13,19 @@
  * und Datenschutz sind Pflichtangaben, keine Ziele, zu denen man einen Betrieb
  * besucht. Sie stehen dort, wo man sie sucht.
  *
- * `booking` (die Reservierungs-Attrappe) steht WEDER in der Pille NOCH im Fuß,
- * sondern nur als Fläche auf der Kontaktseite. Ursprünglich war das eine
- * Platzfrage: die Pille war eine Zeile mit waagerechtem Scrollen, und ein
- * fünfter Eintrag hätte die wichtigsten Ziele aus dem Bild geschoben.
+ * `booking` (die Buchungs-Attrappe) steht NICHT als fünftes Ziel in der
+ * Pille, ist aber seit dem 03.09.2026 von JEDER Seite aus erreichbar
+ * (User-Auftrag: das Buchungs-Feature soll gut auffindbar sein): ab 640 px
+ * als eigener Knopf NEBEN der Pille im Navigationsband, darunter als
+ * klebende Leiste am unteren Rand (`DemoShell`), dazu der gefüllte CTA im
+ * Kopf der Startseite und weiterhin der Einstieg auf der Kontaktseite.
  *
- * **Seit dem 27.08.2026 ist die Platzfrage gelöst** – die Pille bricht um,
- * statt zu scrollen, und trägt gemessen sechs Ziele (Einzelheiten im
- * Navigationsabschnitt von `demo.css`). Der Grund, `booking` draussen zu
- * lassen, ist damit ein ANDERER geworden und gilt weiterhin: eine Attrappe ist
- * ein vorgeführtes Feature, kein Ziel des Betriebs – sie gehört dorthin, wo
- * man ohnehin nach dem Weg zum Tisch sucht, und nicht neben „Karte" und
- * „Kontakt". Weil `DemoNav` seine Einträge fest aufzählt, trägt
- * `current="booking"` folgerichtig KEIN `aria-current` – genau wie `imprint`
- * und `privacy` heute schon.
+ * Warum trotzdem kein fünftes `<li>`: die :has()-Zählung in `demo.css`
+ * rechnet die Bandhöhe aus der Zahl der Listeneinträge; ein Eintrag, der auf
+ * dem Handy per CSS verschwindet (dort übernimmt die Leiste), stünde
+ * trotzdem im DOM und machte die Formel falsch. Der Knopf ist deshalb
+ * Geschwister der Liste. `current="booking"` markiert ihn per
+ * `aria-current`, sobald man auf der Strecke ist.
  */
 export type DemoPage =
   | 'start'

@@ -172,7 +172,7 @@ export default function Projekte({ muster }: ProjekteProps) {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
           role="list"
-          className="mt-10 grid list-none grid-cols-1 gap-5 p-0 lg:grid-cols-3"
+          className="mt-10 grid list-none grid-cols-1 gap-5 p-0 lg:grid-cols-2"
         >
           {muster.map((demo) => (
             <motion.li key={demo.slug} variants={card} role="listitem" className="flex">
@@ -183,10 +183,11 @@ export default function Projekte({ muster }: ProjekteProps) {
                     alt=""
                     width={demo.width}
                     height={demo.height}
-                    // Gleiche Container-Geometrie wie auf /moeglichkeiten
-                    // (max-w-6xl, gleiche Seitenränder, 3 Spalten ab lg):
-                    // 348 px ab lg, darunter einspaltig die volle Kartenbreite.
-                    sizes="(min-width: 1024px) 348px, (min-width: 640px) calc(100vw - 50px), calc(100vw - 34px)"
+                    // Seit der vierten Musterseite (03.09.2026) 2×2 statt
+                    // Dreierreihe – vier Karten in drei Spalten hiessen eine
+                    // verwaiste vierte. Zwei Spalten ab lg ≈ 532 px je Bild
+                    // ((1084 − 20) / 2 aus der bisherigen 348er-Messung).
+                    sizes="(min-width: 1024px) 532px, (min-width: 640px) calc(100vw - 50px), calc(100vw - 34px)"
                     className="h-full w-full object-cover object-top transition-transform duration-200 ease-out motion-safe:group-hover:scale-[1.03]"
                   />
                   <ImageBadge>Musterseite</ImageBadge>
@@ -196,7 +197,7 @@ export default function Projekte({ muster }: ProjekteProps) {
                   {demo.kind}
                 </p>
                 {/* h4, nicht h3: die Karten gehören ZUM Zwischenkopf (h3)
-                    „Und drei komplette Musterbetriebe." – als h3 wären sie im
+                    „Und vier komplette Musterbetriebe." – als h3 wären sie im
                     Outline dessen Geschwister statt untergeordnet (1.3.1). */}
                 <h4 className="mt-2 text-lg font-semibold text-foreground sm:text-xl">
                   {demo.name}

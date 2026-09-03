@@ -35,9 +35,13 @@ import type { GastroBusiness } from './types'
  * kühles Porzellan und tiefes Pflaumenrot statt warmem Papier und gebranntem
  * Orange. Café und Restaurant haben kein `theme` und bleiben unberührt.
  *
- * **Kein Buchungsflow.** Bewusst ein Non-Goal dieser Stufe: Termine laufen über
- * Telefon und Mail. Weil `booking` fehlt, entfällt die Attrappe von selbst –
- * ohne dass `DemoContact` wüsste, dass hier ein Friseur rendert.
+ * **Buchungsflow seit 03.09.2026** (vorher bewusst keiner): die
+ * Termin-Attrappe unter `/demo/friseur/reservieren`, als erste im
+ * LEISTUNGS-Modus – Schritt 1 fragt „Was steht an?" mit `booking.choices`
+ * statt einer Personenzahl. Buchbar sind die planbaren Standards; alles, was
+ * eine Haarprobe braucht (Strähnen, Balayage, Blondierung), sagt die
+ * `choicesNote` bewusst ans Telefon – dieselbe Linie wie in
+ * `contact.reservation.note`.
  *
  * **Fotos:** seit 27.08.2026 vollständig bebildert – zehn Bilder aus
  * `public/demo/` (`friseur-*.webp`) für Hero, Bildreihe, die drei
@@ -229,6 +233,155 @@ export const friseurWirbel: GastroBusiness = {
   },
 
   /**
+   * Termin-Attrappe unter `/demo/friseur/reservieren` (03.09.2026) – die
+   * erste im LEISTUNGS-Modus: Schritt 1 zeigt `choices` statt Personenzahlen.
+   * Buchbar sind die planbaren Standards; Strähnen, Balayage und Blondierung
+   * fehlen mit Absicht – sie brauchen die Haarprobe, und die `choicesNote`
+   * sagt das. Zeiten kommen aus `hours` (via `services[].hoursLabel`),
+   * erfunden ist allein die Belegung.
+   */
+  booking: {
+    title: 'Termin',
+    intro:
+      'Eine Vorschau darauf, wie eine Terminbuchung auf dieser Seite laufen könnte – fünf Schritte, und am Ende passiert nichts.',
+    band: 'Vorschau · es wird kein Termin gebucht',
+    hinweis:
+      'Das hier ist eine Attrappe. Sie schickt nichts ab, spricht mit keinem Server und speichert nichts – auch nicht in deinem Browser. Ein Neuladen löscht jede Eingabe. Einen Termin im Wirbel gibt es per Telefon oder E-Mail.',
+    entryLabel: 'Terminbuchung ansehen (Vorschau)',
+    entryNote:
+      'So könnte eine Online-Buchung auf dieser Seite aussehen. Die Strecke ist eine Vorschau und bucht nichts – einen Termin bekommst du über die beiden Wege oben.',
+    ctaLabel: 'Termin buchen',
+
+    noscript: {
+      title: 'Diese Vorschau braucht JavaScript',
+      body: 'Der Rest dieser Seite kommt ohne aus – nur diese Strecke nicht, weil sie deine Auswahl von Schritt zu Schritt mitführen muss. Gebucht hätte sie ohnehin nichts: Termine gibt es bei uns über Telefon oder E-Mail.',
+    },
+
+    choices: [
+      { id: 'damenschnitt', label: 'Damenschnitt', note: '60 Min. · ab 49 €' },
+      { id: 'herrenschnitt', label: 'Herrenschnitt', note: '45 Min. · 34 €' },
+      { id: 'kinderschnitt', label: 'Kinderschnitt', note: '30 Min. · 24 €' },
+      { id: 'ansatzfarbe', label: 'Ansatzfarbe', note: '90 Min. · 52 – 68 €' },
+      { id: 'kopfmassage', label: 'Kopfmassage & Waschen', note: '20 Min. · 18 €' },
+      { id: 'bart', label: 'Bart schneiden', note: '25 Min. · 19 €' },
+    ],
+    choicesNote:
+      'Strähnen, Balayage und Blondierung brauchen vorher eine kurze Haarprobe – die vereinbarst du telefonisch, sie dauert zehn Minuten und kostet nichts.',
+
+    slotStepMinutes: 30,
+    slotLegend:
+      'Beispielbelegung: welche Zeiten frei, knapp oder belegt sind, ist für diese Vorschau erfunden. In einer echten Umsetzung käme das aus dem Terminkalender.',
+    slotStates: { busy: 'belegt', tight: 'fast voll' },
+    dayNote:
+      'Beispielwoche ohne Datum. Welche Tage geöffnet sind, kommt aus den Öffnungszeiten dieser Seite – die geschlossenen Tage stimmen also.',
+    closedLabel: 'geschlossen',
+
+    backLabel: 'Zurück',
+    backToContactLabel: 'Zurück zum Kontakt',
+
+    stepCounterLabel: 'Schritt {n} von {gesamt}',
+    optionalLabel: '(optional)',
+    timeSuffix: 'Uhr',
+    weekdays: [
+      { key: 'Monday', label: 'Montag' },
+      { key: 'Tuesday', label: 'Dienstag' },
+      { key: 'Wednesday', label: 'Mittwoch' },
+      { key: 'Thursday', label: 'Donnerstag' },
+      { key: 'Friday', label: 'Freitag' },
+      { key: 'Saturday', label: 'Samstag' },
+      { key: 'Sunday', label: 'Sonntag' },
+    ],
+
+    steps: {
+      party: {
+        title: 'Was steht an?',
+        note: 'Vorschau: Deine Auswahl bleibt in diesem Browserfenster und wird nirgendwo hingeschickt.',
+        action: 'Weiter zum Tag',
+        actionNote: 'Es wird nichts gebucht – der Knopf blättert nur weiter.',
+        error: 'Bitte wähle zuerst eine Leistung.',
+      },
+      day: {
+        title: 'An welchem Tag?',
+        note: 'Vorschau: eine Beispielwoche ohne Datum. Die geschlossenen Tage stammen aber aus den echten Öffnungszeiten dieser Seite.',
+        action: 'Weiter zur Uhrzeit',
+        actionNote: 'Kein Stuhl wird gehalten, kein Kalender gefragt.',
+        error: 'Bitte wähle zuerst einen Tag.',
+      },
+      time: {
+        title: 'Um wie viel Uhr?',
+        note: 'Vorschau: die Zeiten sind aus den Öffnungszeiten gerechnet, wer schon belegt ist, ist erfunden.',
+        action: 'Weiter zu deinen Angaben',
+        actionNote: 'Auch jetzt ist noch nichts gebucht.',
+        error: 'Bitte wähle zuerst eine Uhrzeit.',
+      },
+      guest: {
+        title: 'Wie erreichen wir dich?',
+        note: 'Vorschau: Was du hier eintippst, verlässt dein Gerät nicht. Es geht keine Mail raus und nichts wird gespeichert.',
+        action: 'Anfrage abschicken (Vorschau)',
+        actionNote: 'Dieser Knopf sendet nichts. Er zeigt dir nur, wie die Bestätigung aussähe.',
+      },
+    },
+
+    fields: [
+      {
+        id: 'name',
+        label: 'Name',
+        type: 'text',
+        autoComplete: 'name',
+        required: true,
+        error: 'Ohne Namen wüssten wir nicht, für wen der Termin ist.',
+      },
+      { id: 'telefon', label: 'Telefon', type: 'tel', inputMode: 'tel', autoComplete: 'tel' },
+      { id: 'wunsch', label: 'Anmerkung', multiline: true },
+    ],
+
+    done: {
+      title: 'So sähe deine Bestätigung aus',
+      labels: {
+        party: 'Leistung',
+        day: 'Wann',
+        time: 'Uhrzeit',
+        guest: 'Auf den Namen',
+      },
+      guestFallback: 'ohne Namen',
+      truth: {
+        title: 'Und jetzt der ehrliche Teil:',
+        points: [
+          'Es ist keine Anfrage rausgegangen – weder an uns noch an sonst jemanden.',
+          'Es wurde nichts gespeichert, auch nicht in deinem Browser.',
+          'Kein Termin ist gebucht, kein Stuhl geblockt.',
+          'Ein Neuladen dieser Seite löscht alles, was du eingetippt hast.',
+        ],
+        outlook:
+          'In einer echten Umsetzung ginge an dieser Stelle eine Anfrage an den Salon – und die Zeiten kämen aus dem Terminkalender statt aus einer Beispielwoche.',
+      },
+      realTitle: 'So bekommst du wirklich einen Termin',
+      restartLabel: 'Noch mal von vorn',
+    },
+
+    services: [
+      {
+        id: 'werktags',
+        hoursLabel: 'Dienstag – Freitag',
+        short: 'Di – Fr',
+        // 09:00–18:30 minus 60 Minuten → letzter Termin 17:30.
+        lastSeatingBeforeCloseMinutes: 60,
+        busySlots: ['10:00', '15:30', '16:00'],
+        tightSlots: ['09:30', '17:00'],
+      },
+      {
+        id: 'samstag',
+        hoursLabel: 'Samstag',
+        short: 'Samstag',
+        // 09:00–15:00 minus 60 Minuten → letzter Termin 14:00.
+        lastSeatingBeforeCloseMinutes: 60,
+        busySlots: ['09:30', '10:00', '11:30'],
+        tightSlots: ['12:30'],
+      },
+    ],
+  },
+
+  /**
    * Die Mitarbeiter – die Ebene, die Café und Restaurant nicht haben.
    *
    * Steht auf „Über uns" zwischen den Erzählblöcken und dem Abbinder. Bewusst
@@ -345,7 +498,7 @@ export const friseurWirbel: GastroBusiness = {
         title: 'Was diese Seite nicht tut',
         body: [
           'Diese Seite setzt keine Cookies und speichert nichts in deinem Browser. Es gibt keine Reichweitenmessung, keine Analyse-Software und kein Profiling – auch keine anonyme Statistik.',
-          'Es gibt kein Formular und kein Terminbuchungssystem: Termine laufen über Telefon oder E-Mail, also über ein Programm auf deinem eigenen Gerät. Diese Seite selbst nimmt keine Eingabe entgegen. Deshalb steht hier auch kein Cookie-Banner – es gibt nichts, wozu du einwilligen müsstest.',
+          'Auf der Terminseite liegt eine Vorschau-Strecke. Sie läuft vollständig in deinem Browser: nichts wird gesendet, nichts gespeichert – auch nicht im Browser selbst. Ein Neuladen löscht jede Eingabe. Ein Buchungssystem gibt es hier nicht; Termine laufen über Telefon oder E-Mail, also über ein Programm auf deinem eigenen Gerät. Deshalb steht hier auch kein Cookie-Banner – es gibt nichts, wozu du einwilligen müsstest.',
         ],
       },
       {

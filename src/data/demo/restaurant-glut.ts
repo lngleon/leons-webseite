@@ -37,6 +37,15 @@ import type { GastroBusiness } from './types'
  */
 export const restaurantGlut: GastroBusiness = {
   slug: 'restaurant',
+  /**
+   * Seit 03.09.2026 mit EIGENER Farbwelt (vorher teilte Glut den hellen
+   * Basis-Satz des Cafés): `.demo-scope--glut` in `demo.css` – verkohltes
+   * Braunschwarz und Glut-Orange, der erste dunkle Token-Satz der Demos.
+   * Ein Restaurant, das abends lebt und dessen Fotos Feuer und dunkles Holz
+   * sind, liest sich dunkel richtiger als auf Backstuben-Papier. Das
+   * zugehörige `viewport.themeColor` steht im neuen `layout.tsx` des Ordners.
+   */
+  theme: 'glut',
   name: 'Restaurant Glut',
   displayName: 'Glut',
   kind: 'À-la-carte-Restaurant',
@@ -286,6 +295,7 @@ export const restaurantGlut: GastroBusiness = {
     entryLabel: 'Reservierung ansehen (Vorschau)',
     entryNote:
       'So könnte eine Reservierung auf dieser Seite aussehen. Die Strecke ist eine Vorschau und bucht nichts – reserviert wird über die beiden Wege oben.',
+    ctaLabel: 'Reservieren',
 
     noscript: {
       title: 'Diese Vorschau braucht JavaScript',

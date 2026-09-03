@@ -262,6 +262,25 @@ export type BookingService = {
   tightSlots?: string[]
 }
 
+/**
+ * EINE Auswahlkachel des ersten Schritts, wenn der Betrieb LEISTUNGEN statt
+ * Personenzahlen anbietet (Salon, Barbier): „Herrenschnitt · 45 Min.".
+ *
+ * Bewusst ein eigener, kleiner Typ und kein Verweis in `menu.categories`
+ * hinein: die Strecke soll vier bis sechs BUCHBARE Einstiege zeigen, nicht
+ * jede Position der Preisliste (eine Blondierung bucht niemand ohne
+ * Haarprobe – das sagt die `note` des Betriebs, nicht ein Filter im Code).
+ * `note` trägt Dauer/Preis als bereits formatierten Text; die Strecke
+ * rechnet nichts nach, sie ist eine Attrappe.
+ */
+export type BookingChoice = {
+  /** Stabile ASCII-id für React-Key und Zusammenfassung. */
+  id: string
+  label: string
+  /** Zeile rechts in der Kachel, z.B. „45 Min. · 34 €". */
+  note?: string
+}
+
 /** Ein Eingabefeld des Kontaktschritts. */
 export type BookingField = {
   id: string
@@ -314,8 +333,10 @@ export type BookingStepCopy = {
  *
  * Optional, und genau darin liegt die Regel: Eine Komponente fragt „ist dieses
  * FELD da?" (`business.booking`), nie „ist das ein Café oder ein Restaurant?".
- * Das Café hat kein `booking` – deshalb hat es weder die Strecke noch den
- * Einstieg auf der Kontaktseite, ohne dass eine Komponente den Betrieb kennt.
+ * Seit 03.09.2026 tragen alle vier Betriebe das Feld (User-Auftrag: jede Demo
+ * bekommt ein Buchungs-Feature) – die Mechanik bleibt trotzdem eine Feldfrage:
+ * ein fünfter Betrieb ohne `booking` verlöre Strecke, Einstieg, Nav-Knopf und
+ * Buchungsleiste von selbst.
  *
  * Sämtliche Texte stehen hier und nicht in der Komponente – auch der
  * Schrittzähler, das Wort „(optional)", die Uhrzeit-Endung und die Namen der
@@ -334,18 +355,19 @@ export type BookingDemo = {
   /** Einstieg auf der Kontaktseite. */
   entryLabel: string
   entryNote: string
+  /**
+   * Beschriftung der KURZEN Einstiege: der Knopf im Navigationsband (ab
+   * 640 px), die klebende Leiste am unteren Rand (darunter) und der gefüllte
+   * CTA im Kopf der Startseite – „Reservieren" bzw. „Termin buchen".
+   *
+   * Eigenes Feld neben `entryLabel`, weil die drei Flächen KURZ sein müssen
+   * (die Pille misst ihre Zeile, die Leiste ist eine Zeile bei 320 px) und
+   * `entryLabel` den Vorschau-Zusatz trägt, der dort nicht passt. Die
+   * Kennzeichnung als Attrappe übernimmt die Zielseite selbst – vierfach.
+   */
+  ctaLabel: string
   /** Ersatzstück ohne JavaScript. */
   noscript: { title: string; body: string }
-
-  partySizes: number[]
-  /**
-   * Einheit in der Zusammenfassung. Zwei Formen, weil `partySizes` bei 1
-   * beginnt und „1 Personen" auf dem Bestätigungsbildschirm steht – also genau
-   * dort, wo die Attrappe überzeugen soll.
-   */
-  partyUnit: { one: string; other: string }
-  /** Satz unter dem Personenraster für grössere Runden. */
-  partyMore: string
 
   /** Rasterweite der Startzeiten in Minuten. */
   slotStepMinutes: number
@@ -402,7 +424,41 @@ export type BookingDemo = {
   }
 
   services: BookingService[]
-}
+} & (
+  /**
+   * Was der ERSTE Schritt abfragt – als exklusive Union, dieselbe Technik wie
+   * bei {@link MenuCategory}: ein Betrieb bietet ENTWEDER Personenzahlen an
+   * (Gastro: „Wie viele seid ihr?") ODER Leistungen (Salon, Barbier: „Was
+   * dürfen wir machen?"). Nie beides, nie keins – eine Strecke ohne ersten
+   * Schritt liesse sich sonst hinschreiben und rendert als leerer Schritt.
+   *
+   * Die Komponente fragt „ist `choices` da?" – eine Feldfrage, keine
+   * Betriebsfrage. Für das Restaurant ist der eigene Zweig Zeichen für
+   * Zeichen die bisherige Form.
+   */
+  | {
+      partySizes: number[]
+      /**
+       * Einheit in der Zusammenfassung. Zwei Formen, weil `partySizes` bei 1
+       * beginnt und „1 Personen" auf dem Bestätigungsbildschirm steht – also
+       * genau dort, wo die Attrappe überzeugen soll.
+       */
+      partyUnit: { one: string; other: string }
+      /** Satz unter dem Personenraster für grössere Runden. */
+      partyMore: string
+      choices?: never
+      choicesNote?: never
+    }
+  | {
+      /** Die buchbaren Leistungen des ersten Schritts. */
+      choices: BookingChoice[]
+      /** Satz unter dem Leistungsraster, z.B. für alles, was Beratung braucht. */
+      choicesNote?: string
+      partySizes?: never
+      partyUnit?: never
+      partyMore?: never
+    }
+)
 
 export type GastroBusiness = {
   slug: string
@@ -611,7 +667,8 @@ export type GastroBusiness = {
      * Bewusst eine geschlossene Union und kein `string`: ein Tippfehler im
      * Typnamen ergibt stilles Unsinn-Markup, das niemandem auffällt. Ein
      * vierter Betrieb trägt seinen Typ hier ein – EINE Zeile, an EINER Stelle.
+     * (Genau das ist mit `BarberShop` am 03.09.2026 passiert.)
      */
-    schemaType?: 'Restaurant' | 'HairSalon'
+    schemaType?: 'Restaurant' | 'HairSalon' | 'BarberShop'
   }
 }

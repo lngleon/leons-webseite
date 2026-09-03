@@ -24,16 +24,16 @@ export type Project = {
 
 export const projectsIntro = {
   eyebrow: 'Ausgewählte Projekte',
-  title: 'Fünf Projekte, fünf Branchen.',
+  title: 'Sechs Projekte, sechs Branchen.',
   subline:
-    'Zwei Projekte sind live im Netz, drei sind vollständige Musterseiten – alle kannst du dir direkt ansehen. Vielleicht ist deine Branche schon dabei.',
+    'Zwei Projekte sind live im Netz, vier sind vollständige Musterseiten – alle kannst du dir direkt ansehen. Vielleicht ist deine Branche schon dabei.',
 } as const
 
 /** Zwischenüberschrift über der Musterseiten-Reihe (unter den Live-Karten). */
 export const musterIntro = {
-  title: 'Und drei komplette Musterbetriebe.',
+  title: 'Und vier komplette Musterbetriebe.',
   subline:
-    'Die Betriebe sind erfunden, die Seiten sind echt – jede vollständig begehbar und einen Klick entfernt.',
+    'Die Betriebe sind erfunden, die Seiten sind echt – jede vollständig begehbar, mit Buchungs-Vorschau und einen Klick entfernt.',
 } as const
 
 export const projects: Project[] = [

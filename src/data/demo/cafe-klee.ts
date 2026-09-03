@@ -164,6 +164,161 @@ export const cafeKlee: GastroBusiness = {
     },
   },
 
+  /**
+   * Reservierungs-Attrappe unter `/demo/cafe/reservieren` – seit 03.09.2026
+   * hat auch das Café die Strecke (User-Auftrag: jede Demo bekommt ein
+   * Buchungs-Feature). Zeiten stehen hier NICHT noch einmal:
+   * `services[].hoursLabel` zeigt auf die Einträge in `hours` oben, und
+   * `buildBookingWeek` rechnet daraus das Raster – der Montag ist von selbst
+   * zu. Erfunden ist allein die BELEGUNG, und die Legende sagt das.
+   *
+   * `slotStepMinutes: 60` und nicht 30 wie beim Restaurant: ein Café ist den
+   * ganzen Tag offen, halbstündige Slots ergäben zwanzig Kacheln je Werktag.
+   * Stundenraster ab der halben Stunde der Öffnung (07:30, 08:30, …) sind
+   * zehn – und ein Kaffeetisch ist ohnehin keine Minutensache.
+   */
+  booking: {
+    title: 'Reservieren',
+    intro:
+      'Eine Vorschau darauf, wie eine Tischanfrage auf dieser Seite laufen könnte – fünf Schritte, und am Ende passiert nichts.',
+    band: 'Vorschau · es wird nichts reserviert',
+    hinweis:
+      'Das hier ist eine Attrappe. Sie schickt nichts ab, spricht mit keinem Server und speichert nichts – auch nicht in deinem Browser. Ein Neuladen löscht jede Eingabe. Einen Tisch im Klee bekommst du per Telefon oder E-Mail.',
+    entryLabel: 'Reservierung ansehen (Vorschau)',
+    entryNote:
+      'So könnte eine Tischanfrage auf dieser Seite aussehen. Die Strecke ist eine Vorschau und bucht nichts – angefragt wird über die beiden Wege oben.',
+    ctaLabel: 'Tisch reservieren',
+
+    noscript: {
+      title: 'Diese Vorschau braucht JavaScript',
+      body: 'Der Rest dieser Seite kommt ohne aus – nur diese Strecke nicht, weil sie deine Auswahl von Schritt zu Schritt mitführen muss. Gebucht hätte sie ohnehin nichts: einen Tisch bekommst du bei uns über Telefon oder E-Mail.',
+    },
+
+    partySizes: [1, 2, 3, 4, 5, 6, 7, 8],
+    partyUnit: { one: 'Person', other: 'Personen' },
+    partyMore:
+      'Bis fünf Personen findet sich meistens auch spontan ein Tisch – wir halten welche frei. Ab neun ruf uns bitte kurz an.',
+
+    slotStepMinutes: 60,
+    slotLegend:
+      'Beispielbelegung: welche Zeiten frei, knapp oder belegt sind, ist für diese Vorschau erfunden. In einer echten Umsetzung käme das aus dem Tischbuch.',
+    slotStates: { busy: 'belegt', tight: 'fast voll' },
+    dayNote:
+      'Beispielwoche ohne Datum. Welche Tage geöffnet sind, kommt aus den Öffnungszeiten dieser Seite – der Ruhetag stimmt also.',
+    closedLabel: 'Ruhetag',
+
+    backLabel: 'Zurück',
+    backToContactLabel: 'Zurück zum Kontakt',
+
+    stepCounterLabel: 'Schritt {n} von {gesamt}',
+    optionalLabel: '(optional)',
+    timeSuffix: 'Uhr',
+    weekdays: [
+      { key: 'Monday', label: 'Montag' },
+      { key: 'Tuesday', label: 'Dienstag' },
+      { key: 'Wednesday', label: 'Mittwoch' },
+      { key: 'Thursday', label: 'Donnerstag' },
+      { key: 'Friday', label: 'Freitag' },
+      { key: 'Saturday', label: 'Samstag' },
+      { key: 'Sunday', label: 'Sonntag' },
+    ],
+
+    steps: {
+      party: {
+        title: 'Wie viele seid ihr?',
+        note: 'Vorschau: Deine Auswahl bleibt in diesem Browserfenster und wird nirgendwo hingeschickt.',
+        action: 'Weiter zum Tag',
+        actionNote: 'Es wird nichts gebucht – der Knopf blättert nur weiter.',
+        error: 'Bitte wähle zuerst, wie viele Personen kommen.',
+      },
+      day: {
+        title: 'An welchem Tag?',
+        note: 'Vorschau: eine Beispielwoche ohne Datum. Der Ruhetag stammt aber aus den echten Öffnungszeiten dieser Seite.',
+        action: 'Weiter zur Uhrzeit',
+        actionNote: 'Kein Tisch wird gehalten, kein Kalender gefragt.',
+        error: 'Bitte wähle zuerst einen Tag.',
+      },
+      time: {
+        title: 'Um wie viel Uhr?',
+        note: 'Vorschau: die Zeiten sind aus den Öffnungszeiten gerechnet, wer schon belegt ist, ist erfunden.',
+        action: 'Weiter zu deinen Angaben',
+        actionNote: 'Auch jetzt ist nichts reserviert.',
+        error: 'Bitte wähle zuerst eine Uhrzeit.',
+      },
+      guest: {
+        title: 'Wie erreichen wir dich?',
+        note: 'Vorschau: Was du hier eintippst, verlässt dein Gerät nicht. Es geht keine Mail raus und nichts wird gespeichert.',
+        action: 'Anfrage abschicken (Vorschau)',
+        actionNote: 'Dieser Knopf sendet nichts. Er zeigt dir nur, wie die Bestätigung aussähe.',
+      },
+    },
+
+    fields: [
+      {
+        id: 'name',
+        label: 'Name',
+        type: 'text',
+        autoComplete: 'name',
+        required: true,
+        error: 'Ohne Namen wüssten wir nicht, für wen der Tisch ist.',
+      },
+      { id: 'telefon', label: 'Telefon', type: 'tel', inputMode: 'tel', autoComplete: 'tel' },
+      { id: 'wunsch', label: 'Anmerkung', multiline: true },
+    ],
+
+    done: {
+      title: 'So sähe deine Bestätigung aus',
+      labels: {
+        party: 'Tisch für',
+        day: 'Wann',
+        time: 'Uhrzeit',
+        guest: 'Auf den Namen',
+      },
+      guestFallback: 'ohne Namen',
+      truth: {
+        title: 'Und jetzt der ehrliche Teil:',
+        points: [
+          'Es ist keine Anfrage rausgegangen – weder an uns noch an sonst jemanden.',
+          'Es wurde nichts gespeichert, auch nicht in deinem Browser.',
+          'Kein Tisch ist reserviert, kein Platz geblockt.',
+          'Ein Neuladen dieser Seite löscht alles, was du eingetippt hast.',
+        ],
+        outlook:
+          'In einer echten Umsetzung ginge an dieser Stelle eine Anfrage an den Betrieb – und die Zeiten kämen aus dem Tischbuch statt aus einer Beispielwoche.',
+      },
+      realTitle: 'So fragst du wirklich an',
+      restartLabel: 'Noch mal von vorn',
+    },
+
+    services: [
+      {
+        id: 'werktags',
+        hoursLabel: 'Dienstag – Freitag',
+        short: 'Di – Fr',
+        // 07:30–18:00 minus 60 Minuten → letzter Tisch 17:00.
+        lastSeatingBeforeCloseMinutes: 60,
+        busySlots: ['08:30', '12:30'],
+        tightSlots: ['09:30'],
+      },
+      {
+        id: 'samstag',
+        hoursLabel: 'Samstag',
+        short: 'Samstag',
+        lastSeatingBeforeCloseMinutes: 60,
+        busySlots: ['10:30', '11:30'],
+        tightSlots: ['09:30'],
+      },
+      {
+        id: 'sonntag',
+        hoursLabel: 'Sonntag',
+        short: 'Sonntag',
+        lastSeatingBeforeCloseMinutes: 60,
+        busySlots: ['10:00', '11:00'],
+        tightSlots: ['12:00'],
+      },
+    ],
+  },
+
   about: {
     title: 'Über uns',
     lead: 'Café Klee gibt es, weil in dieser Straße etwas gefehlt hat: ein Ort, an dem man eine Stunde sitzen kann, ohne etwas nachbestellen zu müssen.',
@@ -230,7 +385,7 @@ export const cafeKlee: GastroBusiness = {
         title: 'Was diese Seite nicht tut',
         body: [
           'Diese Seite setzt keine Cookies und speichert nichts in deinem Browser. Es gibt keine Reichweitenmessung, keine Analyse-Software und kein Profiling – auch keine anonyme Statistik.',
-          'Es gibt kein Formular. Es werden keine Daten erhoben, die über den reinen Abruf der Seite hinausgehen. Deshalb steht hier auch kein Cookie-Banner: Es gibt nichts, wozu du einwilligen müsstest.',
+          'Auf der Seite „Reservieren" liegt eine Vorschau-Strecke. Sie läuft vollständig in deinem Browser: nichts wird gesendet, nichts gespeichert – auch nicht im Browser selbst. Ein Neuladen löscht jede Eingabe. Ein Buchungssystem gibt es hier nicht; ein Tisch wird über Telefon oder E-Mail angefragt, also über ein Programm auf deinem eigenen Gerät. Deshalb steht hier auch kein Cookie-Banner – es gibt nichts, wozu du einwilligen müsstest.',
         ],
       },
       {

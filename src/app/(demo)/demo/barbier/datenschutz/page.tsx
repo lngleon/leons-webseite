@@ -1,34 +1,28 @@
 import type { Metadata } from 'next'
 import DemoShell from '@/components/demo/DemoShell'
 import DemoLegalPage from '@/components/demo/DemoLegalPage'
-import { friseurWirbel } from '@/data/demo/friseur-wirbel'
+import { barbierKlinge } from '@/data/demo/barbier-klinge'
 
 /**
  * Datenschutz als eigene Seite, nur im Fuß verlinkt.
  *
  * Der Text beschreibt bewusst den TATSÄCHLICHEN Zustand dieser Seite – keine
  * Cookies, kein Tracking, keine Fremd-Requests, Auslieferung als statisches
- * HTML – statt Standardbausteine zu behaupten, die hier gar nicht zutreffen.
- *
- * Seit 03.09.2026 hat auch dieser Betrieb die Termin-Attrappe – der Absatz
- * „Was diese Seite nicht tut" beschreibt sie deshalb ausdrücklich (wie zuvor
- * schon beim Restaurant, als dessen Strecke dazukam). Ein Datenschutztext ist
- * eine Aussage über die Seite und veraltet mit ihr.
- *
- * Muster- und Demo-Hinweis steht sichtbar ganz oben, inklusive der
+ * HTML – und die Termin-Attrappe ausdrücklich (sie sendet und speichert
+ * nichts). Muster- und Demo-Hinweis steht sichtbar ganz oben, inklusive der
  * Klarstellung, dass das keine Rechtsberatung ist.
  */
 export const metadata: Metadata = {
-  title: `${friseurWirbel.privacy.title} – ${friseurWirbel.name}`,
-  description: friseurWirbel.privacy.note,
+  title: `${barbierKlinge.privacy.title} – ${barbierKlinge.name}`,
+  description: barbierKlinge.privacy.note,
 }
 
-export default function FriseurDemoPrivacyPage() {
+export default function BarbierDemoPrivacyPage() {
   return (
-    <DemoShell business={friseurWirbel} current="privacy">
-      <DemoLegalPage title={friseurWirbel.privacy.title} note={friseurWirbel.privacy.note}>
+    <DemoShell business={barbierKlinge} current="privacy">
+      <DemoLegalPage title={barbierKlinge.privacy.title} note={barbierKlinge.privacy.note}>
         <div className="space-y-9">
-          {friseurWirbel.privacy.sections.map((section) => (
+          {barbierKlinge.privacy.sections.map((section) => (
             <section key={section.title} aria-labelledby={`ds-${section.id}`}>
               <h2 id={`ds-${section.id}`} className="demo-eyebrow">
                 {section.title}

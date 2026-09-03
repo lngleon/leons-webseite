@@ -41,7 +41,9 @@ export default function DemoShowcase() {
 
       {/* role explizit wie in Hero/Projekte: Safari/Tailwind-Preflight
           entfernen bei list-style:none die Listen-Semantik aus dem a11y-Baum. */}
-      <ul role="list" className="grid w-full grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-3">
+      {/* Seit der vierten Musterseite 2×2 statt Dreierreihe – vier Karten in
+          drei Spalten hiessen eine verwaiste vierte in der zweiten Zeile. */}
+      <ul role="list" className="grid w-full grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2">
         {demoPreviews.map((demo) => (
           <li key={demo.slug} role="listitem" className="flex">
             <a
@@ -64,12 +66,12 @@ export default function DemoShowcase() {
                   alt=""
                   width={demo.width}
                   height={demo.height}
-                  // Im Browser gemessen statt geschätzt: 348 px ab `lg`
-                  // (dreispaltig, gemessen 347,3), darunter einspaltig die
-                  // volle Kartenbreite – das ist die Viewport-Breite abzüglich
-                  // Seitenrand und Kartenrahmen, gemessen 750 bei 800 px und
-                  // 286 bei 320 px.
-                  sizes="(min-width: 1024px) 348px, (min-width: 640px) calc(100vw - 50px), calc(100vw - 34px)"
+                  // Zwei Spalten ab lg (vier Karten): ≈ 532 px je Bild,
+                  // gerechnet aus der bisherigen 348er-Messung der Dreierreihe
+                  // ((3 × 348 + 2 × 20 − 20) / 2). Darunter einspaltig die
+                  // volle Kartenbreite – Viewport minus Seitenrand und
+                  // Kartenrahmen, gemessen 750 bei 800 px und 286 bei 320 px.
+                  sizes="(min-width: 1024px) 532px, (min-width: 640px) calc(100vw - 50px), calc(100vw - 34px)"
                   className="h-full w-full object-cover object-top transition-transform duration-200 ease-out motion-safe:group-hover:scale-[1.03]"
                 />
               </div>

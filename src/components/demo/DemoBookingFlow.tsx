@@ -62,7 +62,15 @@ export default function DemoBookingFlow({
   contactHref: string
 }) {
   const [schritt, setSchritt] = useState(1)
+  /**
+   * Schritt 1 hat zwei Formen (exklusive Union in den Daten): Personenzahl
+   * (Gastro) ODER Leistung (Salon, Barbier). Zwei getrennte Zustände statt
+   * eines gemeinsamen `string | number`: so kann eine Personenzahl nie als
+   * Leistungs-id gelesen werden und umgekehrt. Pro Betrieb lebt ohnehin nur
+   * einer von beiden.
+   */
   const [personen, setPersonen] = useState<number | null>(null)
+  const [wahl, setWahl] = useState<string | null>(null)
   const [tagKey, setTagKey] = useState<string | null>(null)
   const [zeit, setZeit] = useState<{ serviceId: string; time: string } | null>(null)
   const [gast, setGast] = useState<Record<string, string>>({})
@@ -122,7 +130,9 @@ export default function DemoBookingFlow({
   function weiter() {
     // Schritte 1–3: es gibt kein Feld, auf das der Fokus wandern könnte – die
     // Meldung trägt deshalb `role="alert"` und wird von dort angesagt.
-    if (schritt === 1 && personen === null) return setFehler('personen')
+    // Schritt 1 prüft die Form, die der Betrieb anbietet (Feldfrage).
+    if (schritt === 1 && (copy.choices ? wahl === null : personen === null))
+      return setFehler('personen')
     if (schritt === 2 && !tagKey) return setFehler('tag')
     if (schritt === 3 && !zeit) return setFehler('zeit')
 
@@ -147,6 +157,7 @@ export default function DemoBookingFlow({
 
   function vonVorn() {
     setPersonen(null)
+    setWahl(null)
     setTagKey(null)
     setZeit(null)
     setGast({})
@@ -156,8 +167,13 @@ export default function DemoBookingFlow({
   const zaehler = copy.stepCounterLabel
     .replace('{n}', String(schritt))
     .replace('{gesamt}', String(gesamt))
-  const personenText =
-    personen === null
+  /**
+   * Was Schritt 1 ergeben hat, als EIN Text für Zusammenfassung und
+   * Bestätigung – „2 Personen" oder „Herrenschnitt", je nach Form.
+   */
+  const personenText = copy.choices
+    ? (copy.choices.find((c) => c.id === wahl)?.label ?? '')
+    : personen === null
       ? ''
       : `${personen} ${personen === 1 ? copy.partyUnit.one : copy.partyUnit.other}`
 
@@ -225,7 +241,43 @@ export default function DemoBookingFlow({
               derselbe wird ab Schritt zwei nicht mehr gelesen. */}
           {aktuell ? <p className="demo-buchung__notiz">{aktuell.note}</p> : null}
 
-          {schritt === 1 ? (
+          {/* Schritt 1 in der Form, die der Betrieb anbietet: Leistungs-Kacheln
+              (Label links, Dauer/Preis rechts – dieselbe Zeilen-Kachel wie die
+              Tage in Schritt 2) ODER das Personenzahl-Raster. Die Union in den
+              Daten stellt sicher, dass genau eine der beiden Formen da ist. */}
+          {schritt === 1 && copy.choices ? (
+            <fieldset className="demo-buchung__feld mt-6">
+              <legend className="demo-buchung__nur-sr">{copy.steps.party.title}</legend>
+              <div className="demo-buchung__tage">
+                {copy.choices.map((c) => (
+                  <label key={c.id} className="demo-buchung__kachel">
+                    <input
+                      type="radio"
+                      name={`${gid}-wahl`}
+                      className="demo-buchung__nur-sr"
+                      checked={wahl === c.id}
+                      onChange={() => {
+                        setWahl(c.id)
+                        setFehler(null)
+                      }}
+                    />
+                    <span className="demo-buchung__flaeche demo-buchung__tag-flaeche">
+                      <span>{c.label}</span>
+                      {c.note ? <span className="demo-buchung__tag">{c.note}</span> : null}
+                    </span>
+                  </label>
+                ))}
+              </div>
+              {copy.choicesNote ? <p className="demo-buchung__zusatz">{copy.choicesNote}</p> : null}
+              {fehler === 'personen' && copy.steps.party.error ? (
+                <p className="demo-buchung__fehler" role="alert">
+                  {copy.steps.party.error}
+                </p>
+              ) : null}
+            </fieldset>
+          ) : null}
+
+          {schritt === 1 && copy.partySizes ? (
             <fieldset className="demo-buchung__feld mt-6">
               <legend className="demo-buchung__nur-sr">{copy.steps.party.title}</legend>
               <div className="demo-buchung__raster">
@@ -272,9 +324,16 @@ export default function DemoBookingFlow({
                       />
                       <span className="demo-buchung__flaeche demo-buchung__tag-flaeche">
                         <span>{t.label}</span>
-                        <span className="demo-buchung__tag">
-                          {t.services.map((s) => s.short).join(' & ')}
-                        </span>
+                        {/* Die Fensterzeile nur, wenn der Tag MEHRERE Fenster
+                            hat („Mittag & Abend") – bei einem einzigen wäre sie
+                            die Wiederholung des Wochentags in anderer Form
+                            („Sonntag / Sonntag"). Dieselbe Regel wie in der
+                            Bestätigung. */}
+                        {t.services.length > 1 ? (
+                          <span className="demo-buchung__tag">
+                            {t.services.map((s) => s.short).join(' & ')}
+                          </span>
+                        ) : null}
                       </span>
                     </label>
                   ) : (
@@ -418,7 +477,14 @@ export default function DemoBookingFlow({
               <dl className="mt-5 border border-border bg-card px-4 py-3">
                 {[
                   [copy.done.labels.party, personenText],
-                  [copy.done.labels.day, `${tag?.label ?? ''}${service ? ` · ${service.short}` : ''}`],
+                  /* Das Servicefenster steht nur dabei, wenn der Tag MEHRERE
+                     hat – dann unterscheidet es („Samstag · Abend"). Bei einem
+                     einzigen Fenster wäre es eine Wiederholung des Wochentags
+                     in anderer Form („Donnerstag · Di – Fr"). */
+                  [
+                    copy.done.labels.day,
+                    `${tag?.label ?? ''}${service && (tag?.services.length ?? 0) > 1 ? ` · ${service.short}` : ''}`,
+                  ],
                   [copy.done.labels.time, `${zeit?.time ?? ''} ${copy.timeSuffix}`],
                   [
                     copy.done.labels.guest,

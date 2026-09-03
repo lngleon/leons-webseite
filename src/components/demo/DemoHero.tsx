@@ -1,5 +1,6 @@
 import type { GastroBusiness } from '@/data/demo/types'
 import DemoPhoto from './DemoPhoto'
+import { demoHref } from './routes'
 
 /**
  * Kopf der Demo-Seite: Betriebsart, sehr grosser Versalien-Name, Tagline,
@@ -48,6 +49,25 @@ export default function DemoHero({ business }: { business: GastroBusiness }) {
           <p className="demo-lese mt-7 text-[0.95rem] leading-relaxed text-muted-foreground">
             {business.intro}
           </p>
+
+          {/* Die zwei Wege ab dem Kopf (03.09.2026): gefüllt zur Buchung, Ghost
+              zur Karte – dieselbe Rangfolge wie im Abbinder von „Über uns".
+              Der gefüllte hängt an der Feldfrage `booking`; ohne das Feld
+              bleibt nur der Weg zur Karte, und der steht dann allein. */}
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            {business.booking ? (
+              <a
+                href={demoHref(business.slug, 'booking')}
+                className="demo-cta demo-cta--fill"
+              >
+                {business.booking.ctaLabel}
+                <span aria-hidden="true">→</span>
+              </a>
+            ) : null}
+            <a href={demoHref(business.slug, 'menu')} className="demo-cta">
+              {business.nav.menu}
+            </a>
+          </div>
         </div>
 
         {/* `sizes` folgt den drei real gerenderten Breiten: im Zweispalter rund

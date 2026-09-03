@@ -177,6 +177,116 @@ html:has(.demo-scope--friseur),
   --demo-feldrand: #7b7986;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   Dritter Token-Satz: Glut (.demo-scope--glut) – der erste DUNKLE.
+
+   Seit dem 03.09.2026 hat das Restaurant seine eigene Farbwelt (vorher teilte
+   es den Basis-Satz des Cafés): verkohltes Braunschwarz und Glut-Orange – die
+   Fotos des Betriebs sind Feuer und dunkles Holz, und ein Restaurant, das
+   abends lebt, liest sich dunkel richtiger als auf Backstuben-Papier.
+
+   Dieselbe Mechanik wie beim Friseur: NUR Farben, alles Strukturelle bleibt
+   geerbt. Zwei Dinge sind bei einem dunklen Satz zusätzlich zu drehen:
+
+   1. `color-scheme: dark` – Scrollbalken, Formular-Chrom und Overscroll des
+      Browsers sollen zur Seite passen. Der Basis-Block setzt `light`; gleiche
+      Spezifität, spätere Regel gewinnt (wie bei allen Token-Sätzen hier).
+   2. `--accent-solid` ist auf dunklem Grund die HELLERE Stufe des Akzents,
+      nicht die dunklere. Seine drei Rollen verlangen alle MEHR Kontrast als
+      `--accent` (Zähler-Text auf dem Grund, CTA-Hover-Füllung, „fertig" im
+      Fortschritt) – und mehr Kontrast heisst auf Dunkel: heller.
+
+   Alle Paare gegen WCAG gerechnet (Skript, sRGB-linearisiert), kleinster
+   Textwert 5,76:1 gegen die geforderten 4,5:1, kleinster Bedienelement-Wert
+   3,60:1 gegen 3:1:
+
+     foreground/background            15,48:1
+     muted-foreground/background       8,20:1
+     muted-foreground/card             7,45:1
+     accent/background                 6,34:1
+     accent/card                       5,76:1
+     accent-solid/background (Zähler)  7,98:1
+     accent-foreground/accent          6,40:1   (Laufband, gefüllter CTA)
+     accent-foreground/accent-solid    8,05:1   (CTA-Hover)
+     accent/background (Fokusring)     6,34:1   (verlangt sind 3:1)
+     demo-feldrand/card                3,60:1   (verlangt sind 3:1)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html:has(.demo-scope--glut),
+.demo-scope--glut {
+  color-scheme: dark;
+
+  --background: #171110;
+  --foreground: #f4e8da;
+  --muted: #2c211b;
+  --muted-foreground: #c2a78f;
+  --card: #251a15;
+  --card-foreground: #f4e8da;
+  --border: #3d2c22;
+
+  --accent: #e5793a;
+  --accent-solid: #f0925b;
+  --accent-foreground: #1c0e05;
+  --ring: var(--accent);
+  --destructive: #ef7a66;
+
+  --demo-feldrand: #8a6e57;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Vierter Token-Satz: Barbier (.demo-scope--barbier)
+
+   Tiefes Flaschengrün und gealtertes Messing – die klassische Barbershop-
+   Palette (dunkelgrüne Wände, Leder, Messing), auf der die Werkzeug- und
+   Interieur-Fotos des Betriebs stehen. Dunkel wie Glut, aber klar davon
+   getrennt: Grün gegen Braunschwarz, Messing gegen Glut-Orange.
+
+   Gleiche Regeln wie oben (color-scheme, helleres --accent-solid). Gerechnete
+   Paare, kleinster Textwert 6,03:1, kleinster Bedienelement-Wert 3,61:1:
+
+     foreground/background            13,71:1
+     muted-foreground/background       7,78:1
+     muted-foreground/card             6,79:1
+     accent/background                 7,04:1
+     accent/card                       6,15:1
+     accent-solid/background (Zähler)  8,57:1
+     accent-foreground/accent          7,71:1   (Laufband, gefüllter CTA)
+     accent-foreground/accent-solid    9,38:1   (CTA-Hover)
+     accent/background (Fokusring)     7,04:1   (verlangt sind 3:1)
+     demo-feldrand/card                3,61:1   (verlangt sind 3:1)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html:has(.demo-scope--barbier),
+.demo-scope--barbier {
+  color-scheme: dark;
+
+  --background: #141f19;
+  --foreground: #ece7d9;
+  --muted: #243429;
+  --muted-foreground: #a9b3a0;
+  --card: #1d2b22;
+  --card-foreground: #ece7d9;
+  --border: #31423a;
+
+  --accent: #cf9f52;
+  --accent-solid: #dcb26c;
+  --accent-foreground: #1a1206;
+  --ring: var(--accent);
+  --destructive: #e58a76;
+
+  --demo-feldrand: #75816f;
+}
+
+/* Das Papier-Korn multipliziert – auf Near-Black macht Multiplizieren nichts
+   als Schwarz und das Korn verschwindet. Die dunklen Sätze drehen die
+   Blend-Richtung um: `screen` hellt auf, dieselbe Körnung wird wieder sichtbar
+   und liest sich als Materialität statt als Schmutz. */
+.demo-scope--glut .demo-grain,
+.demo-scope--barbier .demo-grain {
+  mix-blend-mode: screen;
+  opacity: 0.045;
+}
+
 .demo-scope {
   background-color: var(--background);
   color: var(--foreground);
@@ -664,6 +774,63 @@ html:has(.demo-scope--friseur),
   box-shadow:
     0 0 0 2px var(--card),
     0 0 0 4px var(--ring);
+}
+
+/* ── Buchungs-Knopf im Navigationsband (ab 640 px) ───────────────────────────
+   Sitzt als GESCHWISTER neben der Pille, nicht als fünftes <li> darin: die
+   :has()-Zählung oben rechnet die Bandhöhe aus der Zahl der Listeneinträge,
+   und ein Eintrag, der unter 640 px verschwindet, stünde trotzdem im DOM und
+   machte die Formel falsch. Der Knopf ist exakt --demo-tap hoch und damit nie
+   höher als die Pillenzeile – die vorgeschriebene Bandhöhe hält.
+
+   Unter 640 px übernimmt die klebende Leiste am unteren Rand (unten in dieser
+   Datei); dort ist der Knopf display: none, die Pille steht wie vorher. */
+.demo-nav-zeile {
+  display: block;
+}
+
+.demo-nav-cta {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .demo-nav-zeile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+  }
+
+  .demo-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: var(--demo-tap);
+    padding-inline: 1.25rem;
+    border-radius: 999px;
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+    font-family: var(--demo-display);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+  }
+
+  .demo-nav-cta:hover {
+    background-color: var(--accent-solid);
+  }
+
+  /* Ring-Lücke in --background, nicht --card: der Knopf liegt direkt auf dem
+     Band, nicht in der Pille. */
+  .demo-nav-cta:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px var(--ring);
+  }
 }
 
 /* ── Kategorie-Leiste auf /karte ─────────────────────────────────────────────
@@ -1256,4 +1423,69 @@ html:has(.demo-scope--friseur),
     outline: 3px solid Highlight;
     outline-offset: 2px;
   }
+}
+
+/* ── Klebende Buchungsleiste am unteren Rand (unter 640 px) ──────────────────
+   Der Handy-Weg zur Strecke: eine Zeile in Akzentfarbe, die beim Scrollen an
+   der Unterkante klebt. `position: sticky` als LETZTES Kind der Seitenspalte
+   statt `fixed`: am Seitenende legt sie sich in ihre natürliche Position nach
+   dem Fuß – nichts wird verdeckt, kein Ausgleichs-Abstand nötig, kein :has().
+
+   Auf der Strecke selbst rendert `DemoShell` sie nicht (dort klebt schon das
+   Vorschau-Band, und eine dritte klebende Reihe ist die Grenze, die der
+   Kommentar bei --demo-band-h zieht – sie gilt für unten genauso).
+
+   Ab 640 px übernimmt der Knopf im Navigationsband; die Leiste verschwindet. */
+.demo-buchungsleiste {
+  position: sticky;
+  bottom: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: calc(var(--demo-tap) + 0.375rem);
+  padding-inline: 1.25rem;
+  /* iPhones ohne Home-Taste: unter der Leiste liegt sonst die Wischkante. */
+  padding-bottom: env(safe-area-inset-bottom);
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  font-family: var(--demo-display);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.demo-buchungsleiste:hover {
+  background-color: var(--accent-solid);
+}
+
+/* Ring nach INNEN: die Leiste endet an der Viewport-Unterkante, ein äusserer
+   Ring wäre dort unsichtbar. Unter forced-colors bleibt das Outline stehen
+   und bekommt die Systemfarbe – deshalb hier ohne eigenen Zusatzblock. */
+.demo-buchungsleiste:focus-visible {
+  outline: 3px solid var(--accent-foreground);
+  outline-offset: -5px;
+}
+
+@media (min-width: 640px) {
+  .demo-buchungsleiste {
+    display: none;
+  }
+}
+
+/* ── Handschrift einzelner Betriebe ──────────────────────────────────────────
+   Reine Form-Akzente auf dem jeweiligen Token-Satz – dieselbe Mechanik wie
+   die Farben: die zweite Scope-Klasse trägt sie, das Markup bleibt für alle
+   Betriebe identisch.
+
+   Der Barbier bekommt über dem Kopf-Foto den RUNDBOGEN – die Form des
+   klassischen Barbier-Spiegels. 999px oben wird vom Browser auf die halbe
+   Kastenbreite gedeckelt (Halbkreis), unten bleibt die Kante. Das Foto ist
+   4∶5 und höher als breit; der Bogen schneidet nur Deko-Fläche weg, kein
+   Motiv – das Hero-Motiv ist dafür mittig komponiert. */
+.demo-scope--barbier .demo-kopf__bild {
+  border-radius: 999px 999px 0 0;
 }

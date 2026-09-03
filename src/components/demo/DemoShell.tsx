@@ -4,7 +4,7 @@ import type { GastroBusiness } from '@/data/demo/types'
 import DemoGrain from './DemoGrain'
 import DemoNav from './DemoNav'
 import DemoLegal from './DemoLegal'
-import type { DemoPage } from './routes'
+import { demoHref, type DemoPage } from './routes'
 
 /**
  * Gemeinsame Hülle aller Seiten eines Gastro-Betriebs: Farbwelt (`.demo-scope`),
@@ -52,6 +52,21 @@ export default function DemoShell({
         <DemoNav business={business} current={current} />
         <main className="flex-1">{children}</main>
         <DemoLegal business={business} />
+
+        {/* Die klebende Buchungsleiste am UNTEREN Rand – nur unter 640 px
+            (darüber sitzt der Knopf im Navigationsband, siehe `DemoNav`).
+            `position: sticky` am Ende der Spalte statt `fixed`: während des
+            Scrollens klebt sie an der Unterkante, am Seitenende legt sie sich
+            in ihre natürliche Position HINTER den Fuß – nichts wird verdeckt,
+            kein Ausgleichs-Abstand nötig. Auf der Strecke selbst entfällt sie:
+            dort klebt bereits das Vorschau-Band, und eine dritte klebende
+            Reihe ist die Grenze, die demo.css oben ausdrücklich zieht. */}
+        {business.booking && current !== 'booking' ? (
+          <a href={demoHref(business.slug, 'booking')} className="demo-buchungsleiste">
+            {business.booking.ctaLabel}
+            <span aria-hidden="true">→</span>
+          </a>
+        ) : null}
       </div>
     </div>
   )

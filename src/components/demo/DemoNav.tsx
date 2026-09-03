@@ -58,7 +58,15 @@ export default function DemoNav({
 
   return (
     <div className="demo-nav-band px-4 sm:px-8">
-      <nav aria-label={business.name} className="mx-auto min-w-0 max-w-3xl">
+      {/* Seit 03.09.2026 trägt das Band neben der Pille den Buchungs-Knopf –
+          als GESCHWISTER der Liste, nicht als fünftes <li>: die :has()-Zählung
+          in demo.css rechnet die Bandhöhe aus der Zahl der Listeneinträge, und
+          ein Eintrag, der unter 640 px per CSS verschwindet, stünde trotzdem im
+          DOM und machte die Formel falsch (drei Zeilen vorgeschrieben, zwei
+          gerendert). Unter 640 px übernimmt die klebende Leiste am unteren
+          Rand (`DemoShell`); der Knopf hier ist `display: none`. Die Fläche
+          hängt an der Feldfrage `business.booking`, nie an der Branche. */}
+      <nav aria-label={business.name} className="demo-nav-zeile mx-auto min-w-0 max-w-3xl">
         <ul className="demo-nav-pill">
           {items.map((item) => {
             const active = item.page === current
@@ -81,6 +89,15 @@ export default function DemoNav({
             )
           })}
         </ul>
+        {business.booking ? (
+          <a
+            href={demoHref(business.slug, 'booking')}
+            aria-current={current === 'booking' ? 'page' : undefined}
+            className="demo-nav-cta"
+          >
+            {business.booking.ctaLabel}
+          </a>
+        ) : null}
       </nav>
     </div>
   )

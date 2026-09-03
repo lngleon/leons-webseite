@@ -3,9 +3,10 @@ import type { GastroBusiness } from './demo/types'
 import { cafeKlee } from './demo/cafe-klee'
 import { restaurantGlut } from './demo/restaurant-glut'
 import { friseurWirbel } from './demo/friseur-wirbel'
+import { barbierKlinge } from './demo/barbier-klinge'
 
 /**
- * Die drei Musterseiten, wie sie auf `/moeglichkeiten` als Karten erscheinen.
+ * Die vier Musterseiten, wie sie auf `/moeglichkeiten` als Karten erscheinen.
  *
  * **Abgeleitet, nicht abgeschrieben.** Name, Branche und die eine Zeile je
  * Karte kommen aus den Datendateien der Betriebe selbst (`name`, `kind`,
@@ -25,8 +26,8 @@ import { friseurWirbel } from './demo/friseur-wirbel'
  * Das Vorschaubild ist das Einzige, was hier NEU dazukommt und nicht aus der
  * Datendatei stammen kann: es ist ein echter Screenshot der eigenen Demo-
  * Startseite aus dem eigenen Build (1280×800 bei DPR 2 aufgenommen, auf
- * 1120×700 heruntergerechnet, WebP q80). Alle drei haben exakt dasselbe Maß –
- * ein Verhältnis für alle drei Karten, damit die Reihe ruhig steht.
+ * 1120×700 heruntergerechnet, WebP q80). Alle vier haben exakt dasselbe Maß –
+ * ein Verhältnis für alle Karten, damit die Reihe ruhig steht.
  */
 export type DemoPreview = {
   slug: string
@@ -43,7 +44,7 @@ export type DemoPreview = {
   height: number
 }
 
-/** Einheitliches Maß aller drei Screenshots – siehe Kopfkommentar. */
+/** Einheitliches Maß aller Screenshots – siehe Kopfkommentar. */
 const SHOT_WIDTH = 1120
 const SHOT_HEIGHT = 700
 
@@ -60,13 +61,16 @@ function toPreview(business: GastroBusiness): DemoPreview {
   }
 }
 
-/** Reihenfolge = Entstehungsreihenfolge der drei Demos. */
-export const demoPreviews: DemoPreview[] = [cafeKlee, restaurantGlut, friseurWirbel].map(
-  toPreview,
-)
+/** Reihenfolge = Entstehungsreihenfolge der vier Demos. */
+export const demoPreviews: DemoPreview[] = [
+  cafeKlee,
+  restaurantGlut,
+  friseurWirbel,
+  barbierKlinge,
+].map(toPreview)
 
 export const demoShowcaseIntro = {
-  title: 'Drei Betriebe, drei Seiten.',
+  title: 'Vier Betriebe, vier Seiten.',
   subline:
-    'Die Betriebe sind erfunden, die Seiten sind echt – jede vollständig begehbar, sechs Unterseiten, ohne JavaScript bedienbar.',
+    'Die Betriebe sind erfunden, die Seiten sind echt – jede vollständig begehbar, sieben Unterseiten, mit Buchungs-Vorschau.',
 } as const
