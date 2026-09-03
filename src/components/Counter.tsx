@@ -16,28 +16,52 @@ type CounterProps = {
 /**
  * Zählt beim Sichtbarwerden von 0 auf `value` hoch.
  * Respektiert prefers-reduced-motion (zeigt dann direkt den Endwert).
+ *
+ * Start-Bedingung (Mobil-Bug 03.09.2026, im Browser nachgemessen): mit
+ * `amount: 0.4` blieben auf dem Handy Zähler auf 0 stehen. Bei 390×844 ragen
+ * die unteren zwei Hero-Karten nur ~28 px über die Falz – die Ziffern-Spans
+ * selbst waren zu <40 % sichtbar, der Observer feuerte nie, die Karte zeigte
+ * dauerhaft „0". Deshalb:
+ *   1. `amount: 'some'` + `margin` nach unten: ein angeschnittener Zähler
+ *      (oder einer knapp unter der Falz) startet sofort beim Laden.
+ *   2. Fallback-Timer nach dem Mount: falls der Observer gar nicht feuert
+ *      (tief unter der Falz, Browser-Eigenheiten), zählt der Wert trotzdem
+ *      hoch – eine „0" darf nie stehen bleiben. Counter läuft nur im Hero,
+ *      dessen Entrance ohnehin beim Laden spielt; ein Start ohne Sicht
+ *      verschenkt also nichts.
  */
 export default function Counter({ value, suffix = '', duration = 1.6 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.4 })
+  const inView = useInView(ref, { once: true, amount: 'some', margin: '0px 0px 15% 0px' })
+  const [fallback, setFallback] = useState(false)
   const reduceMotion = useReducedMotionSafe()
   const count = useMotionValue(0)
   const [display, setDisplay] = useState(0)
+
+  useEffect(() => {
+    const t = setTimeout(() => setFallback(true), 1800)
+    return () => clearTimeout(t)
+  }, [])
 
   useEffect(() => {
     const unsubscribe = count.on('change', (v) => setDisplay(Math.round(v)))
     return () => unsubscribe()
   }, [count])
 
+  // Als EIN boolescher Ausdruck in den Deps: kippt der jeweils zweite
+  // Auslöser später auch noch auf true, bleibt `start` unverändert true und
+  // der Effekt startet die laufende Animation nicht neu.
+  const start = inView || fallback
+
   useEffect(() => {
-    if (!inView) return
+    if (!start) return
     if (reduceMotion) {
       setDisplay(value)
       return
     }
     const controls = animate(count, value, { duration, ease: 'easeOut' })
     return () => controls.stop()
-  }, [inView, value, duration, reduceMotion, count])
+  }, [start, value, duration, reduceMotion, count])
 
   return (
     /**
