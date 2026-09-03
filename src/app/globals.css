@@ -263,7 +263,29 @@
 /* ── Akzent-Gradient: Showcase-Flächen ───────────────────────────
    Text-Gradient mit SOLIDEM Fallback: Standard ist die flache
    Akzentfarbe (immer sichtbar); nur wo background-clip:text
-   unterstützt wird, wird der Verlauf eingeclippt. Nie unsichtbar. */
+   unterstützt wird, wird der Verlauf eingeclippt. Nie unsichtbar.
+
+   ⚠ NUR FÜR STATISCHEN TEXT. Diese Klassen malen den Text als
+   Verlaufs-MASKE (`background-clip: text` + transparenter Fill) – der
+   Text selbst ist unsichtbar, sichtbar ist nur der durch die Glyphen
+   gestanzte Verlauf. WebKit baut diese Maske beim ersten Layout und
+   erneuert sie bei einer TEXTÄNDERUNG nicht zuverlässig: Auf echtem
+   iOS-Safari verschwindet ein Element, dessen Inhalt sich nachträglich
+   ändert, dann vollständig.
+
+   Am 03.09.2026 genau so passiert – die Hero-Zahlen (Zähler, schreibt
+   seinen Text beim Hochzählen ~60×/s neu) waren auf einem iPhone
+   unsichtbar, während alle STATISCHEN Gradient-Stellen derselben Seite
+   („Lang" in der Navbar, die Eyebrows, `Statement`) sauber rendern. In
+   der Handy-Emulation von Desktop-Chrome ist das NICHT reproduzierbar:
+   die tauscht nur den Viewport, nicht die Engine (Blink statt WebKit).
+
+   Regel daraus: Wer Text zur Laufzeit ändert (Zähler, Tipp-Animation,
+   Live-Werte), nimmt eine solide Farbe – `text-accent` löst auf
+   dieselbe Farbe auf, die hier ohnehin der Fallback ist. Der fließende
+   `.aurora-text` ist die dokumentierte Ausnahme: sein Text ist statisch,
+   nur der Verlauf wandert (und der erzwingt über eine registrierte
+   @property pro Frame einen sauberen Repaint der Maske). */
 .accent-gradient-text {
   color: var(--accent);
 }

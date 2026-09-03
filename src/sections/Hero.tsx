@@ -113,9 +113,38 @@ function HeroStatCard({ stat }: { stat: (typeof heroStats)[number] }) {
       className="w-full rounded-2xl border border-border bg-card/60 p-4 backdrop-blur lg:max-w-[240px] lg:p-5"
     >
       <span aria-hidden="true" className="mb-2 block h-px w-8 bg-accent" />
+      {/**
+       * SOLIDE Akzentfarbe statt `.accent-gradient-text` – und das ist ein
+       * Bugfix, keine Geschmacksfrage (03.09.2026, vom User auf einem echten
+       * iPhone gemeldet: „sehe alles ausser die Zahlen").
+       *
+       * Die Gradient-Technik setzt `-webkit-text-fill-color: transparent` und
+       * malt den Text ausschliesslich als Verlaufs-Maske
+       * (`background-clip: text`). WebKit erzeugt diese Maske beim ERSTEN
+       * Layout – ändert sich der Textinhalt danach, wird sie nicht zuverlässig
+       * neu gebaut. Der Text bleibt dann das, was er ohne Maske ist:
+       * unsichtbar.
+       *
+       * Genau hier ist das fatal, denn diese Ziffern sind die EINZIGE Stelle
+       * der Seite, deren Gradient-Text sich laufend ändert – der Zähler
+       * schreibt sie beim Hochzählen ~60×/s neu. Alle anderen
+       * Gradient-Stellen („Lang" in der Navbar, die Abschnitts-Eyebrows,
+       * `Statement`) tragen STATISCHEN Text und rendern deshalb auf demselben
+       * Gerät einwandfrei – deshalb fiel nur dieses eine Element aus.
+       *
+       * Nicht diagnostizierbar war das per Emulation: die Handy-Ansicht in
+       * Desktop-Chrome tauscht nur den Viewport, nicht die Engine (Blink
+       * statt WebKit) – dort war und ist der Zähler sichtbar.
+       *
+       * `text-accent` löst auf dasselbe `--accent` auf, das der Verlauf als
+       * Startfarbe trug (und das die Klasse ohne `background-clip`-Support
+       * ohnehin als Fallback gesetzt hätte) – die Zahlen bleiben also violett,
+       * nur eben zuverlässig gemalt. Die Trennlinie darüber nutzt mit
+       * `bg-accent` schon immer denselben Ton.
+       */}
       <span
         aria-hidden="true"
-        className="accent-gradient-text font-display text-3xl font-semibold tracking-tight sm:text-4xl"
+        className="font-display text-3xl font-semibold tracking-tight text-accent sm:text-4xl"
       >
         <Counter value={stat.value} suffix={stat.suffix} />
       </span>
